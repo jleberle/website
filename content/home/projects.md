@@ -2,6 +2,7 @@
 # An instance of the Portfolio widget.
 # Documentation: https://wowchemy.com/docs/page-builder/
 widget: portfolio
+active: false
 
 # This file represents a page section.
 headless: true
@@ -9,8 +10,8 @@ headless: true
 # Order that this section appears on the page.
 weight: 65
 
-title: Projects
-subtitle: ''
+title: Sample Courses
+subtitle: 'Old Syllabi'
 
 content:
   # Page type to display. E.g. project.
