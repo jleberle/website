@@ -5,7 +5,7 @@
 
 # Appearance
 
-theme: 1950s
+theme: minimal
 day_night: false
 font: ''
 font_size: L
@@ -37,25 +37,16 @@ office_hours:
   - 'Summer: By Appointment'
   - 'Fall 2021: MW 3:30PM-5:00PM'
 appointment_url: 'https://calendly.com/jared-eberle/office-hours/'
-contact_links:
-  - icon: twitter
-    icon_pack: fab
-    name: DM Me
-    link: 'https://twitter.com/jleberle'
-  - icon: skype
-    icon_pack: fab
-    name: Skype Me
-    link: 'skype:eberlejared?call'
 
 # Site header
 
 main_menu:
   enable: true
-  align: l
-  show_logo: true
+  align: c
+  show_logo: false
   show_language: false
   show_day_night: false
-  show_search: true
+  show_search: false
   highlight_active_link: true
 
 # Localization
@@ -148,3 +139,8 @@ cms:
 icon:
   pack:
     ai: true
+
+security:
+  csp:
+    policy: 'Strict-Transport-Security: max-age=63072000;'
+    report_only: false

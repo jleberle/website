@@ -14,14 +14,11 @@ main:
     url: 'https://blog.jaredeberle.org'
     weight: 30
   - name: Talks
-    url: '#talks'
+    url: '/event'
     weight: 40
-  - name: Publications
-    url: '#featured'
-    weight: 50
   - name: Contact
     url: '#contact'
-    weight: 60
+    weight: 50
 
 # Link to a PDF of your resume/CV from the menu.
 # To enable, copy your resume/CV to `static/uploads/resume.pdf` and uncomment the lines below.
