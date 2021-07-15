@@ -64,7 +64,7 @@ math: false
 diagram: false
 privacy_pack: false
 edit_page:
-  repo_url: ''
+  repo_url: 'https://github.com/jleberle/website'
   content_dir: ''
   repo_branch: main
   editable:
@@ -139,8 +139,3 @@ cms:
 icon:
   pack:
     ai: true
-
-security:
-  csp:
-    policy: 'Strict-Transport-Security: max-age=63072000;'
-    report_only: false
