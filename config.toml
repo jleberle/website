@@ -1,0 +1,26 @@
+baseURL = "https://jaredeberle.org"
+
+# set your your own ga token here.
+googleAnalytics = ""
+
+languageCode = "en-us"
+
+# for using avicenna you need to set the themes to 'avicenna'
+enableEmoji = true
+theme = "avicenna"
+
+# This is your page title, it appears in your tab
+title = "Jared L. Eberle"
+
+# number of posts to show on the blog page
+paginate = 10
+
+[markup]
+[markup.tableOfContents]
+endLevel = 3
+ordered = false
+startLevel = 1
+
+[params]
+# it is used for the copy-right section of your page
+name = "Jared L. Eberle"
