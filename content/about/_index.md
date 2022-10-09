@@ -28,7 +28,7 @@ affiliations:
     - affiliation:
         title: "Ph.D."
         name: "Oklahoma State University"
-        email: "jared.eberle@okstate.edu"
+        email: ""
     - affiliation:
         title: "Lecturer"
         name: "Oklahoma State University"
