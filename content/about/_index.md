@@ -61,5 +61,3 @@ academia:
 I am currently a lecturer in the history department at Oklahoma State University. My research focuses on the history of Indigenous activism in the United States during the 20th century, with a particular focus on activism after the 1973 Wounded Knee Incident.
 
 I currently teach various undergraduate history surveys at OSU and have taught courses such as History of the Present and U.S. History in 15 Songs.
-
-Here's what's [happening now](/now) and here's some things from [around the web](https://happenings.jaredeberle.org) that I find interesting.
