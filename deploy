@@ -137,7 +137,7 @@ deploy_hugo() {
     fi
 
     # Here rsync is assuming we have keys shared already, and access via SSH remote functions correctly
-    rsync -av /papermod/public/* root@REMOTESYSTEM/path/to/public_html/ --delete
+    rsync -av /public/* nfsn:/home/public
     if [[ $? -ne 0 ]]; then
         echo "Rsync command failed!  Exit..."
         exit 1

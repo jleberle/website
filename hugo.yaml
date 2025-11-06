@@ -86,8 +86,6 @@ params:
   socialIcons:
     - name: orcid
       url: "https://orcid.org/0000-0002-0867-6561" 
-    - name: mastodon
-      url: "https://mastodon.social/@jleberle"
     - name: bluesky
       url: "https://bsky.app/profile/jaredeberle.org"
     - name: letterboxd
@@ -132,7 +130,7 @@ menu:
   main:
     - identifier: Blog
       name: Blog
-      url: https://blog.jaredeberle.org/
+      url: https://jaredeberle.org/blog/
       weight: 10
     - identifier: Happenings
       name: Happenings
