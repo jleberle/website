@@ -90,8 +90,8 @@ params:
       url: "https://bsky.app/profile/jaredeberle.org"
     - name: letterboxd
       url: "https://letterboxd.com/eberle/" 
-    - name: github
-      url: "https://github.com/jleberle"
+    - name: other 
+      url: "https://codeberg.org/jleberle"
 
   analytics:
     google:
