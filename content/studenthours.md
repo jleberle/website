@@ -15,7 +15,11 @@ Student hours is a nicer way of saying office hours. During the period listed be
 
 #### Schedule
 
-Student hours for the Fall 2025 semester are from 9AM-10AM Monday, Wednesday, and Friday. If you are unable to attend student hours due to schedule conflicts, please email me, I am happy to schedule an alternative time to meet with you.
+Student hours for the Spring 2026  semester are from 1PM-2PM Monday, Wednesday, and Friday. In the Fall 2026 semester my hours will be from 12PM-1PM, also on Monday, Wednesday, and Friday.
+
+If you are unable to attend student hours due to schedule conflicts, please email me, I am happy to schedule an alternative time to meet with you.
+
+I do not have scheduled student hours during intersession periods or over the summer. During those times pleas email me and I am more than happy to arrange a time to meet.
 
 ---
 
