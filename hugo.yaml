@@ -44,7 +44,9 @@ params:
   hideSummary: false
   showtoc: false
   tocopen: false
-  mainsections: ["courses"]
+  mainSections:
+    - articles
+    - reviews
 
   assets:
     # disableHLJS: true # to disable highlight.js
@@ -81,8 +83,8 @@ params:
 
   # home-info mode
   homeInfoParams:
-    Title: "Hi there \U0001F44B"
-    Content: Welcome to my blog
+    Title: "Welcome \U0001F44B"
+    Content: I'm a historian of modern Indigenous activism and a lectuer at Oklahoma State University.
 
   socialIcons:
     - name: orcid
