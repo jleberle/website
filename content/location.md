@@ -11,7 +11,7 @@ description: "Dr. Jared Eberle's office and address at Oklahoma State University
 154 Social Sciences and Humanities\
 Department of History\
 Oklahoma State University\
-Stillwater, OK 74078-0001
+Stillwater, OK 74078
 
 ---
 
