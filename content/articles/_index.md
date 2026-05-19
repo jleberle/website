@@ -1,4 +1,4 @@
 ---
 title: "Articles"
-description: "Articles by Jared L. Eberle"
+description: "Historical posts by Jared L. Eberle"
 ---
