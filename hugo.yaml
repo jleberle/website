@@ -28,6 +28,7 @@ params:
   defaultTheme: auto # dark, light
   disableThemeToggle: false
 
+  enableGitInfo: true
   ShowReadingTime: true
   ShowShareButtons: false
   ShowPostNavLinks: true
