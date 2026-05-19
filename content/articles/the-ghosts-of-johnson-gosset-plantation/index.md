@@ -11,14 +11,12 @@ summary: 'Story of a haunted Louisiana Plantation'
 cover:
   image: "cover.webp"
   alt: "Screenshot of New York Times article on the Johnson Gosset Plantation"
-  hiddenInList: true
+  hiddenInList: false
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
 ---
 Sometime around 1859 or 1860 two cousins from Kentucky tore down “the handsomest and most commodious mansion on the Mississippi,” seemingly within months of having bought it. The two and a half story mansion, built in 1780 by a thirty-five year old former lieutenant in the French Navy, sat on over a thousand acres of land and featured three foot thick walls of water lime bricks. Three generations of the original owner’s family lived on the property until the [economic crisis of 1857 and 1858 ](https://www.napoleon.org/en/history-of-the-two-empires/articles/napoleon-iii-confronted-with-the-economic-crisis-of-1857-1858)forced the family to sell the property to the two cousins from Louisville with the last names Gassett and Johnson.[^1] While relatively small, the [plantation classified as a](https://www.google.com/books/edition/_/Gi5JSCtGev8C?hl=en&amp;gbpv=1&amp;pg=PA146&amp;dq=gossett+and+johnson+plantation) “large slaveholder” in 1860 lists and produced a considerable amount of sugar and molasses. So why did the two decide to tear down a stately mansion on prized land along the Mississippi? According to a [*New York Times* article](https://www.nytimes.com/1894/12/09/archives/with-the-grip-of-death-mysterious-manifestations-in-an-old-southern.html?searchResultPosition=1) published roughly thirty-five years later, the house (and the owners) fell victim to “mysterious manifestations” that left them in “the grip of death.”
-
-{{< figure src="/images/2013/02/death-grip.png" >}}
 
 According to the story and local legend, the issues arose out of a spell the original owner’s grandmother placed on the house during a the mansion’s house warming party. “Standing in the main hall, with a glass of wine in one trembling hand and a torch in the other, she laid a spell upon the mansion, calling ‘the curse of God down on the head of any who should dispossess the owner of his blood, for ten generations, of the house he had built.’” While the incident became the subject of gossip among the more religious of the area, most in the area quickly forgot about the supposed curse until Mr. Gassett, his wife, and servants moved into the mansion. Shortly after moving in rumors swirled that the house had been “cunjered” and Mrs. Gassett became so frightened (of what she wouldn’t say) that Mr. Gassett moved her back to Louisville and shuttered the house except for a single room he planned to live in while supervising the property.
 
@@ -32,10 +30,10 @@ On the second night, Dr. Holliday locked up the house and was reading in bed whe
 
 The doctor locked the bedroom door and laid back down in the bed. Ten minutes later the key turned in the lock and the door again opened. As the doctor began to get up something grasped him around the throat. “I never felt such a grip. I dropped my pistol, and tried to free myself. But I could see nothing, nor see anything. For the first time in my life, I knew what terror was.” Dr. Holliday managed to free himself and spent the rest of the night awake in a candlelit room vainly trying to keep the door closed. While the doctor spent the next two weeks recovering from shock, he made it out of the mansion alive. His dog, on the other hand, was not so lucky as it was later found strangled under the bed when someone went to look for it.
 
-No explanation was found for the incidents. Seven years later the Mississippi River changed course near the former mansion[ref]As documented on page five of [this finding aid](http://louisianagenealogyblog.wordpress.com/2011/02/23/gosset-and-johnson-plantation) for LSU’s Mississippi River Map Collection.[/ref], and outside of a handful of mentions, the Gossett & Johnson Plantation seems to have passed into the morass of history along with whatever inhabited the stately mansion.
+No explanation was found for the incidents. Seven years later the Mississippi River changed course near the former mansion[^2], and outside of a handful of mentions, the Gossett & Johnson Plantation seems to have passed into the morass of history along with whatever inhabited the stately mansion.
 
 Source: “With the Grip of Death,” *New York Times*, December 9, 1894.
 
---- 
-
 [^1]: The *NYT* article only lists the men by their last name. I attempted to find more information on the plantation, its sale, or any of the people supposedly involved, but found relatively little besides the fact that the plantation did exist. As documented by [this 1858 map](http://usgwarchives.net/maps/louisiana/statemap/1858brno.jpg) the Johnson & Gosset plantation was situated on the right hand side of the Mississippi River (viewer’s left) and on the border of St. Charles and Jefferson Parishes. Additionally in early 1856, Texas newspapers such as [this one](http://texashistory.unt.edu/ark:/67531/metapth235887/m1/4/?q=gossett) ran ads about the Thompson’s Bagasse Burner or Furnace that was demonstrated on the Gossett & Johnson plantation. The article lists a J. Gossett and a Benjamin Johnson as the owners. At any rate, the former plantation site looks to be the current location of the [Cornerstone Chemical Company](http://maps.google.com/maps?q=Mississippi+River,+Mile+Marker+19,+Jefferson+Parish,+LA&amp;hl=en&amp;ll=29.960837,-90.270667&amp;spn=0.006888,0.009098&amp;sll=29.95367,-90.295172&amp;sspn=0.055105,0.072784&amp;hq=Mississippi+River,+Mile+Marker+19,+Jefferson+Parish,+LA&amp;t=h&amp;z=17).
+
+[^2]: As documented on page five of [this finding aid](http://louisianagenealogyblog.wordpress.com/2011/02/23/gosset-and-johnson-plantation) for LSU’s Mississippi River Map Collection.
