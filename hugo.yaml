@@ -3,7 +3,7 @@ locale: en-us
 title: Jared L. Eberle
 theme: ["PaperMod"]
 
-enableRobotsTXT: false
+enableRobotsTXT: true
 buildDrafts: false
 buildFuture: false
 buildExpired: false
@@ -28,7 +28,7 @@ params:
   defaultTheme: auto # dark, light
   disableThemeToggle: false
 
-  ShowReadingTime: false
+  ShowReadingTime: true
   ShowShareButtons: false
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
@@ -106,7 +106,7 @@ params:
     hiddenInSingle: true # hide on single page
 
   editPost:
-    URL: "https://github.com/jleberle.github.io/content"
+    URL: "https://codberg.org/jleberle/website/content"
     Text: "Suggest Changes" # edit text
     appendFilePath: true # to append file path to Edit link
 
