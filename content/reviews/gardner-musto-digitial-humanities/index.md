@@ -5,10 +5,11 @@ categories:
 tags:
 - Digital History
 draft: false
+date: 2015-11-22
 title: 'Digital Humanities: A Primer'
 summary: 'Review of *Digital Humanities by Gardiner and Musto*'
 cover:
-  image: "gardinermusto.webp"
+  image: "cover.webp"
   alt: "Front cover of Digital Humanities"
   hiddenInList: true
   hiddenInSingle: false

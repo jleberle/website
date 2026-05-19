@@ -6,10 +6,11 @@ tags:
 - Rock
 - 1970s
 draft: false
+date: 2017-07-17
 title: 'Redeeming the Uncool'
 summary: 'Review of *The Show That Never Ends By Dave Weigel*'
 cover:
-  image: "weigel.webp"
+  image: "cover.webp"
   alt: "Front cover of The Show That Never Ends"
   hiddenInList: true
   hiddenInSingle: false

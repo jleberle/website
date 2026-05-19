@@ -7,10 +7,11 @@ tags:
 - Red Power
 - 1960s
 draft: false
+date: 2015-07-21
 title: 'The Birth of Red Power'
 summary: 'Review of *"Clyde Warrior: Tradition, Community, and Red Power*'
 cover:
-  image: "mckenziejones.webp"
+  image: "cover.webp"
   alt: "Front cover of Clyde Warrior: Tradition, Community, and Red Power"
   hiddenInList: true
   hiddenInSingle: false
