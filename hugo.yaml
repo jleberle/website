@@ -131,18 +131,14 @@ outputs:
     - JSON # necessary for search
 menu:
   main:
-    - identifier: Blog
-      name: Blog
-      url: https://jaredeberle.org/blog/
-      weight: 10
     - identifier: Happenings
       name: Happenings
       url: https://happenings.jaredeberle.org/
-      weight: 20
+      weight: 10
     - identifier: OSU
       name: OSU Directory
       url: https://experts.okstate.edu/jared.eberle
-      weight: 30
+      weight: 20
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
 markup:
@@ -153,3 +149,6 @@ markup:
     # guessSyntax: true
     # lineNos: true
     # style: monokai
+    #
+
+  ignorFiles: .obsidian/
