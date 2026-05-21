@@ -1,0 +1,16 @@
+.link-post-star {
+  margin-left: 0.35em;
+  font-size: 0.7em;
+  text-decoration: none;
+  vertical-align: 0.15em;
+  color: var(--secondary);
+}
+
+.link-post-star:hover {
+  color: var(--primary);
+}
+
+.post-title .link-post-star {
+  font-size: 0.55em;
+  vertical-align: 0.45em;
+}
