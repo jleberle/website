@@ -64,16 +64,16 @@
 {{- end }}
 
 {{- $externalURL := .Params.external_url }}
-{{- $entryHref := cond (ne $externalURL nil) (string $externalURL) .Permalink }}
 
 <article class="{{ $class }}{{ with $externalURL }} link-post{{ end }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
   <header class="entry-header">
     <h2 class="entry-hint-parent">
-      {{- .Title }}
       {{- with $externalURL }}
-      <a class="link-post-star" href="{{ $page.Permalink }}" aria-label="Permalink to {{ $page.Title | plainify }}" title="Permalink">&#9733;</a>
+      <a class="link-post-title" href="{{ . }}" rel="external noopener" target="_blank">{{ $page.Title }}</a>
+      {{- else }}
+      {{- .Title }}
       {{- end }}
       {{- if .Draft }}
       <span class="entry-hint" title="Draft">
@@ -95,7 +95,7 @@
     {{- partial "post_meta.html" . -}}
   </footer>
   {{- end }}
-  <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ $entryHref }}"{{ with $externalURL }} rel="external noopener" target="_blank"{{ end }}></a>
+  <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
 </article>
 {{- end }}
 

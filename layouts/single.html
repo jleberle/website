@@ -7,8 +7,7 @@
     {{ partial "breadcrumbs.html" . }}
     <h1 class="post-title entry-hint-parent">
       {{- with $externalURL }}
-      <a href="{{ . }}" rel="external noopener" target="_blank">{{ $.Title }}</a>
-      <a class="link-post-star" href="{{ $.Permalink }}" aria-label="Permalink to {{ $.Title | plainify }}" title="Permalink">&#9733;</a>
+      <a class="link-post-title" href="{{ . }}" rel="external noopener" target="_blank">{{ $.Title }}</a>
       {{- else }}
       {{ .Title }}
       {{- end }}
