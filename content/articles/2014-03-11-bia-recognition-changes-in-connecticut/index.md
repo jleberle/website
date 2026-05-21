@@ -26,7 +26,7 @@ In contrast Renée Cramer's *Cash, Color, and Colonialism: The Politics of Triba
 
 ## III. The Current Debate
 
-Almost immediately after the announcement, Connecticut officials and residents objected to the new proposal and argued it would dilute the recognition process and would open the door to more casinos in the state and land disputes. [Stonington First Selectman Nicholas Mullane II said](http://www.theday.com/article/20130630/NWS01/306309921/-1/NWS):
+Almost immediately after the announcement, Connecticut officials and residents objected to the new proposal and argued it would dilute the recognition process and would open the door to more casinos in the state and land disputes. [Stonington First Selectman Nicholas Mullane II said](https://theday.com/news/262974/bia-floats-new-tribe-status-rules/):
 
 > "Tribes won't have to be historical tribes anymore," he said. "There are tribes that have maintained their continuity from Day One, that have acted as a tribe, with a chief, a structure, members; now the BIA's saying they don't need that."There just won't be any stringent requirements anymore."
 
@@ -54,15 +54,15 @@ In a separate editorial earlier this month the *Courant* rehashed many of the sa
 
 That, in many respects, is nearly as insulting as using Tonto speak in 2013.
 
-[The Norwich *Bulletin* has an editorial similar to the *Courant's*](http://www.norwichbulletin.com/article/20140313/OPINION/140319820/10307/OPINION) but focuses more on land claims:
+[The Norwich *Bulletin* has an editorial similar to the *Courant's*](https://indianz.com/News/2014/03/13/editorial-connecticut-argues-a.asp) but focuses more on land claims:
 
-> The immediate concern is the prospect of additional casinos. Gaming interests, from Donald Trump to Steve Wynn, financially backed the tribes’ first attempt at federal recognition, and tribal leaders did nothing to dispel suggestions that casinos were part of their plans.The issue, however, is far more complicated.If granted federal recognition, land claims will be filed seeking to take large tracts into trust, many of the parcels already developed. That could cloud title to hundreds of properties and remove thousands of acres from tax rolls. That is the state’s primary concern, but with a dose of hypocrisy.
+> The immediate concern is the prospect of additional casinos. Gaming interests, from Donald Trump to Steve Wynn, financially backed the tribes’ first attempt at federal recognition, and tribal leaders did nothing to dispel suggestions that casinos were part of their plans.The issue, however, is far more complicated. If granted federal recognition, land claims will be filed seeking to take large tracts into trust, many of the parcels already developed. That could cloud title to hundreds of properties and remove thousands of acres from tax rolls. That is the state’s primary concern, but with a dose of hypocrisy.[^11]
 
 Governor Dannel Malloy mentioned this as a reason in his letter to President Obama [opposing the policy changes](http://www.governor.ct.gov/malloy/lib/malloy/2014.02.25_potus_bia.pdf). Land claims were a driving force in the recognition of tribes like the Pequots in the 1980s as Passamaquoddy tribe in Maine sued the state claimed it had rightful title to roughly half the state lands as a treaty the tribe signed with the state violated the federal Nonintercourse Act which established a trust relationship between the tribe and the federal government. Yet land claims are no longer a serious issue [according to UConn law professor Bethany Berger](https://www.wnpr.org/post/effects-potential-connecticut-tribal-recognitions-debate):
 
 > But Bethany Berger, who's a professor of law at UConn, said a 2005 court ruling has removed that threat. “Since then, essentially land claims have become pretty toothless,” she told WNPR’s Where We Live. “Tribes can no longer bring land claims against the state that are going to be recognized in this area, so that’s no longer an issue.”
 
-There's also the idea that Connecticut is unique in that it [has a majority of the tribes who would benefit from the new rule](http://www.hartfordbusiness.com/article/20140227/NEWS01/140229921):
+There's also the idea that Connecticut is unique in that it [has a majority of the tribes who would benefit from the new rule](https://hartfordbusiness.com/article/malloy-opposes-tribal-recognition-changes-in-letter-to-obama/):
 
 > Connecticut, uniquely, is home to three of the five tribes in the entire country that would presumably be helped by the change, according to Malloy. And they are the only tribes of the five who have been officially denied federal recognition.
 
@@ -72,7 +72,7 @@ Happily, the editorials aren't all bad. The *Connecticut Post* [published a deli
 
 > If casinos are the problem, address the problem.Don't tell a group of people you've recognized for centuries as Indians that now, with dollars at stake, you don't think so anymore. When the tattered remnants of these long-recognized tribes moved on to state reservations generations ago, it wasn't because they were plotting to open casinos.
 
-The issues involved in updating the BIA's criteria are complex and go well beyond the State of Connecticut. Even the issues related to Connecticut that I've attempted to address here are too complex for a single blog single. At some point in the future I may write something more formal, although there's already a copious amount of literature on the subject for those interested. Feel free to take a look at my [cursory historiography](https://blog.jaredeberle.org/files/PequotIdentity.doc) of literature on Pequot identity and gaming for additional resources on the subject.[^10] Finally for a broader look at Native gaming Jessica Cattelino's *High Stakes: Florida Seminole Gaming and Sovereignty* is a helpful resource and starting point.
+The issues involved in updating the BIA's criteria are complex and go well beyond the State of Connecticut. Even the issues related to Connecticut that I've attempted to address here are too complex for a single blog post. At some point in the future I may write something more formal, although there's already a copious amount of literature on the subject for those interested. Feel free to take a look at my [cursory historiography](PequotIdentity.doc) of literature on Pequot identity and gaming for additional resources on the subject.[^10] Finally for a broader look at Native gaming Jessica Cattelino's *High Stakes: Florida Seminole Gaming and Sovereignty* is a helpful resource and starting point.
 
 ---
 [^1]: http://www.gpo.gov/fdsys/pkg/FR-2013-06-27/pdf/2013-15329.pdf
@@ -81,7 +81,8 @@ The issues involved in updating the BIA's criteria are complex and go well beyon
 [^4]: The full discussion draft is available at http://web.archive.org/web/20170210232151/https://www.bia.gov/cs/groups/public/documents/text/idc1-022123.pdf
 [^5]: The segment was updated on the *60 Minutes 2* during the early 2000s.
 [^6]: Brett Fromson's *Hitting the Jackpot: The Inside Story of The Richest Indian Tribe in History* and Kim Eisler's *Revenge of the Pequots: How a Small Native American Tribe Created the World's Most Profitable Casino* follow similar paths.
-[^7]: Cramer, *Cash, Color, and Colonialism,* 149-150. I've attempted to find a photograph/copy of the cartoon but have been unable to do so in cursory attempts. If anyone has a copy please let me know. **Update:** [Found it](https://blog.jaredeberle.org/posts/bob-engelharts-golden-hill-paugussett-cartoon/)
+[^7]: Cramer, *Cash, Color, and Colonialism,* 149-150. I've attempted to find a photograph/copy of the cartoon but have been unable to do so in cursory attempts. If anyone has a copy please let me know. **Update:** [Found it](/articles/bob-engelharts-golden-hill-paugussett-cartoon/)
 [^8]: Rick Green at the *Hartford Courant* provided some more details in his report, available at http://articles.courant.com/2013-07-06/news/hc-indian-tribes-recognition-column-green-20130706_1_schaghticokes-easterns-golden-hill-paugussetts.
 [^9]: Riverside County outlawed card gaming and attempted to seize card games under [Public Law 280](https://en.wikipedia.org/wiki/Public_Law_280). However, because California allowed the gaming for charitable purposes (and because it had a state lottery), the court ruled the state had no authority to enforce laws on the reservations.
 [^10]: Sorry the the typos and grammar errors that I know undoubtedly riddle that paper.
+[^11]: *The Bulletin* editorial is no longer available at the original URL and I could not find it when searching. I've replaced it with a link to Indianz.com that quotes it.

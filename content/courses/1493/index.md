@@ -30,7 +30,7 @@ Please ensure all emails include your full name, course information (date and ti
 
 ## Resources
 
-- [LASSO Center](https://universitycollege.okstate.edu/lasso/): Tutoring and academic support coaches
+- [LASSO Center](https://success.okstate.edu/lasso-center): Tutoring and academic support coaches
 - [OSU Counseling](https://ucs.okstate.edu): University Counseling including emergency support options
 - [Victim Support Services](https://1is2many.okstate.edu/find-support/support-for-victims/index.html): Sexual violence support and reporting information.
 

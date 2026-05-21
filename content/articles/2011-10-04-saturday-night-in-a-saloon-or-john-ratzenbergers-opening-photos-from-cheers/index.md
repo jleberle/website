@@ -27,4 +27,4 @@ link=https://www.loc.gov/pictures/item/2017780580/
 caption="Saturday Night in a Saloon,” Russell Lee, Craigville, Minnesota, 1937"
 >}}
 
-Thanks to the fine folks at Shorpy, [who highlighted the photograph last year](http://www.shorpy.com/search/node/cheers), you can [find out more about the town](http://www.lakesnwoods.com/Craig.htm"), and catch another view of our lumberjack turned Cliff Clavin stand-in.
+Thanks to the fine folks at Shorpy, [who highlighted the photograph last year](https://www.shorpy.com/node/7798), you can [find out more about the town](https://www.lakesnwoods.com/Craig.htm), and catch another view of our lumberjack turned Cliff Clavin stand-in.

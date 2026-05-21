@@ -13,4 +13,4 @@ George R. Stetson writing about the belief in Vampirism amongst the population i
 
 > …[I]t is perhaps fortunate that the isolation of which this is probably the product, an isolation common in sparsely settled regions, where thought stagnates and insanity and superstition are prevalent, has produced nothing worse.
 
-(Via Smithsonian Magazine’s [“The Great New England Vampire Panic,” October 2012](http://www.smithsonianmag.com/history-archaeology/The-Great-New-England-Vampire-Panic-169791986.html?c=y&amp;story=fullstory))
+(Via Smithsonian Magazine’s [“The Great New England Vampire Panic,” October 2012](https://www.smithsonianmag.com/history/the-great-new-england-vampire-panic-36482878))
