@@ -79,7 +79,7 @@ params:
       - name: Student Hours
         url: studenthours
       - name: Location
-        url: location
+        url: location  
 
   # home-info mode
   homeInfoParams:
@@ -130,15 +130,15 @@ outputs:
     - RSS
     - JSON # necessary for search
 menu:
-  main:
-    - identifier: Happenings
-      name: Happenings
-      url: https://happenings.jaredeberle.org/
-      weight: 10
-    - identifier: OSU
-      name: OSU Directory
-      url: https://experts.okstate.edu/jared.eberle
-      weight: 20
+   main:
+   - identifier: Micro.blog
+     name: Micro.Blog
+     url: https://writing.jaredeberle.org/
+     weight: 10
+   - identifier: OSU
+     name: OSU Directory
+     url: https://experts.okstate.edu/jared.eberle
+     weight: 20
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 markup:
   highlight:
