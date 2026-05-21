@@ -6,6 +6,7 @@ date: "2012-11-30T08:52:00Z"
 tags:
 - Vampires
 title: "At Least It's Only a Belief in Vampirism"
+slug: /at-least-its-only-a-belief-in-vampirism/
 ---
 
 George R. Stetson writing about the belief in Vampirism amongst the population in rural Rhode Island during the nineteenth century:

@@ -13,6 +13,7 @@ cover:
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
+slug: /thanksgiving-1970/
 ---
 
 1970 marked the 350th anniversary of the pilgrims landing at Plymouth Rock and like usual the residents of Plymouth, Massachusetts were planning the annual *Pilgrim’s Progress* festival. The festival included a parade and feast, complete with residents in period clothes. The whole affair was a celebration of American progress. Empire, if you will.

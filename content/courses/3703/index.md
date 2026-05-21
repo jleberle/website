@@ -10,6 +10,7 @@ cover:
   hiddenInList: false
   hiddenInSingle: false
   relative: true # To use relative path for cover image, used in hugo Page-bundles
+slug: /3703/
 ---
 
 *This course was offered in-person during the Spring 2025 semester*

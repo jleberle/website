@@ -7,6 +7,7 @@ tags:
 - Indigenous
 - Rodeo
 title: 'From the Archives: Indian Prison Rodeo'
+slug: /from-the-archives-indian-prison-rodeo/
 ---
 I'm in Saint Paul, Minnesota for the Western History Association's annual conference and to explore the archives at the Minnesota Historical Society related to the [Wounded Knee Legal Defense/Offense Committee](http://www2.mnhs.org/library/findaids/00229.xml) (WKLDOC for short). It's an expansive archive that collects 149 boxes related to the organization that defended participants in the occupation of Wounded Knee, South Dakota in 1973. Much of it is outside the purview of my dissertation (thankfully I don't have to read the box upon box of legal proceedings), and given that I only have two days to spelunk through the entire archive, I had to make choices about what I would and would not look at.
 

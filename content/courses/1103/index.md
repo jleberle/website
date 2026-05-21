@@ -10,6 +10,7 @@ cover:
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
+slug: /1103/
 ---
 
 *This course was offered as an online course in the Spring 2025 semester*

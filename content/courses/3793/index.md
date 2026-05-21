@@ -9,6 +9,7 @@ cover:
   hiddenInSingle: false
   caption: "Sun Dance Scene, Art Institute of Chicago"
   relative: true # To use relative path for cover image, used in hugo Page-bundles
+slug: /3793/
 ---
 
 *This version was offered in the Spring 2023 Semester*

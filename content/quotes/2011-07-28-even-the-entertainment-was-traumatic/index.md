@@ -6,6 +6,7 @@ date: "2011-07-28T14:12:00Z"
 tags:
 - Oklahoma
 title: Even the Entertainment Was Traumatic
+slug: /even-the-entertainment-was-traumatic/
 ---
 > Even the entertainment could be traumatic in [No Man's Land](http://en.wikipedia.org/wiki/Oklahoma_Panhandle). People would gather at makeshift rodeo stands near Boise City, OK on Saturday afternoons to watch the cow dip. Cattle were herded into a chute and down into a vat of water. Once they hit the water, they were drowned by two cowboys, on either side of the vat, who held their heads down while the beeves bucked. Some of the children didn’t like it–an amusement ride with a sudden death at the end.
 

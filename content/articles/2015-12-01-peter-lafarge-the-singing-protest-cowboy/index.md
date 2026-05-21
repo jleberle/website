@@ -14,6 +14,7 @@ cover:
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
+slug: /peter-lafarge-the-singing-protest-cowboy/
 ---
 
 There's a fair share of rodeo contestants who have parlayed their time in rodeo into a singing career. Probably most notable is Chris LeDoux, one of the inspirations for Oklahoma State's own Garth Brooks, who won the 1976 bareback championship at the National Finals Rodeo and [sold records out of his truck](https://www.allmusic.com/artist/chris-ledoux-mn0000107466/biography) at rodeo events in the hopes of supporting his rodeo career. LeDoux retained a cult following on the rodeo circuit until Brooks' debut album in 1989 and the song "Much Too Young (To Feel This Damn Old)" about an aging rodeo contestant who only had "The worn out tape of Chris LeDoux, lonely women and bad booze" pushed him to a wider audience. Yet as evidenced by [Armond Duck Chief's performance at the Indian National Finals Rodeo](https://blog.jaredeberle.org/posts/past-and-future-of-indian-rodeo-in-las-vegas/), the hard scramble life on the rodeo circuit can provide material for countless songs and aspiring songwriters.

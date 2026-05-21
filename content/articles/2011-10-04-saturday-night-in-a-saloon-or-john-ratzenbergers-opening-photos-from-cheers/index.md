@@ -15,6 +15,7 @@ cover:
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
+slug: /saturday-night-in-a-saloon-or-john-ratzenbergers-opening-photos-from-cheers/
 ---
 In watching the final installment of Ken Burns’s “Prohibition” documentary I noticed a picture that was notable solely because I watch too many old reruns of "*Cheers*":
 
