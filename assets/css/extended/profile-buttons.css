@@ -1,0 +1,7 @@
+.buttons {
+  max-width: 600px;
+}
+
+.button {
+  white-space: nowrap;
+}
