@@ -1,0 +1,9 @@
+*
+    Cache-Control: public, max-age=60, must-revalidate
+    X-Frame-Options: DENY
+/iframe-page/
+    X-Frame-Options: SAMEORIGIN
+/static/*
+    Cache-Control: public, max-age=3600
+~/\.([a-f0-9]{6,8})(\.min)?\.(css|js)$/
+    Cache-Control: public, immutable
