@@ -134,8 +134,8 @@ outputs:
 menu:
    main:
    - identifier: Micro.blog
-     name: Micro.Blog
-     url: https://writing.jaredeberle.org/
+     name: Updates
+     url: https://updates.jaredeberle.org/
      weight: 10
    - identifier: OSU
      name: OSU Directory
