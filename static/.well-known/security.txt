@@ -1,0 +1,5 @@
+Contact: mailto:jared@jaredeberle.org
+Encryption: https://jaredeberle.org/key.asc
+Preferred-Languages: en
+Canonical: https://jaredeberle.org/.well-known/security.txt
+Expires: 2027-05-26T00:00:00.000Z
