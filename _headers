@@ -1,17 +1,19 @@
 /*
-  Cache-Control: public, max-age=600, must-revalidate
+  Cache-Control: public, max-age=600, stale-while-revalidate=86400
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Content-Security-Policy: upgrade-insecure-requests
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
 /images/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
 /icons/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
 /iframe-page/*
   X-Frame-Options: SAMEORIGIN
