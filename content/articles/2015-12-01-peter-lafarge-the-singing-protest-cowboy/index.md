@@ -39,7 +39,7 @@ Even though LaFarge mostly made his name in protest songs that highlighted India
 >
 > He's a rebel, that's the thing.
 
-I found all of this as I was digging around OSU's online catalog of *News From Indian Country* and stumbled across a short article chronicling LaFarge's life. You can listen to some of [LaFarge's songs here](http://search.alexanderstreet.com/view/work/71381) (including Ira Hayes) and there are countless videos on Youtube that you can browse.
+I found all of this as I was digging around OSU's online catalog of *News From Indian Country* and stumbled across a short article chronicling LaFarge's life. You can listen to some of [LaFarge's songs here](https://search.alexanderstreet.com/view/work/71381) (including Ira Hayes) and there are countless videos on Youtube that you can browse.
 
 ---
 [^1]: "The Ballad of Peter LaFarge, Native America's Protest Pioneer" in *News From Indian Country*, March 8, 2004.
