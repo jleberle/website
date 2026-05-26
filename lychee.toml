@@ -1,0 +1,15 @@
+accept = [200, 206, 301, 302, 303, 304, 307, 308, 401, 403, 429]
+
+max_concurrency = 8
+timeout = 20
+retry_wait_time = 5
+max_retries = 2
+
+include_mail = false
+include_tel = false
+
+user_agent = "lychee/jaredeberle.org link checker"
+
+exclude = [
+    "^https?://(localhost|127\\.0\\.0\\.1|\\[::1\\])",
+]

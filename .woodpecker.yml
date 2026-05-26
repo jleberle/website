@@ -1,0 +1,14 @@
+when:
+  - event: cron
+  - event: manual
+
+steps:
+  - name: build
+    image: hugomods/hugo:exts
+    commands:
+      - hugo --minify
+
+  - name: link-check
+    image: lycheeverse/lychee:latest
+    commands:
+      - lychee --no-progress --config lychee.toml public/
