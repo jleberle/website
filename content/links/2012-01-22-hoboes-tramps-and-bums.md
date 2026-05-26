@@ -5,7 +5,7 @@ categories:
 date: "2012-01-22T14:14:00Z"
 title: Hoboes, Tramps, and Bums
 slug: /hoboes-tramps-and-bums/
-external_url: http://books.google.com/books/about/Hoboes.html?id=Yt24EKAynCIC
+external_url: https://books.google.com/books/about/Hoboes.html?id=Yt24EKAynCIC
 ---
 > There are three types of the genus vagrant: the hobo, the tramp, and the bum. The hobo works and wanders, the tramp dreams and wanders and the bum drinks and wanders.
 
