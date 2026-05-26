@@ -3,7 +3,8 @@
     "allow": [
       "Bash(git push *)",
       "Bash(hugo --gc --logLevel info)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git *)"
     ]
   }
 }

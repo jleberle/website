@@ -1,4 +1,4 @@
-/*
+*
   Cache-Control: public, max-age=600, stale-while-revalidate=86400
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
