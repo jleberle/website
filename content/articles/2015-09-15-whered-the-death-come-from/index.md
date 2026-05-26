@@ -17,7 +17,7 @@ So at the same time that Wikipedia is remaining increasingly relevant as a way t
 
 ## Background
 
-{{< figure src="https://imgs.xkcd.com/comics/wikipedian_protester.png" >}}
+{{< figure src="wikipedian_protester.png" alt="A man at a protest holding a sign reading '[CITATION NEEDED]'" attr="xkcd #285" attrlink="https://xkcd.com/285/" >}}
 
 In February of 2012 Timothy Messer-Kruse published an article entitled ["The 'Undue Weight' of Truth on Wikipedia"]((https://www.chronicle.com/article/the-undue-weight-of-truth-on-wikipedia/) in the *Chronicle of Higher Education* that covered his attempts to correct an issue on the Wikipedia entry for the Haymarket Riot. Messer-Kruse's issue centered on the claim that the prosecution in the Haymarket trial failed to provide any evidence linking the defendants with the bombings. As Messer-Kruse discusses, the claim was factually inaccurate and had a mountain of historical evidence contradicting it, but because of Wikipedia's policies that give preference to published secondary sources over archival materials and the "majority view" of a subject (i.e. whatever most sources agree on), the attempt to correct the assertion only succeeded once he published a book on the subject.
 
