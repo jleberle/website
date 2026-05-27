@@ -1,4 +1,5 @@
 when:
+  - event: push
   - event: cron
   - event: manual
 
@@ -10,5 +11,8 @@ steps:
 
   - name: link-check
     image: lycheeverse/lychee:latest
+    when:
+      - event: cron
+      - event: manual
     commands:
       - lychee --no-progress --config lychee.toml public/
