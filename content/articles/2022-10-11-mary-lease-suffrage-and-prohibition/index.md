@@ -1,16 +1,16 @@
 ---
-title: "Mary Lease, Suffrage, and Prohibition"
+title: Mary Lease, Suffrage, and Prohibition
 date: 2022-10-11T17:18:17-05:00
 categories:
-- History
+  - History
 tags:
-- 19th Century
-- Populism
+  - 19th Century
+  - Populism
 draft: false
 slug: /mary-lease-suffrage-and-prohibition/
 ---
 
-I teach primarly introductory level survey courses and the notes for those courses are a Frankenstein's monster of assembled sources. I used to try and keep track of what came from where but found the citations too distracting, so I just settled for double checking notes when I add new material in. Every now and then I stumble across something that makes me question what is in my notes and leads me to dig around trying to figure out if I'm saying the right or wrong thing in class. Recently I went down a rabbit hole thanks to [Wikipedia entry for Mary Lease](https://en.wikipedia.org/wiki/Mary_Elizabeth_Lease) because the opening sentence caught me off guard:
+I teach primarily introductory level survey courses and the notes for those courses are a Frankenstein's monster of assembled sources. I used to try and keep track of what came from where but found the citations too distracting, so I just settled for double checking notes when I add new material in. Every now and then I stumble across something that makes me question what is in my notes and leads me to dig around trying to figure out if I'm saying the right or wrong thing in class. Recently I went down a rabbit hole thanks to [Wikipedia entry for Mary Lease](https://en.wikipedia.org/wiki/Mary_Elizabeth_Lease) because the opening sentence caught me off guard:
 
 >Mary Elizabeth Lease (September 11, 1850 – October 29, 1933) was an American lecturer, writer, Georgist, and political activist. She was an advocate of the suffrage movement as well as temperance but she was best known for her work with the People's Party (Populists).
 
@@ -30,11 +30,11 @@ That complicates the picture quite a bit -- maybe Lease was a suffragist and tem
 
 That still leaves the question, was Lease supportive of either of those policies at any point? Postel cites two sources for the claims in his footnotes, a 1986 dissertation and Gene Clanton's *Kansas Populism* from 1969. The dissertation, Maryjo Wagner's "'Farms, Families, and Reform': Women in the Farmers' Alliance and Populist Party" includes the direct quote from Lease on the matter:
 
-> Oh, this demand for women's suffrage and prohibition is so absurd. Give us planks on money, land and transpor­tation and the farmers are satisfied. Who cares if the people can get whiskey, so it is pure and they have plenty of money to pay for it with? You won't find much of it outside the mountains of Tennessee. Wherever internal revenue officers go, the whiskey becomes impure.[^4]
+> Oh, this demand for women's suffrage and prohibition is so absurd. Give us planks on money, land and transportation and the farmers are satisfied. Who cares if the people can get whiskey, so it is pure and they have plenty of money to pay for it with? You won't find much of it outside the mountains of Tennessee. Wherever internal revenue officers go, the whiskey becomes impure.[^4]
 
 She also notes that the party would probably have adopted a suffrage plank had Lease been supportive of it. But Wagner then notes this significant point:
 
-> Although she had been ambivalent concerning woman suffrage at St. Louis, Lease "made an eloquent plea to the end that her sex might be recognized in the state platform." Accordingly, the convention proposed a woman suffrage amend­ment for the state constitution.[^5]
+> Although she had been ambivalent concerning woman suffrage at St. Louis, Lease "made an eloquent plea to the end that her sex might be recognized in the state platform." Accordingly, the convention proposed a woman suffrage amendment for the state constitution.[^5]
 
 Digging around Wagner also notes that Lease's political career started in the Women's Christian Temperance Union where she began publicly speaking prior to becoming a full-blown populist.[^6] Postel's citation for Clanton's book is a footnote, which leads us to this:
 
