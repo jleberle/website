@@ -11,4 +11,4 @@ steps:
   - name: link-check
     image: lycheeverse/lychee:latest
     commands:
-      - lychee -v --no-progress --config lychee.toml public/
+      - lychee --no-progress --config lychee.toml public/
