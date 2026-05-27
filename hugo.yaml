@@ -135,7 +135,7 @@ menu:
    main:
    - identifier: Micro.blog
      name: Updates
-     url: https://updates.jaredeberle.org/
+     url: https://eberle.blog/
      weight: 10
    - identifier: OSU
      name: OSU Directory
@@ -157,3 +157,4 @@ privacy:
   youTube:
     disable: false
     privacyEnhanced: true
+copyright: CC BY-NC-SA 4.0
