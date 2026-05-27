@@ -7,6 +7,9 @@ max_retries = 2
 
 user_agent = "lychee/jaredeberle.org link checker"
 
+base = "https://jaredeberle.org"
+
 exclude = [
     "^https?://(localhost|127\\.0\\.0\\.1|\\[::1\\])",
+    "^https?://(www\\.)?jaredeberle\\.org",
 ]
