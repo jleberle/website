@@ -26,7 +26,6 @@ Abourezk’s statement caught my attention because in my thesis research I never
 
 Now I don’t particularly care to pick a fight with a former US Senator, but Abourezk’s statements are so drastically different from the news accounts and statements by his fellow senator during the period that it’s worth highlighting. There is one part of Abourezk’s new commentary that is true, the occupation of Wounded Knee lasted as long as it did because of political reasons. The skillful use of the media by Means and the other occupiers brought attention to the conflict and forced the government to take a more restrained approach than they might have otherwise taken if the occupation wasn’t on the nightly news each evening.
 
----
 [^1]: “Indians at Wounded Knee Free 11 Held for 2 Days, *New York Times*, March 2, 1973.
 [^2]: “Wounded Knee Is a Tiny Armed Camp,” *New York Times*, March 5, 1973.
 [^3]: Paul J. Scheips, *The Role of Federal Military Forces in Domestic Disorders, 1945-1992* (Washington, DC: Center of Military History, US Army, 2005), 437; “Army Tested Secret Civil Disturbance Plan at Wounded Knee,” *New York Times*, December 2, 1975.
