@@ -38,10 +38,15 @@
     <link>{{ .Permalink }}</link>
     <description>Recent content {{ if ne .Title site.Title }}{{ with .Title }}in {{ . }} {{ end }}{{ end }}on {{ site.Title }}</description>
     {{- with site.Params.images }}
+    {{- $img := index . 0 }}
+    {{- $url := $img | absURL }}
+    {{- with resources.Get $img }}
+      {{- $url = (. | resources.Fingerprint).Permalink }}
+    {{- end }}
     <image>
       <title>{{ site.Title }}</title>
-      <url>{{ index . 0 | absURL }}</url>
-      <link>{{ index . 0 | absURL }}</link>
+      <url>{{ $url }}</url>
+      <link>{{ $url }}</link>
     </image>
     {{- end }}
     <generator>Hugo</generator>

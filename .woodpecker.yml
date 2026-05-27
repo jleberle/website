@@ -11,4 +11,4 @@ steps:
   - name: link-check
     image: lycheeverse/lychee:latest
     commands:
-      - lychee --no-progress --config lychee.toml public/
+      - lychee --no-progress --root-dir "$CI_WORKSPACE/public" --config lychee.toml public/
