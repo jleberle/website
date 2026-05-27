@@ -31,4 +31,4 @@ Now I don’t particularly care to pick a fight with a former US Senator, but Ab
 [^2]: “Wounded Knee Is a Tiny Armed Camp,” *New York Times*, March 5, 1973.
 [^3]: Paul J. Scheips, *The Role of Federal Military Forces in Domestic Disorders, 1945-1992* (Washington, DC: Center of Military History, US Army, 2005), 437; “Army Tested Secret Civil Disturbance Plan at Wounded Knee,” *New York Times*, December 2, 1975.
 [^4]: *New York Times*, March 2, 1973.
-[^5]: [ref] Archival footage of the two entering the camp can be seen in PBS’ American Experience documentary *[We Shall Remain: Wounded Knee](https://www.pbs.org/wgbh/americanexperience/films/weshallremain/#part05)* starting around the 17:35 mark.
+[^5]: Archival footage of the two entering the camp can be seen in PBS’ American Experience documentary *[We Shall Remain: Wounded Knee](https://www.pbs.org/wgbh/americanexperience/films/weshallremain/#part05)* starting around the 17:35 mark.
