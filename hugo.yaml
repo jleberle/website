@@ -153,3 +153,7 @@ markup:
 
 ignoreFiles:
   - .obsidian/
+privacy:
+  youTube:
+    disable: false
+    privacyEnhanced: true
