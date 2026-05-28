@@ -143,6 +143,11 @@ menu:
      weight: 20
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 markup:
+  goldmark:
+    renderer:
+      # Allow raw HTML in Markdown (e.g. the generated CV's <div class="hang">).
+      # Safe here: this is a single-author site with no third-party content.
+      unsafe: true
   highlight:
     noClasses: false
     # anchorLineNos: true
