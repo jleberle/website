@@ -21,8 +21,7 @@ params:
   title: Jared L. Eberle
   description: "Historian of late 20th Century Indigenous Activism"
   keywords: [CV, Indigenous History, Oklahoma]
-  author: Me
-  # author: ["Me", "You"] # multiple authors
+  author: Jared L. Eberle
   images: ["/images/card.avif"]
   DateFormat: "January 2, 2006"
   defaultTheme: auto # dark, light
@@ -59,7 +58,7 @@ params:
 
   label:
     text: "Home"
-    icon: /icons/apple-touch-icon.png
+    icon: icons/apple-touch-icon.png
     iconHeight: 35
 
   # profile-mode
@@ -73,7 +72,7 @@ params:
     imageTitle: my image
     buttons:
       - name: CV
-        url: cv.pdf
+        url: /cv/
       - name: Courses
         url: courses
       - name: Student Hours
@@ -149,7 +148,7 @@ markup:
       # Safe here: this is a single-author site with no third-party content.
       unsafe: true
   highlight:
-    noClasses: false
+    noClasses: true
     # anchorLineNos: true
     # codeFences: true
     # guessSyntax: true
