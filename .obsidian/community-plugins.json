@@ -1,5 +1,10 @@
 [
   "obsidian-git",
   "templater-obsidian",
-  "obsidian-linter"
+  "obsidian-linter",
+  "obsidian-footnotes",
+  "obsidian-hider",
+  "obsidian-minimal-settings",
+  "obsidian-style-settings",
+  "obsidian-tidy-footnotes"
 ]

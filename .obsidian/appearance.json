@@ -1,1 +1,7 @@
-{}
+{
+  "cssTheme": "Minimal",
+  "interfaceFontFamily": "iA Writer Quattro V",
+  "textFontFamily": "iA Writer Quattro V",
+  "monospaceFontFamily": "Geist Mono",
+  "translucency": true
+}
