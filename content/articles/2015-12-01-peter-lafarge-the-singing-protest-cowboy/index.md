@@ -8,7 +8,7 @@ tags:
 - Indigenous
 title: Peter LaFarge, The Singing Protest Cowboy
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "Peter LaFarge"
   hiddenInList: false
   hiddenInSingle: false

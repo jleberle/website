@@ -9,7 +9,7 @@ tags:
 title: 'From the Archives: The Vanishing Americans'
 summary: 'Screenshot of Article detailing Native Rock Band'
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "Front cover of Digital Humanities"
   hiddenInList: false
   hiddenInSingle: false

@@ -8,7 +8,7 @@ tags:
 title: "Bob Engelhart's Golden Hill Paugussett Cartoon"
 summary: 'A look at a 1990s anti-Pequot cartoon'
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "Front cover of Digital Humanities"
   hiddenInList: false
   hiddenInSingle: false

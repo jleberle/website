@@ -9,7 +9,7 @@ title: "'Saturday Night in a Saloon' Or John Ratzenberger's Opening
   Photos From Cheers"
 summary: "Finding Cheers' opening photos in the archives"
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "Still of Cheers Opening with John Ratzenberger's credit"
   hiddenInList: false
   hiddenInSingle: false
@@ -20,7 +20,7 @@ slug: /saturday-night-in-a-saloon-or-john-ratzenbergers-opening-photos-from-chee
 In watching the final installment of Ken Burns’s “Prohibition” documentary I noticed a picture that was notable solely because I watch too many old reruns of "*Cheers*":
 
 {{< figure 
-src="saturday-night.webp"
+src="saturday-night.avif"
 align="center"
 alt="People drinking in a bar"
 link=https://www.loc.gov/pictures/item/2017780580/

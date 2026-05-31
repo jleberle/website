@@ -9,7 +9,7 @@ draft: false
 title: "The Ghosts of Lousiana's Johnson Gosset Plantation"
 summary: 'Story of a haunted Louisiana Plantation'
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "Screenshot of New York Times article on the Johnson Gosset Plantation"
   hiddenInList: false
   hiddenInSingle: false

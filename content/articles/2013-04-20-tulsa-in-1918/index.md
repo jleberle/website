@@ -6,7 +6,7 @@ tags:
 - Tulsa
 title: 'Tulsa in 1918'
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "1918 Aerial Map of Tulsa, Oklahoma"
   hiddenInList: false
   hiddenInSingle: false

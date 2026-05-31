@@ -9,7 +9,7 @@ tags:
 title: 'Blurring the Lines: Indians, Cowboys and Ranching in the Modern West'
 summary: 'Review of *"When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West*'
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "Front cover of When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West"
   hiddenInList: true
   hiddenInSingle: false

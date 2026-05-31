@@ -8,7 +8,7 @@ date: 2026-05-07
 title: 'The Apocalypse at Ruby Ridge'
 summary: 'Review of *End of Days: Ruby Ridge, the Apocalypse, and the Unmaking of America*'
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "Front cover of End of Days: Ruby Ridge, the Apocalypse, and the Unmaking of America"
   hiddenInList: true
   hiddenInSingle: false

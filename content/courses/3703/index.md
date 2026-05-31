@@ -4,7 +4,7 @@ draft: false
 title: 'Oklahoma History'
 summary: 'The history of the state of Oklahoma'
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "Cushing Oil Fields, near Tulsa, Okla."
   caption: "Cushing Oil Fields, near Tulsa, Okla. Credit: Rijksmuseum"
   hiddenInList: false

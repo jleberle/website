@@ -7,7 +7,7 @@ tags:
 title: "Thanksgiving 1970"
 summary: "The American Indian Movement's Thanksgiving anti-commemoration in 1970"
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "Russell Means in front of the statue of Massasoit"
   hiddenInList: false
   hiddenInSingle: false

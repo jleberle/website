@@ -11,7 +11,7 @@ date: 2015-07-21
 title: 'The Birth of Red Power'
 summary: 'Review of *"Clyde Warrior: Tradition, Community, and Red Power*'
 cover:
-  image: "cover.webp"
+  image: "cover.avif"
   alt: "Front cover of Clyde Warrior: Tradition, Community, and Red Power"
   hiddenInList: true
   hiddenInSingle: false

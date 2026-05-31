@@ -23,7 +23,7 @@ params:
   keywords: [CV, Indigenous History, Oklahoma]
   author: Me
   # author: ["Me", "You"] # multiple authors
-  images: ["/images/card.webp"]
+  images: ["/images/card.avif"]
   DateFormat: "January 2, 2006"
   defaultTheme: auto # dark, light
   disableThemeToggle: false
@@ -67,7 +67,7 @@ params:
     enabled: true # needs to be explicitly set
     title: Jared L. Eberle
     subtitle: "Historian of late 20th century Indigenous Activism"
-    imageUrl: "/images/profile.webp"
+    imageUrl: "/images/profile.avif"
     imageWidth: 120
     imageHeight: 120
     imageTitle: my image
