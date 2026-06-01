@@ -69,7 +69,7 @@ params:
     imageUrl: "/images/profile.avif"
     imageWidth: 120
     imageHeight: 120
-    imageTitle: my image
+    imageTitle: Profile picture of Jared Eberle
     buttons:
       - name: CV
         url: /cv/
