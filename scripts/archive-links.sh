@@ -73,10 +73,11 @@ TOTAL_ARCHIVED=0
 TOTAL_MISSING=0
 
 for file in "${FILES[@]}"; do
-  # Extract markdown links: [text](url) — skip internal, mailto, and already-archived links
+  # Extract all https?:// URLs — markdown links, bare footnote URLs, and inline prose URLs
+  # Strip trailing punctuation that isn't part of the URL, skip already-archived links
   mapfile -t urls < <(
-    grep -oE '\(https?://[^)]+\)' "$file" 2>/dev/null \
-    | tr -d '()' \
+    grep -oE 'https?://[^[:space:])<>"]+' "$file" 2>/dev/null \
+    | sed 's/[.,;:!?)]*$//' \
     | grep -v 'web\.archive\.org' \
     | sort -u \
     || true
@@ -108,7 +109,7 @@ for file in "${FILES[@]}"; do
       # Escape URL for use in sed
       escaped_url=$(printf '%s' "$url" | sed 's/[[\.*^$()+?{|]/\\&/g')
       escaped_archive=$(printf '%s' "$archive" | sed 's/[[\.*^$()+?{|]/\\&/g; s/&/\\\&/g')
-      sed -i '' "s|($url)|($archive)|g" "$file"
+      sed -i '' "s|$escaped_url|$escaped_archive|g" "$file"
     fi
   done
 done
