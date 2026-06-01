@@ -28,7 +28,25 @@ if [[ ${#FILES[@]} -eq 0 ]]; then
   exit 1
 fi
 
+# Icons that must remain PNG for browser/OS compatibility
+PROTECTED=(
+  "assets/icons/apple-touch-icon.png"
+  "static/icons/apple-touch-icon.png"
+  "static/icons/favicon-16x16.png"
+  "static/icons/favicon-32x32.png"
+  "static/favicon.ico"
+)
+
 for src in "${FILES[@]}"; do
+  # Normalise path for comparison
+  norm_src="${src#./}"
+  for protected in "${PROTECTED[@]}"; do
+    if [[ "$norm_src" == "$protected" || "$norm_src" == *"/$protected" ]]; then
+      echo "  skip (protected icon, must stay PNG): $src"
+      continue 2
+    fi
+  done
+
   ext="${src##*.}"
   case "${ext,,}" in
     jpg|jpeg|png|webp) ;;
