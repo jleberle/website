@@ -1,7 +1,7 @@
 ---
 categories:
 - History
-date: "2016-10-19T12:15:00Z"
+date: 2016-10-19
 tags:
 - Archives
 - Indigenous

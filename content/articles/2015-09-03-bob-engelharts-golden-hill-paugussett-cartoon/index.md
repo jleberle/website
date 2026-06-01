@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History
-date: "2015-09-03T09:32:00Z"
+date: 2015-09-03
 tags:
 - Indigenous
 title: "Bob Engelhart's Golden Hill Paugussett Cartoon"

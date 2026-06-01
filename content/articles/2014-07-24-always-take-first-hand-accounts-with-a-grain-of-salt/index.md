@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History
-date: "2014-07-24T21:16:00Z"
+date: 2014-07-24
 tags:
 - Activism
 title: Always Take First Hand Accounts With a Grain of Salt

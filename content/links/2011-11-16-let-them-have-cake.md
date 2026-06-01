@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History
-date: "2011-11-16T14:15:00Z"
+date: 2011-11-16
 tags:
 - Theodore Roosevelt
 title: Let Them Have Cake

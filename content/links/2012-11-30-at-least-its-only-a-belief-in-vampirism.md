@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History
-date: "2012-11-30T08:52:00Z"
+date: 2012-11-30
 tags:
 - Vampires
 title: "At Least It's Only a Belief in Vampirism"

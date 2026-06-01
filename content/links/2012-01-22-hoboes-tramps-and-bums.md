@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History
-date: "2012-01-22T14:14:00Z"
+date: 2012-01-22
 title: Hoboes, Tramps, and Bums
 slug: /hoboes-tramps-and-bums/
 external_url: https://books.google.com/books/about/Hoboes.html?id=Yt24EKAynCIC

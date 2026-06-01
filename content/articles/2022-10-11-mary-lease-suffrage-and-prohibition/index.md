@@ -1,6 +1,6 @@
 ---
 title: Mary Lease, Suffrage, and Prohibition
-date: 2022-10-11T17:18:17-05:00
+date: 2022-10-11
 categories:
   - History
 tags:

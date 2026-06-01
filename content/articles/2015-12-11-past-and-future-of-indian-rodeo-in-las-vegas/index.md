@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - Sports
-date: "2015-12-11T16:06:00Z"
+date: 2015-12-11
 tags:
 - Indigenous
 - Rodeo

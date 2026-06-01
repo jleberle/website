@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History
-date: "2015-12-01T15:21:00Z"
+date: 2015-12-01
 tags:
 - Archives
 - Indigenous

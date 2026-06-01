@@ -155,6 +155,10 @@ markup:
     # lineNos: true
     # style: monokai
 
+taxonomies:
+  category: categories
+  tag: tags
+
 ignoreFiles:
   - .obsidian/
   - _templates/

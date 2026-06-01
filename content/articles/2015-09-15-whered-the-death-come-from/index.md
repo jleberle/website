@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History
-date: "2015-09-15T09:36:00Z"
+date: 2015-09-15
 tags:
 - Indigenous
 title: "Where'd the Death Come From?"

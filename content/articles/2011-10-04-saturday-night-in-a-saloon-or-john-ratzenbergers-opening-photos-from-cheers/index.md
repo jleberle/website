@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History
-date: "2011-10-04T15:14:00Z"
+date: 2011-10-04
 tags:
 - Photography
 title: "'Saturday Night in a Saloon' Or John Ratzenberger's Opening

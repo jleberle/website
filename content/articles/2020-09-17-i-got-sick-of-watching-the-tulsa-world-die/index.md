@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - Local
-date: "2020-09-17T15:17:00Z"
+date: 2020-09-17
 tags:
 - Tulsa
 title: I Got Sick of Watching the Tulsa World Die

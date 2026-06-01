@@ -1,7 +1,7 @@
 ---
 categories:
 - History
-date: "2011-02-14T15:15:00Z"
+date: 2011-02-14
 tags:
 - Archives
 title: "Early '70s Airport Security"

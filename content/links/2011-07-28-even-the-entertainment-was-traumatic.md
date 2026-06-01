@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History	
-date: "2011-07-28T14:12:00Z"
+date: 2011-07-28
 tags:
 - Oklahoma
 title: Even the Entertainment Was Traumatic

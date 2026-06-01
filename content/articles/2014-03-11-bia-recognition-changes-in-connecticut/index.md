@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History
-date: "2014-03-11T15:31:00Z"
+date: 2014-03-11
 tags:
 - Connecticut
 - Indigenous

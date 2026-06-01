@@ -2,7 +2,7 @@
 author: Jared
 categories:
 - History
-date: "2012-10-28T08:22:26Z"
+date: 2012-10-28
 tags:
 - Activism
 title: "On Abourerzk's AK-47s at Wounded Knee"

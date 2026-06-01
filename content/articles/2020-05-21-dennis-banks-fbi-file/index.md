@@ -1,7 +1,7 @@
 ---
 categories:
 - History
-date: "2020-05-21T13:17:00Z"
+date: 2020-05-21
 tags:
 - Activism
 - Archives

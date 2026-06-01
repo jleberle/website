@@ -1,7 +1,7 @@
 ---
 categories:
 - History
-date: "2013-04-20T11:34:00Z"
+date: 2013-04-20
 tags:
 - Tulsa
 title: 'Tulsa in 1918'

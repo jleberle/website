@@ -1,7 +1,7 @@
 ---
 categories:
 - History
-date: "2011-11-23T15:11:00Z"
+date: 2011-11-23
 tags:
 - Indigenous
 title: "Thanksgiving 1970"

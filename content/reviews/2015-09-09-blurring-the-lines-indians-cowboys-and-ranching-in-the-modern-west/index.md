@@ -3,7 +3,7 @@ author: Jared
 categories:
 - Indigenous
 - American West
-date: "2015-09-09T09:21:00Z"
+date: 2015-09-09
 tags:
 - Reviews
 title: 'Blurring the Lines: Indians, Cowboys and Ranching in the Modern West'
