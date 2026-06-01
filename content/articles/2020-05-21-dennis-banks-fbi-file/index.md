@@ -14,11 +14,11 @@ Dennis Banks passed away on October 29, 2017. On November 1, 2017 I filed a Free
 
 Today, 932 days later, the FBI responded to the FOIA request with 210 pages of information. I can't say there's anything drastically new in the material, but I've uploaded them here for future reference.
 
-- [File 1 - Custer Protest - Deals with the FBI investigation into the protest at the Custer County Court on February 6th, 1973.](/banks-fbi-1.pdf)
+- [File 1 - Custer Protest - Deals with the FBI investigation into the protest at the Custer County Court on February 6th, 1973.](banks-fbi-1.pdf)
 
-- [File 2 - Deals with a continuing FBI extremist investigation into Banks in 1976 and 1977 while he was residing in California and teaching at DQ University.](/banks-fbi-2.pdf)
+- [File 2 - Deals with a continuing FBI extremist investigation into Banks in 1976 and 1977 while he was residing in California and teaching at DQ University.](banks-fbi-2.pdf)
 
-- [File 3 - 14 pages on the closing of the aforementioned investigation following California's state supreme court ruling Banks could not be extradited from the state to face charges in South Dakota related to the 1973 protest in Custer.](/banks-fbi-3.pdf)
+- [File 3 - 14 pages on the closing of the aforementioned investigation following California's state supreme court ruling Banks could not be extradited from the state to face charges in South Dakota related to the 1973 protest in Custer.](banks-fbi-3.pdf)
 
 The one thing I would note in the files is page 108 of the Custer files has a statement from a BIA employee who was also listed as involved in an "unofficial self-protective unit," more likely than not a reference to Dick Wilson's [Guardians of the Oglala Nation](https://en.wikipedia.org/wiki/Guardians_of_the_Oglala_Nation). This is worthwhile for two points: one the connections between Wilson's GOONs and the BIA; and it adds further backing to Peter Matthiesson's discussion from *In The Spirit of Crazy Horse** of where Wilson got the funding for the GOONs from, as the person interviewed primarily worked for the highway department of the BIA.
 

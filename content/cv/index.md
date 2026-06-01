@@ -117,12 +117,14 @@ October 15, 2018.
 
 ## Courses Taught
 
+### In-Person
+
 - History 1103: Survey of American History
 - History 1493: United States History Since 1865
 - History 2023: History of the Present
 - History 3980: U.S. History in 15 Songs
 
-## Online
+### Online
 
 - History 1103: Survey of American History
 - History 1483: United States History to 1865
