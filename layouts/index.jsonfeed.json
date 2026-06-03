@@ -17,7 +17,10 @@
     {{- if $i }},{{ end }}
     {
       "id": {{ $page.Permalink | jsonify }},
-      "url": {{ $page.Permalink | jsonify }},
+      "url": {{ (or $page.Params.external_url $page.Permalink) | jsonify }},
+      {{- with $page.Params.external_url }}
+      "external_url": {{ $page.Permalink | jsonify }},
+      {{- end }}
       "title": {{ $page.Title | jsonify }},
       "summary": {{ $page.Summary | plainify | jsonify }},
       "content_html": {{ $page.Content | jsonify }},

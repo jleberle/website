@@ -18,19 +18,28 @@
 /images/*.jpg
     Cache-Control: public, max-age=31536000, immutable
 
-/articles/*.avif
+/articles/*/*.avif
     Cache-Control: public, max-age=31536000, immutable
 
-/reviews/*.avif
+/articles/*/*.jpg
     Cache-Control: public, max-age=31536000, immutable
 
-/courses/*.avif
+/reviews/*/*.avif
+    Cache-Control: public, max-age=31536000, immutable
+
+/reviews/*/*.jpg
+    Cache-Control: public, max-age=31536000, immutable
+
+/courses/*/*.avif
+    Cache-Control: public, max-age=31536000, immutable
+
+/courses/*/*.jpg
     Cache-Control: public, max-age=31536000, immutable
 
 /location/*.avif
     Cache-Control: public, max-age=31536000, immutable
 
-/articles/*.pdf
+/articles/*/*.pdf
     Cache-Control: public, max-age=31536000, stale-while-revalidate=2592000
 
 /cv/*.pdf
