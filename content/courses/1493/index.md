@@ -13,7 +13,8 @@ categories:
 tags:
 - American History
 - Reconstruction
-slug: /1493/
+slug: 1493
+description: ""
 ---
 
 *Syllabus for Spring 2025*

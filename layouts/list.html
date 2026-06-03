@@ -54,8 +54,13 @@
 {{- if .IsHome }}
 
 {{/* Two-column section grid */}}
+{{- $dateFormat := site.Params.DateFormat | default ":date_long" }}
+{{- $articlesPage := site.GetPage "articles" }}
+{{- $quotesPage    := site.GetPage "quotes" }}
+{{- $reviewsPage  := site.GetPage "reviews" }}
+{{- $coursesPage  := site.GetPage "courses" }}
 {{- $articles := where site.RegularPages "Section" "articles" | first 5 }}
-{{- $links    := where site.RegularPages "Section" "links"    | first 5 }}
+{{- $quotes    := where site.RegularPages "Section" "quotes"    | first 5 }}
 {{- $reviews  := where site.RegularPages "Section" "reviews"  | first 5 }}
 {{- $courses  := where site.RegularPages "Section" "courses"  | first 5 }}
 
@@ -63,52 +68,52 @@
     <div class="home-column">
         {{- if $articles }}
         <section class="home-section">
-            <h2 class="home-section-title"><a href="/articles/">Articles</a></h2>
+            <h2 class="home-section-title"><a href="{{ $articlesPage.Permalink }}">{{ $articlesPage.Title }}</a></h2>
             {{- range $articles }}
             <article class="home-list-entry">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</time>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
-            <a class="home-section-all" href="/articles/">All articles &rarr;</a>
+            <a class="home-section-all" href="{{ $articlesPage.Permalink }}">All {{ $articlesPage.Title | lower }} &rarr;</a>
         </section>
         {{- end }}
-        {{- if $links }}
+        {{- if $quotes }}
         <section class="home-section">
-            <h2 class="home-section-title"><a href="/links/">Quotes</a></h2>
-            {{- range $links }}
+            <h2 class="home-section-title"><a href="{{ $quotesPage.Permalink }}">Quotes</a></h2>
+            {{- range $quotes }}
             <article class="home-list-entry">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</time>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
-            <a class="home-section-all" href="/links/">All quotes &rarr;</a>
+            <a class="home-section-all" href="{{ $quotesPage.Permalink }}">All quotes &rarr;</a>
         </section>
         {{- end }}
     </div>
     <div class="home-column">
         {{- if $reviews }}
         <section class="home-section">
-            <h2 class="home-section-title"><a href="/reviews/">Reviews</a></h2>
+            <h2 class="home-section-title"><a href="{{ $reviewsPage.Permalink }}">{{ $reviewsPage.Title }}</a></h2>
             {{- range $reviews }}
             <article class="home-list-entry">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</time>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
-            <a class="home-section-all" href="/reviews/">All reviews &rarr;</a>
+            <a class="home-section-all" href="{{ $reviewsPage.Permalink }}">All {{ $reviewsPage.Title | lower }} &rarr;</a>
         </section>
         {{- end }}
         {{- if $courses }}
         <section class="home-section">
-            <h2 class="home-section-title"><a href="/courses/">Courses</a></h2>
+            <h2 class="home-section-title"><a href="{{ $coursesPage.Permalink }}">{{ $coursesPage.Title }}</a></h2>
             {{- range $courses }}
             <article class="home-list-entry">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</time>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
-            <a class="home-section-all" href="/courses/">All courses &rarr;</a>
+            <a class="home-section-all" href="{{ $coursesPage.Permalink }}">All {{ $coursesPage.Title | lower }} &rarr;</a>
         </section>
         {{- end }}
     </div>

@@ -1,13 +1,16 @@
 baseURL: https://jaredeberle.org/
-languageCode: en-us
+locale: en-us
 title: Jared L. Eberle
 theme: ["PaperMod"]
 
-enableRobotsTXT: false
+enableRobotsTXT: true
 buildDrafts: false
 buildFuture: false
 buildExpired: false
 enableGitInfo: true
+
+pagination:
+  pagerSize: 10
 
 minify:
   disableXML: true
@@ -18,7 +21,7 @@ caches:
     dir: :cacheDir/images
     
 params:
-  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  env: production # enables opengraph, twitter-cards, and schema.org structured data
   title: Jared L. Eberle
   description: "Historian of late 20th Century Indigenous Activism"
   keywords: [CV, Indigenous History, Oklahoma]
@@ -46,7 +49,7 @@ params:
   mainSections:
     - articles
     - reviews
-    - links
+    - quotes
 
   assets:
     # disableHLJS: true # to disable highlight.js
@@ -61,25 +64,6 @@ params:
     text: "Home"
     icon: icons/apple-touch-icon.png
     iconHeight: 35
-
-  # profile-mode
-  profileMode:
-    enabled: false # needs to be explicitly set
-    title: Jared L. Eberle
-    subtitle: "Historian of late 20th century Indigenous Activism"
-    imageUrl: "/images/profile.avif"
-    imageWidth: 120
-    imageHeight: 120
-    imageTitle: Profile picture of Jared Eberle
-    buttons:
-      - name: CV
-        url: /cv/
-      - name: Courses
-        url: courses
-      - name: Student Hours
-        url: studenthours
-      - name: Location
-        url: location  
 
   # home-info mode
   homeInfoParams:
@@ -109,17 +93,19 @@ params:
   social:
     fediverse_creator: "@jared@eberle.blog"
 
-  analytics:
-    google:
-      SiteVerificationTag: "JcoHhnei3xZn4DBNhJlLBwk02GHgz_NoneqvSkxm7wQ"
-    bing:
-      SiteVerificationTag: "EE247C39ABE134768E02326A1F16CDEA"
-
 
   cover:
     hidden: true # hide everywhere but not in structured data
     hiddenInList: true # hide on list pages and home
     hiddenInSingle: true # hide on single page
+
+  schema:
+    publisherType: Person
+    sameAs:
+      - "https://orcid.org/0000-0002-0867-6561"
+      - "https://experts.okstate.edu/jared.eberle"
+      - "https://bsky.app/profile/jaredeberle.org"
+      - "https://eberle.blog"
 
   editPost:
     URL: "https://codeberg.org/jleberle/website/src/branch/main/content"
@@ -176,10 +162,6 @@ menu:
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 markup:
   goldmark:
-    renderer:
-      # Allow raw HTML in Markdown (e.g. the generated CV's <div class="hang">).
-      # Safe here: this is a single-author site with no third-party content.
-      unsafe: true
   highlight:
     noClasses: true
     # anchorLineNos: true

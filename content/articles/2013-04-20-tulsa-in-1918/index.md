@@ -14,7 +14,9 @@ cover:
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: /tulsa-in-1918/
+slug: tulsa-in-1918
+description: ""
+summary: ""
 ---
 
 The hand-drawn map (not done to scale) comes from the Library of Congress's [panoramic maps collection](https://www.loc.gov/collections/panoramic-maps). The full version can be [downloaded or viewed here](https://www.loc.gov/item/87692752/). Here's [some other historical maps from Oklahoma](https://www.loc.gov/collections/general-maps/?fa=location:oklahoma).

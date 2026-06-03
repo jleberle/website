@@ -7,7 +7,9 @@ tags:
 - American Indian Movement
 - FOIA
 title: "Dennis Banks' FBI File"
-slug: /dennis-banks-fbi-file/
+slug: dennis-banks-fbi-file
+description: ""
+summary: ""
 ---
 
 Dennis Banks passed away on October 29, 2017. On November 1, 2017 I filed a Freedom of Information Act request with the FBI for any files related to Banks. Most of the FBI files related to the American Indian Movement have been public for a number of years but I was curious to see if the FBI would release anything new Banks following his death. After I filed the request the only thing I heard was a notice saying my request was overly broad and I could reduce the scope to enable faster processing.

@@ -4,6 +4,7 @@ date: 2024-05-08
 hidemeta: true
 description: "Dr. Jared Eberle's office and address at Oklahoma State University"
 
+summary: ""
 ---
 
 #### Office Mailing address

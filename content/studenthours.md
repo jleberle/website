@@ -3,6 +3,7 @@ title: "Student Hours"
 date: 2025-04-17
 hidemeta: true
 description: "Schedule and location for Professor Eberle's student hours."
+summary: ""
 ---
 
 #### About

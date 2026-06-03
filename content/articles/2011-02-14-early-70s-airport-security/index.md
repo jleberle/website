@@ -7,7 +7,9 @@ tags:
 - Airport Security
 - Civil Liberties
 title: "Early '70s Airport Security"
-slug: /early-70s-airport-security/
+slug: early-70s-airport-security
+description: ""
+summary: ""
 ---
 
 While conducting some research on Leon Russell I managed to come across a gem of a *Rolling Stone* article from February of 1972. In response to the destruction of four airliners in 1970 by Palestinian guerrillas, Richard Nixon implemented an anti-hijacking program which *RS* panned as ineffective and setting “a dangerous precedent for future violations of two basic constitutional freedoms–freedom to travel and freedom from unreasonable search.”

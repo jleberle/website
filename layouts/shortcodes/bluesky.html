@@ -1,0 +1,5 @@
+{{- $url := .Get 0 | strings.TrimRight "/" -}}
+<blockquote class="bluesky-embed" data-bluesky-uri="{{ $url }}" data-bluesky-cid="">
+  <a href="{{ $url }}">View on Bluesky</a>
+</blockquote>
+<script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>

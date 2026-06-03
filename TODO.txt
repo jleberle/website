@@ -1,0 +1,52 @@
+Metadata TODO
+=============
+Files needing description and/or summary filled in.
+- description: used for SEO meta tag, OpenGraph, and schema.org
+- summary: used for post excerpts on list pages
+
+NEEDS BOTH description AND summary
+-----------------------------------
+about.md
+articles/2011-02-14-early-70s-airport-security/index.md
+articles/2012-10-28-on-abourerzks-ak-47s-at-wounded-knee/index.md
+articles/2013-04-20-tulsa-in-1918/index.md
+articles/2014-03-11-bia-recognition-changes-in-connecticut/index.md
+articles/2014-07-24-always-take-first-hand-accounts-with-a-grain-of-salt/index.md
+articles/2015-09-15-whered-the-death-come-from/index.md
+articles/2015-12-01-peter-lafarge-the-singing-protest-cowboy/index.md
+articles/2015-12-11-past-and-future-of-indian-rodeo-in-las-vegas/index.md
+articles/2016-10-19-from-the-archives-indian-prison-rodeo/index.md
+articles/2020-05-21-dennis-banks-fbi-file/index.md
+articles/2020-09-17-i-got-sick-of-watching-the-tulsa-world-die/index.md
+articles/2021-11-23-the-unified-theory-of-bruce-springsteen-the-character/index.md
+articles/2022-10-11-mary-lease-suffrage-and-prohibition/index.md
+courses/3793/index.md
+cv/index.md
+quotes/2011-07-28-even-the-entertainment-was-traumatic.md
+quotes/2011-11-16-let-them-have-cake.md
+quotes/2012-01-22-hoboes-tramps-and-bums.md
+quotes/2012-11-30-at-least-its-only-a-belief-in-vampirism.md
+
+NEEDS description ONLY (summary already set)
+---------------------------------------------
+archives.md
+articles/2011-10-04-saturday-night-in-a-saloon-or-john-ratzenbergers-opening-photos-from-cheers/index.md
+articles/2011-11-23-thanksgiving-1970/index.md
+articles/2013-02-02-the-ghosts-of-louisianas-johnson-gosset-plantation/index.md
+articles/2015-09-03-bob-engelharts-golden-hill-paugussett-cartoon/index.md
+articles/2017-08-03-from-the-archives-the-vanishing-americans/index.md
+courses/1103/index.md
+courses/1493/index.md
+courses/3703/index.md
+reviews/2015-07-21-warrior-mckenzie-jones/index.md
+reviews/2015-09-09-blurring-the-lines-indians-cowboys-and-ranching-in-the-modern-west/index.md
+reviews/2015-11-22-gardner-musto-digital-humanities/index.md
+reviews/2017-07-17-weigel-show-that-never-ends/index.md
+reviews/2026-05-07-jennings-ruby-ridge/index.md
+reviews/2026-05-12-zengerle-tucker-carlson/index.md
+
+NEEDS summary ONLY (description already set)
+---------------------------------------------
+articles/2026-06-03-the-summer-revisions-part-i-claude/index.md
+location/index.md
+studenthours.md

@@ -17,7 +17,8 @@ cover:
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: /weigel-show-that-never-ends/
+slug: weigel-show-that-never-ends
+description: ""
 ---
 
 It's appropriate that political reporter Dave Weigel has released *The Show That Never Ends: The Rise and Downfall of Prog Rock* in 2017. Just after we've finished one of the most divisive elections (and the Democratic party continues to hold a primary fight for some reason) we get a survey of the most divisive subgenre of rock music. Critiques of prog rock vary from complete rejection of music deemed over-the-top, pompous, and unlistenable to views that the genre marked the pinnacle of rock music as a true art form. Yet the history of prog isn't as clear cut and Weigel attempts to briskly explain why we got the music and what ultimately killed most of it by the end of the 1970s.

@@ -15,7 +15,8 @@ categories:
 tags:
 - American History
 - Survey Course
-slug: /1103/
+slug: 1103
+description: ""
 ---
 
 *This course was offered as an online course in the Spring 2025 semester*

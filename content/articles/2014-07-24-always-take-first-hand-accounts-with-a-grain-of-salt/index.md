@@ -8,7 +8,9 @@ tags:
 - American Indian Movement
 - Historiography
 title: Always Take First Hand Accounts With a Grain of Salt
-slug: /always-take-first-hand-accounts-with-a-grain-of-salt/
+slug: always-take-first-hand-accounts-with-a-grain-of-salt
+description: ""
+summary: ""
 ---
 
 One of the many books I picked up today at the library was *We Are Still Here: A Photographic History of The American Indian Movement*, a good looking large glossy text produced by the Minnesota Historical Society Press which included photographs by Dick Bancroft and text by Laura Waterman Wittstock. Both Bancroft and Wittstock had interactions with AIM during the height of the Red Power period; Bancroft as a sympathetic photographer and Wittstock as a journalist. Yet in both of their introductions to the text, they argue that the death of Raymond Yellow Thunder was the major contributing factor that lead to the occupation of Wounded Knee. Here's how Bancroft describes it:

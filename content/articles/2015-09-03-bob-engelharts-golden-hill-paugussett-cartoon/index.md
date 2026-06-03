@@ -16,7 +16,8 @@ cover:
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: /bob-engelharts-golden-hill-paugussett-cartoon/
+slug: bob-engelharts-golden-hill-paugussett-cartoon
+description: ""
 ---
 In her book, *Cash, Color, and Colonialism: The Politics of Tribal Acknowledgement*, Renee Cramer made a passing reference to a cartoon in the *Hartford Courant* on the controversy over the potential federal acknowledgement of the Golden Hill Paugussetts in Connecticut. The small tribe, mostly located in the southwest part of the state, had a large percentage of members with African American heritage, which hindered their application for recognition because they didn't "look Indian." The acknowledgement proceedings had been (and remain) contentious because opponents viewed the process as an opportunist move to exploit federal acknowledgement to build a casino. The Golden Hill Paugussetts were ultimately denied recognition but not before Bob Englehart, the longtime political cartoonist for the *Hartford Courant*, produced a cartoon that Cramer described as a "racist cartoon…depicting the Golden Hills as a tribe of six African American opportunists with names like 'Chief So Sioux Me' and 'Nike Hide Tanner'."[^1]
 

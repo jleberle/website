@@ -8,7 +8,9 @@ tags:
 - Wikipedia
 - Wounded Knee
 title: "Where'd the Death Come From?"
-slug: /whered-the-death-come-from/
+slug: whered-the-death-come-from
+description: ""
+summary: ""
 ---
 
 According to Alexa, the English language version of Wikipedia is one of the most visited sites on the Internet and the only vaguely academic site besides the omnipotent Google on the list. Yet even though Wikipedia and its five million articles have become a ubiquitous part of how we figure out the answer to life’s vexing questions, most people know little about how the content actually gets on Wikipedia. While most theoretically know anyone can edit Wikipedia and contribute additional information or fix errors, few people outside of Wikipedia’s inner circle of active volunteer editors regularly contribute to the site and understand the intricacies of the process. In part this may be the result of technological barriers, but as Tom Simonite noted in an MIT Technology Review article on the “decline of Wikipedia,” [Wikipedia’s internal dynamics also play a critical role](https://www.technologyreview.com/2013/10/22/175674/the-decline-of-wikipedia/):

@@ -16,7 +16,8 @@ cover:
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: /from-the-archives-the-vanishing-americans/
+slug: from-the-archives-the-vanishing-americans
+description: ""
 ---
 
 Here's a little article I pulled from a digital copy of *The Indian**, May 28, 1970

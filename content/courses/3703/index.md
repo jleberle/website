@@ -15,7 +15,8 @@ categories:
 tags:
 - Oklahoma
 - Oklahoma History
-slug: /3703/
+slug: 3703
+description: ""
 ---
 
 *This course was offered in-person during the Spring 2025 semester*

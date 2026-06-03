@@ -13,7 +13,9 @@ categories:
 - Indigenous History
 tags:
 - Native American History
-slug: /3793/
+slug: 3793
+description: ""
+summary: ""
 ---
 
 *This version was offered in the Spring 2023 Semester*

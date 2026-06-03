@@ -4,17 +4,19 @@ const date = tp.date.now("YYYY-MM-DD");
 const title = await tp.system.prompt("Post title");
 const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 const folder = `content/reviews/${date}-${slug}`;
+const description = await tp.system.prompt("Description");
 
 // Create the folder by moving this file into it as index.md
 await tp.file.move(`${folder}/index`);
 -%>
 ---
 title: "<% title %>"
-slug: /<% slug %>/
+slug: <% slug %>
 date: <% tp.date.now("YYYY-MM-DD") %>
 lastmod: <% tp.date.now("YYYY-MM-DD") %>
 draft: true
-description: "<% await tp.system.prompt("Description") %>"
+description: "<% description %>"
+summary: "<% description %>"
 tags: [<% await tp.system.prompt("Tags (comma-separated)") %>]
 categories: [<% await tp.system.prompt("Categories (comma-separated)") %>]
 cover:

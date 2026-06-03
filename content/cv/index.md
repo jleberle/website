@@ -44,7 +44,6 @@ August 2007 - May 2010
 
 ## Publications
 
-<div class="hang">
 
 Review, Clyde Bellecourt with Jon Lurie, *The Thunder Before The Storm:
 The Autobiography of Clyde Bellecourt*. *Native American and Indigenous
@@ -71,11 +70,9 @@ Autobiography of a Yavapai Indian*, edited by Gregory McNamee. *Chronicles of
 Oklahoma* 92 (Fall 2014), 369-370. 
 -->
 
-</div>
 
 ## Conference Papers
 
-<div class="hang">
 
 “‘\[Dis\]-uniting the Red People of the Western Hemisphere:’ The
 National Indian Youth Council in Latin America.” Accepted paper for the
@@ -107,7 +104,6 @@ American and Indigenous Studies Association, Washington DC, June 2015.
 “Vietnam In South Dakota: The Media’s Depiction of the Wounded Knee
 Occupation.” Southwest PCA/ACA, Albuquerque, New Mexico, February 2015.
 
-</div>
 
 ## Media Appearances
 

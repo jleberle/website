@@ -1,4 +1,4 @@
-Sitemap: https://jaredeberle.org/sitemap.xml
+Sitemap: {{ "sitemap.xml" | absURL }}
 
 User-agent: *
 Allow: /
