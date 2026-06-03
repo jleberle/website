@@ -17,31 +17,7 @@
 /articles/*.avif
     Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
 
-/articles/*.webp
-    Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
-
-/articles/*.jpg
-    Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
-
-/articles/*.jpeg
-    Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
-
-/articles/*.png
-    Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
-
 /reviews/*.avif
-    Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
-
-/reviews/*.webp
-    Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
-
-/reviews/*.jpg
-    Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
-
-/reviews/*.jpeg
-    Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
-
-/reviews/*.png
     Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
 
 /icons/*
