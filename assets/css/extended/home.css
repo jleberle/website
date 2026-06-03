@@ -90,6 +90,14 @@ body.home .main {
     text-overflow: ellipsis;
 }
 
+.home-section-all {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--secondary);
+    margin-top: 0.5rem;
+    text-align: right;
+}
+
 .home-list-date {
     color: var(--secondary);
     font-size: 0.8rem;
