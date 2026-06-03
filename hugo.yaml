@@ -1,5 +1,5 @@
 baseURL: https://jaredeberle.org/
-locale: en-us
+languageCode: en-us
 title: Jared L. Eberle
 theme: ["PaperMod"]
 

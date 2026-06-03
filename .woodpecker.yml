@@ -10,7 +10,7 @@ steps:
       - hugo --minify
 
   - name: link-check
-    image: lycheeverse/lychee:latest
+    image: lycheeverse/lychee:0.24.2
     when:
       - event: cron
       - event: manual

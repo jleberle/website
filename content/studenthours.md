@@ -5,8 +5,6 @@ hidemeta: true
 description: "Schedule and location for Professor Eberle's student hours."
 ---
 
----
-
 #### About
 
 Student hours is a nicer way of saying office hours. During the period listed below I am available for anything you may want to discuss related to the course. Or even things not related to the course. During my scheduled availability I am around to provide as much help as you feel you need related to the course, whether that's a quick question or a more detailed discussion.

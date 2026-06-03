@@ -1,5 +1,5 @@
 ---
-author: Jared
+author: Jared L. Eberle
 categories:
 - General History
 tags:
@@ -7,7 +7,8 @@ tags:
 - Folklore
 - Louisiana
 draft: false
-title: "The Ghosts of Lousiana's Johnson Gosset Plantation"
+date: 2013-02-02
+title: "The Ghosts of Louisiana's Johnson Gosset Plantation"
 summary: 'Story of a haunted Louisiana Plantation'
 cover:
   image: "cover.avif"

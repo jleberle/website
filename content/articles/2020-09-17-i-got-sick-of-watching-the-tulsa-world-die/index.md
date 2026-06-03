@@ -1,5 +1,5 @@
 ---
-author: Jared
+author: Jared L. Eberle
 categories:
 - General History
 date: 2020-09-17

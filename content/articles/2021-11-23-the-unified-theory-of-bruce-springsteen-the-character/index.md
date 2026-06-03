@@ -2,7 +2,7 @@
 title: 'The unified theory of bruce springsteen the character'
 date: 2021-11-23
 slug: /the-unified-theory-of-bruce-springsteen-the-character/
-author: Jared
+author: Jared L. Eberle
 categories:
 - Music
 tags:

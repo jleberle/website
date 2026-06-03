@@ -1,5 +1,5 @@
 ---
-author: Jared
+author: Jared L. Eberle
 categories:
 - Indigenous History
 date: 2017-08-03
