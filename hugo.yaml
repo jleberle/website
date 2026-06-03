@@ -92,7 +92,7 @@ params:
 
   socialIcons:
     - name: microblog
-      url: "https://eberle.blog
+      url: "https://eberle.blog"
     - name: bluesky
       url: "https://bsky.app/profile/jaredeberle.org"
     - name: letterboxd
