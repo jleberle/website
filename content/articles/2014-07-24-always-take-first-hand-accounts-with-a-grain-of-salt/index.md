@@ -1,10 +1,12 @@
 ---
 author: Jared
 categories:
-- History
+- Indigenous History
 date: 2014-07-24
 tags:
-- Activism
+- 1970s
+- American Indian Movement
+- Historiography
 title: Always Take First Hand Accounts With a Grain of Salt
 slug: /always-take-first-hand-accounts-with-a-grain-of-salt/
 ---

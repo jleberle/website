@@ -1,11 +1,12 @@
 ---
 author: Jared
 categories:
-- Indigenous
-- American West
+- Reviews
 date: 2015-09-09
 tags:
-- Reviews
+- 19th Century
+- American West
+- Cattle Ranching
 title: 'Blurring the Lines: Indians, Cowboys and Ranching in the Modern West'
 summary: 'Review of *"When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West*'
 cover:

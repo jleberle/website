@@ -63,7 +63,7 @@ params:
 
   # profile-mode
   profileMode:
-    enabled: true # needs to be explicitly set
+    enabled: false # needs to be explicitly set
     title: Jared L. Eberle
     subtitle: "Historian of late 20th century Indigenous Activism"
     imageUrl: "/images/profile.avif"
@@ -82,20 +82,28 @@ params:
 
   # home-info mode
   homeInfoParams:
-    Title: "Welcome \U0001F44B"
-    Content: I'm a historian of modern Indigenous activism and a lectuer at Oklahoma State University.
+    Title: "Historian of Modern Indigenous Activism"
+    Content: Welcome, I'm [Jared Eberle](/about), a historian primarily focused on Indigenous activism in the late 20th century and the connections it had to global events. I'm currently a lecturer at [Oklahoma State University](https://experts.okstate.edu/jared.eberle) where my primary teaching focus is US History since 1865 and Oklahoma History.
+    imageUrl: "/images/profile.avif"
+    imageWidth: 120
+    imageHeight: 120
+    imageTitle: "Profile picture of Jared Eberle"
 
   socialIcons:
-    - name: orcid
-      url: "https://orcid.org/0000-0002-0867-6561" 
-    - name: pgpkey
-      url: /key.asc
+    - name: microblog
+      url: "https://micro.blog/jaredeberle"
     - name: bluesky
       url: "https://bsky.app/profile/jaredeberle.org"
     - name: letterboxd
-      url: "https://letterboxd.com/eberle/" 
-    - name: other 
+      url: "https://letterboxd.com/eberle/"
+    - name: librarything
+      url: "https://www.librarything.com/profile/jaredeberle"
+    - name: codeberg
       url: "https://codeberg.org/jleberle"
+    - name: orcid
+      url: "https://orcid.org/0000-0002-0867-6561"
+    - name: pgpkey
+      url: /key.asc
 
   analytics:
     google:
@@ -131,15 +139,23 @@ outputs:
     - RSS
     - JSON # necessary for search
 menu:
-   main:
-   - identifier: Micro.blog
-     name: Updates
-     url: https://eberle.blog/
-     weight: 10
-   - identifier: OSU
-     name: OSU Directory
-     url: https://experts.okstate.edu/jared.eberle
-     weight: 20
+  main:
+  - identifier: about
+    name: About
+    url: /about/
+    weight: 10
+  - identifier: archive
+    name: Archive
+    url: /archives/
+    weight: 20
+  - identifier: contact
+    name: Contact
+    url: /location/
+    weight: 30
+  - identifier: search
+    name: Search
+    url: /search/
+    weight: 40
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 markup:
   goldmark:

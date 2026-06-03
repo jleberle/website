@@ -1,10 +1,12 @@
 ---
 author: Jared
 categories:
-- History
+- Indigenous History
 date: 2015-09-15
 tags:
-- Indigenous
+- 1970s
+- Wikipedia
+- Wounded Knee
 title: "Where'd the Death Come From?"
 slug: /whered-the-death-come-from/
 ---

@@ -1,10 +1,11 @@
 ---
 author: Jared
 categories:
-- History
+- General History
 date: 2012-11-30
 tags:
-- Vampires
+- 19th Century
+- Folklore
 title: "At Least It's Only a Belief in Vampirism"
 slug: /at-least-its-only-a-belief-in-vampirism/
 external_url: https://www.jstor.org/stable/658266

@@ -1,9 +1,11 @@
 ---
 categories:
-- History
+- Indigenous History
 date: 2011-11-23
 tags:
-- Indigenous
+- 1970s
+- American Indian Movement
+- Massachusetts
 title: "Thanksgiving 1970"
 summary: "The American Indian Movement's Thanksgiving anti-commemoration in 1970"
 cover:

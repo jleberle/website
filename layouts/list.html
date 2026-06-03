@@ -51,6 +51,67 @@
 {{- partial "home_info.html" . }}
 {{- end }}
 
+{{- if .IsHome }}
+
+{{/* Two-column section grid */}}
+{{- $articles := where site.RegularPages "Section" "articles" | first 5 }}
+{{- $links    := where site.RegularPages "Section" "links"    | first 5 }}
+{{- $reviews  := where site.RegularPages "Section" "reviews"  | first 5 }}
+{{- $courses  := where site.RegularPages "Section" "courses"  | first 5 }}
+
+<div class="home-columns">
+    <div class="home-column">
+        {{- if $articles }}
+        <section class="home-section">
+            <h2 class="home-section-title"><a href="/articles/">Articles</a></h2>
+            {{- range $articles }}
+            <article class="home-list-entry">
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                <span class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+            </article>
+            {{- end }}
+        </section>
+        {{- end }}
+        {{- if $links }}
+        <section class="home-section">
+            <h2 class="home-section-title"><a href="/links/">Quotes</a></h2>
+            {{- range $links }}
+            <article class="home-list-entry">
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                <span class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+            </article>
+            {{- end }}
+        </section>
+        {{- end }}
+    </div>
+    <div class="home-column">
+        {{- if $reviews }}
+        <section class="home-section">
+            <h2 class="home-section-title"><a href="/reviews/">Reviews</a></h2>
+            {{- range $reviews }}
+            <article class="home-list-entry">
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                <span class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+            </article>
+            {{- end }}
+        </section>
+        {{- end }}
+        {{- if $courses }}
+        <section class="home-section">
+            <h2 class="home-section-title"><a href="/courses/">Courses</a></h2>
+            {{- range $courses }}
+            <article class="home-list-entry">
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                <span class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+            </article>
+            {{- end }}
+        </section>
+        {{- end }}
+    </div>
+</div>
+
+{{- else }}{{/* non-home pages use standard loop */}}
+
 {{- $term := .Data.Term }}
 {{- range $index, $page := $paginator.Pages }}
 
@@ -121,6 +182,8 @@
   </nav>
 </footer>
 {{- end }}
+
+{{- end }}{{/* end home/non-home */}}
 
 {{- end }}{{/* end profileMode */}}
 

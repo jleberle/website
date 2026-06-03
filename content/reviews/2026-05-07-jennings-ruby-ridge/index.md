@@ -1,8 +1,10 @@
 ---
 categories:
-- History
+- Reviews
 tags:
 - 1990s
+- Federal Law Enforcement
+- Idaho
 draft: false
 date: 2026-05-07
 title: 'The Apocalypse at Ruby Ridge'

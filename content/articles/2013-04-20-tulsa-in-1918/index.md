@@ -1,9 +1,11 @@
 ---
 categories:
-- History
+- General History
 date: 2013-04-20
 tags:
-- Tulsa
+- 1910s
+- Oklahoma
+- Urban History
 title: 'Tulsa in 1918'
 cover:
   image: "cover.avif"

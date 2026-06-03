@@ -1,10 +1,12 @@
 ---
 author: Jared
 categories:
-- History
+- Indigenous History
 date: 2015-09-03
 tags:
-- Indigenous
+- 1990s
+- Connecticut
+- Tribal Recognition
 title: "Bob Engelhart's Golden Hill Paugussett Cartoon"
 summary: 'A look at a 1990s anti-Pequot cartoon'
 cover:

@@ -1,11 +1,12 @@
 ---
 author: Jared
 categories:
-- History
+- Indigenous History
 date: 2017-08-03
 tags:
+- 1970s
 - Archives
-- Indigenous
+- Music
 title: 'From the Archives: The Vanishing Americans'
 summary: 'Screenshot of Article detailing Native Rock Band'
 cover:

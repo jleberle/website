@@ -1,11 +1,12 @@
 ---
 author: Jared
 categories:
-- History
+- Indigenous History
 date: 2014-03-11
 tags:
+- 2010s
 - Connecticut
-- Indigenous
+- Tribal Recognition
 title: BIA Recognition Changes in Connecticut
 slug: /bia-recognition-changes-in-connecticut/
 ---

@@ -1,11 +1,11 @@
 ---
 author: Jared
 categories:
-- Indigenous
+- Reviews
 tags:
-- Clyde Warrior
-- Red Power
 - 1960s
+- Oklahoma
+- Red Power
 draft: false
 date: 2015-07-21
 title: 'The Birth of Red Power'

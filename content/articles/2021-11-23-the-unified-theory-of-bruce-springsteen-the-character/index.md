@@ -6,7 +6,9 @@ author: Jared
 categories:
 - Music
 tags:
-- Bruce Springsteen
+- 1970s
+- Americana
+- Rock Music
 draft: false
 ---
 

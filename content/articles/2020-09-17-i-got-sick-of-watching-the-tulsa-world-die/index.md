@@ -1,10 +1,12 @@
 ---
 author: Jared
 categories:
-- Local
+- General History
 date: 2020-09-17
 tags:
-- Tulsa
+- 2020s
+- Journalism
+- Oklahoma
 title: I Got Sick of Watching the Tulsa World Die
 slug: /i-got-sick-of-watching-the-tulsa-world-die/
 ---

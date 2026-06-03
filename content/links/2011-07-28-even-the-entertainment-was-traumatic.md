@@ -1,9 +1,11 @@
 ---
 author: Jared
 categories:
-- History	
+- General History
 date: 2011-07-28
 tags:
+- 1930s
+- Dust Bowl
 - Oklahoma
 title: Even the Entertainment Was Traumatic
 slug: /even-the-entertainment-was-traumatic/

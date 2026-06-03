@@ -1,10 +1,11 @@
 ---
 author: Jared
 categories:
-- History
+- General History
 tags:
-- Ghosts
 - 19th Century
+- Folklore
+- Louisiana
 draft: false
 title: "The Ghosts of Lousiana's Johnson Gosset Plantation"
 summary: 'Story of a haunted Louisiana Plantation'

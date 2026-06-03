@@ -9,6 +9,10 @@ cover:
   hiddenInSingle: false
   caption: "Sun Dance Scene, Art Institute of Chicago"
   relative: true # To use relative path for cover image, used in hugo Page-bundles
+categories:
+- Indigenous History
+tags:
+- Native American History
 slug: /3793/
 ---
 

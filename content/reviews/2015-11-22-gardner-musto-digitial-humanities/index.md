@@ -1,9 +1,10 @@
 ---
 author: Jared
 categories:
-- Methods
+- Reviews
 tags:
-- Digital History
+- Digital Humanities
+- Methodology
 draft: false
 date: 2015-11-22
 title: 'Digital Humanities: A Primer'

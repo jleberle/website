@@ -2,10 +2,11 @@
 title: Mary Lease, Suffrage, and Prohibition
 date: 2022-10-11
 categories:
-  - History
+  - General History
 tags:
   - 19th Century
   - Populism
+  - Women's History
 draft: false
 slug: /mary-lease-suffrage-and-prohibition/
 ---

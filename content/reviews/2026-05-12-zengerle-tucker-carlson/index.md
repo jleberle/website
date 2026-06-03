@@ -1,8 +1,10 @@
 ---
 categories:
-- Current Events
+- Reviews
 tags:
-- Media
+- 2000s
+- Conservative Media
+- Journalism
 draft: false
 date: 2026-05-12
 title: 'The Rise and Fall of Tucker Carlson'

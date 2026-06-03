@@ -10,6 +10,11 @@ cover:
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
+categories:
+- General History
+tags:
+- American History
+- Survey Course
 slug: /1103/
 ---
 

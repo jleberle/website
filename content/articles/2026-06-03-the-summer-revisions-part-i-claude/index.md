@@ -5,7 +5,8 @@ lastmod: 2026-06-03
 draft: true
 description: A series on what I did this summer starting with Claude
 tags:
-  - Tech
+  - AI
+  - Productivity
 categories:
   - Personal
 ---

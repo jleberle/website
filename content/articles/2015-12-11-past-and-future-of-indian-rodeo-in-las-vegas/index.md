@@ -1,10 +1,11 @@
 ---
 author: Jared
 categories:
-- Sports
+- Indigenous History
 date: 2015-12-11
 tags:
-- Indigenous
+- 2010s
+- Nevada
 - Rodeo
 title: Past and Future of Indian Rodeo in Las Vegas
 slug: /past-and-future-of-indian-rodeo-in-las-vegas/

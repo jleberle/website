@@ -1,7 +1,7 @@
 ---
 author: Jared
 categories:
-- History
+- General History
 date: 2012-01-22
 title: Hoboes, Tramps, and Bums
 slug: /hoboes-tramps-and-bums/

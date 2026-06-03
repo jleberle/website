@@ -1,10 +1,10 @@
 ---
 categories:
-- History
+- Indigenous History
 date: 2020-05-21
 tags:
-- Activism
-- Archives
+- 1970s
+- American Indian Movement
 - FOIA
 title: "Dennis Banks' FBI File"
 slug: /dennis-banks-fbi-file/

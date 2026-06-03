@@ -1,11 +1,12 @@
 ---
 author: Jared
 categories:
-- History
+- Indigenous History
 date: 2015-12-01
 tags:
-- Archives
-- Indigenous
+- 1960s
+- Folk Music
+- Protest Music
 title: Peter LaFarge, The Singing Protest Cowboy
 cover:
   image: "cover.avif"

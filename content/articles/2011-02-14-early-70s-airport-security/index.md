@@ -1,9 +1,11 @@
 ---
 categories:
-- History
+- General History
 date: 2011-02-14
 tags:
-- Archives
+- 1970s
+- Airport Security
+- Civil Liberties
 title: "Early '70s Airport Security"
 slug: /early-70s-airport-security/
 ---

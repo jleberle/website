@@ -1,9 +1,11 @@
 ---
 author: Jared
 categories:
-- History
+- General History
 date: 2011-10-04
 tags:
+- 1930s
+- Minnesota
 - Photography
 title: "'Saturday Night in a Saloon' Or John Ratzenberger's Opening
   Photos From Cheers"

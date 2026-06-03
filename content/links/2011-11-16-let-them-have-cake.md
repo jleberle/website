@@ -1,9 +1,10 @@
 ---
 author: Jared
 categories:
-- History
+- General History
 date: 2011-11-16
 tags:
+- 19th Century
 - Theodore Roosevelt
 title: Let Them Have Cake
 slug: /let-them-have-cake/

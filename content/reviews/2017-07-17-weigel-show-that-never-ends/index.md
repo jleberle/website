@@ -1,10 +1,11 @@
 ---
 author: Jared
 categories:
-- Music
+- Reviews
 tags:
-- Rock
 - 1970s
+- Prog Rock
+- Rock Music
 draft: false
 date: 2017-07-17
 title: 'Redeeming the Uncool'

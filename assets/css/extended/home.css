@@ -1,0 +1,98 @@
+/* Expand home page content to match nav width */
+body.home .main {
+    max-width: calc(var(--nav-width) + var(--gap) * 2);
+}
+
+/* Home info with profile image */
+.home-info {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.home-info-image {
+    flex-shrink: 0;
+}
+
+.home-info-image img {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+}
+
+.home-info-content {
+    flex: 1;
+}
+
+
+@media (max-width: 600px) {
+    .home-info {
+        flex-direction: column !important;
+        align-items: center;
+        text-align: center;
+    }
+
+    .home-info-content .social-icons {
+        justify-content: center;
+    }
+}
+
+/* Two-column grid */
+.home-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .home-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Section headings */
+.home-section {
+    margin-bottom: 2rem;
+}
+
+.home-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.75rem;
+}
+
+.home-section-title a {
+    color: var(--primary);
+}
+
+/* Post list entries */
+.home-list-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+}
+
+.home-list-entry a {
+    color: var(--primary);
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.home-list-date {
+    color: var(--secondary);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}

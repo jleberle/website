@@ -10,6 +10,11 @@ cover:
   hiddenInList: false
   hiddenInSingle: false
   relative: true # To use relative path for cover image, used in hugo Page-bundles
+categories:
+- General History
+tags:
+- Oklahoma
+- Oklahoma History
 slug: /3703/
 ---
 

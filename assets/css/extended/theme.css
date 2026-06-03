@@ -1,0 +1,25 @@
+/* Solarized Light palette in light mode */
+:root {
+    --theme: #fffcf2;
+    --entry: #FDF6E3;
+    --secondary: rgb(108, 108, 108);
+    --tertiary: #FEFDF8;
+    --code-bg: #FEFDF8;
+}
+
+body,
+.list {
+    background: #fffcf2;
+}
+
+/* Restore dark mode */
+:root[data-theme="dark"] {
+    --theme: rgb(29, 30, 32);
+    --entry: rgb(46, 46, 51);
+    --secondary: rgb(155, 156, 157);
+}
+
+[data-theme="dark"] body,
+[data-theme="dark"] .list {
+    background: rgb(29, 30, 32);
+}

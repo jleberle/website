@@ -1,0 +1,29 @@
+{{- with site.Params.homeInfoParams }}
+<article class="first-entry home-info">
+    {{- if .imageUrl }}
+    <div class="home-info-image">
+        {{- $imgPath := strings.TrimPrefix "/" .imageUrl }}
+        {{- $img := resources.Get $imgPath }}
+        {{- if $img }}
+        <img src="{{ ($img | fingerprint).RelPermalink }}" alt="{{ .imageTitle | default "Profile image" }}"
+             width="{{ .imageWidth | default 120 }}" height="{{ .imageHeight | default 120 }}">
+        {{- else }}
+        <img src="{{ .imageUrl | absURL }}" alt="{{ .imageTitle | default "Profile image" }}"
+             width="{{ .imageWidth | default 120 }}" height="{{ .imageHeight | default 120 }}">
+        {{- end }}
+    </div>
+    {{- end }}
+    <div class="home-info-content">
+        <header class="entry-header">
+            <h1>{{ .Title | markdownify }}</h1>
+        </header>
+        <div class="entry-content md-content">
+            {{ $opts := dict "display" "block" }}
+            {{ .Content | $.Page.RenderString $opts }}
+        </div>
+        <footer class="entry-footer">
+            {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
+        </footer>
+    </div>
+</article>
+{{- end -}}

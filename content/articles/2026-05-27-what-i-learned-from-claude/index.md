@@ -2,9 +2,10 @@
 title: What I Learned From Claude
 date: 2026-05-27
 categories:
-  - Methods
+  - Digital Humanities
 tags:
-  - Coding
+  - AI
+  - Web Development
 draft: true
 slug: /what-i-learned-from-Claude/
 ---

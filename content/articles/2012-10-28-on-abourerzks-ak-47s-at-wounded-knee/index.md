@@ -1,10 +1,12 @@
 ---
 author: Jared
 categories:
-- History
+- Indigenous History
 date: 2012-10-28
 tags:
-- Activism
+- 1970s
+- American Indian Movement
+- Wounded Knee
 title: "On Abourerzk's AK-47s at Wounded Knee"
 slug: /on-abourerzks-ak-47s-at-wounded-knee/
 ---

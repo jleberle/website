@@ -8,6 +8,11 @@ cover:
   hiddenInSingle: false
   relative: true # To use relative path for cover image, used in hugo Page-bundles
   caption: "\"*Untitled (Civil Works Administration demonstration, New York City) (Ben Shahn)*\", P1970.4242, Harvard Art Museums collections online, Apr 17, 2025, https://hvrd.art/o/18313."
+categories:
+- General History
+tags:
+- American History
+- Reconstruction
 slug: /1493/
 ---
 
