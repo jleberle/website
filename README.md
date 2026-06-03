@@ -58,12 +58,42 @@ The site deploys automatically via [statichost.eu](https://statichost.eu) on eve
 Run `scripts/sync-hugo-version.sh` to update the CI build images in `statichost.yml` and `.woodpecker.yml` to match. The weekly Homebrew job will notify you when Hugo updates.
 
 ### After updating PaperMod
-Check the 12 layout overrides in `layouts/` against the updated theme files. The most likely to conflict are:
 
-- `layouts/_partials/cover.html` — fingerprinting added
-- `layouts/_partials/index_profile.html` — fingerprinting added
-- `layouts/_partials/templates/opengraph.html` — OG jpeg support added
-- `layouts/baseof.html` — `.home` body class added
+**1. Pull the update**
+```sh
+git submodule update --remote themes/PaperMod
+```
+
+**2. Build and check for errors**
+```sh
+hugo server
+```
+
+If it builds cleanly, most things are fine. If it fails, the error will point at what broke.
+
+**3. Check the four most likely conflict files**
+
+Diff each override against its updated PaperMod source:
+
+```sh
+diff themes/PaperMod/layouts/_partials/cover.html layouts/_partials/cover.html
+diff themes/PaperMod/layouts/_partials/index_profile.html layouts/_partials/index_profile.html
+diff themes/PaperMod/layouts/_partials/templates/opengraph.html layouts/_partials/templates/opengraph.html
+diff themes/PaperMod/layouts/baseof.html layouts/baseof.html
+```
+
+For each diff: if PaperMod changed unrelated lines, copy their new version and re-apply the change noted below. If they changed the same lines, merge manually.
+
+- `layouts/_partials/cover.html` — `($cover | fingerprint).RelPermalink` instead of `.Permalink`
+- `layouts/_partials/index_profile.html` — `$img.RelPermalink` and `| fingerprint` for avif
+- `layouts/_partials/templates/opengraph.html` — jpeg OG companion lookup and `site.Language.Lang`
+- `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`
+
+**4. Commit the submodule update**
+```sh
+git add themes/PaperMod
+git commit -m "Update PaperMod to latest"
+```
 
 ### If styles break after a PaperMod update
 The two SHA hashes in the `Content-Security-Policy` header in `static/_headers` correspond to PaperMod's inline styles. If PaperMod changes those styles the hashes need updating. Run `scripts/csp-hashes.sh` to regenerate them.
