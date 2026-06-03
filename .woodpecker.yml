@@ -5,7 +5,7 @@ when:
 
 steps:
   - name: build
-    image: hugomods/hugo:exts-0.162.1
+    image: hugomods/hugo:exts-0.154.5
     commands:
       - hugo --minify
 
