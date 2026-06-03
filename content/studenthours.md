@@ -25,7 +25,7 @@ I do not have scheduled student hours during intersession periods or over the su
 
 #### Location
 
-By default meetings are in my office. I am also available for virtual meetings on Zoom, email me to schedule a time and get the Zoom meeting information.
+By default meetings are in [my office](/location). I am also available for virtual meetings on Zoom, email me to schedule a time and get the Zoom meeting information.
 
 ---
 
