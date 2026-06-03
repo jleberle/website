@@ -25,9 +25,17 @@ The site will be available at `http://localhost:1313`.
 | `content/reviews/` | Book and film reviews |
 | `content/cv/` | Curriculum vitae |
 | `content/courses/` | Course listings |
-| `content/links/` | Link archive |
+| `content/quotes/` | Short quote and link posts |
 
 New posts follow the naming convention `YYYY-MM-DD-slug/index.md`. Use the Obsidian templates in `_templates/` or the Hugo archetypes.
+
+## Shortcodes
+
+| Shortcode | Usage | Description |
+|---|---|---|
+| `youtube` | `{{</* youtube VIDEO_ID */>}}` | Click-to-load YouTube embed. Thumbnail is self-hosted at build time via `resources.GetRemote`. Video only loads on click. |
+| `bluesky` | `{{</* bluesky "https://bsky.app/..." */>}}` | Click-to-load Bluesky embed. Embed script only loads on click. |
+| `carousel` | `{{</* carousel "a.avif" "b.avif" */>}}` | Image carousel from page bundle files. Supports keyboard navigation and dot indicators. |
 
 ## Scripts
 
