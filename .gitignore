@@ -10,3 +10,5 @@ public/
 .obsidian/plugins/*/manifest.json
 .obsidian/plugins/*/styles.css
 .obsidian/plugins/*/obsidian_askpass.sh
+!.obsidian/plugins/templater-obsidian/data.json
+!.obsidian/plugins/obsidian-linter/data.json
