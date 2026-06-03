@@ -1,8 +1,19 @@
 {{- $id := .Get 0 -}}
+{{- $thumbnail := "" -}}
+{{- $maxres := printf "https://img.youtube.com/vi/%s/maxresdefault.jpg" $id -}}
+{{- $hqdefault := printf "https://img.youtube.com/vi/%s/hqdefault.jpg" $id -}}
+{{- with resources.GetRemote $maxres -}}
+    {{- $thumbnail = (. | fingerprint).RelPermalink -}}
+{{- else -}}
+    {{- with resources.GetRemote $hqdefault -}}
+        {{- $thumbnail = (. | fingerprint).RelPermalink -}}
+    {{- end -}}
+{{- end -}}
 <div class="yt-facade" data-id="{{ $id }}" role="button" tabindex="0" aria-label="Load YouTube video">
-    <img src="https://img.youtube.com/vi/{{ $id }}/maxresdefault.jpg"
-         onerror="this.src='https://img.youtube.com/vi/{{ $id }}/hqdefault.jpg'"
-         alt="YouTube video thumbnail"
-         loading="lazy">
+    {{- if $thumbnail }}
+    <img src="{{ $thumbnail }}" alt="YouTube video thumbnail" loading="lazy">
+    {{- else }}
+    <div class="yt-facade-fallback">Video unavailable</div>
+    {{- end }}
     <div class="yt-play" aria-hidden="true"></div>
 </div>
