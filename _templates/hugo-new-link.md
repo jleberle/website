@@ -9,9 +9,9 @@ const folder = `content/links/${date}-${slug}`;
 await tp.file.move(`${folder}/index`);
 -%>
 ---
-title: "<% tp.file.title %>"
-date: <% tp.date.now("YYYY-MM-DDTHH:mm:ssZ") %>
-lastmod: <% tp.date.now("YYYY-MM-DDTHH:mm:ssZ") %>
+title: "<% title %>"
+date: <% tp.date.now("YYYY-MM-DD") %>
+lastmod: <% tp.date.now("YYYY-MM-DD") %>
 draft: true
 description: "<% await tp.system.prompt("Description") %>"
 tags: [<% await tp.system.prompt("Tags (comma-separated)") %>]

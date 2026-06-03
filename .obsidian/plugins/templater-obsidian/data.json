@@ -30,7 +30,8 @@
   "syntax_highlighting_mobile": false,
   "enabled_templates_hotkeys": [
     "_templates/hugo-new-review.md",
-    "_templates/hugo-new-link.md"
+    "_templates/hugo-new-link.md",
+    "_templates/hugo-new-post.md"
   ],
   "startup_templates": [
     ""
