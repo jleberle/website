@@ -10,6 +10,7 @@ await tp.file.move(`${folder}/index`);
 -%>
 ---
 title: "<% title %>"
+slug: /<% slug %>/
 date: <% tp.date.now("YYYY-MM-DD") %>
 lastmod: <% tp.date.now("YYYY-MM-DD") %>
 draft: true
