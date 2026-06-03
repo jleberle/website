@@ -1,0 +1,8 @@
+{{- $id := .Get 0 -}}
+<div class="yt-facade" data-id="{{ $id }}" role="button" tabindex="0" aria-label="Load YouTube video">
+    <img src="https://img.youtube.com/vi/{{ $id }}/maxresdefault.jpg"
+         onerror="this.src='https://img.youtube.com/vi/{{ $id }}/hqdefault.jpg'"
+         alt="YouTube video thumbnail"
+         loading="lazy">
+    <div class="yt-play" aria-hidden="true"></div>
+</div>
