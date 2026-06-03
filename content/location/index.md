@@ -19,4 +19,4 @@ Stillwater, OK 74078
 
 ![](location.avif)
 
-[View interactive map](https://www.openstreetmap.org/?mlat=36.119911&amp;mlon=-97.072347#map=18/36.119911/-97.072349)
+[View interactive map](https://www.openstreetmap.org/?mlat=36.119911&mlon=-97.072347#map=18/36.119911/-97.072349)

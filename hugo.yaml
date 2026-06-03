@@ -46,6 +46,7 @@ params:
   mainSections:
     - articles
     - reviews
+    - links
 
   assets:
     # disableHLJS: true # to disable highlight.js
@@ -104,6 +105,9 @@ params:
       url: "https://orcid.org/0000-0002-0867-6561"
     - name: pgpkey
       url: /key.asc
+
+  social:
+    fediverse_creator: "@jared@eberle.blog"
 
   analytics:
     google:
