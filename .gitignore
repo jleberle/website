@@ -5,3 +5,8 @@ public/
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 .obsidian/cache
+.obsidian/plugins/*/main.js
+.obsidian/plugins/*/data.json
+.obsidian/plugins/*/manifest.json
+.obsidian/plugins/*/styles.css
+.obsidian/plugins/*/obsidian_askpass.sh
