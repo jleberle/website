@@ -67,7 +67,7 @@
             {{- range $articles }}
             <article class="home-list-entry">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <span class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</time>
             </article>
             {{- end }}
         </section>
@@ -78,7 +78,7 @@
             {{- range $links }}
             <article class="home-list-entry">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <span class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</time>
             </article>
             {{- end }}
         </section>
@@ -91,7 +91,7 @@
             {{- range $reviews }}
             <article class="home-list-entry">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <span class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</time>
             </article>
             {{- end }}
         </section>
@@ -102,7 +102,7 @@
             {{- range $courses }}
             <article class="home-list-entry">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <span class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date.Format "Jan 2, 2006" }}</time>
             </article>
             {{- end }}
         </section>
