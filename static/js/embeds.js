@@ -6,12 +6,16 @@ document.addEventListener("DOMContentLoaded", function () {
             var id = this.dataset.id;
             var iframe = document.createElement("iframe");
             iframe.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1";
-            iframe.width = "100%";
-            iframe.height = "100%";
+            iframe.style.position = "absolute";
+            iframe.style.top = "0";
+            iframe.style.left = "0";
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
             iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
             iframe.allowFullscreen = true;
-            iframe.loading = "lazy";
-            this.replaceWith(iframe);
+            this.style.cursor = "default";
+            this.innerHTML = "";
+            this.appendChild(iframe);
         });
     });
 
