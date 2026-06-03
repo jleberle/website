@@ -133,11 +133,24 @@ params:
     minMatchCharLength: 0
     limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
     keys: ["title", "permalink", "summary"]
+mediaTypes:
+  application/feed+json:
+    suffixes:
+      - json
+
+outputFormats:
+  jsonfeed:
+    mediaType: application/feed+json
+    baseName: feed
+    isPlainText: true
+    notAlternative: false
+
 outputs:
   home:
     - HTML
     - RSS
     - JSON # necessary for search
+    - jsonfeed
 menu:
   main:
   - identifier: about

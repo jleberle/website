@@ -1,0 +1,35 @@
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections -}}
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": {{ site.Title | jsonify }},
+  "description": {{ site.Params.description | jsonify }},
+  "home_page_url": {{ site.BaseURL | jsonify }},
+  "feed_url": {{ (print site.BaseURL "feed.json") | jsonify }},
+  "favicon": {{ (print site.BaseURL "favicon.ico") | jsonify }},
+  "authors": [
+    {
+      "name": {{ site.Params.author | jsonify }},
+      "url": {{ site.BaseURL | jsonify }}
+    }
+  ],
+  "items": [
+    {{- range $i, $page := $pages }}
+    {{- if $i }},{{ end }}
+    {
+      "id": {{ $page.Permalink | jsonify }},
+      "url": {{ $page.Permalink | jsonify }},
+      "title": {{ $page.Title | jsonify }},
+      "summary": {{ $page.Summary | plainify | jsonify }},
+      "content_html": {{ $page.Content | jsonify }},
+      "date_published": {{ $page.Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+      "date_modified": {{ $page.Lastmod.Format "2006-01-02T15:04:05Z07:00" | jsonify }}
+      {{- with $page.Params.cover.image }},
+      "image": {{ (print $page.Permalink .) | jsonify }}
+      {{- end }}
+      {{- with $page.GetTerms "tags" }},
+      "tags": {{ apply . "title" "." | jsonify }}
+      {{- end }}
+    }
+    {{- end }}
+  ]
+}
