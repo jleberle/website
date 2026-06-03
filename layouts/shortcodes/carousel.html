@@ -1,0 +1,25 @@
+{{- $images := .Params -}}
+{{- $id := printf "carousel-%s" (delimit (seq 8 | shuffle) "") -}}
+<div class="carousel" id="{{ $id }}" aria-label="Image carousel" role="region">
+    <div class="carousel-track">
+        {{- range $i, $name := $images }}
+        {{- $img := $.Page.Resources.GetMatch $name }}
+        {{- if $img }}
+        {{- $processed := $img | fingerprint }}
+        <figure class="carousel-slide{{ if eq $i 0 }} active{{ end }}" aria-hidden="{{ if eq $i 0 }}false{{ else }}true{{ end }}">
+            <img src="{{ $processed.RelPermalink }}"
+                 alt="{{ $name | replaceRE `\.[^.]+$` `` | humanize }}"
+                 loading="{{ if eq $i 0 }}eager{{ else }}lazy{{ end }}"
+                 width="{{ $img.Width }}" height="{{ $img.Height }}">
+        </figure>
+        {{- end }}
+        {{- end }}
+    </div>
+    <button class="carousel-btn carousel-prev" aria-label="Previous image" data-target="{{ $id }}">&#8249;</button>
+    <button class="carousel-btn carousel-next" aria-label="Next image" data-target="{{ $id }}">&#8250;</button>
+    <div class="carousel-dots" aria-hidden="true">
+        {{- range $i, $name := $images }}
+        <span class="carousel-dot{{ if eq $i 0 }} active{{ end }}"></span>
+        {{- end }}
+    </div>
+</div>

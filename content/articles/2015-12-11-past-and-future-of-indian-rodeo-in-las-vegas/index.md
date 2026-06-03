@@ -50,15 +50,7 @@ If you're ever in Vegas and have the opportunity to take in a national finals ro
 
 Some more photographs of the event:
 
-![](bullriding.avif)
-![](barrels.avif)
-![](bennybinionplaque.avif)
-![](breakaway.avif)
-![](littlemustache.avif)
-![](pickup.avif)
-![](saddlebronc.avif)
-![](teamroping.avif)
-![](tiedown.avif)
+{{< carousel "bullriding.avif" "barrels.avif" "bennybinionplaque.avif" "breakaway.avif" "littlemustache.avif" "pickup.avif" "saddlebronc.avif" "teamroping.avif" "tiedown.avif" >}}
 
 [^1]: Best class-related experience ever.
 [^2]: For comparison, the total prize pot at the NFR is over $6 million.
