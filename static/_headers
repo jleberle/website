@@ -15,13 +15,13 @@
     Cache-Control: public, max-age=7776000, stale-while-revalidate=15552000
 
 /articles/*.avif
-    Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
+    Cache-Control: public, max-age=7776000, stale-while-revalidate=15552000
 
 /reviews/*.avif
-    Cache-Control: public, max-age=604800, stale-while-revalidate=1209600
+    Cache-Control: public, max-age=7776000, stale-while-revalidate=15552000
 
 /icons/*
-    Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+    Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
 
 /iframe-page/*
     X-Frame-Options: SAMEORIGIN
