@@ -12,7 +12,7 @@ X-Content-Type-Options: nosniff
     Cache-Control: public, max-age=31536000, immutable
 
 /images/*
-    Cache-Control: public, max-age=31536000, immutable
+    Cache-Control: public, max-age=7776000, stale-while-revalidate=15552000
 
 /icons/*
     Cache-Control: public, max-age=86400, stale-while-revalidate=604800
