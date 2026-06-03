@@ -24,5 +24,4 @@ Skip forward to yesterday when I was browsing through some old issues of *News F
 
 As far as I can tell this is the cartoon Cramer mentions in her book, although it's missing the "Nike Hide Tanner" she mentioned, but it's still nevertheless shockingly racist and ignorant of native issues for 1993.
 
----
 [^1]: Cramer, 149.

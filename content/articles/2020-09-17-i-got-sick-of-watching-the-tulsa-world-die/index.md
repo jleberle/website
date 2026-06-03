@@ -26,7 +26,6 @@ Local news is important, however, and I am not giving up on it. Without the *Wor
 
 The *World* has called me a few times since I cancelled and sent me a few mailings offering me deals to return. The most recent one offered me a deal for Wednesday &amp; Sunday home delivery plus online access. I discarded it but noticed the return address was a P.O. Box in Virginia. Local news indeed.
 
----
 [^1]: The *World* lists the Metro &amp; Region section as the A section but that used to be the B section and the paper had an untitled supplement A section.
 [^2]: I'd love to provide a comparison either to statistics when I subscribed back in 2007 or even when Lee Enterprises purchased the paper but the electronic version that would allow easy counting only goes back a few weeks on the *World*'s website. Furthermore this Sunday's edition was a good one to consider as two of the state's three college football teams played each other, meaning the *World* would produce the Gameday section supplemental to the Sports section.
 [^3]: The total for bylined stories was 56% percent. For consistency I did not count un-bylined stories or features that combined multiple smaller stories (around the nation features, etc.). Some of these (local high school sports information) were locally produced, so I generously rounded up. A vast majority of those items excluded were collections of wire service reporting.

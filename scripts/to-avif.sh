@@ -1,30 +1,36 @@
 #!/usr/bin/env bash
 # Convert one or more images (jpg, jpeg, png, webp) to optimized .avif for web delivery.
+# Also writes a .jpg alongside each file for OpenGraph crawler compatibility.
 # Originals are preserved unless --replace is passed.
 #
 # Usage:
-#   scripts/to-avif.sh photo.jpg                  # writes photo.avif alongside original
+#   scripts/to-avif.sh photo.jpg                  # writes photo.avif + photo.jpg alongside original
 #   scripts/to-avif.sh --replace photo.jpg         # converts and removes original
-#   scripts/to-avif.sh -q 70 photo.png             # custom quality (default: 60)
+#   scripts/to-avif.sh -q 70 photo.png             # custom avif quality (default: 60)
+#   scripts/to-avif.sh --no-jpeg photo.png         # skip jpeg output
 #   scripts/to-avif.sh *.jpg                       # batch
 
 set -euo pipefail
 
 QUALITY=60
+JPEG_QUALITY=85
 REPLACE=false
+JPEG=true
 FILES=()
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --replace) REPLACE=true; shift ;;
     -q|--quality) QUALITY="$2"; shift 2 ;;
+    --jpeg-quality) JPEG_QUALITY="$2"; shift 2 ;;
+    --no-jpeg) JPEG=false; shift ;;
     -*) echo "Unknown option: $1" >&2; exit 1 ;;
     *) FILES+=("$1"); shift ;;
   esac
 done
 
 if [[ ${#FILES[@]} -eq 0 ]]; then
-  echo "Usage: $(basename "$0") [--replace] [-q QUALITY] <image> [...]" >&2
+  echo "Usage: $(basename "$0") [--replace] [-q QUALITY] [--jpeg-quality QUALITY] [--no-jpeg] <image> [...]" >&2
   exit 1
 fi
 
@@ -54,15 +60,25 @@ for src in "${FILES[@]}"; do
     *) echo "  skip (unsupported format): $src"; continue ;;
   esac
 
-  dest="${src%.*}.avif"
   before=$(du -k "$src" | cut -f1)
 
-  magick "$src" -quality "$QUALITY" "$dest"
+  # Convert to avif
+  dest_avif="${src%.*}.avif"
+  magick "$src" -quality "$QUALITY" "$dest_avif"
+  after_avif=$(du -k "$dest_avif" | cut -f1)
+  pct_avif=$(( (after_avif - before) * 100 / before ))
+  sign=""; [[ $pct_avif -gt 0 ]] && sign="+"
+  echo "  ${src} → ${dest_avif}  (${before}K → ${after_avif}K, ${sign}${pct_avif}%)"
 
-  after=$(du -k "$dest" | cut -f1)
-  pct=$(( (after - before) * 100 / before ))
-  sign=""; [[ $pct -gt 0 ]] && sign="+"
-  echo "  ${src} → ${dest}  (${before}K → ${after}K, ${sign}${pct}%)"
+  # Convert to jpeg for OG crawler compatibility
+  if $JPEG; then
+    dest_jpg="${src%.*}.jpg"
+    magick "$src" -quality "$JPEG_QUALITY" "$dest_jpg"
+    after_jpg=$(du -k "$dest_jpg" | cut -f1)
+    pct_jpg=$(( (after_jpg - before) * 100 / before ))
+    sign=""; [[ $pct_jpg -gt 0 ]] && sign="+"
+    echo "  ${src} → ${dest_jpg}  (${before}K → ${after_jpg}K, ${sign}${pct_jpg}%)"
+  fi
 
   if $REPLACE; then
     rm "$src"

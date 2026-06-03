@@ -30,7 +30,6 @@ One little boy, while watching the Pilgrim procession during the festivities tha
 
 Celebrate Thanksgiving and count your blessings, but remember the cost at which your blessing came.
 
----
 [^1]: Dennis Banks and Richard Erdoes, *Ojibwa Warrior: Dennis Banks and the Rise of the American Indian Movement** (Norman: University of Oklahoma Press, 2004), 111.
 [^2]: Ibid., 112.
 [^3]: “Mourning Indians Dump Sand on Plymouth Rock,” *New York Times*, November, 27, 1970.

@@ -23,7 +23,7 @@ params:
   description: "Historian of late 20th Century Indigenous Activism"
   keywords: [CV, Indigenous History, Oklahoma]
   author: Jared L. Eberle
-  images: ["/images/card.avif"]
+  images: ["/images/card.jpg"]
   DateFormat: "January 2, 2006"
   defaultTheme: auto # dark, light
   disableThemeToggle: false

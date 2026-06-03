@@ -57,7 +57,6 @@ Some more photographs of the event:
 ![](teamroping.avif)
 ![](tiedown.avif)
 
----
 [^1]: Best class-related experience ever.
 [^2]: For comparison, the total prize pot at the NFR is over $6 million.
 [^3]: The R*dskins' trademark was originally revoked in the 1990s, but restored on appeal. The Redskins lost their trademark earlier this year, but the decision is again in appeal and is currently being bankrolled by the NFL.
