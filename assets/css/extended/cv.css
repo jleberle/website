@@ -1,6 +1,0 @@
-/* CV page: hanging indents for publication and conference entries.
-   Mirrors the \hangindent used in the PDF build (see ~/git/cv). */
-.hang p {
-    padding-left: 2em;
-    text-indent: -2em;
-}
