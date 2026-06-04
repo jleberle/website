@@ -15,11 +15,13 @@
 }
 
 .post-title .link-post-title::after {
-  content: " \2197";
+  content: "\00A0\2197";
   color: var(--secondary);
   font-size: 0.7em;
   margin-left: 0.15em;
   vertical-align: 0.2em;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .post-title .link-post-title:hover {

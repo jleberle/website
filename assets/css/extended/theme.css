@@ -16,6 +16,10 @@ body,
     background: #b0a89a;
 }
 
+.md-content blockquote {
+    border-inline-start: 2px solid #b0a89a;
+}
+
 .post-tags a,
 .paginav {
     background: var(--entry);
