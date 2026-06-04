@@ -20,6 +20,10 @@ body,
     border-inline-start: 2px solid #b0a89a;
 }
 
+.post-title {
+    font-size: 32px;
+}
+
 .post-tags a,
 .paginav {
     background: var(--entry);

@@ -12,6 +12,7 @@
 .post-title .link-post-title {
   color: inherit;
   text-decoration: none;
+  text-wrap: balance;
 }
 
 .link-post-arrow {
