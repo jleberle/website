@@ -12,6 +12,20 @@ body,
     background: #fffcf2;
 }
 
+.md-content hr {
+    background: #b0a89a;
+}
+
+.post-tags a,
+.paginav {
+    background: var(--entry);
+}
+
+.post-tags a:hover,
+.paginav a:hover {
+    background: #e8dfc8;
+}
+
 /* Restore dark mode */
 :root[data-theme="dark"] {
     --theme: rgb(29, 30, 32);
