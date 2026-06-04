@@ -80,16 +80,8 @@ params:
       url: "https://eberle.blog"
     - name: bluesky
       url: "https://bsky.app/profile/jaredeberle.org"
-    - name: letterboxd
-      url: "https://letterboxd.com/eberle/"
-    - name: librarything
-      url: "https://www.librarything.com/profile/jaredeberle"
-    - name: codeberg
-      url: "https://codeberg.org/jleberle"
     - name: orcid
       url: "https://orcid.org/0000-0002-0867-6561"
-    - name: pgpkey
-      url: /key.asc
 
   social:
     fediverse_creator: "@jared@eberle.blog"
