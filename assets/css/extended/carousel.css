@@ -41,8 +41,14 @@
     transition: background 0.2s;
 }
 
-.carousel-btn:hover {
+.carousel-btn:hover,
+.carousel-btn:focus-visible {
     background: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-btn:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
 }
 
 .carousel-prev {
@@ -71,4 +77,11 @@
 
 .carousel-dot.active {
     background: var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-btn,
+    .carousel-dot {
+        transition: none;
+    }
 }

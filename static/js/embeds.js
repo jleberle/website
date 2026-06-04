@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // YouTube click-to-load
     document.querySelectorAll(".yt-facade").forEach(function (facade) {
-        facade.addEventListener("click", function () {
+        function loadYouTube() {
             var id = this.dataset.id;
             var iframe = document.createElement("iframe");
             iframe.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1";
@@ -16,12 +16,19 @@ document.addEventListener("DOMContentLoaded", function () {
             this.style.cursor = "default";
             this.innerHTML = "";
             this.appendChild(iframe);
+        }
+        facade.addEventListener("click", loadYouTube);
+        facade.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                loadYouTube.call(this);
+            }
         });
     });
 
     // Bluesky click-to-load
     document.querySelectorAll(".bsky-facade").forEach(function (facade) {
-        facade.addEventListener("click", function () {
+        function loadBluesky() {
             var url = this.dataset.url;
             var blockquote = document.createElement("blockquote");
             blockquote.className = "bluesky-embed";
@@ -39,6 +46,13 @@ document.addEventListener("DOMContentLoaded", function () {
             wrapper.appendChild(script);
 
             this.replaceWith(wrapper);
+        }
+        facade.addEventListener("click", loadBluesky);
+        facade.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                loadBluesky.call(this);
+            }
         });
     });
 
