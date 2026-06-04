@@ -4,6 +4,7 @@ title: Jared L. Eberle
 theme: ["PaperMod"]
 
 enableRobotsTXT: true
+cleanDestinationDir: true
 buildDrafts: false
 buildFuture: false
 buildExpired: false
