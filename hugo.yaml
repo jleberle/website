@@ -95,6 +95,9 @@ params:
     fediverse_creator: "@jared@eberle.blog"
 
 
+  footer:
+    text: "[humans.txt](/humans.txt)"
+
   cover:
     hidden: true # hide everywhere but not in structured data
     hiddenInList: true # hide on list pages and home
@@ -183,5 +186,3 @@ privacy:
     disable: false
     privacyEnhanced: true
 copyright: "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)"
-footer:
-  text: "[humans.txt](/humans.txt)"
