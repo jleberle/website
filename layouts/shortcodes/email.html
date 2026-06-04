@@ -1,0 +1,12 @@
+{{- $addr := .Get 0 -}}
+{{- $text := .Get 1 | default (.Get 0) -}}
+<span class="obf-email" data-e="{{ $addr | base64Encode }}" data-t="{{ $text | base64Encode }}">
+  <noscript>{{ $text }} (enable JavaScript to view email address)</noscript>
+</span>
+<script>
+(function(){
+  var el=document.currentScript.previousElementSibling;
+  var a=atob(el.dataset.e),t=atob(el.dataset.t);
+  el.innerHTML='<a href="mailto:'+a+'">'+t+'</a>';
+})();
+</script>
