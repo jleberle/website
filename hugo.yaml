@@ -96,7 +96,7 @@ params:
 
 
   footer:
-    text: "[humans.txt](/humans.txt)"
+    text: "[Only human crafted content](/humans.txt)"
 
   cover:
     hidden: true # hide everywhere but not in structured data
