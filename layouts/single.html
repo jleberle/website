@@ -7,7 +7,7 @@
     {{ partial "breadcrumbs.html" . }}
     <h1 class="post-title entry-hint-parent">
       {{- with $externalURL }}
-      <a class="link-post-title" href="{{ . }}" rel="external noopener" target="_blank">{{ $.Title }}</a>
+      <a class="link-post-title" href="{{ . }}" rel="external noopener" target="_blank">{{ $.Title }}&nbsp;<span class="link-post-arrow" aria-hidden="true">↗</span></a>
       {{- else }}
       {{ .Title }}
       {{- end }}

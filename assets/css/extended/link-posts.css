@@ -14,13 +14,10 @@
   text-decoration: none;
 }
 
-.post-title .link-post-title::after {
-  content: "\00A0\2197";
+.link-post-arrow {
   color: var(--secondary);
   font-size: 0.7em;
-  margin-left: 0.15em;
   vertical-align: 0.2em;
-  display: inline-block;
   white-space: nowrap;
 }
 
