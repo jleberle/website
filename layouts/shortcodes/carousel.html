@@ -1,6 +1,6 @@
 {{- $images := .Params -}}
 {{- $id := printf "carousel-%s" (delimit (seq 8 | shuffle) "") -}}
-<div class="carousel" id="{{ $id }}" aria-label="Image carousel" role="region">
+<div class="carousel" id="{{ $id }}" aria-label="Image carousel" role="region" tabindex="0">
     <div class="carousel-track">
         {{- range $i, $name := $images }}
         {{- $img := $.Page.Resources.GetMatch $name }}

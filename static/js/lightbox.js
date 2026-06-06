@@ -1,5 +1,5 @@
 (function () {
-  var overlay, overlayImg, overlayClose;
+  var overlay, overlayImg, overlayClose, lastFocused;
 
   function createOverlay() {
     overlay = document.createElement('div');
@@ -35,6 +35,7 @@
   }
 
   function openLightbox(img) {
+    lastFocused = img;
     overlayImg.src = img.dataset.lightboxSrc || img.src;
     overlayImg.alt = img.alt || '';
     overlay.classList.add('is-open');
@@ -45,6 +46,10 @@
   function closeLightbox() {
     overlay.classList.remove('is-open');
     document.body.style.overflow = '';
+    if (lastFocused) {
+      lastFocused.focus();
+      lastFocused = null;
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -52,8 +57,16 @@
 
     document.querySelectorAll('.post-content img, .md-content img').forEach(function (img) {
       img.style.cursor = 'zoom-in';
+      img.setAttribute('tabindex', '0');
+      img.setAttribute('role', 'button');
       img.addEventListener('click', function () {
         openLightbox(img);
+      });
+      img.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(img);
+        }
       });
     });
   });
