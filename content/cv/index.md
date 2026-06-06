@@ -1,6 +1,6 @@
 ---
 title: "Jared L. Eberle — Curriculum Vitae"
-date: 2026-05-28
+date: 2026-06-06
 hideMeta: true
 ---
 
@@ -44,7 +44,6 @@ August 2007 - May 2010
 
 ## Publications
 
-
 Review, Clyde Bellecourt with Jon Lurie, *The Thunder Before The Storm:
 The Autobiography of Clyde Bellecourt*. *Native American and Indigenous
 Studies* 5.1 (Spring 2018), 211-212.
@@ -70,9 +69,7 @@ Autobiography of a Yavapai Indian*, edited by Gregory McNamee. *Chronicles of
 Oklahoma* 92 (Fall 2014), 369-370. 
 -->
 
-
 ## Conference Papers
-
 
 “‘\[Dis\]-uniting the Red People of the Western Hemisphere:’ The
 National Indian Youth Council in Latin America.” Accepted paper for the
@@ -103,7 +100,6 @@ American and Indigenous Studies Association, Washington DC, June 2015.
 
 “Vietnam In South Dakota: The Media’s Depiction of the Wounded Knee
 Occupation.” Southwest PCA/ACA, Albuquerque, New Mexico, February 2015.
-
 
 ## Media Appearances
 
