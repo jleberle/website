@@ -1,0 +1,7 @@
+/* Pandoc renders the headerless address table in the CV (01-header.md) with an
+   empty header row (GFM tables require a header). Hide just that empty row.
+   :has(th:empty) matches only the empty pandoc artifact, so real table headers
+   elsewhere are untouched. */
+.post-content thead:has(th:empty) {
+  display: none;
+}
