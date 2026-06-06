@@ -37,6 +37,8 @@ Other than that I spend most of my time in [Ghostty](https://ghostty.org) for te
 
 Lastly, the handful of small apps that I having running in the background are [Hazeover](https://hazeover.com) to dim background apps; [Hyperkey](https://hyperkey.app/) to neuter my caps lock and make it more useful; and [Hazel](https://www.noodlesoft.com/) for automatically cleaning up folders and my trash.
 
+If I missed anything, my [Brewfile](https://codeberg.org/jleberle/dotfiles/src/branch/main/homebrew/brewfile) shows all the apps installed on my computer when I first set it up.
+
 ## Analog
 
 Increasingly I've found myself defaulting to to-do lists on paper and quick notes in a [Field Notes](https://fieldnotesbrand.com/) or a simple pad on my desk while I'm working. For pens I love the [Zebra Sarasa Clip](https://www.zebrapen.com/pages/sarasa-clip-gel-retractable) or the [Uniball AIR](https://www.unibrands.co/products/air-porous-point-pens?variant=42987340038350).
