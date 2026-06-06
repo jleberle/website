@@ -1,17 +1,42 @@
 {{- $u := urls.Parse .Destination -}}
 {{- $src := $u.String -}}
 {{- $fullSrc := "" -}}
+{{- $srcset := "" -}}
+{{- $imgWidth := "" -}}
+{{- $imgHeight := "" -}}
 {{- if not $u.IsAbs -}}
   {{- $path := strings.TrimPrefix "./" $u.Path }}
   {{- with or (.PageInner.Resources.Get $path) (resources.Get $path) -}}
     {{- $full := . | fingerprint -}}
     {{- $fullSrc = $full.RelPermalink -}}
-    {{- if gt .Width 800 -}}
-      {{- $display := .Resize "800x avif" | fingerprint -}}
-      {{- $src = $display.RelPermalink -}}
-    {{- else -}}
-      {{- $src = $full.RelPermalink -}}
+
+    {{- /* Build srcset: generate each size only if source is wider than that breakpoint */ -}}
+    {{- $srcsetParts := slice -}}
+    {{- $displayResource := . -}}
+
+    {{- if gt .Width 1200 -}}
+      {{- $r1200 := .Resize "1200x avif" | fingerprint -}}
+      {{- $srcsetParts = $srcsetParts | append (printf "%s 1200w" $r1200.RelPermalink) -}}
     {{- end -}}
+    {{- if gt .Width 800 -}}
+      {{- $r800 := .Resize "800x avif" | fingerprint -}}
+      {{- $srcsetParts = $srcsetParts | append (printf "%s 800w" $r800.RelPermalink) -}}
+      {{- $displayResource = .Resize "800x avif" -}}
+    {{- end -}}
+    {{- if gt .Width 400 -}}
+      {{- $r400 := .Resize "400x avif" | fingerprint -}}
+      {{- $srcsetParts = $srcsetParts | append (printf "%s 400w" $r400.RelPermalink) -}}
+    {{- end -}}
+
+    {{- $display := $displayResource | fingerprint -}}
+    {{- $src = $display.RelPermalink -}}
+    {{- $imgWidth = string $displayResource.Width -}}
+    {{- $imgHeight = string $displayResource.Height -}}
+
+    {{- if gt (len $srcsetParts) 1 -}}
+      {{- $srcset = delimit $srcsetParts ", " -}}
+    {{- end -}}
+
     {{- with $u.RawQuery -}}
       {{- $src = printf "%s?%s" $src . -}}
     {{- end -}}
@@ -23,6 +48,12 @@
 {{- $attributes := merge .Attributes (dict "alt" .Text "src" $src "title" (.Title | transform.HTMLEscape) "loading" "lazy") -}}
 {{- if $fullSrc -}}
   {{- $attributes = merge $attributes (dict "data-lightbox-src" $fullSrc) -}}
+{{- end -}}
+{{- if $srcset -}}
+  {{- $attributes = merge $attributes (dict "srcset" $srcset "sizes" "(max-width: 768px) 100vw, 800px") -}}
+{{- end -}}
+{{- if $imgWidth -}}
+  {{- $attributes = merge $attributes (dict "width" $imgWidth "height" $imgHeight) -}}
 {{- end -}}
 <img
   {{- range $k, $v := $attributes -}}
