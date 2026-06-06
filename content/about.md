@@ -1,8 +1,8 @@
 ---
 title: About
 hidemetadata: true
-description: ""
-summary: ""
+description: "About Jared Eberle and the website you're visiting"
+summary: "This is who I am and how I made this little website"
 ---
 
 ## The Human
