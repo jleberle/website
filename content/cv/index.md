@@ -48,13 +48,6 @@ Review, Clyde Bellecourt with Jon Lurie, *The Thunder Before The Storm:
 The Autobiography of Clyde Bellecourt*. *Native American and Indigenous
 Studies* 5.1 (Spring 2018), 211-212.
 
-<!--- 
-\hangindent=0.5in Review, David H. DeJong, *American Indian Treaties: A Guide 
-to Ratified and Unratified Colonial, United States, State, Foreign, and 
-Intertribal Treaties and Agreements, 1607-1911*. *Chronicles of Oklahoma* 95 
-(Spring 2017), 104-105. 
--->
-
 Review, Alison K. Brown, *First Nations, Museums, Narrations: Stories of
 the 1929 Franklin Motor Expedition to the Canadian Prairies*. *Native
 American and Indigenous Studies* 3.2 (2016), 130-131.
@@ -62,12 +55,6 @@ American and Indigenous Studies* 3.2 (2016), 130-131.
 Review, Susan Sleeper, et al., ed. *Why You Can’t Teach United States
 History without American Indians*. *Chronicles of Oklahoma* 93 (Fall
 2015), 359-361.
-
-<!---
-\hangindent=0.5in Review, Mike Burns, *The Only One Living to Tell: The 
-Autobiography of a Yavapai Indian*, edited by Gregory McNamee. *Chronicles of 
-Oklahoma* 92 (Fall 2014), 369-370. 
--->
 
 ## Conference Papers
 
