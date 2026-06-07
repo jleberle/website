@@ -17,7 +17,7 @@ cover:
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
 slug: blurring-the-lines-indians-cowboys-and-ranching-in-the-modern-west
-description: ""
+description: "Review of *"When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West*"
 ---
 
 Iverson, Peter. *When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West.* Norman: University of Oklahoma Press, 1994.

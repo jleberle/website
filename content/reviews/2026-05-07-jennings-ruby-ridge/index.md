@@ -17,7 +17,7 @@ cover:
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
 slug: jennings-ruby-ridge
-description: ""
+description: "Review of *End of Days: Ruby Ridge, the Apocalypse, and the Unmaking of America*"
 ---
 
 The idea of the apocalypse and the rapture has been a defining feature for many evangelical Christians for much of the 20th century and throughout that time there always seemed to be times when the Book of Revelations seemed to be coming into reality. Whether it was the World Wars, the nuclear arms race of the Cold War, or by the 1990s the end of that 50 year period of geo-political tensions, Christians of a certain strand found copious amounts of material to draw on for claiming the end of the world was nay. 

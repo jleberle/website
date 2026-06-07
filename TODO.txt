@@ -21,10 +21,6 @@ articles/2020-09-17-i-got-sick-of-watching-the-tulsa-world-die/index.md
 articles/2021-11-23-the-unified-theory-of-bruce-springsteen-the-character/index.md
 articles/2022-10-11-mary-lease-suffrage-and-prohibition/index.md
 
-quotes/2011-07-28-even-the-entertainment-was-traumatic.md
-quotes/2011-11-16-let-them-have-cake.md
-quotes/2012-01-22-hoboes-tramps-and-bums.md
-quotes/2012-11-30-at-least-its-only-a-belief-in-vampirism.md
 
 NEEDS description ONLY (summary already set)
 ---------------------------------------------

@@ -9,8 +9,8 @@ tags:
 title: "At Least It's Only a Belief in Vampirism"
 slug: at-least-its-only-a-belief-in-vampirism
 external_url: https://www.jstor.org/stable/658266
-description: ""
-summary: ""
+description: "What's the worst that could happen?"
+summary: "Vampirism in New England is not that bad"
 ---
 
 George R. Stetson writing about the belief in Vampirism amongst the population in rural Rhode Island during the nineteenth century:
