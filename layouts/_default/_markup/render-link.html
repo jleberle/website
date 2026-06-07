@@ -1,4 +1,8 @@
 {{- $url := urls.Parse .Destination -}}
 {{- $siteHost := (urls.Parse site.BaseURL).Host -}}
 {{- $isExternal := and $url.Host (ne $url.Host $siteHost) -}}
-<a href="{{ .Destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $isExternal }} rel="noopener noreferrer"{{ end }}>{{ .Text | safeHTML }}</a>{{- "" -}}
+{{- $isHumans := strings.HasSuffix $url.Path "humans.txt" -}}
+{{- $rel := slice -}}
+{{- if $isExternal }}{{ $rel = $rel | append "noopener" "noreferrer" }}{{ end -}}
+{{- if $isHumans }}{{ $rel = $rel | append "author" }}{{ end -}}
+<a href="{{ .Destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ with $rel }} rel="{{ delimit . " " }}"{{ end }}>{{ .Text | safeHTML }}</a>{{- "" -}}
