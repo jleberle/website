@@ -115,6 +115,11 @@ If you add a new section (e.g. `content/essays/`):
 2. Add a cache rule in `static/_headers` (`/essays/*/*.avif` etc.)
 3. Add it to the home page columns in `layouts/list.html` if desired
 
+## Credits
+
+- [PaperMod](https://github.com/adityatelange/hugo-PaperMod) — the Hugo theme this site is built on.
+- [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — the color palette used for the site's light and dark themes.
+
 ## License
 
 Content is licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
