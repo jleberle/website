@@ -1,17 +1,20 @@
-.entry-header h2 .link-post-title {
-  position: relative;
-  z-index: 2;
-  color: inherit;
-  text-decoration: none;
-}
-
-.entry-header h2 .link-post-title:hover {
-  text-decoration: underline;
-}
-
+.entry-header h2 .link-post-title,
 .post-title .link-post-title {
   color: inherit;
   text-decoration: none;
+}
+
+.entry-header h2 .link-post-title:hover,
+.post-title .link-post-title:hover {
+  text-decoration: underline;
+}
+
+.entry-header h2 .link-post-title {
+  position: relative;
+  z-index: 2;
+}
+
+.post-title .link-post-title {
   text-wrap: balance;
 }
 
@@ -20,8 +23,4 @@
   font-size: 0.7em;
   vertical-align: 0.2em;
   white-space: nowrap;
-}
-
-.post-title .link-post-title:hover {
-  text-decoration: underline;
 }

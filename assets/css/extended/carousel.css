@@ -70,21 +70,13 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #b0a89a;
+    background: var(--rule);
     cursor: pointer;
     transition: background 0.2s;
     border: none;
 }
 
 .carousel-dot.active {
-    background: var(--primary);
-}
-
-[data-theme="dark"] .carousel-dot {
-    background: #555;
-}
-
-[data-theme="dark"] .carousel-dot.active {
     background: var(--primary);
 }
 
