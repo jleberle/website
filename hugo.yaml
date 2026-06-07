@@ -146,18 +146,22 @@ menu:
     name: About
     url: /about/
     weight: 10
+  - identifier: cv
+    name: CV
+    url: /cv/
+    weight: 20
   - identifier: archive
     name: Archive
     url: /archives/
-    weight: 20
+    weight: 30
   - identifier: contact
     name: Contact
     url: /contact/
-    weight: 30
+    weight: 40
   - identifier: search
     name: Search
     url: /search/
-    weight: 40
+    weight: 50
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 markup:
   goldmark:
