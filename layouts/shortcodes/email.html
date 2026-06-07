@@ -1,2 +1,2 @@
 {{- $addr := .Get 0 -}}
-{{- $text := .Get 1 | default (.Get 0) -}}<span class="obf-email" data-e="{{ $addr | base64Encode }}" data-t="{{ $text | base64Encode }}"><noscript>{{ $text }} (enable JavaScript to view email address)</noscript></span>
+{{- $text := .Get 1 | default (.Get 0) -}}<span class="obf-email" data-e="{{ $addr | base64Encode }}" data-t="{{ $text | base64Encode }}"><noscript>{{ $text }} (enable JavaScript to view email address)</noscript></span>&#8288;{{- /* trailing word joiner: ends the output in text, not a tag, so Goldmark keeps the source space after the shortcode (e.g. "email me to") */ -}}
