@@ -59,7 +59,7 @@
     --code-block-bg: var(--base03);
     --border:        var(--base02);
 
-    --accent:        var(--red);
+    --accent:        var(--cyan);   /* better contrast than blue on base03 */
     --rule:          var(--base01);
 }
 
@@ -92,6 +92,24 @@ body,
 
 .post-title {
     font-size: 32px;
+}
+
+/* Individual page header: italic description with a thin content-width
+   rule separating it from the metadata below. */
+.post-description {
+    font-style: italic;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Footer meta (modified date + suggest changes) sits above the tags, with a
+   short rule on top that only spans the width of the meta text itself. */
+.post-meta-footer {
+    width: fit-content;
+    border-top: 1px solid var(--border);
+    padding-top: 0.6rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
 }
 
 .post-tags a,

@@ -140,11 +140,9 @@
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
   <header class="entry-header">
     <h2 class="entry-hint-parent">
-      {{- with $externalURL }}
-      <a class="link-post-title" href="{{ . }}" rel="external noopener" target="_blank">{{ $page.Title }}</a>
-      {{- else }}
+      {{/* Link posts still point the listing title + card at the local single
+           post; the external URL is only invoked from the single post. */}}
       {{- .Title }}
-      {{- end }}
       {{- if .Draft }}
       <span class="entry-hint" title="Draft">
         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
