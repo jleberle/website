@@ -17,7 +17,7 @@ cover:
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
 slug: zengerle-tucker-carlson
-description: "Review of *Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"
+description: "Review of Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"
 ---
 
 Listing the various ideas and conspiracies Tucker Carlson has embraced over the last decade and a half presents a list of increasingly offensive ideas rooted in opposition to immigrants and the Great Replacement Theory. Yet if you told this list to the 1990s Tucker Carlson who was writing for the *Weekly Standard* and criticizing Pat Buchanan's campaigns, he might he rather appalled. What's clear from Jason Zengerle's *Hated By All the Right People* is that Tucker's views have both shifted over time but also been rooted in the desire to retain popularity, making it hard to fully define where Tucker stands.
