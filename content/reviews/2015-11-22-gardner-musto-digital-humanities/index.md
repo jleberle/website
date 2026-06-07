@@ -7,8 +7,8 @@ tags:
 - Methodology
 draft: false
 date: 2015-11-22
-title: 'Digital Humanities: A Primer'
-summary: 'Review of *Digital Humanities by Gardiner and Musto*'
+title: "Digital Humanities: A Primer"
+summary: "Review of *Digital Humanities by Gardiner and Musto*"
 cover:
   image: "cover.avif"
   alt: "Front cover of Digital Humanities"

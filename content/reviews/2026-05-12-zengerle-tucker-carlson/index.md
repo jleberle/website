@@ -7,8 +7,8 @@ tags:
 - Journalism
 draft: false
 date: 2026-05-12
-title: 'The Rise and Fall of Tucker Carlson'
-summary: 'Review of *Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind*'
+title: "The Rise and Fall of Tucker Carlson"
+summary: "Review of *Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind*"
 cover:
   image: "cover.avif"
   alt: "Front cover of Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"

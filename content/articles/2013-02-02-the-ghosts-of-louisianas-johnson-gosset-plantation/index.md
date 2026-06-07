@@ -9,7 +9,7 @@ tags:
 draft: false
 date: 2013-02-02
 title: "The Ghosts of Louisiana's Johnson Gosset Plantation"
-summary: 'Story of a haunted Louisiana Plantation'
+summary: "Story of a haunted Louisiana Plantation"
 cover:
   image: "cover.avif"
   alt: "Screenshot of New York Times article on the Johnson Gosset Plantation"

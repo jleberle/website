@@ -31,12 +31,6 @@ articles/2013-02-02-the-ghosts-of-louisianas-johnson-gosset-plantation/index.md
 articles/2015-09-03-bob-engelharts-golden-hill-paugussett-cartoon/index.md
 articles/2017-08-03-from-the-archives-the-vanishing-americans/index.md
 
-reviews/2015-07-21-warrior-mckenzie-jones/index.md
-reviews/2015-09-09-blurring-the-lines-indians-cowboys-and-ranching-in-the-modern-west/index.md
-reviews/2015-11-22-gardner-musto-digital-humanities/index.md
-reviews/2017-07-17-weigel-show-that-never-ends/index.md
-reviews/2026-05-07-jennings-ruby-ridge/index.md
-reviews/2026-05-12-zengerle-tucker-carlson/index.md
 
 NEEDS summary ONLY (description already set)
 ---------------------------------------------

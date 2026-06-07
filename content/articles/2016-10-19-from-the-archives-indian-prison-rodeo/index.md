@@ -6,7 +6,7 @@ tags:
 - 1970s
 - Illinois
 - Rodeo
-title: 'From the Archives: Indian Prison Rodeo'
+title: "From the Archives: Indian Prison Rodeo"
 slug: from-the-archives-indian-prison-rodeo
 description: ""
 summary: ""

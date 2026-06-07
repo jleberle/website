@@ -1,8 +1,8 @@
 ---
-date: '2025-04-17'
+date: "2025-04-17"
 draft: false
-title: 'Survey of American History'
-summary: 'Survey of American history from past to present in one semester'
+title: "Survey of American History"
+summary: "Survey of American history from past to present in one semester"
 cover:
   image: "cover.avif"
   alt: "Map of the United States"

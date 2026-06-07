@@ -6,7 +6,7 @@ tags:
 - 1910s
 - Oklahoma
 - Urban History
-title: 'Tulsa in 1918'
+title: "Tulsa in 1918"
 cover:
   image: "cover.avif"
   alt: "1918 Aerial Map of Tulsa, Oklahoma"

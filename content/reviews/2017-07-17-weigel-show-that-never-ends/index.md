@@ -8,8 +8,8 @@ tags:
 - Rock Music
 draft: false
 date: 2017-07-17
-title: 'Redeeming the Uncool'
-summary: 'Review of *The Show That Never Ends By Dave Weigel*'
+title: "Redeeming the Uncool"
+summary: "Review of *The Show That Never Ends By Dave Weigel*"
 cover:
   image: "cover.avif"
   alt: "Front cover of The Show That Never Ends"

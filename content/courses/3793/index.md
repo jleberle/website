@@ -1,7 +1,7 @@
 ---
-date: '2025-04-17'
+date: "2025-04-17"
 draft: false
-title: 'Native American History'
+title: "Native American History"
 cover:
   image: "cover.avif"
   alt: "Sun Dance Scene"

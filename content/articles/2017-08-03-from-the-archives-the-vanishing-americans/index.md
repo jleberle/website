@@ -7,8 +7,8 @@ tags:
 - 1970s
 - Archives
 - Music
-title: 'From the Archives: The Vanishing Americans'
-summary: 'Screenshot of Article detailing Native Rock Band'
+title: "From the Archives: The Vanishing Americans"
+summary: "Screenshot of Article detailing Native Rock Band"
 cover:
   image: "cover.avif"
   alt: "Front cover of Digital Humanities"
