@@ -1,24 +1,82 @@
-/* Solarized Light palette in light mode */
+/* ============================================================
+   Solarized palette — Ethan Schoonover
+   https://ethanschoonover.com/solarized/
+   The 16 canonical colors, defined once and referenced below.
+   ============================================================ */
 :root {
-    --theme: #fffcf2;
-    --entry: #FDF6E3;
-    --primary: #2d3c42;
-    --secondary: rgb(108, 108, 108);
-    --tertiary: #FEFDF8;
-    --code-bg: #FEFDF8;
+    --base03:  #002b36;
+    --base02:  #073642;
+    --base01:  #586e75;
+    --base00:  #657b83;
+    --base0:   #839496;
+    --base1:   #93a1a1;
+    --base2:   #eee8d5;
+    --base3:   #fdf6e3;
+
+    --yellow:  #b58900;
+    --orange:  #cb4b16;
+    --red:     #dc322f;
+    --magenta: #d33682;
+    --violet:  #6c71c5;
+    --blue:    #268bd2;
+    --cyan:    #2aa198;
+    --green:   #859900;
 }
 
+/* ------------------------------------------------------------
+   Solarized Light (default) — maps PaperMod's theme vars onto
+   the palette. Per the spec: base3 background, base2 highlights,
+   base00 body text, base01 emphasized, base1 muted comments.
+   ------------------------------------------------------------ */
+:root {
+    --theme:         var(--base3);   /* page background        */
+    --entry:         var(--base2);   /* cards / highlighted bg  */
+    --primary:       var(--base02);  /* headings, links, strong */
+    --content:       var(--base01);  /* body text               */
+    --secondary:     var(--base01);  /* meta / muted text       */
+    --tertiary:      var(--base2);   /* subtle fills, scrollbar */
+    --code-bg:       var(--base2);   /* inline code             */
+    --code-block-bg: var(--base03);  /* code blocks (dark)      */
+    --border:        var(--base2);
+
+    --accent:        var(--blue);    /* opt-in link/accent color */
+    --rule:          var(--base1);   /* hr, blockquote, hovers   */
+}
+
+/* ------------------------------------------------------------
+   Solarized Dark — same palette, inverted tonal range.
+   base03 background, base02 highlights, base0 body text,
+   base1 emphasized, base01 muted comments.
+   ------------------------------------------------------------ */
+:root[data-theme="dark"] {
+    --theme:         var(--base03);
+    --entry:         var(--base02);
+    --primary:       var(--base1);
+    --content:       var(--base0);
+    --secondary:     var(--base01);
+    --tertiary:      var(--base02);
+    --code-bg:       var(--base02);
+    --code-block-bg: var(--base03);
+    --border:        var(--base02);
+
+    --accent:        var(--blue);
+    --rule:          var(--base01);
+}
+
+/* ------------------------------------------------------------
+   Element overrides driven by the variables above
+   ------------------------------------------------------------ */
 body,
 .list {
-    background: #fffcf2;
+    background: var(--theme);
 }
 
 .md-content hr {
-    background: #b0a89a;
+    background: var(--rule);
 }
 
 .md-content blockquote {
-    border-inline-start: 2px solid #b0a89a;
+    border-inline-start: 2px solid var(--rule);
 }
 
 .post-title {
@@ -32,17 +90,5 @@ body,
 
 .post-tags a:hover,
 .paginav a:hover {
-    background: #e8dfc8;
-}
-
-/* Restore dark mode */
-:root[data-theme="dark"] {
-    --theme: rgb(29, 30, 32);
-    --entry: rgb(46, 46, 51);
-    --secondary: rgb(155, 156, 157);
-}
-
-[data-theme="dark"] body,
-[data-theme="dark"] .list {
-    background: rgb(29, 30, 32);
+    background: var(--rule);
 }

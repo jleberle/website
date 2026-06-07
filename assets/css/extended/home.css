@@ -85,9 +85,7 @@ body.home .main {
 .home-list-entry a {
     color: var(--primary);
     flex: 1;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
 }
 
 .home-section-all {
