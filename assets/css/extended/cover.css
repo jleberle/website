@@ -1,0 +1,25 @@
+/* Single-post cover: float it beside the text as a book-review style image
+   rather than a full-width hero, so portrait jackets don't dominate the page.
+   The cover figure sits just before .post-content, which has no block
+   formatting context of its own, so the review text wraps around the float. */
+.post-single .entry-cover {
+    float: right;
+    width: 220px;
+    max-width: 40%;
+    margin: 0.25rem 0 1rem 1.5rem;
+}
+
+/* Drop the tags/footer below a tall cover on short posts. */
+.post-single .post-footer {
+    clear: both;
+}
+
+/* On narrow screens, unfloat and center the cover above the text. */
+@media (max-width: 640px) {
+    .post-single .entry-cover {
+        float: none;
+        width: auto;
+        max-width: 100%;
+        margin: 0 auto var(--content-gap);
+    }
+}
