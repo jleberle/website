@@ -92,3 +92,31 @@ body,
 .paginav a:hover {
     background: var(--rule);
 }
+
+/* ------------------------------------------------------------
+   Top-nav menu styled to match eberle.blog: closely spaced
+   links, each with padding and a rounded hover-background pill.
+   ------------------------------------------------------------ */
+.menu {
+    column-gap: 0.25rem;
+    align-items: center;
+}
+
+.menu a {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 4px 10px;
+    border-radius: var(--radius);
+}
+
+.menu a:hover {
+    background: var(--entry);
+    text-decoration: none;
+}
+
+/* ------------------------------------------------------------
+   Thin divider line along the bottom of the header
+   ------------------------------------------------------------ */
+.header {
+    border-bottom: 1px solid var(--rule);
+}
