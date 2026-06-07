@@ -103,21 +103,20 @@ body.home .main {
     flex-shrink: 0;
 }
 
-/* Hover feedback for links in the home intro and section lists.
-   Shifts to the accent color so it reads on every link type,
-   including the section links that already sit at --primary. */
-.home-info-content .entry-content a,
+/* Hover feedback for the home section-list links (the intro links are
+   .md-content and get their hover from theme.css). Shifts to the accent
+   color so it reads on every link type, including the section links that
+   already sit at --primary. */
 .home-section-title a,
 .home-list-entry a,
 .home-section-all {
     transition: color 0.15s ease;
 }
 
-.home-info-content .entry-content a:hover,
 .home-section-title a:hover,
 .home-list-entry a:hover,
 .home-section-all:hover {
-    color: var(--primary);
+    color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 0.25rem;
 }

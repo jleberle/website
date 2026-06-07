@@ -39,7 +39,7 @@
     --code-block-bg: var(--base03);  /* code blocks (dark)      */
     --border:        var(--base2);
 
-    --accent:        var(--blue);    /* opt-in link/accent color */
+    --accent:        var(--red);     /* link hover accent        */
     --rule:          var(--base1);   /* hr, blockquote, hovers   */
 }
 
@@ -59,7 +59,7 @@
     --code-block-bg: var(--base03);
     --border:        var(--base02);
 
-    --accent:        var(--blue);
+    --accent:        var(--red);
     --rule:          var(--base01);
 }
 
@@ -79,6 +79,17 @@ body,
     border-inline-start: 2px solid var(--rule);
 }
 
+/* Link hover in prose (post bodies and the home intro — both .md-content):
+   shift to the accent color and tighten the underline offset. */
+.md-content a:not(.anchor) {
+    transition: color 0.15s ease;
+}
+
+.md-content a:not(.anchor):hover {
+    color: var(--accent);
+    text-underline-offset: 0.25rem;
+}
+
 .post-title {
     font-size: 32px;
 }
@@ -88,9 +99,11 @@ body,
     background: var(--entry);
 }
 
+/* Gentle hover for tag pills and prev/next post buttons: blend the hover
+   color toward the resting background so it's a soft highlight. */
 .post-tags a:hover,
 .paginav a:hover {
-    background: var(--rule);
+    background: color-mix(in srgb, var(--entry), var(--rule) 40%);
 }
 
 /* ------------------------------------------------------------
