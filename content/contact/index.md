@@ -9,6 +9,7 @@ summary: ""
 For students, please consult the [student hours](/studenthours) page for additional information on utilizing student hours to discuss issues in the course you're enrolled in. 
 
 If you are not enrolled in one of my courses and want to discuss anything on this site, please utilize my {{< email "jared@jaredeberle.org" "email" >}}
+
 #### Office Mailing address
 
 154 Social Sciences and Humanities\
