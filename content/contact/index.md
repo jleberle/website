@@ -3,12 +3,12 @@ title: Contact
 date: 2024-05-08
 hidemeta: true
 description: Dr. Jared Eberle's office and address at Oklahoma State University
-summary: ""
+summary: "Dr. Eberle's contact information."
 ---
 
-For students, please consult the [student hours](/studenthours) page for additional information on utilizing student hours to discuss issues in the course you're enrolled in. 
+**For Students**: please consult the [student hours](/studenthours) page for additional information on utilizing student hours to discuss issues in the course you're enrolled in. 
 
-If you are not enrolled in one of my courses and want to discuss anything on this site, please utilize my {{< email "jared@jaredeberle.org" "email" >}}
+**For anyone not currently enrolled**: If you want to discuss anything here, please utilize {{< email "jared@jaredeberle.org" "my email" >}}. ([PGP Key](/key.asc)) or contact me on social media.
 
 #### Office Mailing address
 
