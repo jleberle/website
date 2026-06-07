@@ -10,6 +10,8 @@ summary: ""
 
 Student hours is a nicer way of saying office hours. During the period listed below I am available for anything you may want to discuss related to the course. Or even things not related to the course. During my scheduled availability I am around to provide as much help as you feel you need related to the course, whether that's a quick question or a more detailed discussion.
 
+An appointment is not needed during scheduled student hours, if you need to meet outside my scheduled availability please {{< email "jared.eberle@okstate.edu" "email" >}}
+
 ---
 
 #### Schedule
@@ -24,7 +26,7 @@ I do not have scheduled student hours during intersession periods or over the su
 
 #### Location
 
-By default meetings are in [my office](/location). I am also available for virtual meetings on Zoom, email me to schedule a time and get the Zoom meeting information.
+By default meetings are in [my office](/location). I am also available for virtual meetings on Zoom, {{< email "jared.eberle@okstate.edu" "email" >}} to schedule a time and get the Zoom meeting information.
 
 ---
 

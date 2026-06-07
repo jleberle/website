@@ -8,5 +8,6 @@
     "scripts/",
     "static/",
     "themes/"
-  ]
+  ],
+  "alwaysUpdateLinks": true
 }
