@@ -21,6 +21,6 @@ Stillwater, OK 74078
 
 #### Office location
 
-![](/contact/location.avif)
+![](/contact/location.avif "Map of my office location at Oklahoma State University")
 
 [View interactive map](https://www.openstreetmap.org/?mlat=36.119911&mlon=-97.072347#map=18/36.119911/-97.072349)
