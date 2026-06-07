@@ -9,7 +9,7 @@ tags:
 draft: false
 date: 2015-07-21
 title: "The Birth of Red Power"
-summary: "Review of *\"Clyde Warrior: Tradition, Community, and Red Power*"
+summary: "Review of Clyde Warrior: Tradition, Community, and Red Power"
 cover:
   image: "cover.avif"
   alt: "Front cover of Clyde Warrior: Tradition, Community, and Red Power"
@@ -18,7 +18,7 @@ cover:
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
 slug: warrior-mckenzie-jones
-description: "Review of *"Clyde Warrior: Tradition, Community, and Red Power*"
+description: "Review of Clyde Warrior: Tradition, Community, and Red Power"
 ---
 
 In 1966 Clyde Warrior, Della Warrior, Mel Thom, and other young American Indian activists crashed the National Council of American Indians's parade in Oklahoma City with a rented car that had a sign reading "Red Power National Indian Youth Council" on one side and "Custer Died for Your Sins" on the other. The incident not only marked the first use of "Red Power" but highlighted the growing rift between the older NCAI and the younger NIYC that advocated a more forcible approach to native activism. Yet Warrior's Red Power was not the pan-Indian ideology rooted in militant, direct-action protests famously embodied by the occupations of Alcatraz Island, the Bureau of Indian Affairs, and Wounded Knee, South Dakota between 1969 and 1973. In contrast, as Paul McKenzie-Jones documents in *Clyde Warrior: Tradition, Community, and Red Power*, Warrior advocated a Red Power rooted in tribal traditions and community that sought to reform the system rather than burn it down.

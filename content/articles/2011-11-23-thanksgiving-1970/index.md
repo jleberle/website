@@ -16,7 +16,7 @@ cover:
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
 slug: thanksgiving-1970
-description: ""
+description: "AIM's 1970 Thanksgiving protest"
 ---
 
 1970 marked the 350th anniversary of the pilgrims landing at Plymouth Rock and like usual the residents of Plymouth, Massachusetts were planning the annual *Pilgrim’s Progress* festival. The festival included a parade and feast, complete with residents in period clothes. The whole affair was a celebration of American progress. Empire, if you will.
@@ -37,4 +37,4 @@ Celebrate Thanksgiving and count your blessings, but remember the cost at which 
 [^2]: Ibid., 112.
 [^3]: “Mourning Indians Dump Sand on Plymouth Rock,” *New York Times*, November, 27, 1970.
 [^4]: Banks, 113.
-[^4]: *The New York Times*, November 27, 1970.
+[^5]: *The New York Times*, November 27, 1970.

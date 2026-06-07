@@ -1,7 +1,7 @@
 ---
 title: "Search"
 layout: "search"
-placeholder: "Search for something"
-description: ""
-summary: ""
+placeholder: "Go splunking"
+description: "Search my site"
+summary: "Search Jared L. Eberle's website"
 ---

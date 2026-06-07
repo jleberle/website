@@ -1,4 +1,5 @@
 ---
 title: "Quotes"
-description: "Short link posts and quick commentary."
+description: "Quotes from books that stuck with me."
+summary: "Quotes from books that stuck with me."
 ---

@@ -11,13 +11,15 @@ cover:
   image: "cover.avif"
   alt: "1918 Aerial Map of Tulsa, Oklahoma"
   hiddenInList: false
-  hiddenInSingle: false
+  hiddenInSingle: true
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
 slug: tulsa-in-1918
-description: ""
-summary: ""
+description: "1918 map of Tulsa, Oklahoma"
+summary: "1918 map of Tulsa, Oklahoma"
 ---
+
+![](cover.avif)
 
 The hand-drawn map (not done to scale) comes from the Library of Congress's [panoramic maps collection](https://www.loc.gov/collections/panoramic-maps). The full version can be [downloaded or viewed here](https://www.loc.gov/item/87692752/). Here's [some other historical maps from Oklahoma](https://www.loc.gov/collections/general-maps/?fa=location:oklahoma).
 

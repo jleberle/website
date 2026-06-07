@@ -9,11 +9,11 @@ tags:
 - Wounded Knee
 title: "Where'd the Death Come From?"
 slug: whered-the-death-come-from
-description: ""
-summary: ""
+description: "Trying to combat misinformation on Wikipedia."
+summary: "Trying to understand why Wikipedia reports a federal officer's death at the Wounded Knee occupation"
 ---
 
-According to Alexa, the English language version of Wikipedia is one of the most visited sites on the Internet and the only vaguely academic site besides the omnipotent Google on the list. Yet even though Wikipedia and its five million articles have become a ubiquitous part of how we figure out the answer to life’s vexing questions, most people know little about how the content actually gets on Wikipedia. While most theoretically know anyone can edit Wikipedia and contribute additional information or fix errors, few people outside of Wikipedia’s inner circle of active volunteer editors regularly contribute to the site and understand the intricacies of the process. In part this may be the result of technological barriers, but as Tom Simonite noted in an MIT Technology Review article on the “decline of Wikipedia,” [Wikipedia’s internal dynamics also play a critical role](https://www.technologyreview.com/2013/10/22/175674/the-decline-of-wikipedia/):
+According to Alexa site tracking, the English language version of Wikipedia is one of the most visited sites on the Internet and the only vaguely academic site besides the omnipotent Google on the list.[^3] Yet even though Wikipedia and its five million articles have become a ubiquitous part of how we figure out the answer to life’s vexing questions, most people know little about how the content actually gets on Wikipedia. While most theoretically know anyone can edit Wikipedia and contribute additional information or fix errors, few people outside of Wikipedia’s inner circle of active volunteer editors regularly contribute to the site and understand the intricacies of the process. In part this may be the result of technological barriers, but as Tom Simonite noted in an MIT Technology Review article on the “decline of Wikipedia,” [Wikipedia’s internal dynamics also play a critical role](https://www.technologyreview.com/2013/10/22/175674/the-decline-of-wikipedia/):
 
 > The loose collective running the site today, estimated to be 90 percent male, operates a crushing bureaucracy with an often abrasive atmosphere that deters newcomers who might increase participation in Wikipedia and broaden its coverage.
 
@@ -23,7 +23,7 @@ So at the same time that Wikipedia is remaining increasingly relevant as a way t
 
 {{< figure src="wikipedian_protester.avif" alt="A man at a protest holding a sign reading '[CITATION NEEDED]'" attr="xkcd #285" attrlink="https://xkcd.com/285/" >}}
 
-In February of 2012 Timothy Messer-Kruse published an article entitled ["The 'Undue Weight' of Truth on Wikipedia"]((https://www.chronicle.com/article/the-undue-weight-of-truth-on-wikipedia/) in the *Chronicle of Higher Education* that covered his attempts to correct an issue on the Wikipedia entry for the Haymarket Riot. Messer-Kruse's issue centered on the claim that the prosecution in the Haymarket trial failed to provide any evidence linking the defendants with the bombings. As Messer-Kruse discusses, the claim was factually inaccurate and had a mountain of historical evidence contradicting it, but because of Wikipedia's policies that give preference to published secondary sources over archival materials and the "majority view" of a subject (i.e. whatever most sources agree on), the attempt to correct the assertion only succeeded once he published a book on the subject.
+In February of 2012 Timothy Messer-Kruse published an article entitled ["The 'Undue Weight' of Truth on Wikipedia"](https://www.chronicle.com/article/the-undue-weight-of-truth-on-wikipedia/) in the *Chronicle of Higher Education* that covered his attempts to correct an issue on the Wikipedia entry for the Haymarket Riot. Messer-Kruse's issue centered on the claim that the prosecution in the Haymarket trial failed to provide any evidence linking the defendants with the bombings. As Messer-Kruse discusses, the claim was factually inaccurate and had a mountain of historical evidence contradicting it, but because of Wikipedia's policies that give preference to published secondary sources over archival materials and the "majority view" of a subject (i.e. whatever most sources agree on), the attempt to correct the assertion only succeeded once he published a book on the subject.
 
 Messer-Kruse's article hits on many of the issues academics have with Wikipedia's reliability and academic rigor, but it also provided a helpful look at the backside of Wikipedia's editorial policies and the assertion that Wikipedia is geared towards policing "verifiability" over the "truth." The article also resonated with me because when it was published I was finishing my Master's thesis on the occupation of Wounded Knee, South Dakota in 1973 and I ended up engaged in my own Wikipedia editing conflict over a subject that I don't claim to be an expert on in the manner Messer-Kruse is on Haymarket, but I certainly know more about it than the average Wikipedia editor.
 
@@ -41,11 +41,8 @@ As a component of History 5073 - Digital Preservation, we're required to edit a 
 - If possible I'd love to get the government death removed from the article. I've theoretically begun the process (again) of discussing the death on the talk page for the article, pointing out that the BBC podcast is not a reasonable source for the claim.
 - The article is also entirely devoid of pictures, so I'd really love to find a picture that could meet Wikipedia's standards for inclusion. Unfortunately given that the event occurred in 1973, tracking down a public domain photograph from the event is difficult.
 
-
-Image source: [xkcd]((https://xkcd.com/285/)
-
 *This post was a component of my digital preservation class.*
 
---- 
 [^1]: Pat Chaat Smith and Robert Allen Warrior, *Like a Hurricane: The Native Rights Movement from Alcatraz to Wounded Knee** (New York: The New Press, 1996), 234.
 [^2]: Prosecution Rests in Trial of 2 Indians Over Wounded Knee, "New York Times," July 25, 1974.
+[^3]: 2026 update: Amazon shut down Alexa site tracking and the statistics are no longer available but Wikipedia has only increased it's standing since this was written.

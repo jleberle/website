@@ -18,7 +18,7 @@ cover:
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
 slug: the-ghosts-of-louisianas-johnson-gosset-plantation
-description: ""
+description: "A haunted Louisiana plantation?"
 ---
 Sometime around 1859 or 1860 two cousins from Kentucky tore down “the handsomest and most commodious mansion on the Mississippi,” seemingly within months of having bought it. The two and a half story mansion, built in 1780 by a thirty-five year old former lieutenant in the French Navy, sat on over a thousand acres of land and featured three foot thick walls of water lime bricks. Three generations of the original owner’s family lived on the property until the [economic crisis of 1857 and 1858 ](https://www.napoleon.org/en/history-of-the-two-empires/articles/napoleon-iii-confronted-with-the-economic-crisis-of-1857-1858)forced the family to sell the property to the two cousins from Louisville with the last names Gassett and Johnson.[^1] While relatively small, the [plantation classified as a](https://www.google.com/books/edition/_/Gi5JSCtGev8C?hl=en&amp;gbpv=1&amp;pg=PA146&amp;dq=gossett+and+johnson+plantation) “large slaveholder” in 1860 lists and produced a considerable amount of sugar and molasses. So why did the two decide to tear down a stately mansion on prized land along the Mississippi? According to a [*New York Times* article](https://www.nytimes.com/1894/12/09/archives/with-the-grip-of-death-mysterious-manifestations-in-an-old-southern.html?searchResultPosition=1) published roughly thirty-five years later, the house (and the owners) fell victim to “mysterious manifestations” that left them in “the grip of death.”
 

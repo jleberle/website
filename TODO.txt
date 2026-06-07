@@ -30,9 +30,3 @@ articles/2011-11-23-thanksgiving-1970/index.md
 articles/2013-02-02-the-ghosts-of-louisianas-johnson-gosset-plantation/index.md
 articles/2015-09-03-bob-engelharts-golden-hill-paugussett-cartoon/index.md
 articles/2017-08-03-from-the-archives-the-vanishing-americans/index.md
-
-
-NEEDS summary ONLY (description already set)
----------------------------------------------
-articles/2026-06-03-the-summer-revisions-part-i-claude/index.md
-location/index.md

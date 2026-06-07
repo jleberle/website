@@ -14,11 +14,11 @@ cover:
   image: "cover.avif"
   alt: "Still of Cheers Opening with John Ratzenberger's credit"
   hiddenInList: false
-  hiddenInSingle: false
+  hiddenInSingle: true
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
 slug: saturday-night-in-a-saloon-or-john-ratzenbergers-opening-photos-from-cheers
-description: ""
+description: "Where everybody knows your name in Minnesota"
 ---
 In watching the final installment of Ken Burns’s “Prohibition” documentary I noticed a picture that was notable solely because I watch too many old reruns of "*Cheers*":
 

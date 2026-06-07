@@ -9,8 +9,8 @@ tags:
 - Tribal Recognition
 title: BIA Recognition Changes in Connecticut
 slug: bia-recognition-changes-in-connecticut
-description: ""
-summary: ""
+description: "Tribal recognition and its problems in Connecticut"
+summary: "Tribal recognition and its problems in Connecticut"
 ---
 
 I've been meaning to write an in-depth single about the Bureau of Indian Affairs attempt to change the process for tribes getting recognized and the backlash it's received in Connecticut since it was announced last summer but simply haven't had the time (or energy) to get around to it. Because I have no time to write something proper, here's a basic overview.

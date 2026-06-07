@@ -8,7 +8,7 @@ tags:
 - American West
 - Cattle Ranching
 title: "Blurring the Lines: Indians, Cowboys and Ranching in the Modern West"
-summary: "Review of *\"When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West*"
+summary: "Review of When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West"
 cover:
   image: "cover.avif"
   alt: "Front cover of When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West"
@@ -17,7 +17,7 @@ cover:
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
 slug: blurring-the-lines-indians-cowboys-and-ranching-in-the-modern-west
-description: "Review of *"When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West*"
+description: "Review of When Indians Became Cowboys"
 ---
 
 Iverson, Peter. *When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West.* Norman: University of Oklahoma Press, 1994.
