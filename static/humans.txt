@@ -1,7 +1,7 @@
 /* TEAM */
 Name: Jared Eberle and one cat
-https://jaredeberle.org
-https://eberle.blog
+Site: https://jaredeberle.org
+Social Media: https://eberle.blog
 Made from: Tulsa, Oklahoma
 
 /* THANKS */
@@ -14,7 +14,7 @@ Last Update: June 2026
 Standards: HTML5, CSS3, JS
 Components: Hugo, PaperMod
 
-I've used AI to update this site's structure and technical backend because I simply do not have the technical abilities or time to make this site work like I truly want on my own. All content is explicitly my own and will also be entirely human-generated as long as this site exists. 
+I've used AI to update this site's structure and technical back-end because I simply do not have the technical abilities or time to make this site work like I truly want on my own. All content is explicitly my own and will also be entirely human-generated as long as this site exists. 
 
 Good luck and Godspeed,
 
