@@ -16,7 +16,7 @@ tags:
 - Oklahoma
 - Oklahoma History
 slug: 3703
-description: ""
+description: "The history of the region now known as Oklahoma from the earliest Indigenous arrivals through the recent past"
 ---
 
 *This course was offered in-person during the Spring 2025 semester*

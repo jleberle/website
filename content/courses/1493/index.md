@@ -14,7 +14,7 @@ tags:
 - American History
 - Reconstruction
 slug: 1493
-description: ""
+description: "This course provides a general introduction to major themes and events in the history of North America and the United States since the end of the Civil War in 1865."
 ---
 
 *Syllabus for Spring 2025*

@@ -16,7 +16,7 @@ tags:
 - American History
 - Survey Course
 slug: 1103
-description: ""
+description: "This course provides a general introduction to major themes and events in the history of North America and the United States beginning with earliest Indigenous arrivals and continuing through the present day"
 ---
 
 *This course was offered as an online course in the Spring 2025 semester*

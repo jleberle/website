@@ -14,8 +14,8 @@ categories:
 tags:
 - Native American History
 slug: 3793
-description: ""
-summary: ""
+description: "Introduction to the history of Native American peoples from encounters with European colonists to the present."
+summary: "Introduction to the history of Native American peoples from encounters with European colonists to the present, with an emphasis on tribal nationhood and sovereignty, war and diplomacy, treaty rights and federal policies, indigeneity in modern contexts, and a leadership in Indian Country."
 ---
 
 *This version was offered in the Spring 2023 Semester*
