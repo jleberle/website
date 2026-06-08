@@ -9,6 +9,13 @@ steps:
     commands:
       - hugo --minify
 
+  - name: csp-check
+    image: python:3-slim
+    commands:
+      # Fails the build if static/_headers CSP hashes drift from the built
+      # inline <style>/<script> bytes (e.g. after a Hugo or PaperMod bump).
+      - bash scripts/csp-hashes.sh --check --no-build
+
   - name: link-check
     image: lycheeverse/lychee:0.24.2
     when:
