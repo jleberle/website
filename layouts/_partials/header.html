@@ -12,15 +12,15 @@
                         {{- $processableFormats = $processableFormats | append "webp" -}}
                     {{- end -}}
                     {{- $prod := (hugo.IsProduction | or (eq site.Params.env "production")) }}
+                    {{- $h := int (site.Params.label.iconHeight | default 30) }}
                     {{- if and (in $processableFormats $img.MediaType.SubType) (eq $prod true)}}
-                        {{- if site.Params.label.iconHeight }}
-                            {{- $img = $img.Resize (printf "x%d" site.Params.label.iconHeight) }}
-                        {{ else }}
-                            {{- $img = $img.Resize "x30" }}
-                        {{- end }}
+                        {{- /* Render at 2x the display height so the logo stays crisp on high-DPR screens. */}}
+                        {{- $img = $img.Resize (printf "x%d" (mul $h 2)) }}
+                        <img src="{{ $img.Permalink }}" alt=""
+                            width="{{ div $img.Width 2 }}" height="{{ div $img.Height 2 }}">
+                    {{- else }}
+                        <img src="{{ $img.Permalink }}" alt="" height="{{ $h }}">
                     {{- end }}
-                    <img src="{{ $img.Permalink }}" alt=""
-                        height="{{- site.Params.label.iconHeight | default "30" -}}">
                 {{- else }}
                 <img src="{{- site.Params.label.icon | absURL -}}" alt=""
                     height="{{- site.Params.label.iconHeight | default "30" -}}">
