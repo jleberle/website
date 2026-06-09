@@ -16,7 +16,7 @@
     {{- $sizes := (slice "360" "480" "720" "1080" "1500") }}
     {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
     {{- if hugo.IsExtended -}}
-        {{- $processableFormats = $processableFormats | append "webp" -}}
+        {{- $processableFormats = $processableFormats | append "webp" "avif" -}}
     {{- end -}}
 
     {{- $imgdl := (.Params.cover.image) | absURL }}
