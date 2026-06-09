@@ -1,0 +1,54 @@
+{{- /* Responsive override of PaperMod's figure shortcode: when src resolves to a
+       processable page/asset resource, emit a native AVIF srcset + dimensions
+       (mirrors layouts/_markup/render-image.html); otherwise falls back to a plain
+       <img> exactly like the theme. Keeps the #center fragment for the existing
+       CSS centering rule and all of the theme's align/link/caption features. */ -}}
+{{- $src := .Get "src" -}}
+{{- $align := eq (.Get "align") "center" -}}
+{{- $img := "" -}}
+{{- with $src }}{{ $img = or ($.Page.Resources.GetMatch .) (resources.Get .) }}{{ end -}}
+{{- $srcset := "" -}}
+{{- $imgW := .Get "width" -}}
+{{- $imgH := .Get "height" -}}
+{{- $finalSrc := $src -}}
+{{- $processable := slice "jpg" "jpeg" "png" "tif" "bmp" "gif" "webp" "avif" -}}
+{{- if and $img (in $processable $img.MediaType.SubType) -}}
+    {{- $full := $img | fingerprint -}}
+    {{- $finalSrc = $full.RelPermalink -}}
+    {{- $imgW = string $img.Width -}}
+    {{- $imgH = string $img.Height -}}
+    {{- $parts := slice -}}
+    {{- if gt $img.Width 1200 }}{{ $r := $img.Resize "1200x avif" | fingerprint }}{{ $parts = $parts | append (printf "%s 1200w" $r.RelPermalink) }}{{ end -}}
+    {{- if gt $img.Width 800 }}{{ $r := $img.Resize "800x avif" | fingerprint }}{{ $parts = $parts | append (printf "%s 800w" $r.RelPermalink) }}{{ end -}}
+    {{- if gt $img.Width 400 }}{{ $r := $img.Resize "400x avif" | fingerprint }}{{ $parts = $parts | append (printf "%s 400w" $r.RelPermalink) }}{{ end -}}
+    {{- $parts = $parts | append (printf "%s %dw" $full.RelPermalink $img.Width) -}}
+    {{- if gt (len $parts) 1 }}{{ $srcset = delimit $parts ", " }}{{ end -}}
+{{- end -}}
+{{- if $align }}{{ $finalSrc = printf "%s#center" $finalSrc }}{{ end -}}
+<figure{{ if or (.Get "class") $align }} class="{{ if $align }}align-center {{ end }}{{- with .Get "class" }}{{ . }}{{ end }}"{{ end -}}>
+    {{- if .Get "link" -}}
+        <a href="{{ .Get "link" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }}>
+    {{- end }}
+    <img loading="lazy" src="{{ $finalSrc }}"
+         {{- with $srcset }} srcset="{{ . }}" sizes="(max-width: 768px) 100vw, 720px"{{ end }}
+         {{- if or (.Get "alt") (.Get "caption") }} alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify | plainify }}{{ end }}"{{ end -}}
+         {{- with $imgW }} width="{{ . }}"{{ end -}}
+         {{- with $imgH }} height="{{ . }}"{{ end -}}
+    />
+    {{- if .Get "link" }}</a>{{ end -}}
+    {{- if or (or (.Get "title") (.Get "caption")) (.Get "attr") -}}
+        <figcaption>
+            {{ with (.Get "title") -}}
+                {{ . }}
+            {{- end -}}
+            {{- if or (.Get "caption") (.Get "attr") -}}<p>
+                {{- .Get "caption" | markdownify -}}
+                {{- with .Get "attrlink" }}
+                    <a href="{{ . }}">
+                {{- end -}}
+                {{- .Get "attr" | markdownify -}}
+                {{- if .Get "attrlink" }}</a>{{ end }}</p>
+            {{- end }}
+        </figcaption>
+    {{- end }}
+</figure>

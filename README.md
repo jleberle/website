@@ -47,15 +47,20 @@ Two stages, two tools:
 
 | Where | Template | Widths emitted |
 |---|---|---|
-| Markdown body images | `layouts/_markup/render-image.html` | 400 / 800 / 1200w + lightbox + lazy-load |
+| Markdown body images | `layouts/_markup/render-image.html` | 400 / 800 / 1200w + original + lightbox + lazy-load |
 | Post covers | `layouts/_partials/cover.html` | 360 / 480 / 720 / 1080 / 1500w |
+| `figure` shortcode | `layouts/shortcodes/figure.html` | 400 / 800 / 1200w + original |
 | `carousel` shortcode | `layouts/shortcodes/carousel.html` | 400 / 800w |
 | Home avatar | `layouts/_partials/home_info.html` | 1x / 2x from `imageWidth` |
 | Header logo | `layouts/_partials/header.html` | 2x from `iconHeight` |
 
-Each variant is only generated when the source is wider than that breakpoint, and every `<img>` gets explicit `width`/`height` to prevent layout shift. Hugo's AVIF quality is set under `imaging.avif` in `hugo.yaml`.
+Each smaller variant is only generated when the source is wider than that breakpoint; the original is always included as the largest `srcset` candidate (so a `srcset` is still emitted for images that only exceed one breakpoint, e.g. 400–800px). Every `<img>` gets explicit `width`/`height` to prevent layout shift. Hugo's AVIF quality is set under `imaging.avif` in `hugo.yaml`.
 
-> **Gotcha:** Hugo *extended* can resize AVIF, but PaperMod's `cover.html` keeps a hardcoded `$processableFormats` list that omits `avif` upstream — the override here appends it. If you re-pull `cover.html` from the theme, re-add `avif` (see the PaperMod-update notes below) or covers silently fall back to full-size, unsized images.
+> **Gotcha:** Hugo *extended* can resize AVIF, but two upstream PaperMod templates don't process it out of the box, so both are overridden here:
+> - `cover.html` — its hardcoded `$processableFormats` list omits `avif`; the override appends it.
+> - `figure.html` — the stock shortcode emits a plain `<img>` with no resizing; the override resolves `src` as a page resource and adds the responsive `srcset` (falling back to a plain `<img>` for external/static sources, and keeping the `#center` centering fragment).
+>
+> If you re-pull either file from the theme, re-apply these (see the PaperMod-update notes below) or those images silently fall back to full-size, unsized downloads.
 
 ## Scripts
 
@@ -99,12 +104,13 @@ hugo server
 
 If it builds cleanly, most things are fine. If it fails, the error will point at what broke.
 
-**3. Check the four most likely conflict files**
+**3. Check the most likely conflict files**
 
 Diff each override against its updated PaperMod source:
 
 ```sh
 diff themes/PaperMod/layouts/_partials/cover.html layouts/_partials/cover.html
+diff themes/PaperMod/layouts/_shortcodes/figure.html layouts/shortcodes/figure.html
 diff themes/PaperMod/layouts/_partials/index_profile.html layouts/_partials/index_profile.html
 diff themes/PaperMod/layouts/_partials/templates/opengraph.html layouts/_partials/templates/opengraph.html
 diff themes/PaperMod/layouts/baseof.html layouts/baseof.html
@@ -113,6 +119,7 @@ diff themes/PaperMod/layouts/baseof.html layouts/baseof.html
 For each diff: if PaperMod changed unrelated lines, copy their new version and re-apply the change noted below. If they changed the same lines, merge manually.
 
 - `layouts/_partials/cover.html` — `($cover | fingerprint).RelPermalink` instead of `.Permalink`; and `avif` appended to `$processableFormats` so AVIF covers get responsive variants (see [Images](#images))
+- `layouts/shortcodes/figure.html` — resolves `src` to a page resource and adds the responsive AVIF `srcset` + `width`/`height` (see [Images](#images)); the stock shortcode does no image processing
 - `layouts/_partials/index_profile.html` — `$img.RelPermalink` and `| fingerprint` for avif
 - `layouts/_partials/templates/opengraph.html` — jpeg OG companion lookup and `site.Language.Lang`
 - `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`
