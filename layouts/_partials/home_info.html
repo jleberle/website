@@ -2,14 +2,21 @@
 <article class="first-entry home-info">
     {{- if .imageUrl }}
     <div class="home-info-image">
+        {{- $w := .imageWidth | default 120 }}
+        {{- $h := .imageHeight | default 120 }}
         {{- $imgPath := strings.TrimPrefix "/" .imageUrl }}
         {{- $img := resources.Get $imgPath }}
         {{- if $img }}
-        <img src="{{ ($img | fingerprint).RelPermalink }}" alt="{{ .imageTitle | default "Profile image" }}"
-             width="{{ .imageWidth | default 120 }}" height="{{ .imageHeight | default 120 }}">
+        {{- /* Hugo (extended) resizes AVIF natively; emit 1x + 2x variants so high-DPR screens stay crisp
+               while DPR-1 screens download the smaller file. */}}
+        {{- $img1x := $img.Resize (printf "%dx%d avif" $w $h) | fingerprint }}
+        {{- $img2x := $img.Resize (printf "%dx%d avif" (mul $w 2) (mul $h 2)) | fingerprint }}
+        <img src="{{ $img1x.RelPermalink }}"
+             srcset="{{ $img1x.RelPermalink }} 1x, {{ $img2x.RelPermalink }} 2x"
+             alt="{{ .imageTitle | default "Profile image" }}" width="{{ $w }}" height="{{ $h }}">
         {{- else }}
         <img src="{{ .imageUrl | absURL }}" alt="{{ .imageTitle | default "Profile image" }}"
-             width="{{ .imageWidth | default 120 }}" height="{{ .imageHeight | default 120 }}">
+             width="{{ $w }}" height="{{ $h }}">
         {{- end }}
     </div>
     {{- end }}
