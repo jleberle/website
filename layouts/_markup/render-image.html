@@ -28,6 +28,10 @@
       {{- $srcsetParts = $srcsetParts | append (printf "%s 400w" $r400.RelPermalink) -}}
     {{- end -}}
 
+    {{- /* Always offer the original as the largest candidate, so srcset is still
+           emitted when only one breakpoint matches (e.g. 400-800px images). */ -}}
+    {{- $srcsetParts = $srcsetParts | append (printf "%s %dw" $full.RelPermalink .Width) -}}
+
     {{- $display := $displayResource | fingerprint -}}
     {{- $src = $display.RelPermalink -}}
     {{- $imgWidth = string $displayResource.Width -}}
