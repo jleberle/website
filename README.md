@@ -37,6 +37,26 @@ New posts follow the naming convention `YYYY-MM-DD-slug/index.md`. Use the Obsid
 | `bluesky` | `{{</* bluesky "https://bsky.app/..." */>}}` | Click-to-load Bluesky embed. Embed script only loads on click. |
 | `carousel` | `{{</* carousel "a.avif" "b.avif" */>}}` | Image carousel from page bundle files. Supports keyboard navigation and dot indicators. |
 
+## Images
+
+Two stages, two tools:
+
+**1. Authoring — convert sources to AVIF with `scripts/to-avif.sh` (ImageMagick).** Drop the resulting `.avif` into the page bundle (or `assets/`) and reference it. The script also writes a `.jpg` companion for OpenGraph crawlers. Don't pre-generate resized variants — that's Hugo's job (next stage). Author images at a sensible max width (covers/in-body ~1500px is plenty; the build only downscales, never upscales).
+
+**2. Responsive sizing — Hugo (extended) resizes the AVIF natively at build time** and emits a `srcset`, so each viewport/DPR downloads only what it needs. This happens in several places:
+
+| Where | Template | Widths emitted |
+|---|---|---|
+| Markdown body images | `layouts/_markup/render-image.html` | 400 / 800 / 1200w + lightbox + lazy-load |
+| Post covers | `layouts/_partials/cover.html` | 360 / 480 / 720 / 1080 / 1500w |
+| `carousel` shortcode | `layouts/shortcodes/carousel.html` | 400 / 800w |
+| Home avatar | `layouts/_partials/home_info.html` | 1x / 2x from `imageWidth` |
+| Header logo | `layouts/_partials/header.html` | 2x from `iconHeight` |
+
+Each variant is only generated when the source is wider than that breakpoint, and every `<img>` gets explicit `width`/`height` to prevent layout shift. Hugo's AVIF quality is set under `imaging.avif` in `hugo.yaml`.
+
+> **Gotcha:** Hugo *extended* can resize AVIF, but PaperMod's `cover.html` keeps a hardcoded `$processableFormats` list that omits `avif` upstream — the override here appends it. If you re-pull `cover.html` from the theme, re-add `avif` (see the PaperMod-update notes below) or covers silently fall back to full-size, unsized images.
+
 ## Scripts
 
 | Script | Purpose |
@@ -92,7 +112,7 @@ diff themes/PaperMod/layouts/baseof.html layouts/baseof.html
 
 For each diff: if PaperMod changed unrelated lines, copy their new version and re-apply the change noted below. If they changed the same lines, merge manually.
 
-- `layouts/_partials/cover.html` — `($cover | fingerprint).RelPermalink` instead of `.Permalink`
+- `layouts/_partials/cover.html` — `($cover | fingerprint).RelPermalink` instead of `.Permalink`; and `avif` appended to `$processableFormats` so AVIF covers get responsive variants (see [Images](#images))
 - `layouts/_partials/index_profile.html` — `$img.RelPermalink` and `| fingerprint` for avif
 - `layouts/_partials/templates/opengraph.html` — jpeg OG companion lookup and `site.Language.Lang`
 - `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`
