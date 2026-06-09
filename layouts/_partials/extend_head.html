@@ -1,5 +1,7 @@
 <link type="text/plain" rel="author" href="{{ "humans.txt" | absURL }}">
-<script defer src="/js/embeds.js"></script>
-<script defer src="/js/carousel.js"></script>
-<script defer src="/js/lightbox.js"></script>
-<script defer src="/js/obf-email.js"></script>
+{{- range slice "js/embeds.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" }}
+{{- with resources.Get . }}
+{{- $js := . | minify | fingerprint }}
+<script defer src="{{ $js.RelPermalink }}"></script>
+{{- end }}
+{{- end }}
