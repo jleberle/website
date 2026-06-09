@@ -43,7 +43,7 @@ New posts follow the naming convention `YYYY-MM-DD-slug/index.md`. Use the Obsid
 |---|---|
 | `scripts/to-avif.sh` | Convert images to AVIF + JPEG (for OG images) |
 | `scripts/archive-links.sh` | Check all posts for dead links and replace with Wayback Machine snapshots |
-| `scripts/csp-hashes.sh` | Regenerate Content Security Policy hashes after PaperMod updates |
+| `scripts/csp-hashes.sh` | Regenerate / verify Content Security Policy hashes (inline styles *and* scripts) after Hugo or PaperMod updates |
 | `scripts/newlink.sh` | Add a new link entry |
 | `scripts/sync-hugo-version.sh` | Update CI build images to match local Hugo version |
 
@@ -63,7 +63,7 @@ The site deploys automatically via [statichost.eu](https://statichost.eu) on eve
 ## Maintenance
 
 ### After upgrading Hugo locally
-Run `scripts/sync-hugo-version.sh` to update the CI build images in `statichost.yml` and `.woodpecker.yml` to match. The weekly Homebrew job will notify you when Hugo updates.
+Run `scripts/sync-hugo-version.sh` to update the CI build images in `statichost.yml` and `.woodpecker.yml` to match. The weekly Homebrew job will notify you when Hugo updates — its notification also reminds you to run `scripts/csp-hashes.sh --check`, because a changed minifier can silently invalidate the CSP hashes (see below).
 
 ### After updating PaperMod
 
@@ -97,14 +97,31 @@ For each diff: if PaperMod changed unrelated lines, copy their new version and r
 - `layouts/_partials/templates/opengraph.html` — jpeg OG companion lookup and `site.Language.Lang`
 - `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`
 
-**4. Commit the submodule update**
+**4. Re-check the CSP hashes**
+
+A PaperMod update can change an inline style or script without failing the build, which silently invalidates a CSP hash. Run `scripts/csp-hashes.sh --check` and re-hash if it reports drift (see [Content Security Policy hashes](#content-security-policy-hashes)).
+
+**5. Commit the submodule update**
 ```sh
 git add themes/PaperMod
 git commit -m "Update PaperMod to latest"
 ```
 
-### If styles break after a PaperMod update
-The two SHA hashes in the `Content-Security-Policy` header in `static/_headers` correspond to PaperMod's inline styles. If PaperMod changes those styles the hashes need updating. Run `scripts/csp-hashes.sh` to regenerate them.
+### Content Security Policy hashes
+
+The `Content-Security-Policy` header in `static/_headers` allows PaperMod's inline `<style>` and `<script>` blocks by their exact SHA-256 hashes — there is **no `'unsafe-inline'`** in `script-src` or `style-src`. The hashes cover the bytes Hugo's minifier actually emits, so they break if either PaperMod changes a theme style/script **or** Hugo changes how it minifies. When a script hash breaks, the browser silently blocks that script (e.g. dark-mode-on-load or the theme toggle stops working) with only a console CSP error — so verify after upgrades.
+
+Currently hashed scripts: the FOUC theme-on-load setter, the theme toggle, and the menu-scroll / anchor-smooth-scroll handler. PaperMod's scroll-to-top script is intentionally dropped via `disableScrollToTop: true` in `hugo.yaml` so it needs no hash; re-enabling it would require adding its hash.
+
+```sh
+scripts/csp-hashes.sh             # build, then print current hashes to paste into static/_headers
+scripts/csp-hashes.sh --check     # build, then compare against static/_headers; exit 1 on drift
+scripts/csp-hashes.sh --check --no-build   # reuse an existing public/ (used by CI)
+```
+
+`--check` reports per directive: `OK` (match), `DRIFT` (a hash is in the build but missing from `_headers` — would be blocked; fails with exit 1), or `WARN` (a stale hash in `_headers` is no longer used — safe to remove). When it reports drift, run `scripts/csp-hashes.sh`, paste the new hashes into **both** CSP blocks in `static/_headers` (the `*` block and the `/iframe-page/*` block), then commit.
+
+Woodpecker CI runs `csp-hashes.sh --check --no-build` on every push as the `csp-check` step (reusing the build step's `public/`). It fails the CI build on drift as a background alarm — note that a failed Woodpecker run does **not** block statichost from deploying, so treat it as a signal to re-hash, not a hard gate.
 
 ### Dead link check
 Run `scripts/archive-links.sh --all` periodically to find and replace dead outbound links with Wayback Machine snapshots. Woodpecker's scheduled lychee job will flag broken links in CI.
