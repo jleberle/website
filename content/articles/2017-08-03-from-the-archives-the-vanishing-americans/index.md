@@ -20,7 +20,7 @@ slug: from-the-archives-the-vanishing-americans
 description: "Native Rock with the Vanishing Americans"
 ---
 
-![](cover.avif)
+![Article on the Vanishing Americans a Native Rock Band](cover.avif)
 
 Here's a little article I pulled from a digital copy of *The Indian*, May 28, 1970
 

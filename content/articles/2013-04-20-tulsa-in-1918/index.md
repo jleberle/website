@@ -19,7 +19,7 @@ description: "1918 map of Tulsa, Oklahoma"
 summary: "1918 map of Tulsa, Oklahoma"
 ---
 
-![](cover.avif)
+![1918 Map of Tulsa](cover.avif)
 
 The hand-drawn map (not done to scale) comes from the Library of Congress's [panoramic maps collection](https://www.loc.gov/collections/panoramic-maps). The full version can be [downloaded or viewed here](https://www.loc.gov/item/87692752/). Here's [some other historical maps from Oklahoma](https://www.loc.gov/collections/general-maps/?fa=location:oklahoma).
 
