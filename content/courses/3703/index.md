@@ -44,27 +44,28 @@ In past semesters the following books were used in the course:
 
 ## Assignments
 
-##### Syllabus Quiz
+### Syllabus Quiz
 
 Short multiple choice quiz on Canvas that covers the basics of this syllabus. The quiz is pass/fail and is used to indicate you have read the syllabus and agree to the course policies for the semester.
 
-##### Attendance
+### Attendance
 
 I will take attendance 10 times randomly throughout the semester.
 
-##### Reading Responses
+### Reading Responses
 
 Five responses to assigned reading materials. Additional information and the prompts for each of these assignments are available on the corresponding Canvas assignment. You will turn in a digital copy to the appropriate Canvas assignment by the end of the day listed in the course syllabus.
 
-##### Exams
+### Exams
 
 Two in-class exams comprised of short IDs and an essay. A study guide will be provided. No notes or other materials will be allowed in completing the exam.
 
-##### Final Exam
+### Final Exam
 
 Exam will be comprised of one non-cumulative essay and a cumulative essay asking you to assess issues from throughout the semester.
 
 ## Grades
+
 
 |     Assignment     | Breakdown |
 | :----------------: | :-------: |
@@ -74,7 +75,9 @@ Exam will be comprised of one non-cumulative essay and a cumulative essay asking
 |      Exams         |    300 points    |
 | Final Exam         |    200 points    | 
 
+
 The following key will determine your letter grade:
+
 
 | Grade |  Percentage   |
 | :---: | :-----------: |
@@ -84,7 +87,8 @@ The following key will determine your letter grade:
 |   D   |    60-69%     |
 |   F   | Less than 60% |
 
-##### Grade Disputes
+
+### Grade Disputes
 
 Students wishing to dispute their grades (outside of obvious mathematical errors or clarification of comments) are required to wait 24 hours after the assignment has been handed back and then need to attend office hours (or schedule a meeting) to formally discuss the grade they received. Be prepared to come to the meeting with specific points you feel were not taken into account with your grade. I reserve the right to raise *or* lower your grade at these meetings.
 
@@ -92,19 +96,19 @@ Due to the Federal Educational Rights and Privacy Act (FERPA), I **do not** answ
 
 ## Additional Policies
 
-##### Late Work
+### Late Work
 
 All assignments besides exams are due to Canvas by 11:59PM on the date listed in the syllabus. After the deadline you have two days to submit the assignment for late work credit with 10% off per day late (the late work window **does not** apply to the in-class exams). Late work penalties are automatically deducted by Canvas and the late work window starts immediately after the full credit deadline. Once the late work window has passed assignments may not be submitted for credit.
 
 All extensions for full credit must have appropriate dated documentation and be made in a timely manner. Any extension requests without documentation or made excessively late will not be granted. Technical issues cannot be sufficiently verified and do not qualify for extensions so do not wait until the late minute to submit assignments to avoid late penalties or missed assignments.
 
-##### Resubmissions / Extra Credit
+### Resubmissions / Extra Credit
 
 You have unlimited submissions prior to the assignment deadline and I will grade the most recent submission (excluding syllabus quiz which offers two attempts). Once the deadline passes assignments cannot be resubmitted or redone for additional credit. Make sure you verify your assignment has been submitted to Canvas and is the correct assignment to ensure credit. Wrongly submitted assignments are not grounds for extensions or makeups.
 
 There are **two extra credit opportunities in the course this semester**. First, students who turn in all assignments on-time this semester will receive 25 extra points at the end of the semester. Students with an approved extension request will still be eligible for the bonus points. Second, if 75% of the class completes the online course evaluation at the end of the semester, the entire class will receive 25 bonus points on the final exam. Students may also earn bonus points if they email me by Friday of the first week of classes with their favorite thing.
 
-##### Class conduct
+### Class conduct
 
 - You may use a laptop only to take notes for the course, violations can result in loss of attendance points.
 - Phones may not be used in any circumstance and headphones must be taken off during the class period.
@@ -113,7 +117,7 @@ There are **two extra credit opportunities in the course this semester**. First,
 - You are expected to conduct yourself in a professional manner. History has a number of controversial events and we will address some of these. Please respect the views of your classmates and treat everyone with decency. 
 - Repeated violations of course policies may result in dismissal from lecture and/or loss of attendance points.
 
-##### Plagiarism/Academic Integrity
+### Plagiarism/Academic Integrity
 
 Intentional cheating on any assignment will result in formal academic integrity violation proceedings including referral to the Office of Student Conduct, and may result in a failing grade for the entire course and/or receiving a permanent notation of a violation of academic integrity on your transcript (F!) All students should be familiar with university academic integrity guidelines and procedures, including the right to appeal charges. For more information you may contact the Office of Academic Affairs, 101 Whitehurst, 405-744-5627, or visit https://academicintegrity.okstate.edu
 
@@ -125,58 +129,58 @@ Use of artificial intelligence programs is strictly prohibited on all assignment
 
 All readings besides Nagle's book are included on Canvas
 
-##### Week 1 (1/15 - 1/19): The Long History of the Red Earth
+### Week 1 (1/15 - 1/19): The Long History of the Red Earth
 * **Sunday, January 19:** Syllabus Quiz on Canvas
 
-##### Week 2 (1/20 - 1/24): Empires in Conflict
+### Week 2 (1/20 - 1/24): Empires in Conflict
 
 Readings:
 
 - Timmerman, "Contested Indigenous Landscapes: Indian Mounds and the Political Creation of the Mythical 'Mound Builder' Race"
 
-##### Week 3 (1/27 - 1/31): The American Arrivals
+### Week 3 (1/27 - 1/31): The American Arrivals
 * **Tuesday**: Reading Response One
 
-##### Week 4 (2/3 - 2/7):  Indigenous Removals
+### Week 4 (2/3 - 2/7):  Indigenous Removals
 
 Readings:
 
 - Indian removal primary source documents
 
-##### Week 5 (2/10 - 2/14): The Early History of Indian Territory
+### Week 5 (2/10 - 2/14): The Early History of Indian Territory
 * **Tuesday**: Reading Response Two
 
-##### Week 6 (2/17 - 2/21): Review and Exam
+### Week 6 (2/17 - 2/21): Review and Exam
 * **Thursday**: Exam One
 
-##### Week 7 (2/24 - 2/28): The Tribes Divided: Civil War and Reconstruction in Indian Territory
+### Week 7 (2/24 - 2/28): The Tribes Divided: Civil War and Reconstruction in Indian Territory
 
 Readings:
 
 - Circe Strum, "Blood Politics, Racial Classification, and Cherokee National Identity: The Trials and Tribulations of the Cherokee Freedmen"
 
-##### Week 8 (3/3 - 3/7): Dispossessions and the Path to Statehood
+### Week 8 (3/3 - 3/7): Dispossessions and the Path to Statehood
 * **Tuesday**: Reading Response Three
 
-##### Week 9 (3/10 - 3/14):  Progressivism and Early Statehood
+### Week 9 (3/10 - 3/14):  Progressivism and Early Statehood
 
-##### Week 10 (3/17 - 3/21): Spring Break 
+### Week 10 (3/17 - 3/21): Spring Break 
 
-##### Week 11 (3/24 - 3/28): Review and Exam
+### Week 11 (3/24 - 3/28): Review and Exam
 * **Thursday**: Exam Two
 
-##### Week 12 (3/31 - 4/4): Oklahoma Radicalism and the Oil Boom
+### Week 12 (3/31 - 4/4): Oklahoma Radicalism and the Oil Boom
 
-##### Week 13 (4/7 - 4/11): The Boom's Dark Side: The Tulsa Race Massacre and the Osage Murders
+### Week 13 (4/7 - 4/11): The Boom's Dark Side: The Tulsa Race Massacre and the Osage Murders
 
 * **Tuesday**: Reading Response Four
 
-##### Week 14 (4/14 - 4/18): The Earth Moved: Oklahoma's Dust Bowl Depression
+### Week 14 (4/14 - 4/18): The Earth Moved: Oklahoma's Dust Bowl Depression
 
-##### Week 15 (4/21 - 4/25): Civil Rights in Oklahoma
+### Week 15 (4/21 - 4/25): Civil Rights in Oklahoma
 
 * **Tuesday**: Reading Response Five
 
-##### Week 16 (4/28 - 5/2): Oklahoma as a Modern State
+### Week 16 (4/28 - 5/2): Oklahoma as a Modern State
 
-##### Final Exam: Thursday, May 8th, 2PM
+### Final Exam: Thursday, May 8th, 2PM

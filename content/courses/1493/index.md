@@ -90,6 +90,7 @@ The following key will determine your letter grade (All grades are rounded to th
 |   D   |    60-69%     |
 |   F   | Less than 60% |
 
+
 ### Grade Disputes
 
 Students wishing to dispute their grades (outside of obvious mathematical errors or clarification of comments) are required to wait 24 hours after the assignment has been handed back and then need to attend office hours (or schedule a meeting) **with the person who graded their work** to formally discuss the grade they received. Be prepared to come to the meeting with specific points you feel were not taken into account by your grader. If I did not grade your assignment I will only meet with you *after* you have talked to the TA. We reserve the right to raise *or* lower your grade at these meetings.
@@ -98,7 +99,7 @@ Due to the Federal Educational Rights and Privacy Act (FERPA), we **do not** ans
 
 ## Additional Policies
 
-#### Late Work/Resubmissions
+### Late Work/Resubmissions
 
 - All out of class assignments are due to Canvas by 11:59PM on the date listed in the syllabus. After the deadline you have 48 hours to submit the assignment for late work credit with 10% off per day late.
 - Extensions are only available for illness or extenuating circumstances with appropriate documentation provided and all extension requests must be submitted in a timely manner.
@@ -107,7 +108,7 @@ Due to the Federal Educational Rights and Privacy Act (FERPA), we **do not** ans
 - Technical issues do not qualify for extensions on assignments. If you run into a technical issue prior to the deadline, email Dr. Eberle a copy of the assignment as an email attachment *prior to the deadline*, links to Google Docs or other online services will not be accepted.
 - Assignments may not be resubmitted or revised for additional credit after the assignment deadline has passed. Make sure to verify your submission to Canvas is both the correct assignment and displaying correctly. Wrongly submitted assignments are not grounds for resubmissions.
 
-#### Class conduct
+### Class conduct
 
 - Laptops are only allowed for note taking. Any non-class use may be subject to dismissal from class and loss of attendance points. 
 - The classroom is a phone-free space, both during lecture and leading up to class. Use the time prior to class to talk to the people around you, or come talk to myself or a TA. In the event there is a situation where you may need to check a phone during class, please alert to the issue prior to class.
@@ -115,17 +116,17 @@ Due to the Federal Educational Rights and Privacy Act (FERPA), we **do not** ans
 - Do not pack up prior to class being formally dismissed. Packing up early is not only disrespectful but causes too much noise for others to properly hear the lecture. 
 - You are expected to conduct yourself in a professional manner. History has a number of controversial events and we will address some of these. Please respect the views of your classmates and treat everyone with decency. 
 
-#### Extra Credit
+### Extra Credit
 
 There are **two extra credit opportunities in the course this semester**. First, students who turn in all assignments on-time this semester will receive 25 extra points at the end of the semester. Students with an approved extension request will still be eligible for the bonus points. Second, if 75% of the class completes the online course evaluation at the end of the semester, the entire class will receive 25 bonus points on the final exam. There are no additional opportunities for bonus points this semester.
 
-#### Accessibility Services
+### Accessibility Services
 
 According to the Americans with Disabilities Act, each student with a disability is responsible for notifying the University of their disability and requesting accommodations. If you think you have a qualified disability and need accommodations, you should notify the instructor and request verification of eligibility for accommodations from Student Accessibility Services. Please advise the instructor of such disability and desired accommodations at some point before, during, or immediately after the first scheduled class period. Faculty members are obligated to respond when they receive official notice of a disability, but are under no obligation to provide retroactive accommodations. To receive services, you must submit appropriate documentation and complete an intake process during which the existence of a qualified disability is verified and reasonable accommodations are identified. Go to https://accessibility.okstate.edu for additional information.
 
 **Students wishing to use SAS accommodations must see me in office hours to discuss their accommodations**
 
-#### Plagiarism/Academic Integrity
+### Plagiarism/Academic Integrity
 
 Intentional cheating on any assignment will result in formal academic integrity violation proceedings including referral to the Office of Student Conduct, and may result in a failing grade for the entire course and/or receiving a permanent notation of a violation of academic integrity on your transcript (F!) All students should be familiar with university academic integrity guidelines and procedures, including the right to appeal charges. For more information you may contact the Office of Academic Affairs, 101 Whitehurst, 405-744-5627, or visit https://academicintegrity.okstate.edu
 
