@@ -1,2 +1,29 @@
 - Media Diet
 - General cleanup
+
+Accessibility: images needing alt text
+(figure shortcode: add alt="..."; markdown: put text inside the ![brackets])
+- content/articles/2015-12-11-past-and-future-of-indian-rodeo-in-las-vegas/index.md
+    line 25  {{< figure src="stairs.avif" >}}
+    line 31  {{< figure src="bennybinionstatue.avif" >}}
+    line 39  {{< figure src="bareback.avif" >}}
+    line 43  {{< figure src="steerwrestling.avif" >}}
+- content/articles/2017-08-03-from-the-archives-the-vanishing-americans/index.md
+    line 23  ![](cover.avif)
+- content/articles/2015-09-03-bob-engelharts-golden-hill-paugussett-cartoon/index.md
+    line 23  ![](cover.avif "...")   title is set but alt is empty — copy text into the brackets
+- content/articles/2013-04-20-tulsa-in-1918/index.md
+    line 22  ![](cover.avif)
+- content/contact/index.md
+    line 24  ![](location.avif "...")  same: title set, alt empty
+
+Accessibility: heading levels skip (breaks screen-reader page outline)
+(page h1 is the title; first body heading should be ##, nest one level at a time)
+- content/studenthours.md        h1 -> h4: change #### About / Schedule / Location / Meeting material to ##
+- content/contact/index.md       h1 -> h4: change #### Office Mailing address / Office location to ##
+- content/courses/1493/index.md  h2 -> h4: the #### subsections (Late Work, Class conduct, ...,
+                                 and all #### Week N schedule entries) sit under ## sections; use ###
+- content/courses/3793/index.md  h2 -> h5: ##### Syllabus Quiz / Attendance / Reading Responses /
+                                 Paper / Exams under ## Assignments; use ###
+- content/courses/3703/index.md  h2 -> h5: ##### Syllabus Quiz / Attendance / Reading Responses /
+                                 Exams under ## Assignments; use ###
