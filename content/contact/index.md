@@ -10,7 +10,7 @@ summary: "Dr. Eberle's contact information."
 
 **For anyone not currently enrolled**: If you want to discuss anything here, please utilize {{< email "jared@jaredeberle.org" "my email" >}}. ([PGP Key](/key.asc)) or contact me on social media.
 
-#### Office Mailing address
+## Office Mailing address
 
 154 Social Sciences and Humanities\
 Department of History\
@@ -19,7 +19,7 @@ Stillwater, OK 74078
 
 ---
 
-#### Office location
+## Office location
 
 ![](location.avif "Map of my office location at Oklahoma State University")
 
