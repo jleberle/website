@@ -69,11 +69,17 @@
 .carousel-dot {
     width: 8px;
     height: 8px;
+    padding: 0;
     border-radius: 50%;
     background: var(--rule);
     cursor: pointer;
     transition: background 0.2s;
     border: none;
+}
+
+.carousel-dot:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 .carousel-dot.active {

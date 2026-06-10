@@ -56,6 +56,8 @@
     createOverlay();
 
     document.querySelectorAll('.post-content img, .md-content img').forEach(function (img) {
+      // YouTube facades and carousels have their own click/keyboard handling
+      if (img.closest('.yt-facade') || img.closest('.carousel')) return;
       img.style.cursor = 'zoom-in';
       img.setAttribute('tabindex', '0');
       img.setAttribute('role', 'button');

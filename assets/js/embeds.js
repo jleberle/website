@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var id = this.dataset.id;
             var iframe = document.createElement("iframe");
             iframe.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1";
+            iframe.title = "YouTube video player";
             iframe.style.position = "absolute";
             iframe.style.top = "0";
             iframe.style.left = "0";

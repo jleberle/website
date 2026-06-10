@@ -4,15 +4,19 @@
 {{- $th := 0 -}}
 {{- $maxres := printf "https://img.youtube.com/vi/%s/maxresdefault.jpg" $id -}}
 {{- $hqdefault := printf "https://img.youtube.com/vi/%s/hqdefault.jpg" $id -}}
+{{- /* Copy under /images/ so the immutable Cache-Control rule in static/_headers
+       applies (a bare GetRemote would publish at the site root). */ -}}
 {{- with resources.GetRemote $maxres -}}
-    {{- $thumbnail = (. | fingerprint).RelPermalink -}}
-    {{- $tw = .Width -}}
-    {{- $th = .Height -}}
+    {{- $t := . | resources.Copy (printf "images/yt-%s.jpg" $id) | fingerprint -}}
+    {{- $thumbnail = $t.RelPermalink -}}
+    {{- $tw = $t.Width -}}
+    {{- $th = $t.Height -}}
 {{- else -}}
     {{- with resources.GetRemote $hqdefault -}}
-        {{- $thumbnail = (. | fingerprint).RelPermalink -}}
-        {{- $tw = .Width -}}
-        {{- $th = .Height -}}
+        {{- $t := . | resources.Copy (printf "images/yt-%s.jpg" $id) | fingerprint -}}
+        {{- $thumbnail = $t.RelPermalink -}}
+        {{- $tw = $t.Width -}}
+        {{- $th = $t.Height -}}
     {{- end -}}
 {{- end -}}
 <div class="yt-facade" data-id="{{ $id }}" role="button" tabindex="0" aria-label="Load YouTube video">

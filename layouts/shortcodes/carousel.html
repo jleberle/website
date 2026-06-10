@@ -1,10 +1,11 @@
-{{- $images := .Params -}}
-{{- $id := printf "carousel-%s" (delimit (seq 8 | shuffle) "") -}}
-<div class="carousel" id="{{ $id }}" aria-label="Image carousel" role="region" tabindex="0">
+{{- /* Resolve params to page resources up front so slides and dots always pair up. */ -}}
+{{- $images := slice -}}
+{{- range .Params -}}
+    {{- with $.Page.Resources.GetMatch . -}}{{- $images = $images | append . -}}{{- end -}}
+{{- end -}}
+<div class="carousel" aria-label="Image carousel" role="region" tabindex="0">
     <div class="carousel-track">
-        {{- range $i, $name := $images }}
-        {{- $img := $.Page.Resources.GetMatch $name }}
-        {{- if $img }}
+        {{- range $i, $img := $images }}
         {{- /* Native AVIF srcset: smaller widths for phones, original as the largest candidate. */}}
         {{- $srcsetParts := slice }}
         {{- if gt $img.Width 400 }}{{ $r := $img.Resize "400x avif" | fingerprint }}{{ $srcsetParts = $srcsetParts | append (printf "%s 400w" $r.RelPermalink) }}{{ end }}
@@ -17,18 +18,17 @@
                  srcset="{{ delimit $srcsetParts ", " }}"
                  sizes="(max-width: 768px) 100vw, 720px"
                  {{- end }}
-                 alt="{{ $name | replaceRE `\.[^.]+$` `` | humanize }}"
+                 alt="{{ $img.Name | replaceRE `\.[^.]+$` `` | humanize }}"
                  loading="{{ if eq $i 0 }}eager{{ else }}lazy{{ end }}"
                  width="{{ $img.Width }}" height="{{ $img.Height }}">
         </figure>
         {{- end }}
-        {{- end }}
     </div>
-    <button class="carousel-btn carousel-prev" aria-label="Previous image" data-target="{{ $id }}">&#8249;</button>
-    <button class="carousel-btn carousel-next" aria-label="Next image" data-target="{{ $id }}">&#8250;</button>
-    <div class="carousel-dots" aria-hidden="true">
-        {{- range $i, $name := $images }}
-        <span class="carousel-dot{{ if eq $i 0 }} active{{ end }}"></span>
+    <button class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
+    <button class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
+    <div class="carousel-dots">
+        {{- range $i, $img := $images }}
+        <button class="carousel-dot{{ if eq $i 0 }} active{{ end }}" aria-label="Go to image {{ add $i 1 }}"></button>
         {{- end }}
     </div>
 </div>

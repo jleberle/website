@@ -59,7 +59,6 @@ params:
     favicon16x16: "/icons/favicon-16x16.png"
     favicon32x32: "/icons/favicon-32x32.png"
     apple_touch_icon: "/icons/apple-touch-icon.png"
-    safari_pinned_tab: "/icons/favicon-16x16.png"
 
   label:
     text: "Home"
@@ -100,6 +99,7 @@ params:
 
   schema:
     publisherType: Person
+    image: "images/profile.avif" # Person image in JSON-LD (see layouts/_partials/templates/schema_json.html)
     sameAs:
       - "https://orcid.org/0000-0002-0867-6561"
       - "https://experts.okstate.edu/jared.eberle"
@@ -164,7 +164,6 @@ menu:
     weight: 50
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 markup:
-  goldmark:
   highlight:
     noClasses: true
     # anchorLineNos: true
@@ -176,6 +175,15 @@ markup:
 taxonomies:
   category: categories
   tag: tags
+
+# Expose static/icons to the asset pipeline too, so the header logo can resize
+# the same apple-touch-icon.png that is served as the favicon (single source).
+module:
+  mounts:
+    - source: assets
+      target: assets
+    - source: static/icons
+      target: assets/icons
 
 ignoreFiles:
   - .obsidian/
