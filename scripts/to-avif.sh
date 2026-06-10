@@ -5,14 +5,15 @@
 #
 # Usage:
 #   scripts/to-avif.sh photo.jpg                  # writes photo.avif + photo.jpg alongside original
-#   scripts/to-avif.sh --replace photo.jpg         # converts and removes original
-#   scripts/to-avif.sh -q 70 photo.png             # custom avif quality (default: 60)
+#   scripts/to-avif.sh --replace photo.png         # converts and removes original
+#                                                  # (.jpg originals are kept as the jpeg fallback)
+#   scripts/to-avif.sh -q 70 photo.png             # custom avif quality (default: 50)
 #   scripts/to-avif.sh --no-jpeg photo.png         # skip jpeg output
 #   scripts/to-avif.sh *.jpg                       # batch
 
 set -euo pipefail
 
-QUALITY=60
+QUALITY=50
 JPEG_QUALITY=85
 REPLACE=false
 JPEG=true
@@ -62,26 +63,39 @@ for src in "${FILES[@]}"; do
 
   before=$(du -k "$src" | cut -f1)
 
-  # Convert to avif
+  # Convert to avif. Orientation is baked in before -strip discards the EXIF
+  # tag; heic:speed trades encode time for slightly smaller files.
   dest_avif="${src%.*}.avif"
-  magick "$src" -quality "$QUALITY" "$dest_avif"
+  magick "$src" -auto-orient -strip -quality "$QUALITY" -define heic:speed=2 "$dest_avif"
   after_avif=$(du -k "$dest_avif" | cut -f1)
   pct_avif=$(( (after_avif - before) * 100 / before ))
   sign=""; [[ $pct_avif -gt 0 ]] && sign="+"
   echo "  ${src} → ${dest_avif}  (${before}K → ${after_avif}K, ${sign}${pct_avif}%)"
 
-  # Convert to jpeg for OG crawler compatibility
+  # Convert to jpeg for OG crawler compatibility. A .jpg source is kept as its
+  # own fallback rather than lossily re-encoded over itself.
+  src_is_jpeg_dest=false
   if $JPEG; then
     dest_jpg="${src%.*}.jpg"
-    magick "$src" -quality "$JPEG_QUALITY" "$dest_jpg"
-    after_jpg=$(du -k "$dest_jpg" | cut -f1)
-    pct_jpg=$(( (after_jpg - before) * 100 / before ))
-    sign=""; [[ $pct_jpg -gt 0 ]] && sign="+"
-    echo "  ${src} → ${dest_jpg}  (${before}K → ${after_jpg}K, ${sign}${pct_jpg}%)"
+    if [[ "$dest_jpg" -ef "$src" ]]; then
+      src_is_jpeg_dest=true
+      echo "  keep (source already jpeg, serves as OG fallback): $src"
+    else
+      magick "$src" -auto-orient -background white -alpha remove -strip \
+        -interlace JPEG -quality "$JPEG_QUALITY" "$dest_jpg"
+      after_jpg=$(du -k "$dest_jpg" | cut -f1)
+      pct_jpg=$(( (after_jpg - before) * 100 / before ))
+      sign=""; [[ $pct_jpg -gt 0 ]] && sign="+"
+      echo "  ${src} → ${dest_jpg}  (${before}K → ${after_jpg}K, ${sign}${pct_jpg}%)"
+    fi
   fi
 
   if $REPLACE; then
-    rm "$src"
-    echo "  removed original: $src"
+    if $src_is_jpeg_dest; then
+      echo "  kept original (needed as jpeg fallback): $src"
+    else
+      rm "$src"
+      echo "  removed original: $src"
+    fi
   fi
 done
