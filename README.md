@@ -4,6 +4,8 @@ Source for [jaredeberle.org](https://jaredeberle.org), the personal and academic
 
 Built with [Hugo](https://gohugo.io) using the [PaperMod](https://github.com/adityatelange/hugo-PaperMod) theme.
 
+**Note**: I had Claude write this to document what was created and where to look for issues in the future. Anything on [my site](https://jaredeberle.org) is written solely my me, Claude is banned from making any edits to content itself.
+
 ## Prerequisites
 
 - [Hugo](https://gohugo.io/installation/) (extended edition, see version in `statichost.yml`)
