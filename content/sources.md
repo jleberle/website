@@ -25,7 +25,7 @@ Increasingly it feels like the best option is a return to reading things off lin
 
 It still makes me sad to think about the *Tulsa World* [limping along](https://jaredeberle.org/articles/i-got-sick-of-watching-the-tulsa-world-die/) but there are a number of good local media sources in Tulsa:
 
-- [*The Frontier](https://www.readfrontier.org)
+- [*The Frontier*](https://www.readfrontier.org)
 - [*NonDoc*](https://nondoc.com)
 - [*Oklahoma Voice*](https://oklahomavoice.com)
 - [*Oklahoma Watch*](https://oklahomawatch.org)
@@ -38,7 +38,7 @@ I also donate to [KWGS](https://www.publicradiotulsa.org) and [OETA](https://oet
 
 The great thing about your local public library is they usually provide any number of magazine subscriptions and my local library offers subscriptions through Libby and Press Reader. As a result I can read a number of periodicals and newspapers for free. I don't dip into these as much but I do technically "subscribe" to them.
 
-- *[The New Yorker*](https://www.newyorker.com)
+- [*The New Yorker*](https://www.newyorker.com)
 - [*High Country News*](https://hcn.org)
 - [*New York Review of Books*](https://nybooks.com)
 - [*London Review of Books*](https://lrb.co.uk)
