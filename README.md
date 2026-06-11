@@ -7,7 +7,8 @@ Built with [Hugo](https://gohugo.io) using the [PaperMod](https://github.com/adi
 ## Prerequisites
 
 - [Hugo](https://gohugo.io/installation/) (extended edition, see version in `statichost.yml`)
-- [Lychee](https://lychee.cli.rs) for link checking (optional)
+- [ImageMagick](https://imagemagick.org) (`magick`) for `scripts/to-avif.sh` / `scripts/add-images.sh`
+- [Lychee](https://lychee.cli.rs) for link checking (optional; `scripts/preflight.sh` skips it when absent)
 
 ## Local development
 
@@ -27,7 +28,23 @@ The site will be available at `http://localhost:1313`.
 | `content/courses/` | Course listings |
 | `content/quotes/` | Short quote and link posts |
 
-New posts follow the naming convention `YYYY-MM-DD-slug/index.md`. Use the Obsidian templates in `_templates/` or the Hugo archetypes.
+New posts follow the naming convention `YYYY-MM-DD-slug/index.md` (articles and reviews are page bundles; quotes are flat files). Scaffold from the CLI with `scripts/newpost.sh`, or use the Obsidian templates in `_templates/`.
+
+## Publishing workflow
+
+```sh
+scripts/newpost.sh article "Post Title"           # scaffold (article|review|quote)
+scripts/newpost.sh article --cover "Post Title"   #   articles: cover block on request
+                                                  #   reviews: cover block always
+                                                  #   quotes: prompts for external_url
+scripts/add-images.sh content/articles/<dir> --cover photo.jpg   # cover.avif + OG cover.jpg
+scripts/add-images.sh content/articles/<dir> img1.jpg img2.png   # body images → AVIF only
+scripts/preflight.sh && git push                  # pre-push gate, then deploy
+```
+
+`preflight.sh` runs the same build and CSP checks as CI plus an offline internal-link
+check and a scan that every internal `src`/`href`/`srcset`/feed URL resolves to a
+published file. `--strict` also fails on build warnings (e.g. figures missing alt text).
 
 ## Shortcodes
 
@@ -35,41 +52,45 @@ New posts follow the naming convention `YYYY-MM-DD-slug/index.md`. Use the Obsid
 |---|---|---|
 | `youtube` | `{{</* youtube VIDEO_ID */>}}` | Click-to-load YouTube embed. Thumbnail is self-hosted at build time via `resources.GetRemote`. Video only loads on click. |
 | `bluesky` | `{{</* bluesky "https://bsky.app/..." */>}}` | Click-to-load Bluesky embed. Embed script only loads on click. |
-| `carousel` | `{{</* carousel "a.avif" "b.avif" */>}}` | Image carousel from page bundle files. Supports keyboard navigation and dot indicators. |
+| `carousel` | `{{</* carousel "a.avif" "b.avif" */>}}` | Image carousel from page bundle files. Supports keyboard navigation and dot indicators. All slides lazy-load; for a carousel that is the topmost media on the page use the named form `{{</* carousel images="a.avif, b.avif" eager=true */>}}` so the first slide loads eagerly with `fetchpriority="high"`. |
 
 ## Images
 
 Two stages, two tools:
 
-**1. Authoring — convert sources to AVIF with `scripts/to-avif.sh` (ImageMagick).** Drop the resulting `.avif` into the page bundle (or `assets/`) and reference it. The script also writes a `.jpg` companion for OpenGraph crawlers. Don't pre-generate resized variants — that's Hugo's job (next stage). Author images at a sensible max width (covers/in-body ~1500px is plenty; the build only downscales, never upscales).
+**1. Authoring — `scripts/add-images.sh` drops images into a post bundle with the right conversion per role** (it wraps `scripts/to-avif.sh`, ImageMagick): covers become `cover.avif` plus an optimized `cover.jpg` companion for OpenGraph crawlers; body images become `.avif` only. Don't pre-generate resized variants — that's Hugo's job (next stage). Author images at a sensible max width (covers/in-body ~1500px is plenty; the build only downscales, never upscales). Figures without `alt` or `caption` produce a build warning — write alt text describing what the image *shows*; captions are for attribution/commentary and are never copied into alt.
 
 **2. Responsive sizing — Hugo (extended) resizes the AVIF natively at build time** and emits a `srcset`, so each viewport/DPR downloads only what it needs. This happens in several places:
 
 | Where | Template | Widths emitted |
 |---|---|---|
-| Markdown body images | `layouts/_markup/render-image.html` | 400 / 800 / 1200w + original + lightbox + lazy-load |
+| Markdown body images | `layouts/_markup/render-image.html` → `responsive-img` partial | 400 / 800 / 1200w + original + lightbox + lazy-load |
+| `figure` shortcode | `layouts/shortcodes/figure.html` → `responsive-img` partial | 400 / 800 / 1200w + original + lightbox |
+| `carousel` shortcode | `layouts/shortcodes/carousel.html` → `responsive-img` partial | 400 / 800 / 1200w + original |
 | Post covers | `layouts/_partials/cover.html` | 360 / 480 / 720 / 1080 / 1500w |
-| `figure` shortcode | `layouts/shortcodes/figure.html` | 400 / 800 / 1200w + original |
-| `carousel` shortcode | `layouts/shortcodes/carousel.html` | 400 / 800w |
 | Home avatar | `layouts/_partials/home_info.html` | 1x / 2x from `imageWidth` |
 | Header logo | `layouts/_partials/header.html` | 2x from `iconHeight` |
 
-Each smaller variant is only generated when the source is wider than that breakpoint; the original is always included as the largest `srcset` candidate (so a `srcset` is still emitted for images that only exceed one breakpoint, e.g. 400–800px). Every `<img>` gets explicit `width`/`height` to prevent layout shift. Hugo's AVIF quality is set under `imaging.avif` in `hugo.yaml`.
+The first three share `layouts/_partials/responsive-img.html` — the single source of truth for breakpoints and the `sizes` hint (sized to the 720px content column), so they can't drift apart. Each smaller variant is only generated when the source is wider than that breakpoint; the original is always included as the largest `srcset` candidate (so a `srcset` is still emitted for images that only exceed one breakpoint, e.g. 400–800px). Every `<img>` gets explicit `width`/`height` to prevent layout shift (paired with a global `img { height: auto }` so constrained widths keep the aspect ratio), `decoding="async"`, and lazy-loading — except the single-page cover, which loads eagerly with `fetchpriority="high"` as the likely LCP element. AVIF encoding uses Hugo's default quality (no `imaging` override in `hugo.yaml`).
 
 > **Gotcha:** Hugo *extended* can resize AVIF, but two upstream PaperMod templates don't process it out of the box, so both are overridden here:
 > - `cover.html` — its hardcoded `$processableFormats` list omits `avif`; the override appends it.
-> - `figure.html` — the stock shortcode emits a plain `<img>` with no resizing; the override resolves `src` as a page resource and adds the responsive `srcset` (falling back to a plain `<img>` for external/static sources, and keeping the `#center` centering fragment).
+> - `figure.html` — the stock shortcode emits a plain `<img>` with no resizing; the override resolves `src` as a page resource and uses the `responsive-img` partial (falling back to a plain `<img>` for external/static sources, and keeping the `#center` centering fragment).
 >
 > If you re-pull either file from the theme, re-apply these (see the PaperMod-update notes below) or those images silently fall back to full-size, unsized downloads.
+
+**Bundle resources publish only when invoked.** `build.publishResources` is `false` site-wide (see the comment in `hugo.yaml`), so Hugo no longer copies unreferenced originals into `public/`. Any template that references a page-bundle file must resolve it (`.Resources.Get`/`GetMatch`) and invoke `.RelPermalink`/`.Permalink` — never build the URL as a string, or the file won't be published. `scripts/preflight.sh`'s reference scan catches violations.
 
 ## Scripts
 
 | Script | Purpose |
 |---|---|
-| `scripts/to-avif.sh` | Convert images to AVIF + JPEG (for OG images) |
+| `scripts/newpost.sh` | Scaffold an article (`--cover` optional), review, or quote |
+| `scripts/add-images.sh` | Add images to a post bundle: `--cover` → AVIF + OG JPEG; body → AVIF only, prints figure snippets |
+| `scripts/preflight.sh` | Pre-push gate: build + warnings, CSP check, offline link check, published-reference scan (`--strict` fails on warnings) |
+| `scripts/to-avif.sh` | Convert images to AVIF + JPEG (for OG images); `--og-only` re-optimizes the OG JPEG without touching the AVIF |
 | `scripts/archive-links.sh` | Check all posts for dead links and replace with Wayback Machine snapshots |
 | `scripts/csp-hashes.sh` | Regenerate / verify Content Security Policy hashes (inline styles *and* scripts) after Hugo or PaperMod updates |
-| `scripts/newlink.sh` | Add a new link entry |
 | `scripts/sync-hugo-version.sh` | Update CI build images to match local Hugo version |
 
 ## Link checking
@@ -119,7 +140,7 @@ diff themes/PaperMod/layouts/baseof.html layouts/baseof.html
 For each diff: if PaperMod changed unrelated lines, copy their new version and re-apply the change noted below. If they changed the same lines, merge manually.
 
 - `layouts/_partials/cover.html` — `($cover | fingerprint).RelPermalink` instead of `.Permalink`; and `avif` appended to `$processableFormats` so AVIF covers get responsive variants (see [Images](#images))
-- `layouts/shortcodes/figure.html` — resolves `src` to a page resource and adds the responsive AVIF `srcset` + `width`/`height` (see [Images](#images)); the stock shortcode does no image processing
+- `layouts/shortcodes/figure.html` — resolves `src` to a page resource and uses the `responsive-img` partial for the AVIF `srcset` + `width`/`height` (see [Images](#images)); always emits `alt` (never copied from the caption) and warns at build when both are missing; the stock shortcode does no image processing
 - `layouts/_partials/index_profile.html` — `$img.RelPermalink` and `| fingerprint` for avif
 - `layouts/_partials/templates/opengraph.html` — jpeg OG companion lookup and `site.Language.Lang`
 - `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`
