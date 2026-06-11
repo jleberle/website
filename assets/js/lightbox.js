@@ -37,7 +37,7 @@
   function openLightbox(img) {
     lastFocused = img;
     overlayImg.src = img.dataset.lightboxSrc || img.src;
-    overlayImg.alt = img.alt || '';
+    overlayImg.alt = img.alt || img.getAttribute('aria-label') || '';
     overlay.classList.add('is-open');
     document.body.style.overflow = 'hidden';
     overlayClose.focus();
@@ -61,6 +61,14 @@
       img.style.cursor = 'zoom-in';
       img.setAttribute('tabindex', '0');
       img.setAttribute('role', 'button');
+      // role=button needs an accessible name; an empty alt provides none, so
+      // fall back to the figure's caption, then to a generic label.
+      if (!img.alt) {
+        var fig = img.closest('figure');
+        var cap = fig && fig.querySelector('figcaption');
+        var name = cap && cap.textContent.trim();
+        img.setAttribute('aria-label', name || 'View full-size image');
+      }
       img.addEventListener('click', function () {
         openLightbox(img);
       });

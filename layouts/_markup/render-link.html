@@ -5,4 +5,16 @@
 {{- $rel := slice -}}
 {{- if $isExternal }}{{ $rel = $rel | append "noopener" "noreferrer" }}{{ end -}}
 {{- if $isHumans }}{{ $rel = $rel | append "author" }}{{ end -}}
-<a href="{{ .Destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ with $rel }} rel="{{ delimit . " " }}"{{ end }}>{{ .Text | safeHTML }}</a>{{- "" -}}
+{{- /* Bundle-relative links (PDFs etc.): resolve to the page resource and use
+       its RelPermalink. The invocation is what publishes the file now that
+       build.publishResources is false site-wide. */ -}}
+{{- $href := .Destination -}}
+{{- if not $url.IsAbs -}}
+  {{- $path := strings.TrimPrefix "./" $url.Path -}}
+  {{- with and $path (or (.PageInner.Resources.Get $path) (resources.Get $path)) -}}
+    {{- $href = .RelPermalink -}}
+    {{- with $url.RawQuery }}{{ $href = printf "%s?%s" $href . }}{{ end -}}
+    {{- with $url.Fragment }}{{ $href = printf "%s#%s" $href . }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ $href | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ with $rel }} rel="{{ delimit . " " }}"{{ end }}>{{ .Text | safeHTML }}</a>{{- "" -}}

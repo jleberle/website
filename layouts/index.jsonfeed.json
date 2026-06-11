@@ -1,4 +1,5 @@
 {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections -}}
+{{- $base := site.BaseURL | strings.TrimSuffix "/" -}}
 {
   "version": "https://jsonfeed.org/version/1.1",
   "title": {{ site.Title | jsonify }},
@@ -23,11 +24,22 @@
       {{- end }}
       "title": {{ $page.Title | jsonify }},
       "summary": {{ $page.Summary | plainify | jsonify }},
-      "content_html": {{ $page.Content | jsonify }},
+      {{- /* Feeds have no base to resolve root-relative URLs and no responsive/
+             lightbox JS, so strip those attributes and absolutize src/href. */ -}}
+      {{- $c := $page.Content
+            | replaceRE `\s+(srcset|sizes|data-lightbox-src|loading|decoding)="[^"]*"` ""
+            | replaceRE `(src|href)="(/[^"]*)"` (printf `$1="%s$2"` $base) -}}
+      "content_html": {{ $c | jsonify }},
       "date_published": {{ $page.Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
       "date_modified": {{ $page.Lastmod.Format "2006-01-02T15:04:05Z07:00" | jsonify }}
       {{- with $page.Params.cover.image }},
+      {{- /* Invoke the resource so it stays published under
+             build.publishResources=false; fall back to the joined URL. */ -}}
+      {{- with $page.Resources.GetMatch . }}
+      "image": {{ .Permalink | jsonify }}
+      {{- else }}
       "image": {{ (print $page.Permalink .) | jsonify }}
+      {{- end }}
       {{- end }}
       {{- with $page.GetTerms "tags" }},
       "tags": {{ apply . "title" "." | jsonify }}

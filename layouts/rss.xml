@@ -18,6 +18,7 @@
   {{- end }}
 {{- end }}
 
+{{- $base := site.BaseURL | strings.TrimSuffix "/" }}
 {{- $pctx := . }}
 {{- if .IsHome }}{{ $pctx = site }}{{ end }}
 {{- $pages := slice }}
@@ -74,7 +75,12 @@
       {{- end }}
       <description>{{ with .Description | html }}{{ . }}{{ else }}{{ .Summary | html }}{{ end -}}</description>
       {{- if and site.Params.ShowFullTextinRSS .Content }}
-      <content:encoded>{{ (printf "<![CDATA[%s]]>" .Content) | safeHTML }}</content:encoded>
+      {{- /* Absolutize root-relative URLs and drop feed-irrelevant responsive/
+             lightbox attributes so images resolve in feed readers. */ -}}
+      {{- $c := .Content
+            | replaceRE `\s+(srcset|sizes|data-lightbox-src|loading|decoding)="[^"]*"` ""
+            | replaceRE `(src|href)="(/[^"]*)"` (printf `$1="%s$2"` $base) }}
+      <content:encoded>{{ (printf "<![CDATA[%s]]>" $c) | safeHTML }}</content:encoded>
       {{- end }}
     </item>
     {{- end }}

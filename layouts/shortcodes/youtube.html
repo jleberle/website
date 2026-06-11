@@ -4,16 +4,17 @@
 {{- $th := 0 -}}
 {{- $maxres := printf "https://img.youtube.com/vi/%s/maxresdefault.jpg" $id -}}
 {{- $hqdefault := printf "https://img.youtube.com/vi/%s/hqdefault.jpg" $id -}}
-{{- /* Copy under /images/ so the immutable Cache-Control rule in static/_headers
-       applies (a bare GetRemote would publish at the site root). */ -}}
+{{- /* Re-encode the remote JPG thumbnail to AVIF (format-only, native width — no
+       upscaling) and copy under /images/ so the immutable Cache-Control rule in
+       static/_headers applies (a bare GetRemote would publish at the site root). */ -}}
 {{- with resources.GetRemote $maxres -}}
-    {{- $t := . | resources.Copy (printf "images/yt-%s.jpg" $id) | fingerprint -}}
+    {{- $t := .Resize (printf "%dx avif" .Width) | resources.Copy (printf "images/yt-%s.avif" $id) | fingerprint -}}
     {{- $thumbnail = $t.RelPermalink -}}
     {{- $tw = $t.Width -}}
     {{- $th = $t.Height -}}
 {{- else -}}
     {{- with resources.GetRemote $hqdefault -}}
-        {{- $t := . | resources.Copy (printf "images/yt-%s.jpg" $id) | fingerprint -}}
+        {{- $t := .Resize (printf "%dx avif" .Width) | resources.Copy (printf "images/yt-%s.avif" $id) | fingerprint -}}
         {{- $thumbnail = $t.RelPermalink -}}
         {{- $tw = $t.Width -}}
         {{- $th = $t.Height -}}
@@ -21,7 +22,7 @@
 {{- end -}}
 <div class="yt-facade" data-id="{{ $id }}" role="button" tabindex="0" aria-label="Load YouTube video">
     {{- if $thumbnail }}
-    <img src="{{ $thumbnail }}" alt="YouTube video thumbnail" loading="lazy"{{ with $tw }} width="{{ . }}"{{ end }}{{ with $th }} height="{{ . }}"{{ end }}>
+    <img src="{{ $thumbnail }}" alt="YouTube video thumbnail" loading="lazy" decoding="async"{{ with $tw }} width="{{ . }}"{{ end }}{{ with $th }} height="{{ . }}"{{ end }}>
     {{- else }}
     <div class="yt-facade-fallback">Video unavailable</div>
     {{- end }}

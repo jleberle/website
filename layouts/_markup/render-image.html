@@ -2,43 +2,26 @@
 {{- $src := $u.String -}}
 {{- $fullSrc := "" -}}
 {{- $srcset := "" -}}
+{{- $sizes := "" -}}
 {{- $imgWidth := "" -}}
 {{- $imgHeight := "" -}}
+{{- $processable := slice "jpg" "jpeg" "png" "tif" "bmp" "gif" "webp" "avif" -}}
 {{- if not $u.IsAbs -}}
   {{- $path := strings.TrimPrefix "./" $u.Path }}
   {{- with or (.PageInner.Resources.Get $path) (resources.Get $path) -}}
-    {{- $full := . | fingerprint -}}
-    {{- $fullSrc = $full.RelPermalink -}}
-
-    {{- /* Build srcset: generate each size only if source is wider than that breakpoint */ -}}
-    {{- $srcsetParts := slice -}}
-    {{- $displayResource := . -}}
-
-    {{- if gt .Width 1200 -}}
-      {{- $r1200 := .Resize "1200x avif" | fingerprint -}}
-      {{- $srcsetParts = $srcsetParts | append (printf "%s 1200w" $r1200.RelPermalink) -}}
-    {{- end -}}
-    {{- if gt .Width 800 -}}
-      {{- $r800 := .Resize "800x avif" | fingerprint -}}
-      {{- $srcsetParts = $srcsetParts | append (printf "%s 800w" $r800.RelPermalink) -}}
-      {{- $displayResource = .Resize "800x avif" -}}
-    {{- end -}}
-    {{- if gt .Width 400 -}}
-      {{- $r400 := .Resize "400x avif" | fingerprint -}}
-      {{- $srcsetParts = $srcsetParts | append (printf "%s 400w" $r400.RelPermalink) -}}
-    {{- end -}}
-
-    {{- /* Always offer the original as the largest candidate, so srcset is still
-           emitted when only one breakpoint matches (e.g. 400-800px images). */ -}}
-    {{- $srcsetParts = $srcsetParts | append (printf "%s %dw" $full.RelPermalink .Width) -}}
-
-    {{- $display := $displayResource | fingerprint -}}
-    {{- $src = $display.RelPermalink -}}
-    {{- $imgWidth = string $displayResource.Width -}}
-    {{- $imgHeight = string $displayResource.Height -}}
-
-    {{- if gt (len $srcsetParts) 1 -}}
-      {{- $srcset = delimit $srcsetParts ", " -}}
+    {{- if in $processable .MediaType.SubType -}}
+      {{- $r := partial "responsive-img.html" (dict "resource" .) -}}
+      {{- $fullSrc = $r.full -}}
+      {{- $src = $r.src -}}
+      {{- $srcset = $r.srcset -}}
+      {{- $sizes = $r.sizes -}}
+      {{- $imgWidth = $r.width -}}
+      {{- $imgHeight = $r.height -}}
+    {{- else -}}
+      {{- /* Non-raster (e.g. SVG): serve fingerprinted as-is, no resizing. */ -}}
+      {{- $full := . | fingerprint -}}
+      {{- $fullSrc = $full.RelPermalink -}}
+      {{- $src = $full.RelPermalink -}}
     {{- end -}}
 
     {{- with $u.RawQuery -}}
@@ -49,19 +32,21 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-{{- $attributes := merge .Attributes (dict "alt" .Text "src" $src "title" (.Title | transform.HTMLEscape) "loading" "lazy") -}}
+{{- $attributes := merge .Attributes (dict "alt" .Text "src" $src "title" (.Title | transform.HTMLEscape) "loading" "lazy" "decoding" "async") -}}
 {{- if $fullSrc -}}
   {{- $attributes = merge $attributes (dict "data-lightbox-src" $fullSrc) -}}
 {{- end -}}
 {{- if $srcset -}}
-  {{- $attributes = merge $attributes (dict "srcset" $srcset "sizes" "(max-width: 768px) 100vw, 800px") -}}
+  {{- $attributes = merge $attributes (dict "srcset" $srcset "sizes" $sizes) -}}
 {{- end -}}
 {{- if $imgWidth -}}
   {{- $attributes = merge $attributes (dict "width" $imgWidth "height" $imgHeight) -}}
 {{- end -}}
 <img
   {{- range $k, $v := $attributes -}}
-    {{- if $v -}}
+    {{- /* alt is emitted even when empty: a missing alt makes screen readers
+           announce the filename, and the lightbox needs a nameable element. */ -}}
+    {{- if or $v (eq $k "alt") -}}
       {{- printf " %s=%q" $k $v | safeHTMLAttr -}}
     {{- end -}}
   {{- end -}}>

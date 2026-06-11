@@ -8,30 +8,43 @@
 {{- $img := "" -}}
 {{- with $src }}{{ $img = or ($.Page.Resources.GetMatch .) (resources.Get .) }}{{ end -}}
 {{- $srcset := "" -}}
+{{- $sizes := "" -}}
+{{- $fullSrc := "" -}}
 {{- $imgW := .Get "width" -}}
 {{- $imgH := .Get "height" -}}
 {{- $finalSrc := $src -}}
 {{- $processable := slice "jpg" "jpeg" "png" "tif" "bmp" "gif" "webp" "avif" -}}
 {{- if and $img (in $processable $img.MediaType.SubType) -}}
+    {{- $r := partial "responsive-img.html" (dict "resource" $img) -}}
+    {{- $finalSrc = $r.src -}}
+    {{- $srcset = $r.srcset -}}
+    {{- $sizes = $r.sizes -}}
+    {{- $fullSrc = $r.full -}}
+    {{- $imgW = $r.width -}}
+    {{- $imgH = $r.height -}}
+{{- else if $img -}}
+    {{- /* Non-raster (e.g. SVG): no resizing, but still invoke RelPermalink so
+           the file is published under build.publishResources=false. */ -}}
     {{- $full := $img | fingerprint -}}
     {{- $finalSrc = $full.RelPermalink -}}
-    {{- $imgW = string $img.Width -}}
-    {{- $imgH = string $img.Height -}}
-    {{- $parts := slice -}}
-    {{- if gt $img.Width 1200 }}{{ $r := $img.Resize "1200x avif" | fingerprint }}{{ $parts = $parts | append (printf "%s 1200w" $r.RelPermalink) }}{{ end -}}
-    {{- if gt $img.Width 800 }}{{ $r := $img.Resize "800x avif" | fingerprint }}{{ $parts = $parts | append (printf "%s 800w" $r.RelPermalink) }}{{ end -}}
-    {{- if gt $img.Width 400 }}{{ $r := $img.Resize "400x avif" | fingerprint }}{{ $parts = $parts | append (printf "%s 400w" $r.RelPermalink) }}{{ end -}}
-    {{- $parts = $parts | append (printf "%s %dw" $full.RelPermalink $img.Width) -}}
-    {{- if gt (len $parts) 1 }}{{ $srcset = delimit $parts ", " }}{{ end -}}
 {{- end -}}
 {{- if $align }}{{ $finalSrc = printf "%s#center" $finalSrc }}{{ end -}}
+{{- /* alt is always emitted but never copied from the caption: alt describes
+       what the image shows, the caption is visible attribution/commentary,
+       and duplicating one into the other makes screen readers announce the
+       same text twice. A captioned figure with alt="" is conforming HTML —
+       the figcaption is the programmatic description. */ -}}
+{{- if not (or (.Get "alt") (.Get "caption")) -}}
+    {{- warnf "figure missing alt and caption: %s (%s)" .Page.RelPermalink $src -}}
+{{- end -}}
 <figure{{ if or (.Get "class") $align }} class="{{ if $align }}align-center {{ end }}{{- with .Get "class" }}{{ . }}{{ end }}"{{ end -}}>
     {{- if .Get "link" -}}
         <a href="{{ .Get "link" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }}>
     {{- end }}
-    <img loading="lazy" src="{{ $finalSrc }}"
-         {{- with $srcset }} srcset="{{ . }}" sizes="(max-width: 768px) 100vw, 720px"{{ end }}
-         {{- if or (.Get "alt") (.Get "caption") }} alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify | plainify }}{{ end }}"{{ end -}}
+    <img loading="lazy" decoding="async" src="{{ $finalSrc }}"
+         {{- with $fullSrc }} data-lightbox-src="{{ . }}"{{ end }}
+         {{- with $srcset }} srcset="{{ . }}" sizes="{{ $sizes }}"{{ end }}
+         alt="{{ .Get "alt" }}"
          {{- with $imgW }} width="{{ . }}"{{ end -}}
          {{- with $imgH }} height="{{ . }}"{{ end -}}
     />

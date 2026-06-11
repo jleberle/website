@@ -1,0 +1,47 @@
+{{- /* Build a responsive AVIF srcset for a processable image resource.
+
+  Single source of truth shared by the Markdown image hook
+  (_markup/render-image.html), the figure shortcode and the carousel,
+  so breakpoints and the `sizes` hint can never drift apart again.
+
+  Input  (dict):
+    resource  R          required — a page/asset image resource
+    widths    (slice …)  optional — candidate widths (default 400 800 1200)
+    display   N          optional — width used for the `src` fallback that
+                                    non-srcset browsers load (default 800;
+                                    matches the 720px content column at 1x)
+
+  Returns (dict):
+    full    fingerprinted original RelPermalink (largest candidate + lightbox)
+    src     display-size RelPermalink for the plain `src` attribute
+    srcset  comma-delimited srcset, or "" when only one candidate exists
+    sizes   the matching `sizes` hint for the 720px content column
+    width   display width  (string, for the width attribute)
+    height  display height (string, for the height attribute)
+*/ -}}
+{{- $r := .resource -}}
+{{- $widths := .widths | default (slice 400 800 1200) -}}
+{{- $displayW := .display | default 800 -}}
+{{- $full := $r | fingerprint -}}
+{{- $parts := slice -}}
+{{- $display := $r -}}
+{{- range $w := $widths -}}
+  {{- if gt $r.Width $w -}}
+    {{- $rz := $r.Resize (printf "%dx avif" $w) -}}
+    {{- $parts = $parts | append (printf "%s %dw" ($rz | fingerprint).RelPermalink $w) -}}
+    {{- if eq $w $displayW }}{{ $display = $rz }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- /* Always offer the original as the largest candidate so a srcset is still
+       emitted when only one breakpoint matches (e.g. a 400–800px image). */ -}}
+{{- $parts = $parts | append (printf "%s %dw" $full.RelPermalink $r.Width) -}}
+{{- $srcset := "" -}}
+{{- if gt (len $parts) 1 }}{{ $srcset = delimit $parts ", " }}{{ end -}}
+{{- $disp := $display | fingerprint -}}
+{{- return (dict
+     "full"   $full.RelPermalink
+     "src"    $disp.RelPermalink
+     "srcset" $srcset
+     "sizes"  "(max-width: 768px) 100vw, 720px"
+     "width"  (string $display.Width)
+     "height" (string $display.Height)) -}}

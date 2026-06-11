@@ -84,12 +84,18 @@
   "wordCount" : "{{ .WordCount }}",
   "inLanguage": {{ .Language.Lang | default "en-us" }},
   {{ if .Params.cover.image -}}
+  {{- /* Prefer the resolved page resource: invoking .Permalink publishes the
+         file under build.publishResources=false; string-built URLs don't. */ -}}
+  {{- with .Resources.GetMatch .Params.cover.image -}}
+  "image": {{ .Permalink }},
+  {{- else -}}
   "image":
     {{- if (ne .Params.cover.relative true) -}}
     {{ .Params.cover.image | absURL }},
     {{- else -}}
     {{ (path.Join .RelPermalink .Params.cover.image ) | absURL }},
     {{- end}}
+  {{- end }}
   {{- else }}
     {{- $images := partial "templates/_funcs/get-page-images" . -}}
     {{- with index $images 0 -}}

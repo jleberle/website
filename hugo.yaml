@@ -20,7 +20,17 @@ minify:
 caches:
   images:
     dir: :cacheDir/images
-    
+
+# Publish page-bundle resources only when a template invokes them
+# (.Permalink/.RelPermalink). Without this, Hugo copies every bundle file into
+# public/ — including the full-size image originals that only the fingerprinted
+# copies of are ever referenced. Templates that reference bundle files by
+# string path were converted to invoke the resource instead: render-link.html
+# (PDFs), schema_json.html and index.jsonfeed.json (cover image).
+cascade:
+  - build:
+      publishResources: false
+
 params:
   env: production # enables opengraph, twitter-cards, and schema.org structured data
   title: Jared L. Eberle
@@ -76,7 +86,7 @@ params:
 
   socialIcons:
     - name: microblog
-      title: "Blog"
+      title: "Micro.blog"
       url: "https://eberle.blog"
     - name: bluesky
       title: "Bluesky"
