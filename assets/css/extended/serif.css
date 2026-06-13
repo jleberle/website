@@ -1,0 +1,64 @@
+/* ------------------------------------------------------------
+   Serif body type. Overrides PaperMod's system sans-serif stack
+   (themes/PaperMod/assets/css/core/reset.css) with Georgia, a
+   screen-optimized serif present on virtually all platforms.
+   Headings, prose and meta inherit from body; code keeps its
+   monospace stack (see mono.css).
+   ------------------------------------------------------------ */
+body {
+    font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
+    line-height: 1.7;          /* a touch airier than the 1.6 default,
+                                  which serif body text reads better with */
+
+    /* Grayscale antialiasing on macOS (WebKit + Firefox): renders the
+       serif a touch lighter and cleaner on Retina. No effect elsewhere. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tighten the reading measure. The theme's 720px column runs ~80
+   characters per line at 18px Georgia; 680px brings it toward the
+   comfortable 60–75ch range serif body reads best in. Affects the
+   single/list main column (the home page uses --nav-width). */
+:root {
+    --main-width: 680px;
+}
+
+/* Headings (prose + page title). They inherit the body's 1.7, which is
+   too airy for 40/32/24px display type, so a wrapped heading looks gappy.
+   - optimizeLegibility: kerning + ligatures (heading-only; see note above)
+   - line-height 1.25: tighter, appropriate for large display type
+   - letter-spacing: a hair of negative tracking; Georgia is loose at size
+   - text-wrap: balance: evens multi-line headings, kills one-word orphans
+   - scroll-margin-top: breathing room when an anchor link jumps here */
+h1, h2, h3, h4, h5, h6,
+.post-title {
+    text-rendering: optimizeLegibility;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    scroll-margin-top: 1rem;
+}
+
+/* Prevent widows (a lone word on a paragraph's last line) in supporting
+   browsers. Progressive enhancement — ignored where unsupported. */
+.post-content p,
+.post-content li {
+    text-wrap: pretty;
+}
+
+/* Cleaner resting underlines for prose links: a thin, slightly dropped
+   line so Georgia's descenders don't collide with it. The theme sets the
+   offset; this pins the thickness for a consistent serif-friendly weight. */
+.post-content a {
+    text-decoration-thickness: 1px;
+}
+
+/* Form controls don't inherit font-family by default — pull them
+   into the serif stack so search, buttons, etc. match the site. */
+input,
+button,
+textarea,
+select {
+    font-family: inherit;
+}
