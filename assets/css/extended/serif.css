@@ -54,6 +54,29 @@ h1, h2, h3, h4, h5, h6,
     text-decoration-thickness: 1px;
 }
 
+/* Footnote references. The browser's default sup uses vertical-align:super,
+   which (1) doesn't lift the number far enough, and (2) inflates the line
+   box, adding stray leading on lines that carry a footnote. Setting
+   line-height:0 + position/top instead lifts it cleanly without touching
+   the line height. The tight underline offset pulls the rule back up snug
+   under the number rather than floating well below it. */
+.post-content sup {
+    font-size: 0.7em;
+    line-height: 0;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.6em;
+}
+
+/* Both states, and matched on .footnote-ref, to outweigh the theme's
+   .md-content a:not(.anchor)[:hover] rules that otherwise force a 0.3rem
+   offset — which floats the underline far below a tiny superscript. */
+.post-content sup a.footnote-ref,
+.post-content sup a.footnote-ref:hover {
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+}
+
 /* Form controls don't inherit font-family by default — pull them
    into the serif stack so search, buttons, etc. match the site. */
 input,
