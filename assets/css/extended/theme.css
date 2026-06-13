@@ -81,6 +81,23 @@ body,
     border-inline-start: 2px solid var(--rule);
 }
 
+/* Large, muted opening quote set inline at the very start of the first
+   paragraph, so it indents that first line; following lines return to the
+   normal edge. Decorative (pseudo-element, skipped by screen readers);
+   --rule keeps it subtle and theme-aware. line-height:0 stops the big
+   glyph from inflating the first line's height. */
+.md-content blockquote p:first-of-type::before {
+    content: "\201C";              /* left double quotation mark */
+    margin-inline-end: 0.12em;
+    font-size: 3em;
+    line-height: 0;
+    vertical-align: -0.4em;
+    color: var(--rule);
+    opacity: 0.55;
+    pointer-events: none;
+    user-select: none;
+}
+
 /* Link hover in prose (post bodies and the home intro — both .md-content):
    shift to the accent color and tighten the underline offset. */
 .md-content a:not(.anchor) {
