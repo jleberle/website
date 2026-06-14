@@ -1,0 +1,5 @@
+{{- /* Inline abbreviation: {{< abbr "WCTU" "Woman's Christian Temperance Union" >}}
+       Renders <abbr title="…">WCTU</abbr>. Mark abbreviations on first use per
+       article; the title shows on desktop hover and to screen readers. */ -}}
+{{- $short := .Get 0 -}}
+{{- $long := .Get 1 -}}<abbr title="{{ $long }}">{{ $short }}</abbr>&#8288;{{- /* trailing word joiner: ends the output in text, not a tag, so Goldmark keeps the source space after the shortcode (e.g. "the WCTU was") */ -}}

@@ -47,11 +47,37 @@ h1, h2, h3, h4, h5, h6,
     text-wrap: pretty;
 }
 
+/* Hang opening quotation marks into the margin so the left edge stays
+   optically flush when a line or paragraph begins with a quote — a refined
+   book-typography touch suited to quotation-heavy prose. Safari/iOS only
+   today; silently ignored elsewhere. Disabled on blockquotes so it doesn't
+   pull the deliberate first-line quote-mark indent into the margin. */
+.post-content {
+    hanging-punctuation: first;
+}
+
+.post-content blockquote {
+    hanging-punctuation: none;
+}
+
 /* Cleaner resting underlines for prose links: a thin, slightly dropped
    line so Georgia's descenders don't collide with it. The theme sets the
    offset; this pins the thickness for a consistent serif-friendly weight. */
 .post-content a {
     text-decoration-thickness: 1px;
+}
+
+/* Abbreviations (via the {{< abbr >}} shortcode). Small caps so runs of
+   capitals blend into the serif body instead of shouting; the dotted
+   underline + help cursor is the conventional signal for a hover-to-expand
+   title. The tooltip is desktop-hover and screen-reader only — touch
+   devices show nothing, so never rely on it to carry essential meaning. */
+.post-content abbr[title] {
+    font-variant: all-small-caps;
+    letter-spacing: 0.04em;
+    text-decoration: underline dotted;
+    text-underline-offset: 0.2em;
+    cursor: help;
 }
 
 /* Footnote references. The browser's default sup uses vertical-align:super,
@@ -75,6 +101,54 @@ h1, h2, h3, h4, h5, h6,
 .post-content sup a.footnote-ref:hover {
     text-underline-offset: 0.15em;
     text-decoration-thickness: 1px;
+}
+
+/* Footnote section at the foot of the article. Rendered as apparatus
+   rather than body: stepped down in size and muted, with the goldmark
+   <hr> serving as a clear divider above it. */
+.post-content .footnotes {
+    font-size: 0.9em;
+    color: var(--secondary);
+    margin-top: 2.5em;
+}
+
+.post-content .footnotes hr {
+    margin: 0 0 1.2em;
+}
+
+.post-content .footnotes li {
+    margin-bottom: 0.5em;
+}
+
+/* Back-link arrow: quiet by default, accent on hover, no underline. The
+   `a` element selector is needed to outweigh the theme's underline rule. */
+.post-content a.footnote-backref {
+    text-decoration: none;
+    color: var(--secondary);
+    margin-inline-start: 0.3em;
+}
+
+.post-content a.footnote-backref:hover {
+    color: var(--accent);
+}
+
+/* Breathing room above a jumped-to footnote or reference (direct #fn / #fnref
+   links and the no-JS path), so it doesn't land flush against the top. */
+.post-content li[id^="fn:"],
+.post-content sup[id^="fnref:"] {
+    scroll-margin-top: 2rem;
+}
+
+/* Brief tint on the reference when you jump back up to it from a note's
+   back-link, so you can see where you landed. (The bottom-footnote tint was
+   dropped — references now open in a popover, so you rarely land down there.) */
+.post-content sup[id^="fnref:"] {
+    transition: background-color 0.4s ease;
+}
+
+.post-content sup[id^="fnref:"]:target {
+    background: var(--entry);
+    border-radius: 3px;
 }
 
 /* Form controls don't inherit font-family by default — pull them
