@@ -1,0 +1,32 @@
+/* ------------------------------------------------------------
+   Table of contents. Refines the theme's details.toc to sit in
+   the site's vocabulary: an --entry surface with a visible --rule
+   border, a serif title in the heading color, and muted links
+   that pick up the accent on hover. Rendered only when a post
+   sets `ShowToc: true` in front matter.
+   ------------------------------------------------------------ */
+details.toc {
+    background: var(--entry);
+    border: 1px solid var(--rule);
+}
+
+details.toc summary .title {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.toc .inner a {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+.toc .inner a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+/* Tighter, quieter nested list than the body default. */
+.toc .inner ul {
+    line-height: 1.5;
+}
