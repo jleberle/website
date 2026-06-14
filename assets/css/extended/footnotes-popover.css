@@ -1,0 +1,43 @@
+/* ------------------------------------------------------------
+   Footnote popovers (assets/js/footnotes.js). Tapping a reference
+   opens the note in place, read from the existing .footnotes list.
+   Progressive enhancement — without JS the reference just jumps to
+   the foot of the article. Themed with the site's vars so it sits
+   with the page in both light and dark.
+   ------------------------------------------------------------ */
+.fn-popover {
+    position: absolute;
+    z-index: 50;
+    width: min(90vw, 30em);
+    max-height: 60vh;
+    overflow-y: auto;
+    background: var(--entry);
+    color: var(--content);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 0.4em 1.1em;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+    display: none;
+}
+
+.fn-popover.is-open {
+    display: block;
+}
+
+.fn-popover p {
+    margin: 0.6em 0;
+}
+
+/* Citation links inside notes — the popover lives outside .post-content,
+   so it doesn't inherit the prose link styling; restate it here. */
+.fn-popover a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.fn-popover a:hover {
+    color: var(--accent);
+}

@@ -1,9 +1,9 @@
 <link type="text/plain" rel="author" href="{{ "humans.txt" | absURL }}">
 {{- $js := slice }}
-{{- range slice "js/embeds.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" }}
+{{- range slice "js/embeds.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" }}
 {{- with resources.Get . }}{{ $js = $js | append . }}{{ end }}
 {{- end }}
 {{- with $js }}
 {{- $bundle := . | resources.Concat "js/bundle.js" | minify | fingerprint }}
-<script defer src="{{ $bundle.RelPermalink }}"></script>
+<script defer src="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous"></script>
 {{- end }}
