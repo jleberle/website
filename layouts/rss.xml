@@ -27,6 +27,12 @@
 {{- else }}
 {{- $pages = $pctx.Pages }}
 {{- end }}
+{{- /* On the main feed, list only the content sections the JSON feed exposes
+       (articles, reviews, quotes) so the two feeds match; section and taxonomy
+       feeds keep listing their own pages. */ -}}
+{{- if $.IsHome }}
+{{- $pages = where $pages "Type" "in" site.Params.mainSections }}
+{{- end }}
 {{- $pages = where $pages "Params.hiddenInRss" "!=" true -}}
 {{- $limit := site.Config.Services.RSS.Limit }}
 {{- if ge $limit 1 }}
@@ -38,16 +44,14 @@
     <title>{{ if eq .Title site.Title }}{{ site.Title }}{{ else }}{{ with .Title }}{{ . }} on {{ end }}{{ site.Title }}{{ end }}</title>
     <link>{{ .Permalink }}</link>
     <description>Recent content {{ if ne .Title site.Title }}{{ with .Title }}in {{ . }} {{ end }}{{ end }}on {{ site.Title }}</description>
-    {{- with site.Params.images }}
-    {{- $img := index . 0 }}
-    {{- $url := $img | absURL }}
-    {{- with resources.Get $img }}
-      {{- $url = (. | resources.Fingerprint).Permalink }}
-    {{- end }}
+    {{- /* Feed readers (e.g. NetNewsWire) pull the channel <image>; it must be
+           square and at least ~128px. site.Params.images is the 1000x688 OG card,
+           so use the square single-source site icon instead. */ -}}
+    {{- with resources.Get "icons/apple-touch-icon.png" }}
     <image>
       <title>{{ site.Title }}</title>
-      <url>{{ $url }}</url>
-      <link>{{ $url }}</link>
+      <url>{{ (. | resources.Fingerprint).Permalink }}</url>
+      <link>{{ $.Permalink }}</link>
     </image>
     {{- end }}
     <generator>Hugo</generator>
@@ -80,6 +84,17 @@
       {{- $c := .Content
             | replaceRE `\s+(srcset|sizes|data-lightbox-src|loading|decoding)="[^"]*"` ""
             | replaceRE `(src|href)="(/[^"]*)"` (printf `$1="%s$2"` $base) }}
+      {{- /* Lead with the frontmatter cover image (PaperMod renders it outside
+             .Content, so it's otherwise absent), unless the body embeds it. */ -}}
+      {{- with $page.Params.cover.image }}
+      {{- $cover := "" }}
+      {{- with $page.Resources.GetMatch . }}{{ $cover = .Permalink }}{{ else }}{{ $cover = print $page.Permalink . }}{{ end }}
+      {{- $stem := strings.TrimSuffix (path.Ext .) (path.Base .) }}
+      {{- if not (strings.Contains $c (printf "/%s." $stem)) }}
+      {{- $alt := $page.Params.cover.alt | default $page.Title }}
+      {{- $c = printf "<figure><img src=%q alt=%q></figure>\n%s" $cover $alt $c }}
+      {{- end }}
+      {{- end }}
       <content:encoded>{{ (printf "<![CDATA[%s]]>" $c) | safeHTML }}</content:encoded>
       {{- end }}
     </item>

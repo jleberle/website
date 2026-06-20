@@ -1,11 +1,23 @@
+{{- /* Keep this set in lockstep with the home RSS feed (layouts/rss.xml):
+       same mainSections, the same hiddenInRss opt-out, and the same RSS limit. */ -}}
 {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections -}}
+{{- $pages = where $pages "Params.hiddenInRss" "!=" true -}}
+{{- $limit := site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 }}{{ $pages = $pages | first $limit }}{{ end -}}
 {{- $base := site.BaseURL | strings.TrimSuffix "/" -}}
+{{- /* Square site icon for feed readers; JSON Feed `icon` is the large square
+       image shown in feed lists. Single-sourced from the apple-touch-icon. */ -}}
+{{- $icon := "" -}}
+{{- with resources.Get "icons/apple-touch-icon.png" -}}{{ $icon = (. | resources.Fingerprint).Permalink }}{{- end -}}
 {
   "version": "https://jsonfeed.org/version/1.1",
   "title": {{ site.Title | jsonify }},
   "description": {{ site.Params.description | jsonify }},
   "home_page_url": {{ site.BaseURL | jsonify }},
   "feed_url": {{ (print site.BaseURL "feed.json") | jsonify }},
+  {{- with $icon }}
+  "icon": {{ . | jsonify }},
+  {{- end }}
   "favicon": {{ (print site.BaseURL "favicon.ico") | jsonify }},
   "authors": [
     {
@@ -24,22 +36,32 @@
       {{- end }}
       "title": {{ $page.Title | jsonify }},
       "summary": {{ $page.Summary | plainify | jsonify }},
+      {{- /* Resolve the cover image once, for both the body and the `image`
+             field. Invoke the bundle resource so it stays published under
+             build.publishResources=false; else join the path onto the URL. */ -}}
+      {{- $cover := "" -}}
+      {{- with $page.Params.cover.image -}}
+        {{- with $page.Resources.GetMatch . -}}{{ $cover = .Permalink }}{{- else -}}{{ $cover = print $page.Permalink . }}{{- end -}}
+      {{- end -}}
       {{- /* Feeds have no base to resolve root-relative URLs and no responsive/
              lightbox JS, so strip those attributes and absolutize src/href. */ -}}
       {{- $c := $page.Content
             | replaceRE `\s+(srcset|sizes|data-lightbox-src|loading|decoding)="[^"]*"` ""
             | replaceRE `(src|href)="(/[^"]*)"` (printf `$1="%s$2"` $base) -}}
+      {{- /* Readers don't render the `image` metadata in the body, so lead with
+             the cover unless the post already embeds it in its content. */ -}}
+      {{- with $cover -}}
+        {{- $stem := strings.TrimSuffix (path.Ext $page.Params.cover.image) (path.Base $page.Params.cover.image) -}}
+        {{- if not (strings.Contains $c (printf "/%s." $stem)) -}}
+          {{- $alt := $page.Params.cover.alt | default $page.Title -}}
+          {{- $c = printf "<figure><img src=%q alt=%q></figure>\n%s" . $alt $c -}}
+        {{- end -}}
+      {{- end -}}
       "content_html": {{ $c | jsonify }},
       "date_published": {{ $page.Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
       "date_modified": {{ $page.Lastmod.Format "2006-01-02T15:04:05Z07:00" | jsonify }}
-      {{- with $page.Params.cover.image }},
-      {{- /* Invoke the resource so it stays published under
-             build.publishResources=false; fall back to the joined URL. */ -}}
-      {{- with $page.Resources.GetMatch . }}
-      "image": {{ .Permalink | jsonify }}
-      {{- else }}
-      "image": {{ (print $page.Permalink .) | jsonify }}
-      {{- end }}
+      {{- with $cover }},
+      "image": {{ . | jsonify }}
       {{- end }}
       {{- with $page.GetTerms "tags" }},
       "tags": {{ apply . "title" "." | jsonify }}

@@ -49,6 +49,7 @@ params:
   ShowCodeCopyButtons: false
   ShowWordCount: true
   ShowRssButtonInSectionTermList: true
+  ShowFullTextinRSS: true # emit <content:encoded> full article body in RSS
   UseHugoToc: true
   disableSpecial1stPost: false
   disableScrollToTop: true
