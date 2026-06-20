@@ -64,15 +64,15 @@
 {{- $reviews  := where site.RegularPages "Section" "reviews"  | first 5 }}
 {{- $courses  := where site.RegularPages "Section" "courses"  | first 5 }}
 
-<div class="home-columns">
+<div class="home-columns h-feed">
     <div class="home-column">
         {{- if $articles }}
         <section class="home-section">
             <h2 class="home-section-title"><a href="{{ $articlesPage.Permalink }}">{{ $articlesPage.Title }}</a></h2>
             {{- range $articles }}
-            <article class="home-list-entry">
-                <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date | time.Format $dateFormat }}</time>
+            <article class="home-list-entry h-entry">
+                <a class="u-url p-name" href="{{ .Permalink }}">{{ .Title }}</a>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
             <a class="home-section-all" href="{{ $articlesPage.Permalink }}">All {{ $articlesPage.Title | lower }} &rarr;</a>
@@ -82,9 +82,9 @@
         <section class="home-section">
             <h2 class="home-section-title"><a href="{{ $quotesPage.Permalink }}">Quotes</a></h2>
             {{- range $quotes }}
-            <article class="home-list-entry">
-                <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date | time.Format $dateFormat }}</time>
+            <article class="home-list-entry h-entry">
+                <a class="u-url p-name" href="{{ .Permalink }}">{{ .Title }}</a>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
             <a class="home-section-all" href="{{ $quotesPage.Permalink }}">All quotes &rarr;</a>
@@ -96,9 +96,9 @@
         <section class="home-section">
             <h2 class="home-section-title"><a href="{{ $reviewsPage.Permalink }}">{{ $reviewsPage.Title }}</a></h2>
             {{- range $reviews }}
-            <article class="home-list-entry">
-                <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date | time.Format $dateFormat }}</time>
+            <article class="home-list-entry h-entry">
+                <a class="u-url p-name" href="{{ .Permalink }}">{{ .Title }}</a>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
             <a class="home-section-all" href="{{ $reviewsPage.Permalink }}">All {{ $reviewsPage.Title | lower }} &rarr;</a>
@@ -108,9 +108,9 @@
         <section class="home-section">
             <h2 class="home-section-title"><a href="{{ $coursesPage.Permalink }}">{{ $coursesPage.Title }}</a></h2>
             {{- range $courses }}
-            <article class="home-list-entry">
-                <a href="{{ .Permalink }}">{{ .Title }}</a>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date">{{ .Date | time.Format $dateFormat }}</time>
+            <article class="home-list-entry h-entry">
+                <a class="u-url p-name" href="{{ .Permalink }}">{{ .Title }}</a>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
             <a class="home-section-all" href="{{ $coursesPage.Permalink }}">All {{ $coursesPage.Title | lower }} &rarr;</a>
@@ -135,11 +135,11 @@
 
 {{- $externalURL := .Params.external_url }}
 
-<article class="{{ $class }}{{ with $externalURL }} link-post{{ end }}">
+<article class="{{ $class }} h-entry{{ with $externalURL }} link-post{{ end }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
   <header class="entry-header">
-    <h2 class="entry-hint-parent">
+    <h2 class="entry-hint-parent p-name">
       {{/* Link posts still point the listing title + card at the local single
            post; the external URL is only invoked from the single post. */}}
       {{- .Title }}
@@ -154,7 +154,7 @@
     </h2>
   </header>
   {{- if (ne (.Param "hideSummary") true) }}
-  <div class="entry-content">
+  <div class="entry-content p-summary">
     <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
   </div>
   {{- end }}
@@ -163,7 +163,7 @@
     {{- partial "post_meta.html" . -}}
   </footer>
   {{- end }}
-  <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+  <a class="entry-link u-url" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
 </article>
 {{- end }}
 

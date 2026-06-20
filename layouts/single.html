@@ -2,10 +2,11 @@
 
 {{- $externalURL := .Params.external_url }}
 
-<article class="post-single{{ with $externalURL }} link-post{{ end }}">
+<article class="post-single h-entry{{ with $externalURL }} link-post{{ end }}">
+  <a class="u-url" href="{{ .Permalink }}" hidden></a>
   <header class="post-header">
     {{ partial "breadcrumbs.html" . }}
-    <h1 class="post-title entry-hint-parent">
+    <h1 class="post-title entry-hint-parent p-name">
       {{- with $externalURL }}
       <a class="link-post-title" href="{{ . }}" rel="external noopener" target="_blank">{{ $.Title }}&nbsp;<span class="link-post-arrow" aria-hidden="true">↗</span></a>
       {{- else }}
@@ -21,15 +22,15 @@
       {{- end }}
     </h1>
     {{- if .Description }}
-    <div class="post-description">
+    <div class="post-description p-summary">
       {{ .Description }}
     </div>
     {{- end }}
     {{- if not (.Param "hideMeta") }}
     <div class="post-meta">
       {{- $top := slice }}
-      {{- with (partial "author.html" .) }}{{ $top = $top | append (printf "<span>%s</span>" .) }}{{ end }}
-      {{- if not .Date.IsZero }}{{ $top = $top | append (printf "<span title='%s'>%s</span>" .Date (.Date | time.Format (default ":date_long" site.Params.DateFormat))) }}{{ end }}
+      {{- with (partial "author.html" .) }}{{ $top = $top | append (printf "<span class='p-author'>%s</span>" .) }}{{ end }}
+      {{- if not .Date.IsZero }}{{ $top = $top | append (printf "<time class='dt-published' datetime='%s' title='%s'>%s</time>" (.Date.Format "2006-01-02T15:04:05Z07:00") .Date (.Date | time.Format (default ":date_long" site.Params.DateFormat))) }}{{ end }}
       {{- delimit $top "&nbsp;-&nbsp;" | safeHTML -}}
     </div>
     {{- end }}
@@ -41,7 +42,7 @@
   {{- end }}
 
   {{- if .Content }}
-  <div class="post-content md-content">
+  <div class="post-content md-content e-content">
     {{- if not (.Param "disableAnchoredHeadings") }}
     {{- partial "anchored_headings.html" .Content -}}
     {{- else }}{{ .Content }}{{ end }}

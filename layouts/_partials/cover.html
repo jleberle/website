@@ -31,7 +31,7 @@
     {{- if $cover -}}
         {{/* i.e it is present in page bundle */}}
         {{- if (and (in $processableFormats $cover.MediaType.SubType) ($responsiveImages) (eq $prod true)) }}
-            <img loading="{{$loading}}" decoding="async"{{ if $.IsSingle }} fetchpriority="high"{{ end }}
+            <img class="u-featured" loading="{{$loading}}" decoding="async"{{ if $.IsSingle }} fetchpriority="high"{{ end }}
                 srcset='{{- range $size := $sizes -}}
                             {{- if (ge $cover.Width $size) }}
                                 {{- printf "%s %s" (($cover.Resize (printf "%sx avif" $size)).RelPermalink) (printf "%sw," $size) }}
@@ -43,7 +43,7 @@
                 width="{{ $cover.Width }}" height="{{ $cover.Height }}"
                 alt="{{ $alt }}">
         {{- else }}{{/* Unprocessable image or responsive images disabled */}}
-            <img loading="{{ $loading }}" decoding="async"{{ if $.IsSingle }} fetchpriority="high"{{ end }} src="{{ $imgdl }}" alt="{{ $alt }}">
+            <img class="u-featured" loading="{{ $loading }}" decoding="async"{{ if $.IsSingle }} fetchpriority="high"{{ end }} src="{{ $imgdl }}" alt="{{ $alt }}">
         {{- end }}
     {{- else }}
         {{- /* For absolute urls and external links, no img processing here */}}
