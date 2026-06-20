@@ -1,4 +1,5 @@
 <link type="text/plain" rel="author" href="{{ "humans.txt" | absURL }}">
+<link rel="manifest" href="{{ "site.webmanifest" | absURL }}">
 {{- $js := slice }}
 {{- range slice "js/embeds.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" }}
 {{- with resources.Get . }}{{ $js = $js | append . }}{{ end }}

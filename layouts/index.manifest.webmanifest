@@ -1,0 +1,19 @@
+{{- /* Web app manifest (served at /site.webmanifest). Icons are the same
+       single-source files used for favicons; theme/background colors match
+       the <meta name="theme-color"> value. */ -}}
+{
+  "id": "/",
+  "name": {{ site.Title | jsonify }},
+  "short_name": {{ (site.Params.shortName | default "Eberle") | jsonify }},
+  "description": {{ site.Params.description | jsonify }},
+  "lang": {{ site.Language.Lang | jsonify }},
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#2e2e33",
+  "theme_color": "#2e2e33",
+  "icons": [
+    { "src": "/icons/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}
