@@ -1,0 +1,12 @@
+{
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "doctype-style": "off",
+    "attr-quotes": "off",
+    "attribute-misuse": "off",
+    "no-raw-characters": "off",
+    "valid-id": "off",
+    "aria-label-misuse": "off",
+    "long-title": "off"
+  }
+}

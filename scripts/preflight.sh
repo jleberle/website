@@ -3,12 +3,18 @@
 # command before publishing. Run as: scripts/preflight.sh && git push
 #
 #   1. hugo --minify        — fails on ERROR, surfaces WARN (missing figure alt etc.)
-#   2. csp-hashes.sh --check — CSP hash drift against the fresh build (same as CI)
-#   3. lychee --offline      — internal links/files in public/ (CI cron covers external)
-#   4. reference scan        — every internal src/href/srcset/feed URL in the
+#   2. html-validate        — HTML5 validation of every page (same as CI; rules
+#                              tuned in .htmlvalidate.json)
+#   3. a11y-lint.py          — content images without alt + heading-level skips
+#   4. csp-hashes.sh --check — CSP hash drift against the fresh build (same as CI)
+#   5. lychee --offline      — internal links/files in public/ (CI cron covers external)
+#   6. reference scan        — every internal src/href/srcset/feed URL in the
 #                              output must resolve to a published file; guards the
 #                              build.publishResources=false resource-invocation
 #                              pattern (see hugo.yaml)
+#
+# This must stay in lockstep with .woodpecker.yml — StaticHost deploys on push
+# independently of CI, so preflight is the only gate that can stop a bad deploy.
 #
 # Usage:
 #   scripts/preflight.sh             # warnings are reported but don't fail
@@ -43,6 +49,27 @@ elif [[ $WARNINGS -gt 0 ]]; then
   fi
 else
   pass "build passed, no warnings"
+fi
+
+step "html-validate (all pages)"
+if command -v npx >/dev/null; then
+  HV_OUT=$(npx --yes html-validate@11 "public/**/*.html" 2>&1)
+  if [[ $? -eq 0 ]]; then
+    pass "html-validate clean"
+  else
+    tail -20 <<<"$HV_OUT"
+    fail "html-validate errors (rules tuned in .htmlvalidate.json)"
+  fi
+else
+  echo "npx not found — skipping html-validate (brew install node); CI still runs it"
+fi
+
+step "content a11y lint"
+if A11Y_OUT=$(python3 scripts/a11y-lint.py public 2>&1); then
+  pass "content a11y lint clean"
+else
+  tail -20 <<<"$A11Y_OUT"
+  fail "content a11y issues (missing alt / heading skips)"
 fi
 
 step "CSP hashes"

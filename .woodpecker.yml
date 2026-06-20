@@ -16,6 +16,19 @@ steps:
       # inline <style>/<script> bytes (e.g. after a Hugo or PaperMod bump).
       - bash scripts/csp-hashes.sh --check --no-build
 
+  - name: html-validate
+    image: node:lts-alpine
+    commands:
+      # Validates every generated page (not a sample); rules tuned in
+      # .htmlvalidate.json. Pinned to avoid surprise rule changes on upgrade.
+      - npx --yes html-validate@11 "public/**/*.html"
+
+  - name: a11y-lint
+    image: python:3-slim
+    commands:
+      # Flags content images without alt and heading-level skips, site-wide.
+      - python3 scripts/a11y-lint.py public
+
   - name: link-check
     image: lycheeverse/lychee:0.24.2
     when:
