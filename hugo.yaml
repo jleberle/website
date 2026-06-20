@@ -16,6 +16,13 @@ pagination:
 minify:
   disableXML: true
   minifyOutput: true
+  tdewolff:
+    html:
+      # Keep attribute quotes: NetNewsWire's home-page icon parser misses
+      # unquoted <link rel=icon …> tags and falls back to the og:image
+      # (card.jpg) for the RSS feed icon. Quoted attrs let it find the
+      # apple-touch-icon. Costs ~400 bytes on the homepage.
+      keepQuotes: true
 
 caches:
   images:
