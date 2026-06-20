@@ -20,11 +20,11 @@
         {{- $th = $t.Height -}}
     {{- end -}}
 {{- end -}}
-<div class="yt-facade" data-id="{{ $id }}" role="button" tabindex="0" aria-label="Load YouTube video">
+<button type="button" class="yt-facade" data-id="{{ $id }}" aria-label="Load YouTube video">
     {{- if $thumbnail }}
     <img src="{{ $thumbnail }}" alt="YouTube video thumbnail" loading="lazy" decoding="async"{{ with $tw }} width="{{ . }}"{{ end }}{{ with $th }} height="{{ . }}"{{ end }}>
     {{- else }}
-    <div class="yt-facade-fallback">Video unavailable</div>
+    <span class="yt-facade-fallback">Video unavailable</span>
     {{- end }}
-    <div class="yt-play" aria-hidden="true"></div>
-</div>
+    <span class="yt-play" aria-hidden="true"></span>
+</button>

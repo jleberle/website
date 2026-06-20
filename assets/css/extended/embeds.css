@@ -100,6 +100,43 @@
     word-break: break-all;
 }
 
+/* The facades are native <button>s for keyboard/semantics; strip the default
+   button chrome so they render exactly as the former <div>s did. */
+.yt-facade,
+.bsky-facade {
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+    font: inherit;
+    text-align: left;
+}
+
+.yt-facade {
+    border: 0;
+    padding: 0;
+    color: inherit;
+}
+
+.bsky-facade {
+    width: 100%;
+    background: transparent;
+}
+
+/* Former <div> children are now <span>; restore block stacking. */
+.bsky-facade-label,
+.bsky-facade-url {
+    display: block;
+}
+
+/* Container that replaces the YouTube facade button once loaded. */
+.yt-embed {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .yt-facade img,
     .yt-play,

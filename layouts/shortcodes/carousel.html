@@ -22,7 +22,7 @@
 {{- range $names -}}
     {{- with $.Page.Resources.GetMatch (strings.TrimSpace .) -}}{{- $images = $images | append . -}}{{- end -}}
 {{- end -}}
-<div class="carousel" aria-label="Image carousel" role="region" tabindex="0">
+<section class="carousel" aria-label="Image carousel" tabindex="0">
     <div class="carousel-track">
         {{- range $i, $img := $images }}
         {{- $r := partial "responsive-img.html" (dict "resource" $img) }}
@@ -40,11 +40,11 @@
         </figure>
         {{- end }}
     </div>
-    <button class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
-    <button class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
+    <button type="button" class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
+    <button type="button" class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
     <div class="carousel-dots">
         {{- range $i, $img := $images }}
-        <button class="carousel-dot{{ if eq $i 0 }} active{{ end }}" aria-label="Go to image {{ add $i 1 }}"></button>
+        <button type="button" class="carousel-dot{{ if eq $i 0 }} active{{ end }}" aria-label="Go to image {{ add $i 1 }}"></button>
         {{- end }}
     </div>
-</div>
+</section>

@@ -1,5 +1,5 @@
 {{- $url := .Get 0 | strings.TrimRight "/" -}}
-<div class="bsky-facade" data-url="{{ $url }}" role="button" tabindex="0" aria-label="Load Bluesky embed">
-    <div class="bsky-facade-label">Bluesky post — click to load embed</div>
-    <div class="bsky-facade-url">{{ $url }}</div>
-</div>
+<button type="button" class="bsky-facade" data-url="{{ $url }}" aria-label="Load Bluesky embed">
+    <span class="bsky-facade-label">Bluesky post — click to load embed</span>
+    <span class="bsky-facade-url">{{ $url }}</span>
+</button>
