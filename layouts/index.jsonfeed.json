@@ -30,9 +30,11 @@
     {{- if $i }},{{ end }}
     {
       "id": {{ $page.Permalink | jsonify }},
-      "url": {{ (or $page.Params.external_url $page.Permalink) | jsonify }},
+      {{- /* `url` is our page (where we write about it); `external_url` is the
+             outside source we're linking to — per the JSON Feed spec. */ -}}
+      "url": {{ $page.Permalink | jsonify }},
       {{- with $page.Params.external_url }}
-      "external_url": {{ $page.Permalink | jsonify }},
+      "external_url": {{ . | jsonify }},
       {{- end }}
       "title": {{ $page.Title | jsonify }},
       "summary": {{ $page.Summary | plainify | jsonify }},
@@ -54,8 +56,12 @@
         {{- $stem := strings.TrimSuffix (path.Ext $page.Params.cover.image) (path.Base $page.Params.cover.image) -}}
         {{- if not (strings.Contains $c (printf "/%s." $stem)) -}}
           {{- $alt := $page.Params.cover.alt | default $page.Title -}}
-          {{- $c = printf "<figure><img src=%q alt=%q></figure>\n%s" . $alt $c -}}
+          {{- $c = printf "<img src=%q alt=%q>\n%s" . $alt $c -}}
         {{- end -}}
+      {{- end -}}
+      {{- /* Link posts: close with a link to the external source. */ -}}
+      {{- with $page.Params.external_url -}}
+        {{- $c = printf "%s\n<p><a href=%q>Source &rarr;</a></p>" $c . -}}
       {{- end -}}
       "content_html": {{ $c | jsonify }},
       "date_published": {{ $page.Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},

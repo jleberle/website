@@ -67,16 +67,14 @@
     {{- if and (ne .Layout `search`) (ne .Layout `archives`) }}
     {{- $page := . }}
     {{- $externalURL := .Params.external_url }}
-    {{- $itemLink := cond (ne $externalURL nil) (string $externalURL) .Permalink }}
     <item>
       <title>{{ .Title }}</title>
-      <link>{{ $itemLink }}</link>
+      {{- /* Link always points at our own page; the external source (if any)
+             is surfaced as a link in the content below. */ -}}
+      <link>{{ .Permalink }}</link>
       <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
       <guid isPermaLink="false">{{ .Permalink }}</guid>
-      {{- with $externalURL }}
-      <comments>{{ $page.Permalink }}</comments>
-      {{- end }}
       <description>{{ with .Description | html }}{{ . }}{{ else }}{{ .Summary | html }}{{ end -}}</description>
       {{- if and site.Params.ShowFullTextinRSS .Content }}
       {{- /* Absolutize root-relative URLs and drop feed-irrelevant responsive/
@@ -92,8 +90,12 @@
       {{- $stem := strings.TrimSuffix (path.Ext .) (path.Base .) }}
       {{- if not (strings.Contains $c (printf "/%s." $stem)) }}
       {{- $alt := $page.Params.cover.alt | default $page.Title }}
-      {{- $c = printf "<figure><img src=%q alt=%q></figure>\n%s" $cover $alt $c }}
+      {{- $c = printf "<img src=%q alt=%q>\n%s" $cover $alt $c }}
       {{- end }}
+      {{- end }}
+      {{- /* Link posts: close with a link to the external source. */ -}}
+      {{- with $externalURL }}
+      {{- $c = printf "%s\n<p><a href=%q>Source &rarr;</a></p>" $c (string .) }}
       {{- end }}
       <content:encoded>{{ (printf "<![CDATA[%s]]>" $c) | safeHTML }}</content:encoded>
       {{- end }}
