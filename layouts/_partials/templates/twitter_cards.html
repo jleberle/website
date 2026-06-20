@@ -1,0 +1,50 @@
+{{- /* Overrides PaperMod's twitter_cards.html only to add twitter:image:alt
+       (same alt source as og:image:alt in opengraph.html). */ -}}
+{{- $imgAlt := (.Params.cover.alt | default .Description | default site.Params.description | default .Title) | plainify | htmlUnescape -}}
+{{- if .Params.cover.image -}}
+<meta name="twitter:card" content="summary_large_image">
+{{- /* Use the JPEG variant (like og:image); X doesn't reliably render AVIF. */ -}}
+{{- $twImage := "" -}}
+{{- $jpegName := replaceRE `\.[^.]+$` ".jpg" .Params.cover.image -}}
+{{- with .Resources.GetMatch $jpegName -}}
+  {{- $twImage = .Permalink -}}
+{{- else -}}
+  {{- if (ne $.Params.cover.relative true) }}
+    {{- $twImage = .Params.cover.image | absURL -}}
+  {{- else }}
+    {{- $twImage = (path.Join .RelPermalink .Params.cover.image) | absURL -}}
+  {{- end }}
+{{- end -}}
+<meta name="twitter:image" content="{{ $twImage }}">
+<meta name="twitter:image:alt" content="{{ $imgAlt }}">
+{{- else }}
+{{- $images := partial "templates/_funcs/get-page-images" . }}
+{{- with index $images 0 }}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ .Permalink }}">
+  <meta name="twitter:image:alt" content="{{ $imgAlt }}">
+{{- else }}
+  <meta name="twitter:card" content="summary">
+{{- end }}
+{{- end }}
+
+{{- with or .Title site.Title site.Params.title | plainify }}
+  <meta name="twitter:title" content="{{ . }}">
+{{- end }}
+
+{{- with or .Description .Summary site.Params.description | plainify | htmlUnescape }}
+  <meta name="twitter:description" content="{{ trim . "\n\r\t " }}">
+{{- end }}
+
+{{- $twitterSite := "" }}
+{{- with site.Params.social }}
+  {{- if reflect.IsMap . }}
+    {{- with .twitter }}
+      {{- $content := . }}
+      {{- if not (strings.HasPrefix . "@") }}
+        {{- $content = printf "@%v" . }}
+      {{- end }}
+      <meta name="twitter:site" content="{{ $content }}">
+    {{- end }}
+  {{- end }}
+{{- end }}
