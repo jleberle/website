@@ -3,11 +3,10 @@
 const date = tp.date.now("YYYY-MM-DD");
 const title = await tp.system.prompt("Post title");
 const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-const folder = `content/quotes/${date}-${slug}`;
 const description = await tp.system.prompt("Description");
 
-// Create the folder by moving this file into it as index.md
-await tp.file.move(`${folder}/index`);
+// Quotes are flat files: content/quotes/<date>-<slug>.md
+await tp.file.move(`content/quotes/${date}-${slug}`);
 -%>
 ---
 title: "<% title %>"
