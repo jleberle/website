@@ -1,3 +1,3 @@
-image: hugomods/hugo:debian-git-0.163.1
+image: hugomods/hugo:debian-git-0.163.3
 command: hugo --minify
 public: public

@@ -7,7 +7,7 @@ steps:
   # build runs first; the checks below all depend only on its public/ output,
   # so they run in parallel (DAG via depends_on).
   - name: build
-    image: hugomods/hugo:debian-git-0.163.1
+    image: hugomods/hugo:debian-git-0.163.3
     depends_on: []
     commands:
       - hugo --minify
