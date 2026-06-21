@@ -4,3 +4,4 @@ resources/
 public/
 .obsidian/
 .vale/
+node_modules/

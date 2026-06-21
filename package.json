@@ -1,0 +1,12 @@
+{
+  "name": "jaredeberle-website",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Tooling for jaredeberle.org (Hugo site). Single source of truth for the html-validate version used by both .woodpecker.yml and scripts/preflight.sh.",
+  "scripts": {
+    "validate": "html-validate \"public/**/*.html\""
+  },
+  "devDependencies": {
+    "html-validate": "^11.5.3"
+  }
+}

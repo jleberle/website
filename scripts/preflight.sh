@@ -52,8 +52,18 @@ else
 fi
 
 step "html-validate (all pages)"
-if command -v npx >/dev/null; then
-  HV_OUT=$(npx --yes html-validate@11 "public/**/*.html" 2>&1)
+# Prefer the version pinned in package.json (run `npm ci` once); fall back to
+# npx so the gate still works on a machine without node_modules installed.
+if [[ -x node_modules/.bin/html-validate ]]; then
+  HV=(node_modules/.bin/html-validate)
+elif command -v npx >/dev/null; then
+  echo "node_modules not installed — run 'npm ci' to use the pinned version; falling back to npx"
+  HV=(npx --yes html-validate)
+else
+  HV=()
+fi
+if [[ ${#HV[@]} -gt 0 ]]; then
+  HV_OUT=$("${HV[@]}" "public/**/*.html" 2>&1)
   if [[ $? -eq 0 ]]; then
     pass "html-validate clean"
   else
@@ -61,7 +71,7 @@ if command -v npx >/dev/null; then
     fail "html-validate errors (rules tuned in .htmlvalidate.json)"
   fi
 else
-  echo "npx not found — skipping html-validate (brew install node); CI still runs it"
+  echo "node/npx not found — skipping html-validate (npm ci); CI still runs it"
 fi
 
 step "content a11y lint"

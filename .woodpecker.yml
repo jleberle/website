@@ -4,13 +4,17 @@ when:
   - event: manual
 
 steps:
+  # build runs first; the checks below all depend only on its public/ output,
+  # so they run in parallel (DAG via depends_on).
   - name: build
     image: hugomods/hugo:debian-git-0.163.1
+    depends_on: []
     commands:
       - hugo --minify
 
   - name: csp-check
     image: python:3-slim
+    depends_on: [build]
     commands:
       # Fails the build if static/_headers CSP hashes drift from the built
       # inline <style>/<script> bytes (e.g. after a Hugo or PaperMod bump).
@@ -18,19 +22,24 @@ steps:
 
   - name: html-validate
     image: node:lts-alpine
+    depends_on: [build]
     commands:
-      # Validates every generated page (not a sample); rules tuned in
-      # .htmlvalidate.json. Pinned to avoid surprise rule changes on upgrade.
-      - npx --yes html-validate@11 "public/**/*.html"
+      # Validates every generated page; rules tuned in .htmlvalidate.json.
+      # Version pinned via package.json/package-lock.json — the single source
+      # shared with scripts/preflight.sh. (Runner npm caching can skip install.)
+      - npm ci --no-audit --no-fund
+      - npx html-validate "public/**/*.html"
 
   - name: a11y-lint
     image: python:3-slim
+    depends_on: [build]
     commands:
       # Flags content images without alt and heading-level skips, site-wide.
       - python3 scripts/a11y-lint.py public
 
   - name: link-check
     image: lycheeverse/lychee:0.24.2
+    depends_on: [build]
     when:
       - event: cron
       - event: manual
