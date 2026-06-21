@@ -3,7 +3,7 @@
     X-Content-Type-Options: nosniff
     Referrer-Policy: no-referrer
     Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-    Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-BpEdBCM/4BJbN8LWEqCQKlp9VGzetdD0UbdMayNyD28=' 'sha256-UBD9lfFHKxagKGHh9S8B2hytN1cmDsFK1Tl1uedsZ0Q=' 'sha256-/cFFbEHjTjpj7DLefsC+h1yhrxRRebLCB86XtBuCtvw=' https://embed.bsky.app; style-src 'self' 'sha256-TzlBu+Yp5QndAbgUwjajid8QyFloMLEZVV3SLr0syao=' 'sha256-FGec11lwsCO51tU7WzO3jldp5wRvWMBQbCXewZUQH9k='; frame-src https://www.youtube-nocookie.com https://embed.bsky.app; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; upgrade-insecure-requests
+    Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-BpEdBCM/4BJbN8LWEqCQKlp9VGzetdD0UbdMayNyD28=' 'sha256-UBD9lfFHKxagKGHh9S8B2hytN1cmDsFK1Tl1uedsZ0Q=' 'sha256-/cFFbEHjTjpj7DLefsC+h1yhrxRRebLCB86XtBuCtvw=' https://embed.bsky.app; style-src 'self' 'sha256-TzlBu+Yp5QndAbgUwjajid8QyFloMLEZVV3SLr0syao=' 'sha256-FGec11lwsCO51tU7WzO3jldp5wRvWMBQbCXewZUQH9k='; frame-src https://www.youtube-nocookie.com https://embed.bsky.app; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; upgrade-insecure-requests
     Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), browsing-topics=(), join-ad-interest-group=(), run-ad-auction=()
     Cross-Origin-Opener-Policy: same-origin
     Cross-Origin-Resource-Policy: same-origin
@@ -67,4 +67,4 @@
     Cache-Control: public, max-age=604800, stale-while-revalidate=86400
 
 /iframe-page/*
-    Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-BpEdBCM/4BJbN8LWEqCQKlp9VGzetdD0UbdMayNyD28=' 'sha256-UBD9lfFHKxagKGHh9S8B2hytN1cmDsFK1Tl1uedsZ0Q=' 'sha256-/cFFbEHjTjpj7DLefsC+h1yhrxRRebLCB86XtBuCtvw=' https://embed.bsky.app; style-src 'self' 'sha256-TzlBu+Yp5QndAbgUwjajid8QyFloMLEZVV3SLr0syao=' 'sha256-FGec11lwsCO51tU7WzO3jldp5wRvWMBQbCXewZUQH9k='; frame-src https://www.youtube-nocookie.com https://embed.bsky.app; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; upgrade-insecure-requests
+    Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-BpEdBCM/4BJbN8LWEqCQKlp9VGzetdD0UbdMayNyD28=' 'sha256-UBD9lfFHKxagKGHh9S8B2hytN1cmDsFK1Tl1uedsZ0Q=' 'sha256-/cFFbEHjTjpj7DLefsC+h1yhrxRRebLCB86XtBuCtvw=' https://embed.bsky.app; style-src 'self' 'sha256-TzlBu+Yp5QndAbgUwjajid8QyFloMLEZVV3SLr0syao=' 'sha256-FGec11lwsCO51tU7WzO3jldp5wRvWMBQbCXewZUQH9k='; frame-src https://www.youtube-nocookie.com https://embed.bsky.app; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; upgrade-insecure-requests
