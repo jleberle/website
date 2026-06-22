@@ -8,10 +8,12 @@
   "description": {{ site.Params.description | plainify | truncate 180 | safeHTML }},
   {{- if (eq site.Params.schema.publisherType "Person") }}
   {{- /* Override of PaperMod's template: use a real portrait (site.Params.schema.image,
-         resolved from assets) instead of the favicon for the Person image. */}}
+         resolved from assets) instead of the favicon for the Person image. Keep
+         the structured-data image crawler-friendly without publishing the full
+         source portrait. */}}
   {{- $personImage := site.Params.assets.favicon | default "favicon.ico" | absURL }}
   {{- with site.Params.schema.image }}
-    {{- with resources.Get . }}{{ $personImage = (. | fingerprint).Permalink }}{{ else }}{{ $personImage = . | absURL }}{{ end }}
+    {{- with resources.Get . }}{{ $personImage = (.Resize "240x240 avif" | fingerprint).Permalink }}{{ else }}{{ $personImage = . | absURL }}{{ end }}
   {{- end }}
   "image": {{ $personImage }},
   {{- else }}
