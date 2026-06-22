@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/bash
+#!/usr/bin/env bash
 # Check URLs in markdown files and replace dead ones with Wayback Machine snapshots.
 #
 # Usage:
@@ -23,13 +23,26 @@ while [[ $# -gt 0 ]]; do
 done
 
 if $ALL; then
-  mapfile -t FILES < <(find "$REPO_ROOT/content" -name "*.md")
+  # Read without mapfile/readarray so this runs on bash 3.2 (stock macOS) too.
+  FILES=()
+  while IFS= read -r f; do FILES+=("$f"); done \
+    < <(find "$REPO_ROOT/content" -name "*.md")
 fi
 
 if [[ ${#FILES[@]} -eq 0 ]]; then
   echo "Usage: $(basename "$0") [--dry-run] [--all | file ...]" >&2
   exit 1
 fi
+
+# Portable in-place sed (BSD/macOS and GNU/Linux differ on `sed -i`): edit
+# through a temp file and write back into the original, which preserves its
+# permissions and inode.
+sed_inplace() {
+  local script="$1" file="$2" tmp
+  tmp=$(mktemp)
+  sed "$script" "$file" > "$tmp" && cat "$tmp" > "$file"
+  rm -f "$tmp"
+}
 
 # Check if a URL is live. Returns 0 if alive, 1 if dead.
 # 403/429 = bot-blocked but server exists → treat as live
@@ -75,7 +88,8 @@ TOTAL_MISSING=0
 for file in "${FILES[@]}"; do
   # Extract all https?:// URLs — markdown links, bare footnote URLs, and inline prose URLs
   # Strip trailing punctuation that isn't part of the URL, skip already-archived links
-  mapfile -t urls < <(
+  urls=()
+  while IFS= read -r u; do urls+=("$u"); done < <(
     grep -oE 'https?://[^[:space:])<>"]+' "$file" 2>/dev/null \
     | sed 's/[.,;:!?)]*$//' \
     | grep -v 'web\.archive\.org' \
@@ -109,7 +123,7 @@ for file in "${FILES[@]}"; do
       # Escape URL for use in sed
       escaped_url=$(printf '%s' "$url" | sed 's/[[\.*^$()+?{|]/\\&/g')
       escaped_archive=$(printf '%s' "$archive" | sed 's/[[\.*^$()+?{|]/\\&/g; s/&/\\\&/g')
-      sed -i '' "s|$escaped_url|$escaped_archive|g" "$file"
+      sed_inplace "s|$escaped_url|$escaped_archive|g" "$file"
     fi
   done
 done

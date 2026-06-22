@@ -13,6 +13,16 @@ WOODPECKER="$REPO_ROOT/.woodpecker.yml"
 STATICHOST="$REPO_ROOT/statichost.yml"
 DRY_RUN=false
 
+# Portable in-place sed (BSD/macOS and GNU/Linux differ on `sed -i`): edit
+# through a temp file and write back into the original, which preserves its
+# permissions and inode.
+sed_inplace() {
+  local script="$1" file="$2" tmp
+  tmp=$(mktemp)
+  sed "$script" "$file" > "$tmp" && cat "$tmp" > "$file"
+  rm -f "$tmp"
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run) DRY_RUN=true; shift ;;
@@ -63,10 +73,10 @@ if $DRY_RUN; then
 fi
 
 # Update .woodpecker.yml
-sed -i '' "s|hugomods/hugo:debian-git-[0-9]*\.[0-9]*\.[0-9]*|hugomods/hugo:${TARGET_TAG}|g" "$WOODPECKER"
+sed_inplace "s|hugomods/hugo:debian-git-[0-9]*\.[0-9]*\.[0-9]*|hugomods/hugo:${TARGET_TAG}|g" "$WOODPECKER"
 
 # Update statichost.yml — handles both debian-git and ci/exts style tags
-sed -i '' "s|hugomods/hugo:[a-z-]*[0-9]*\.[0-9]*\.[0-9]*|hugomods/hugo:${TARGET_TAG}|g" "$STATICHOST"
+sed_inplace "s|hugomods/hugo:[a-z-]*[0-9]*\.[0-9]*\.[0-9]*|hugomods/hugo:${TARGET_TAG}|g" "$STATICHOST"
 
 echo ""
 echo "Updated. Review changes with: git diff .woodpecker.yml statichost.yml"
