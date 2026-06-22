@@ -16,13 +16,13 @@
                     {{- if and (in $processableFormats $img.MediaType.SubType) (eq $prod true)}}
                         {{- /* Render at 2x the display height so the logo stays crisp on high-DPR screens. */}}
                         {{- $img = $img.Resize (printf "x%d" (mul $h 2)) }}
-                        <img src="{{ $img.Permalink }}" alt=""
+                        <img src="{{ $img.RelPermalink }}" alt=""
                             width="{{ div $img.Width 2 }}" height="{{ div $img.Height 2 }}">
                     {{- else }}
-                        <img src="{{ $img.Permalink }}" alt="" height="{{ $h }}">
+                        <img src="{{ $img.RelPermalink }}" alt="" height="{{ $h }}">
                     {{- end }}
                 {{- else }}
-                <img src="{{- site.Params.label.icon | absURL -}}" alt=""
+                <img src="{{- site.Params.label.icon | relURL -}}" alt=""
                     height="{{- site.Params.label.iconHeight | default "30" -}}">
                 {{- end -}}
                 {{- else if hasPrefix site.Params.label.iconSVG "<svg" }}
