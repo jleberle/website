@@ -3,12 +3,13 @@
 # command before publishing. Run as: scripts/preflight.sh && git push
 #
 #   1. hugo --minify        — fails on ERROR, surfaces WARN (missing figure alt etc.)
-#   2. html-validate        — HTML5 validation of every page (same as CI; rules
+#   2. generated junk files — fail if OS/editor metadata lands in public/
+#   3. html-validate        — HTML5 validation of every page (same as CI; rules
 #                              tuned in .htmlvalidate.json)
-#   3. a11y-lint.py          — content images without alt + heading-level skips
-#   4. csp-hashes.sh --check — CSP hash drift against the fresh build (same as CI)
-#   5. lychee --offline      — internal links/files in public/ (CI cron covers external)
-#   6. reference scan        — every internal src/href/srcset/feed URL in the
+#   4. a11y-lint.py          — content images without alt + heading-level skips
+#   5. csp-hashes.sh --check — CSP hash drift against the fresh build (same as CI)
+#   6. lychee --offline      — internal links/files in public/ (CI cron covers external)
+#   7. reference scan        — every internal src/href/srcset/feed URL in the
 #                              output must resolve to a published file; guards the
 #                              build.publishResources=false resource-invocation
 #                              pattern (see hugo.yaml)
@@ -49,6 +50,15 @@ elif [[ $WARNINGS -gt 0 ]]; then
   fi
 else
   pass "build passed, no warnings"
+fi
+
+step "generated junk files"
+JUNK_OUT=$(find public -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -name 'desktop.ini' \) -print)
+if [[ -z "$JUNK_OUT" ]]; then
+  pass "no OS/editor metadata in public/"
+else
+  echo "$JUNK_OUT"
+  fail "generated output contains OS/editor metadata"
 fi
 
 step "html-validate (all pages)"
