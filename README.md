@@ -135,6 +135,7 @@ Diff each override against its updated PaperMod source:
 diff themes/PaperMod/layouts/_partials/cover.html layouts/_partials/cover.html
 diff themes/PaperMod/layouts/_shortcodes/figure.html layouts/shortcodes/figure.html
 diff themes/PaperMod/layouts/_partials/home_info.html layouts/_partials/home_info.html
+diff themes/PaperMod/layouts/_partials/head.html layouts/_partials/head.html
 diff themes/PaperMod/layouts/_partials/templates/opengraph.html layouts/_partials/templates/opengraph.html
 diff themes/PaperMod/layouts/baseof.html layouts/baseof.html
 ```
@@ -144,8 +145,9 @@ For each diff: if PaperMod changed unrelated lines, copy their new version and r
 - `layouts/_partials/cover.html` — `($cover | fingerprint).RelPermalink` instead of `.Permalink`; and `avif` appended to `$processableFormats` so AVIF covers get responsive variants (see [Images](#images))
 - `layouts/shortcodes/figure.html` — resolves `src` to a page resource and uses the `responsive-img` partial for the AVIF `srcset` + `width`/`height` (see [Images](#images)); always emits `alt` (never copied from the caption) and warns at build when both are missing; the stock shortcode does no image processing
 - `layouts/_partials/home_info.html` — the home avatar resolves `imageUrl` as a resource and emits 1x/2x fingerprinted AVIF variants (`$img.Resize … | fingerprint`, `.RelPermalink`); also adds the microformats2 `h-card` markup (see [Images](#images))
+- `layouts/_partials/head.html` — uses the stored list paginator to self-canonicalize paginated list pages and emit `rel=prev`/`rel=next`
 - `layouts/_partials/templates/opengraph.html` — jpeg OG companion lookup and `site.Language.Lang`
-- `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`
+- `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`, and early list-paginator storage for `<head>` metadata
 
 **4. Re-check the CSP hashes**
 
