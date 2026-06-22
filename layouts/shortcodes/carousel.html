@@ -2,29 +2,43 @@
 
        carousel "a.avif" "b.avif"
          positional — for carousels below the fold (the usual case);
-         every slide lazy-loads.
+         every slide lazy-loads. Each slide's alt text falls back to the
+         humanized filename.
 
-       carousel images="a.avif, b.avif" eager=true
+       carousel images="a.avif, b.avif" alts="A bull rider; Barrel racing" eager=true
          named — pass eager=true when the carousel is the topmost media on
          the page: the first slide then loads eagerly with
          fetchpriority="high" since it is the likely LCP element. Don't
          combine with a visible cover image (they'd compete for priority).
 
-   Image params are resolved to page resources up front so slides and dots
-   always pair up. */ -}}
+         alts is an optional, parallel list describing each image in order;
+         it is SEMICOLON-separated (so alt text may contain commas). A slide
+         with no matching entry falls back to the humanized filename. Only
+         the named form can carry alt text — positional params can't be mixed
+         with a named alts param.
+
+   Images and their alt text are paired up front so slides, alt, and dots
+   never drift out of alignment even if a filename fails to resolve. */ -}}
 {{- $names := .Params -}}
 {{- $eager := false -}}
+{{- $alts := slice -}}
 {{- if .IsNamedParams -}}
     {{- $names = split (.Get "images") "," -}}
     {{- $eager = eq (printf "%v" (.Get "eager")) "true" -}}
+    {{- with .Get "alts" }}{{- $alts = split . ";" -}}{{- end -}}
 {{- end -}}
-{{- $images := slice -}}
-{{- range $names -}}
-    {{- with $.Page.Resources.GetMatch (strings.TrimSpace .) -}}{{- $images = $images | append . -}}{{- end -}}
+{{- $slides := slice -}}
+{{- range $i, $name := $names -}}
+    {{- with $.Page.Resources.GetMatch (strings.TrimSpace $name) -}}
+        {{- $alt := "" -}}
+        {{- if lt $i (len $alts) }}{{- $alt = strings.TrimSpace (index $alts $i) -}}{{- end -}}
+        {{- $slides = $slides | append (dict "img" . "alt" $alt) -}}
+    {{- end -}}
 {{- end -}}
 <section class="carousel" aria-label="Image carousel" tabindex="0">
     <div class="carousel-track">
-        {{- range $i, $img := $images }}
+        {{- range $i, $s := $slides }}
+        {{- $img := $s.img }}
         {{- $r := partial "responsive-img.html" (dict "resource" $img) }}
         <figure class="carousel-slide{{ if eq $i 0 }} active{{ end }}" aria-hidden="{{ if eq $i 0 }}false{{ else }}true{{ end }}">
             <img src="{{ $r.src }}"
@@ -32,7 +46,7 @@
                  srcset="{{ . }}"
                  sizes="{{ $r.sizes }}"
                  {{- end }}
-                 alt="{{ $img.Name | replaceRE `\.[^.]+$` `` | humanize }}"
+                 alt="{{ with $s.alt }}{{ . }}{{ else }}{{ $img.Name | replaceRE `\.[^.]+$` `` | humanize }}{{ end }}"
                  loading="{{ if and $eager (eq $i 0) }}eager{{ else }}lazy{{ end }}"
                  decoding="async"
                  {{- if and $eager (eq $i 0) }} fetchpriority="high"{{ end }}
@@ -43,7 +57,7 @@
     <button type="button" class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
     <button type="button" class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
     <div class="carousel-dots">
-        {{- range $i, $img := $images }}
+        {{- range $i, $s := $slides }}
         <button type="button" class="carousel-dot{{ if eq $i 0 }} active{{ end }}" aria-label="Go to image {{ add $i 1 }}"></button>
         {{- end }}
     </div>

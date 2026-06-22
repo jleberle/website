@@ -28,8 +28,14 @@
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
+      if (!overlay.classList.contains('is-open')) return;
+      if (e.key === 'Escape') {
         closeLightbox();
+      } else if (e.key === 'Tab') {
+        // The close button is the only focusable control in the overlay, so
+        // trap Tab on it — focus can't escape to the page behind the modal.
+        e.preventDefault();
+        overlayClose.focus();
       }
     });
   }

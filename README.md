@@ -54,7 +54,7 @@ published file. `--strict` also fails on build warnings (e.g. figures missing al
 |---|---|---|
 | `youtube` | `{{</* youtube VIDEO_ID */>}}` | Click-to-load YouTube embed. Thumbnail is self-hosted at build time via `resources.GetRemote`. Video only loads on click. |
 | `bluesky` | `{{</* bluesky "https://bsky.app/..." */>}}` | Click-to-load Bluesky embed. Embed script only loads on click. |
-| `carousel` | `{{</* carousel "a.avif" "b.avif" */>}}` | Image carousel from page bundle files. Supports keyboard navigation and dot indicators. All slides lazy-load; for a carousel that is the topmost media on the page use the named form `{{</* carousel images="a.avif, b.avif" eager=true */>}}` so the first slide loads eagerly with `fetchpriority="high"`. |
+| `carousel` | `{{</* carousel "a.avif" "b.avif" */>}}` | Image carousel from page bundle files. Supports keyboard navigation and dot indicators. Each slide's `alt` falls back to the humanized filename. All slides lazy-load; for a carousel that is the topmost media on the page use the named form `{{</* carousel images="a.avif, b.avif" eager=true */>}}` so the first slide loads eagerly with `fetchpriority="high"`. Pass real alt text via a parallel, **semicolon-separated** `alts` list (semicolons so alt text may contain commas): `{{</* carousel images="a.avif, b.avif" alts="A bull rider mid-buck; Barrel racing at speed" */>}}` — only the named form can carry `alts`. |
 
 ## Images
 
@@ -134,7 +134,7 @@ Diff each override against its updated PaperMod source:
 ```sh
 diff themes/PaperMod/layouts/_partials/cover.html layouts/_partials/cover.html
 diff themes/PaperMod/layouts/_shortcodes/figure.html layouts/shortcodes/figure.html
-diff themes/PaperMod/layouts/_partials/index_profile.html layouts/_partials/index_profile.html
+diff themes/PaperMod/layouts/_partials/home_info.html layouts/_partials/home_info.html
 diff themes/PaperMod/layouts/_partials/templates/opengraph.html layouts/_partials/templates/opengraph.html
 diff themes/PaperMod/layouts/baseof.html layouts/baseof.html
 ```
@@ -143,7 +143,7 @@ For each diff: if PaperMod changed unrelated lines, copy their new version and r
 
 - `layouts/_partials/cover.html` — `($cover | fingerprint).RelPermalink` instead of `.Permalink`; and `avif` appended to `$processableFormats` so AVIF covers get responsive variants (see [Images](#images))
 - `layouts/shortcodes/figure.html` — resolves `src` to a page resource and uses the `responsive-img` partial for the AVIF `srcset` + `width`/`height` (see [Images](#images)); always emits `alt` (never copied from the caption) and warns at build when both are missing; the stock shortcode does no image processing
-- `layouts/_partials/index_profile.html` — `$img.RelPermalink` and `| fingerprint` for avif
+- `layouts/_partials/home_info.html` — the home avatar resolves `imageUrl` as a resource and emits 1x/2x fingerprinted AVIF variants (`$img.Resize … | fingerprint`, `.RelPermalink`); also adds the microformats2 `h-card` markup (see [Images](#images))
 - `layouts/_partials/templates/opengraph.html` — jpeg OG companion lookup and `site.Language.Lang`
 - `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`
 
