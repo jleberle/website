@@ -13,8 +13,6 @@ As for here, this little corner is largely meant for myself, to track the [thing
 
 If you're curious what takes up my time, here's my [media diet](/sources) and the [things I use](/uses). 
 
----
-
 ## The Site
 
 This site is built with [Hugo](https://gohugo.io) and served through [Codeberg](https://codeberg.org/jleberle/website) and [Statichost.eu](https://statichost.eu). The base theme for the site is [PaperMod](https://github.com/adityatelange/hugo-PaperMod/) which I have customized with the help of Claude. Claude has only touched back-end files on the site, everything you see publicly is written and edited by me, a [real human](/humans.txt) typos and all (for errors, please blame my cat). All my work here is [Creative Commons licensed](https://creativecommons.org/licenses/by-nc-sa/4.0/).
