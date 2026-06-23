@@ -1,7 +1,7 @@
 {{- with site.Params.homeInfoParams }}
 <article class="first-entry home-info h-card">
     <data class="p-name" value="{{ site.Params.author }}"></data>
-    <a class="u-url u-uid" href="{{ site.BaseURL }}" hidden></a>
+    <a class="u-url u-uid" href="{{ site.Home.RelPermalink }}" hidden></a>
     {{- if .imageUrl }}
     <div class="home-info-image">
         {{- $w := .imageWidth | default 120 }}
@@ -17,7 +17,7 @@
              srcset="{{ $img1x.RelPermalink }} 1x, {{ $img2x.RelPermalink }} 2x"
              alt="{{ .imageTitle | default "Profile image" }}" width="{{ $w }}" height="{{ $h }}">
         {{- else }}
-        <img class="u-photo" src="{{ .imageUrl | absURL }}" alt="{{ .imageTitle | default "Profile image" }}"
+        <img class="u-photo" src="{{ .imageUrl | relURL }}" alt="{{ .imageTitle | default "Profile image" }}"
              width="{{ $w }}" height="{{ $h }}">
         {{- end }}
     </div>

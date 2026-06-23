@@ -29,7 +29,7 @@ body {
    too airy for 40/32/24px display type, so a wrapped heading looks gappy.
    - optimizeLegibility: kerning + ligatures (heading-only; see note above)
    - line-height 1.25: tighter, appropriate for large display type
-   - letter-spacing: a hair of negative tracking; Georgia is loose at size
+   - letter-spacing: neutral tracking; Newsreader has enough character
    - text-wrap: balance: evens multi-line headings, kills one-word orphans
    - scroll-margin-top: breathing room when an anchor link jumps here */
 h1, h2, h3, h4, h5, h6,
@@ -39,7 +39,7 @@ h1, h2, h3, h4, h5, h6,
                                   authority but less bluntness than 700, which
                                   reads more academic than bloggy */
     line-height: 1.25;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
     text-wrap: balance;
     scroll-margin-top: 1rem;
 }
@@ -88,7 +88,7 @@ h1, h2, h3, h4, h5, h6,
    devices show nothing, so never rely on it to carry essential meaning. */
 .post-content abbr[title] {
     font-variant: all-small-caps;
-    letter-spacing: 0.04em;
+    letter-spacing: 0;
     text-decoration: underline dotted;
     text-underline-offset: 0.2em;
     cursor: help;

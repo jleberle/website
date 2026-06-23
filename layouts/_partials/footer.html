@@ -10,7 +10,7 @@
     <div class="footer-inner">
 
         <div class="footer-col footer-about">
-            <p class="footer-name"><a href="{{ "" | absLangURL }}">{{ site.Title }}</a></p>
+            <p class="footer-name"><a href="{{ "" | relLangURL }}">{{ site.Title }}</a></p>
             {{- with site.Params.footer.about }}
             {{- /* Replace the literal {year} token with the build-year, so a
                    copyright line in params.footer.about stays current. */}}
@@ -49,7 +49,8 @@
             <h2 class="footer-heading">Explore</h2>
             <ul>
                 {{- range . }}
-                <li><a href="{{ .URL | absLangURL }}">{{ .Name }}</a></li>
+                {{- $is_external := (findRE "://" .URL) }}
+                <li><a href="{{ cond $is_external .URL (.URL | relLangURL) }}">{{ .Name }}</a></li>
                 {{- end }}
             </ul>
         </nav>

@@ -23,7 +23,7 @@ Increasingly it feels like the best option is a return to reading things off lin
 
 ## Local News
 
-It still makes me sad to think about the *Tulsa World* [limping along](https://jaredeberle.org/articles/i-got-sick-of-watching-the-tulsa-world-die/) but there are a number of good local media sources in Tulsa:
+It still makes me sad to think about the *Tulsa World* [limping along](/articles/i-got-sick-of-watching-the-tulsa-world-die/) but there are a number of good local media sources in Tulsa:
 
 - [*The Frontier*](https://www.readfrontier.org)
 - [*NonDoc*](https://nondoc.com)
@@ -106,4 +106,3 @@ I tend to listen to podcasts on the way to work, so these tend to fall off in li
 - [*Desert Oracle Radio*](https://www.desertoracle.com/radio/): Dispatches from the Mojave Desert
 - [*The Talk Show*](https://daringfireball.net/thetalkshow/): John Gruber's Apple Podcast
 - [*Lore*](https://www.lorepodcast.com) and [*Cabinet of Curiosities*](https://www.grimandmild.com/curiosities): Aaron Mahnke's weird histories
-

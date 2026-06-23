@@ -9,7 +9,7 @@
        its RelPermalink. The invocation is what publishes the file now that
        build.publishResources is false site-wide. */ -}}
 {{- $href := .Destination -}}
-{{- if not $url.IsAbs -}}
+{{- if and (not $url.IsAbs) (not (strings.HasPrefix $url.Path "/")) -}}
   {{- $path := strings.TrimPrefix "./" $url.Path -}}
   {{- with and $path (or (.PageInner.Resources.Get $path) (resources.Get $path)) -}}
     {{- $href = .RelPermalink -}}

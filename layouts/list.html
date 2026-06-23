@@ -66,52 +66,52 @@
     <div class="home-column">
         {{- if $articles }}
         <section class="home-section">
-            <h2 class="home-section-title"><a href="{{ $articlesPage.Permalink }}">{{ $articlesPage.Title }}</a></h2>
+            <h2 class="home-section-title"><a href="{{ $articlesPage.RelPermalink }}">{{ $articlesPage.Title }}</a></h2>
             {{- range $articles }}
             <article class="home-list-entry h-entry">
-                <a class="u-url p-name" href="{{ .Permalink }}">{{ .Title }}</a>
+                <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
                 <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
-            <a class="home-section-all" href="{{ $articlesPage.Permalink }}">All {{ $articlesPage.Title | lower }} &rarr;</a>
+            <a class="home-section-all" href="{{ $articlesPage.RelPermalink }}">All {{ $articlesPage.Title | lower }} &rarr;</a>
         </section>
         {{- end }}
         {{- if $quotes }}
         <section class="home-section">
-            <h2 class="home-section-title"><a href="{{ $quotesPage.Permalink }}">Quotes</a></h2>
+            <h2 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Quotes</a></h2>
             {{- range $quotes }}
             <article class="home-list-entry h-entry">
-                <a class="u-url p-name" href="{{ .Permalink }}">{{ .Title }}</a>
+                <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
                 <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
-            <a class="home-section-all" href="{{ $quotesPage.Permalink }}">All quotes &rarr;</a>
+            <a class="home-section-all" href="{{ $quotesPage.RelPermalink }}">All quotes &rarr;</a>
         </section>
         {{- end }}
     </div>
     <div class="home-column">
         {{- if $reviews }}
         <section class="home-section">
-            <h2 class="home-section-title"><a href="{{ $reviewsPage.Permalink }}">{{ $reviewsPage.Title }}</a></h2>
+            <h2 class="home-section-title"><a href="{{ $reviewsPage.RelPermalink }}">{{ $reviewsPage.Title }}</a></h2>
             {{- range $reviews }}
             <article class="home-list-entry h-entry">
-                <a class="u-url p-name" href="{{ .Permalink }}">{{ .Title }}</a>
+                <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
                 <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
-            <a class="home-section-all" href="{{ $reviewsPage.Permalink }}">All {{ $reviewsPage.Title | lower }} &rarr;</a>
+            <a class="home-section-all" href="{{ $reviewsPage.RelPermalink }}">All {{ $reviewsPage.Title | lower }} &rarr;</a>
         </section>
         {{- end }}
         {{- if $courses }}
         <section class="home-section">
-            <h2 class="home-section-title"><a href="{{ $coursesPage.Permalink }}">{{ $coursesPage.Title }}</a></h2>
+            <h2 class="home-section-title"><a href="{{ $coursesPage.RelPermalink }}">{{ $coursesPage.Title }}</a></h2>
             {{- range $courses }}
             <article class="home-list-entry h-entry">
-                <a class="u-url p-name" href="{{ .Permalink }}">{{ .Title }}</a>
+                <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
                 <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
-            <a class="home-section-all" href="{{ $coursesPage.Permalink }}">All {{ $coursesPage.Title | lower }} &rarr;</a>
+            <a class="home-section-all" href="{{ $coursesPage.RelPermalink }}">All {{ $coursesPage.Title | lower }} &rarr;</a>
         </section>
         {{- end }}
     </div>
@@ -158,7 +158,7 @@
     {{- partial "post_meta.html" . -}}
   </footer>
   {{- end }}
-  <a class="entry-link u-url" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+  <a class="entry-link u-url" aria-label="post link to {{ .Title | plainify }}" href="{{ .RelPermalink }}"></a>
 </article>
 {{- end }}
 
@@ -166,7 +166,7 @@
 <footer class="page-footer">
   <nav class="pagination" aria-label="Pagination">
     {{- if $paginator.HasPrev }}
-    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">
+    <a class="prev" href="{{ $paginator.Prev.URL | relURL }}">
       «&nbsp;{{ i18n "prev_page" }}&nbsp;
       {{- if (.Param "ShowPageNums") }}
       {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
@@ -174,7 +174,7 @@
     </a>
     {{- end }}
     {{- if $paginator.HasNext }}
-    <a class="next" href="{{ $paginator.Next.URL | absURL }}">
+    <a class="next" href="{{ $paginator.Next.URL | relURL }}">
       {{- i18n "next_page" }}&nbsp;
       {{- if (.Param "ShowPageNums") }}
       {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}

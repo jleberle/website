@@ -11,7 +11,7 @@
     gap: 0;                       /* override PaperMod's 10px pill gap */
     align-items: baseline;
     margin-top: 0.6rem;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: var(--secondary);
 }
 
@@ -20,9 +20,10 @@
 .post-tags::before {
     content: "Topics";
     margin-inline-end: 0.55rem;
-    font-size: 0.72rem;
+    font-family: var(--meta-font);
+    font-size: 0.68rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
     text-transform: uppercase;
     color: var(--secondary);
 }

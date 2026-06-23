@@ -25,7 +25,7 @@ I take internet privacy seriously and have worked to keep this site as self-cont
 - Youtube embeds utilize Youtube's privacy enhanced URL. 
 - No affiliate links or other revenue generating partnerships are on the site.
 
-Additionally, I've worked to make this site as environmentally friendly as possible meaning the home page uses only [0.008g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor and my [biggest page](https://jaredeberle.org/articles/past-and-future-of-indian-rodeo-in-las-vegas/) downloads at less than 350KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data (10 times the amount). This is the result of a number of very opinionated decisions:
+Additionally, I've worked to make this site as environmentally friendly as possible meaning the home page uses only [0.008g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor and my [biggest page](/articles/past-and-future-of-indian-rodeo-in-las-vegas/) downloads at less than 350KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data (10 times the amount). This is the result of a number of very opinionated decisions:
 
 - A static blog like Hugo is more efficient than software like Wordpress and to
   further enhance that, all resources are minified when built

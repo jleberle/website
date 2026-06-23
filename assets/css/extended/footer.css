@@ -24,8 +24,9 @@
     margin-inline: auto;
     padding-inline: var(--gap);
     display: grid;
-    grid-template-columns: 1.7fr 1fr 1fr 1fr;
-    gap: 2.25rem;
+    grid-template-columns: minmax(18rem, 1.7fr) minmax(5rem, 0.85fr) minmax(7rem, 0.95fr) minmax(7rem, 0.95fr);
+    column-gap: clamp(1.25rem, 3vw, 2.25rem);
+    row-gap: 2rem;
     padding-top: 2.75rem;
     padding-bottom: 2.75rem;
 }
@@ -35,7 +36,8 @@
     margin: 0 0 0.9rem;
     font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    font-family: var(--meta-font);
+    letter-spacing: 0;
     text-transform: uppercase;
     color: var(--secondary);
 }
@@ -47,7 +49,8 @@
     margin: 0 0 0.9rem;
     font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    font-family: var(--meta-font);
+    letter-spacing: 0;
     text-transform: uppercase;
     color: var(--secondary);
 }
@@ -89,7 +92,8 @@
     margin-top: 1.4rem;
     padding: 0.32rem 0.7rem;
     font: inherit;
-    font-size: 0.78rem;
+    font-family: var(--meta-font);
+    font-size: 0.74rem;
     color: var(--secondary);
     background: transparent;
     border: 1px solid var(--border);
@@ -179,9 +183,8 @@
     flex-shrink: 0;
 }
 
-/* Two columns on tablet-ish widths, where four would get cramped. The
-   identity column spans both so its paragraph keeps room to breathe. */
-@media (max-width: 900px) {
+/* Two columns only once the four-column footer would truly get cramped. */
+@media (max-width: 700px) {
     .footer-inner {
         grid-template-columns: 1fr 1fr;
         gap: 2rem;
@@ -194,8 +197,14 @@
 
 /* Stack to a single column on narrow viewports. */
 @media (max-width: 540px) {
+    .site-footer {
+        margin-top: 2rem;
+    }
+
     .footer-inner {
         grid-template-columns: 1fr;
-        gap: 1.75rem;
+        gap: 1.35rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
 }

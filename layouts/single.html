@@ -3,7 +3,7 @@
 {{- $externalURL := .Params.external_url }}
 
 <article class="post-single h-entry{{ with $externalURL }} link-post{{ end }}">
-  <a class="u-url" href="{{ .Permalink }}" hidden></a>
+  <a class="u-url" href="{{ .RelPermalink }}" hidden></a>
   <header class="post-header">
     {{ partial "breadcrumbs.html" . }}
     <h1 class="post-title entry-hint-parent p-name">
@@ -70,7 +70,7 @@
     {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
     <ul class="post-tags">
       {{- range ($.GetTerms $tags) }}
-      <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
+      <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
       {{- end }}
     </ul>
     {{- if (.Param "ShowPostNavLinks") }}

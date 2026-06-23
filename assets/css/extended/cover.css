@@ -9,6 +9,13 @@
     margin: 0.25rem 0 1rem 1.5rem;
 }
 
+.post-single .entry-cover img {
+    padding: 4px;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 2px);
+}
+
 /* Drop the tags/footer below a tall cover on short posts. */
 .post-single .post-footer {
     clear: both;
