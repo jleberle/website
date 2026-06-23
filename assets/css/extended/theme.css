@@ -53,31 +53,23 @@
 }
 
 /* ------------------------------------------------------------
-   Solarized Dark — same palette, inverted tonal range.
-   base03 background, base02 highlights, base0 body text,
-   base1 emphasized, base01 muted comments.
+   Dark theme — deliberately NOT Solarized. The Solarized dark
+   palette read too warm and low-contrast for long-form reading,
+   so we fall back to PaperMod's default neutral-gray dark
+   (defined in themes/PaperMod/assets/css/core/theme-vars.css) by
+   simply not overriding --theme/--entry/--primary/etc. here.
+   Only the custom link + divider accents are set, with links in
+   Solarized cyan.
    ------------------------------------------------------------ */
 :root[data-theme="dark"] {
-    --theme:         var(--base03);
-    --entry:         var(--base02);
-    --primary:       var(--base1);
-    --content:       var(--base0);
-    --secondary:     var(--base0);   /* base01 fails WCAG AA on base03 (2.8:1);
-                                        base0 gives 4.7:1 and matches the light
-                                        theme, where secondary == content too */
-    --tertiary:      var(--base02);
-    --code-bg:       var(--base02);
-    --code-block-bg: var(--base03);
-    --border:        var(--base02);
+    /* Divider tone derived from PaperMod's dark vars: a step up from --border
+       so hr/blockquote/header/footer rules stay visible but subtle. */
+    --rule:   color-mix(in srgb, var(--border), var(--secondary) 40%);
 
-    --accent:        var(--red);    /* link hover — plain Solarized red, to
-                                       match the light theme (the resting
-                                       --link is a lifted red; see below) */
-    --rule:          var(--base01);
-
-    /* Plain red is only 3.3:1 on base03, so lift it ~25% toward white for a
-       readable warm red at 4.6:1 (AA); plain red (--accent) on hover. */
-    --link:          color-mix(in srgb, var(--red), white 25%);
+    /* Prose links in Solarized cyan, lifted slightly for AA on both the page
+       (~5.9:1) and card (~4.8:1) backgrounds; brighter cyan on hover. */
+    --link:   color-mix(in srgb, var(--cyan), white 10%);
+    --accent: color-mix(in srgb, var(--cyan), white 30%);
 }
 
 /* ------------------------------------------------------------
@@ -145,18 +137,6 @@ body,
     padding-top: 0.6rem;
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
-}
-
-.post-tags a,
-.paginav {
-    background: var(--entry);
-}
-
-/* Gentle hover for tag pills and prev/next post buttons: blend the hover
-   color toward the resting background so it's a soft highlight. */
-.post-tags a:hover,
-.paginav a:hover {
-    background: color-mix(in srgb, var(--entry), var(--rule) 40%);
 }
 
 /* ------------------------------------------------------------
