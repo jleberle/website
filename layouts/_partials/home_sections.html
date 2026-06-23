@@ -1,0 +1,65 @@
+{{- $dateFormat := site.Params.DateFormat | default ":date_long" }}
+{{- $articlesPage := site.GetPage "articles" }}
+{{- $quotesPage    := site.GetPage "quotes" }}
+{{- $reviewsPage  := site.GetPage "reviews" }}
+{{- $coursesPage  := site.GetPage "courses" }}
+{{- $articles := where site.RegularPages "Section" "articles" | first 5 }}
+{{- $quotes    := where site.RegularPages "Section" "quotes"    | first 5 }}
+{{- $reviews  := where site.RegularPages "Section" "reviews"  | first 5 }}
+{{- $courses  := where site.RegularPages "Section" "courses"  | first 5 }}
+
+{{- /* The four sections are placed into a single 2x2 grid via grid-template-areas
+       (home.css), so the two top-row sections (articles/reviews) share a row
+       height and the bottom-row sections (quotes/courses) always start on the
+       same line regardless of title wrapping. DOM order is row-major to match
+       visual reading order. */ -}}
+<div class="home-columns h-feed">
+    {{- if $articles }}
+    <section class="home-section home-section--articles">
+        <h2 class="home-section-title"><a href="{{ $articlesPage.RelPermalink }}">{{ $articlesPage.Title }}</a></h2>
+        {{- range $articles }}
+        <article class="home-list-entry h-entry">
+            <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
+        </article>
+        {{- end }}
+        <a class="home-section-all" href="{{ $articlesPage.RelPermalink }}">All {{ $articlesPage.Title | lower }} &rarr;</a>
+    </section>
+    {{- end }}
+    {{- if $reviews }}
+    <section class="home-section home-section--reviews">
+        <h2 class="home-section-title"><a href="{{ $reviewsPage.RelPermalink }}">{{ $reviewsPage.Title }}</a></h2>
+        {{- range $reviews }}
+        <article class="home-list-entry h-entry">
+            <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
+        </article>
+        {{- end }}
+        <a class="home-section-all" href="{{ $reviewsPage.RelPermalink }}">All {{ $reviewsPage.Title | lower }} &rarr;</a>
+    </section>
+    {{- end }}
+    {{- if $quotes }}
+    <section class="home-section home-section--quotes">
+        <h2 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Quotes</a></h2>
+        {{- range $quotes }}
+        <article class="home-list-entry h-entry">
+            <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
+        </article>
+        {{- end }}
+        <a class="home-section-all" href="{{ $quotesPage.RelPermalink }}">All quotes &rarr;</a>
+    </section>
+    {{- end }}
+    {{- if $courses }}
+    <section class="home-section home-section--courses">
+        <h2 class="home-section-title"><a href="{{ $coursesPage.RelPermalink }}">{{ $coursesPage.Title }}</a></h2>
+        {{- range $courses }}
+        <article class="home-list-entry h-entry">
+            <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
+        </article>
+        {{- end }}
+        <a class="home-section-all" href="{{ $coursesPage.RelPermalink }}">All {{ $coursesPage.Title | lower }} &rarr;</a>
+    </section>
+    {{- end }}
+</div>

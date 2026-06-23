@@ -1,0 +1,92 @@
+{{- if not (.Param "hideFooter") }}
+<footer class="site-footer">
+    <div class="footer-inner">
+
+        <div class="footer-col footer-about">
+            <p class="footer-name"><a href="{{ "" | relLangURL }}">{{ site.Title }}</a></p>
+            {{- with site.Params.footer.about }}
+            {{- /* Replace the literal {year} token with the build-year, so a
+                   copyright line in params.footer.about stays current. */}}
+            <div class="footer-about-text">{{ replace . "{year}" (now.Year | string) | markdownify }}</div>
+            {{- end }}
+            {{- if (not site.Params.disableThemeToggle) }}
+            {{- /* Theme toggle. Same #theme-toggle id the footer script binds to,
+                   and the .moon/.sun + label visibility is driven by [data-theme]
+                   in CSS, so it works here exactly as it did in the header. */}}
+            <button id="theme-toggle" type="button" class="footer-theme-toggle" accesskey="t"
+                title="Toggle light and dark theme (Alt + T)" aria-label="Toggle light and dark theme">
+                <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <span class="theme-toggle-label theme-toggle-label--dark">Dark theme</span>
+                <span class="theme-toggle-label theme-toggle-label--light">Light theme</span>
+            </button>
+            {{- end }}
+        </div>
+
+        {{- with site.Menus.main }}
+        <nav class="footer-col footer-nav" aria-label="Footer">
+            <h2 class="footer-heading">Explore</h2>
+            <ul>
+                {{- range . }}
+                {{- $is_external := (findRE "://" .URL) }}
+                <li><a href="{{ cond $is_external .URL (.URL | relLangURL) }}">{{ .Name }}</a></li>
+                {{- end }}
+            </ul>
+        </nav>
+        {{- end }}
+
+        {{- with site.Params.socialIcons }}
+        <div class="footer-col footer-connect">
+            <h2 class="footer-heading">Connect</h2>
+            {{- partial "social_icons.html" . }}
+        </div>
+        {{- end }}
+
+        {{- $rss := site.Home.OutputFormats.Get "rss" }}
+        {{- $jsonfeed := site.Home.OutputFormats.Get "jsonfeed" }}
+        {{- if or $rss $jsonfeed }}
+        <div class="footer-col footer-subscribe">
+            <h2 class="footer-heading">Subscribe</h2>
+            <div class="footer-feeds">
+                {{- with $rss }}
+                <a class="footer-feed" href="{{ .RelPermalink }}" title="RSS feed">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 11a9 9 0 0 1 9 9"></path>
+                        <path d="M4 4a16 16 0 0 1 16 16"></path>
+                        <circle cx="5" cy="19" r="1"></circle>
+                    </svg>
+                    <span>RSS feed</span>
+                </a>
+                {{- end }}
+                {{- with $jsonfeed }}
+                <a class="footer-feed" href="{{ .RelPermalink }}" title="JSON feed">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M8 3c-2 0-3 1-3 3v3c0 1.5-.7 2.5-2 3 1.3.5 2 1.5 2 3v3c0 2 1 3 3 3"></path>
+                        <path d="M16 3c2 0 3 1 3 3v3c0 1.5.7 2.5 2 3-1.3.5-2 1.5-2 3v3c0 2-1 3-3 3"></path>
+                    </svg>
+                    <span>JSON feed</span>
+                </a>
+                {{- end }}
+            </div>
+        </div>
+        {{- end }}
+
+    </div>
+</footer>
+{{- end }}

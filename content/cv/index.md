@@ -1,17 +1,19 @@
 ---
 title: "Jared L. Eberle — Curriculum Vitae"
-description: "Spring 2026"
+description: "Summer 2026"
 summary: "Curriculum vitae of Jared L. Eberle, historian of 20th century Native American activism."
-date: 2026-06-06
+date: 2026-06-07
 hideMeta: true
 ---
 
 [Download the PDF version](cv.pdf)
-
-|                                             |                          |
-|---------------------------------------------|:-------------------------|
-| 154 Social Sciences and Humanities Building | jared.eberle@okstate.edu |
-| Stillwater, OK 74078                        | [jaredeberle.org](/)     |
+{{< cv-letterhead
+    address1="154 Social Sciences and Humanities"
+    address2="Stillwater, OK 74078"
+    email="jared.eberle@okstate.edu"
+    siteLabel="jaredeberle.org"
+    siteURL="/"
+>}}
 
 ## Academic Employment
 

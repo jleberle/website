@@ -6,6 +6,16 @@
    apparatus instead — a keyword line and plain-text post-nav.
    ------------------------------------------------------------ */
 
+/* The modified date / suggestion line sits above the tags, with a
+   short rule that only spans the width of the meta text itself. */
+.post-meta-footer {
+    width: fit-content;
+    border-top: 1px solid var(--border);
+    padding-top: 0.6rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
 /* --- Tags as a journal-style keyword line --- */
 .post-tags {
     gap: 0;                       /* override PaperMod's 10px pill gap */

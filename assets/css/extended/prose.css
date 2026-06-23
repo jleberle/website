@@ -1,0 +1,36 @@
+/* ------------------------------------------------------------
+   Prose color and link treatments driven by the theme variables.
+   Core serif typography lives in serif.css; this file handles
+   accent/rule usage inside rendered Markdown content.
+   ------------------------------------------------------------ */
+.md-content hr {
+    background: var(--rule);
+}
+
+.md-content blockquote {
+    border-inline-start: 2px solid var(--rule);
+}
+
+/* Large muted opening quote at the start of blockquotes. Decorative
+   pseudo-element only; line-height: 0 keeps it from inflating the line. */
+.md-content blockquote p:first-of-type::before {
+    content: "\201C";
+    margin-inline-end: 0.12em;
+    font-size: 3em;
+    line-height: 0;
+    vertical-align: -0.4em;
+    color: var(--rule);
+    opacity: 0.55;
+    pointer-events: none;
+    user-select: none;
+}
+
+.md-content a:not(.anchor) {
+    color: var(--link);
+    transition: color 0.15s ease;
+}
+
+.md-content a:not(.anchor):hover {
+    color: var(--accent);
+    text-underline-offset: 0.25rem;
+}

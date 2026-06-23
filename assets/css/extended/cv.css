@@ -1,7 +1,40 @@
-/* Pandoc renders the headerless address table in the CV (01-header.md) with an
-   empty header row (GFM tables require a header). Hide just that empty row.
-   :has(th:empty) matches only the empty pandoc artifact, so real table headers
-   elsewhere are untouched. */
-.post-content thead:has(th:empty) {
-  display: none;
+/* ------------------------------------------------------------
+   CV page (content/cv/, generated from ~/git/cv). The web contact
+   header is emitted as explicit .cv-letterhead markup by the CV
+   build, while the PDF keeps its own Markdown table source.
+   ------------------------------------------------------------ */
+
+/* Center the PDF link above the letterhead block. */
+.post-content > p:first-child:has(a[href$=".pdf"]) {
+    margin: 0 0 1.25rem;
+    text-align: center;
+    font-family: var(--meta-font);
+    font-size: 0.9rem;
+}
+
+.cv-letterhead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1rem;
+    width: 100%;
+    margin: 0 0 2rem;
+}
+
+.cv-letterhead p {
+    margin: 0.1em 0;
+}
+
+.cv-letterhead-contact {
+    text-align: right;
+}
+
+@media (max-width: 520px) {
+    .cv-letterhead {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+    }
+
+    .cv-letterhead-contact {
+        text-align: left;
+    }
 }

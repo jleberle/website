@@ -1,3 +1,8 @@
+/* ------------------------------------------------------------
+   Monospace stack for code-ish elements. The serif body
+   (serif.css) sets everything else; this keeps inline code, code
+   blocks, kbd and samp on a modern system mono stack.
+   ------------------------------------------------------------ */
 code, pre, kbd, samp, tt {
   font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
                'Liberation Mono', 'Cascadia Code', 'Roboto Mono', monospace;

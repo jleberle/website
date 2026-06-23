@@ -1,3 +1,10 @@
+/* ------------------------------------------------------------
+   Link posts. Titles that point off-site (a link blog / bookmark
+   pattern) render in the heading color with a trailing arrow
+   (.link-post-arrow), rather than as a colored prose link, so the
+   title still reads as a title. Used on list entries and the
+   single post title.
+   ------------------------------------------------------------ */
 .entry-header h2 .link-post-title,
 .post-title .link-post-title {
   color: inherit;

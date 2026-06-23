@@ -1,3 +1,9 @@
+/* ------------------------------------------------------------
+   Image lightbox (assets/js/lightbox.js). Click a content image
+   to open it full-screen on a dimmed overlay; click anywhere or
+   the close button to dismiss. Progressive enhancement — without
+   JS images just render inline.
+   ------------------------------------------------------------ */
 #lightbox-overlay {
     display: none;
     position: fixed;

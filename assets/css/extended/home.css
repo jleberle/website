@@ -1,12 +1,19 @@
+/* ------------------------------------------------------------
+   Home page only (body.home). The widened nav-width column, the
+   profile-image intro (.home-info), and the two-column section
+   grid of compact title+date list rows (.home-list-entry). Other
+   list pages use list.css; this file is scoped to the home page.
+   ------------------------------------------------------------ */
+
 /* Expand home page content to match nav width */
 body.home .main {
     max-width: calc(var(--nav-width) + var(--gap) * 2);
 }
 
 /* Home info with profile image */
-.home-info {
-    display: flex !important;
-    flex-direction: row !important;
+body.home .home-info {
+    display: flex;
+    flex-direction: row;
     gap: 1.5rem;
     align-items: center;
 }
@@ -34,8 +41,8 @@ body.home .main {
 
 
 @media (max-width: 600px) {
-    .home-info {
-        flex-direction: column !important;
+    body.home .home-info {
+        flex-direction: column;
         align-items: center;
         text-align: center;
     }
@@ -45,23 +52,41 @@ body.home .main {
     }
 }
 
-/* Two-column grid */
+/* Two-column section grid. Named areas place the four sections into a fixed
+   2x2 layout, so each grid row's height is the taller of its two sections.
+   That keeps the bottom-row sections (quotes/courses) starting on the same
+   line even when a top-row title wraps — the shorter top section just gets a
+   little trailing space. Robust if a section is empty: its area stays blank
+   and the others hold their place. */
 .home-columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "articles reviews"
+        "quotes   courses";
     gap: 2rem;
     margin-top: 0;
 }
 
+.home-section--articles { grid-area: articles; }
+.home-section--reviews  { grid-area: reviews; }
+.home-section--quotes   { grid-area: quotes; }
+.home-section--courses  { grid-area: courses; }
+
 @media (max-width: 768px) {
     .home-columns {
         grid-template-columns: 1fr;
+        grid-template-areas:
+            "articles"
+            "reviews"
+            "quotes"
+            "courses";
     }
 }
 
-/* Section headings */
+/* Section spacing comes from the grid row-gap, not per-section margins. */
 .home-section {
-    margin-bottom: 2rem;
+    margin-bottom: 0;
 }
 
 .home-section-title {
@@ -111,7 +136,7 @@ body.home .main {
 }
 
 /* Hover feedback for the home section-list links (the intro links are
-   .md-content and get their hover from theme.css). Shifts to the accent
+   .md-content and get their hover from prose.css). Shifts to the accent
    color so it reads on every link type, including the section links that
    already sit at --primary. */
 .home-section-title a,

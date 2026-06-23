@@ -73,7 +73,7 @@ Two stages, two tools:
 | Home avatar | `layouts/_partials/home_info.html` | 1x / 2x from `imageWidth` |
 | Header logo | `layouts/_partials/header.html` | 2x from `iconHeight` |
 
-The first three share `layouts/_partials/responsive-img.html` — the single source of truth for breakpoints and the `sizes` hint (sized to the 720px content column), so they can't drift apart. Each smaller variant is only generated when the source is wider than that breakpoint; the original is always included as the largest `srcset` candidate (so a `srcset` is still emitted for images that only exceed one breakpoint, e.g. 400–800px). Every `<img>` gets explicit `width`/`height` to prevent layout shift (paired with a global `img { height: auto }` so constrained widths keep the aspect ratio), `decoding="async"`, and lazy-loading — except the single-page cover, which loads eagerly with `fetchpriority="high"` as the likely LCP element. AVIF encoding uses Hugo's default quality (no `imaging` override in `hugo.yaml`).
+The first three share `layouts/_partials/responsive-img.html` — the single source of truth for breakpoints and the `sizes` hint (sized to the 680px content column), so they can't drift apart. Each smaller variant is only generated when the source is wider than that breakpoint; the original is always included as the largest `srcset` candidate (so a `srcset` is still emitted for images that only exceed one breakpoint, e.g. 400–800px). Every `<img>` gets explicit `width`/`height` to prevent layout shift (paired with a global `img { height: auto }` so constrained widths keep the aspect ratio), `decoding="async"`, and lazy-loading — except the single-page cover, which loads eagerly with `fetchpriority="high"` as the likely LCP element. AVIF encoding uses Hugo's default quality (no `imaging` override in `hugo.yaml`).
 
 > **Gotcha:** Hugo *extended* can resize AVIF, but two upstream PaperMod templates don't process it out of the box, so both are overridden here:
 > - `cover.html` — its hardcoded `$processableFormats` list omits `avif`; the override appends it.
@@ -133,23 +133,59 @@ Diff each override against its updated PaperMod source:
 
 ```sh
 diff themes/PaperMod/layouts/_partials/cover.html layouts/_partials/cover.html
+diff themes/PaperMod/layouts/_markup/render-image.html layouts/_markup/render-image.html
 diff themes/PaperMod/layouts/_shortcodes/figure.html layouts/shortcodes/figure.html
+diff themes/PaperMod/layouts/404.html layouts/404.html
 diff themes/PaperMod/layouts/_partials/header.html layouts/_partials/header.html
 diff themes/PaperMod/layouts/_partials/home_info.html layouts/_partials/home_info.html
+diff themes/PaperMod/layouts/_partials/footer.html layouts/_partials/footer.html
 diff themes/PaperMod/layouts/_partials/head.html layouts/_partials/head.html
+diff themes/PaperMod/layouts/_partials/extend_head.html layouts/_partials/extend_head.html
+diff themes/PaperMod/layouts/_partials/breadcrumbs.html layouts/_partials/breadcrumbs.html
+diff themes/PaperMod/layouts/_partials/post_meta.html layouts/_partials/post_meta.html
+diff themes/PaperMod/layouts/_partials/post_nav_links.html layouts/_partials/post_nav_links.html
+diff themes/PaperMod/layouts/_partials/social_icons.html layouts/_partials/social_icons.html
+diff themes/PaperMod/layouts/_partials/templates/_funcs/get-page-images.html layouts/_partials/templates/_funcs/get-page-images.html
 diff themes/PaperMod/layouts/_partials/templates/opengraph.html layouts/_partials/templates/opengraph.html
+diff themes/PaperMod/layouts/_partials/templates/schema_json.html layouts/_partials/templates/schema_json.html
+diff themes/PaperMod/layouts/_partials/templates/twitter_cards.html layouts/_partials/templates/twitter_cards.html
 diff themes/PaperMod/layouts/baseof.html layouts/baseof.html
+diff themes/PaperMod/layouts/list.html layouts/list.html
+diff themes/PaperMod/layouts/single.html layouts/single.html
+diff themes/PaperMod/layouts/archives.html layouts/archives.html
+diff themes/PaperMod/layouts/taxonomy.html layouts/taxonomy.html
+diff themes/PaperMod/layouts/robots.txt layouts/robots.txt
+diff themes/PaperMod/layouts/rss.xml layouts/rss.xml
+diff themes/PaperMod/layouts/index.json layouts/index.json
 ```
 
 For each diff: if PaperMod changed unrelated lines, copy their new version and re-apply the change noted below. If they changed the same lines, merge manually.
 
 - `layouts/_partials/cover.html` — `($cover | fingerprint).RelPermalink` instead of `.Permalink`; and `avif` appended to `$processableFormats` so AVIF covers get responsive variants (see [Images](#images))
+- `layouts/_markup/render-image.html` — resolves Markdown images to page/assets resources, emits responsive AVIF `srcset`/`sizes`/dimensions via `responsive-img`, fingerprints non-raster resources, adds `decoding="async"` and `data-lightbox-src`, and always emits `alt`
 - `layouts/shortcodes/figure.html` — resolves `src` to a page resource and uses the `responsive-img` partial for the AVIF `srcset` + `width`/`height` (see [Images](#images)); always emits `alt` (never copied from the caption) and warns at build when both are missing; the stock shortcode does no image processing
+- `layouts/404.html` — replaces PaperMod's bare `404` with the styled not-found panel and helpful local links
 - `layouts/_partials/header.html` — the header logo uses a processed local resource with `.RelPermalink` so it stays crisp on high-DPR screens without hard-wiring production URLs into local or preview builds
 - `layouts/_partials/home_info.html` — the home avatar resolves `imageUrl` as a resource and emits 1x/2x fingerprinted AVIF variants (`$img.Resize … | fingerprint`, `.RelPermalink`); also adds the microformats2 `h-card` markup (see [Images](#images))
+- `layouts/_partials/footer.html` — thin local wrapper that calls `site_footer.html` for the custom multi-column footer and `footer_behavior.html` for the PaperMod footer hooks/scripts; compare PaperMod's footer scripts against `footer_behavior.html` after theme updates
 - `layouts/_partials/head.html` — uses the stored list paginator to self-canonicalize paginated list pages and emit `rel=prev`/`rel=next`
+- `layouts/_partials/extend_head.html` — adds `humans.txt`, the web manifest, Newsreader preload, and the fingerprinted/minified deferred JS bundle; changes here can affect CSP and resource loading
+- `layouts/_partials/breadcrumbs.html` — removes the redundant `role="navigation"` while keeping `aria-label="Breadcrumb"`
+- `layouts/_partials/post_meta.html` — uses `collections.NewScratch`, emits `dt-published`, includes updated dates when different from publish dates, and marks the author with `p-author`
+- `layouts/_partials/post_nav_links.html` — adds an accessible label and switches previous/next post links to `RelPermalink`
+- `layouts/_partials/social_icons.html` — adds visible labels, `rel="me"`, and the custom icon fallback path through `custom_icons.html`
+- `layouts/_partials/templates/_funcs/get-page-images.html` — fingerprints site asset images used in metadata and preserves relative/absolute URL data for downstream templates
 - `layouts/_partials/templates/opengraph.html` — jpeg OG companion lookup and `site.Language.Lang`
+- `layouts/_partials/templates/schema_json.html` — uses a resized portrait for Person schema and resolves cover page resources so schema images are published with `build.publishResources=false`
+- `layouts/_partials/templates/twitter_cards.html` — uses JPEG cover companions for X/Twitter cards and emits `twitter:image:alt`
 - `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`, and early list-paginator storage for `<head>` metadata
+- `layouts/list.html` — keeps the PaperMod list loop but uses `RelPermalink`, microformats, local pagination links, stored paginator data, and delegates the custom home-page grid to `layouts/_partials/home_sections.html`
+- `layouts/single.html` — adds microformats, link-post title handling, a simplified top metadata line, a separate updated/edit footer metadata line, and relative tag links
+- `layouts/archives.html` — adds archive filters and data attributes for `assets/js/archive-filters.js`, plus relative post links
+- `layouts/taxonomy.html` — switches term links to `RelPermalink`
+- `layouts/robots.txt` — keeps the sitemap but replaces PaperMod's environment-based allow/disallow with explicit allow rules plus AI/training crawler disallows
+- `layouts/rss.xml` — aligns the home RSS feed with the JSON feed sections, uses the square site icon for channel image, absolutizes feed content URLs, includes cover images, and appends source links for link posts
+- `layouts/index.json` — uses local `RelPermalink` values in the Fuse search index
 
 **4. Re-check the CSP hashes**
 

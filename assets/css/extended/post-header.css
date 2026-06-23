@@ -1,0 +1,13 @@
+/* ------------------------------------------------------------
+   Post/page header. Small presentational adjustments around the
+   title and description above the article body.
+   ------------------------------------------------------------ */
+.post-title {
+    font-size: 32px;
+}
+
+.post-description {
+    font-style: italic;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}

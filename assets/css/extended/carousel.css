@@ -1,3 +1,8 @@
+/* ------------------------------------------------------------
+   Image carousel (assets/js/carousel.js, {{< carousel >}}
+   shortcode). A horizontal slide track with prev/next controls
+   and dot indicators for multi-image figures.
+   ------------------------------------------------------------ */
 .carousel {
     position: relative;
     width: 100%;

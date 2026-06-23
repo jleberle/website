@@ -1,3 +1,10 @@
+/* ------------------------------------------------------------
+   Archive page section filters (assets/js/archive-filters.js).
+   Pill buttons that filter the archive by section, with a count
+   per pill and an .is-hidden helper the script toggles on entries,
+   months and years. Progressive enhancement — the nav is hidden
+   until JS reveals it, so no-JS users get the full archive.
+   ------------------------------------------------------------ */
 .archive-filters {
     display: flex;
     flex-wrap: wrap;

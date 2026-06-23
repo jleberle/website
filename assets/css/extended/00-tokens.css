@@ -1,0 +1,88 @@
+/* ============================================================
+   Solarized palette — Ethan Schoonover
+   https://ethanschoonover.com/solarized/
+   The 16 canonical colors, defined once and referenced below.
+   ============================================================ */
+:root {
+    --base03:  #002b36;
+    --base02:  #073642;
+    --base01:  #586e75;
+    --base00:  #657b83;
+    --base0:   #839496;
+    --base1:   #93a1a1;
+    --base2:   #eee8d5;
+    --base3:   #fdf6e3;
+
+    --yellow:  #b58900;
+    --orange:  #cb4b16;
+    --red:     #dc322f;
+    --magenta: #d33682;
+    --violet:  #6c71c5;
+    --blue:    #268bd2;
+    --cyan:    #2aa198;
+    --green:   #859900;
+}
+
+/* ------------------------------------------------------------
+   Solarized Light (default) — maps PaperMod's theme vars onto
+   the palette. Per the spec: base3 background, base2 highlights,
+   base00 body text, base01 emphasized, base1 muted comments.
+   ------------------------------------------------------------ */
+:root {
+    --theme:         var(--base3);   /* page background        */
+    --entry:         var(--base2);   /* cards / highlighted bg  */
+    --primary:       var(--base02);  /* headings, links, strong */
+    /* Body text: a step darker than the spec's base01 (which read a touch
+       light on the cream) — mixed 30% toward base02 for ~6.5:1, inkier
+       without going all the way to the near-black heading color. */
+    --content:       color-mix(in srgb, var(--base01), var(--base02) 30%);
+    --secondary:     var(--base01);  /* meta / muted text       */
+    --tertiary:      var(--base2);   /* subtle fills, scrollbar */
+    --code-bg:       var(--base2);   /* inline code             */
+    --code-block-bg: var(--base03);  /* code blocks (dark)      */
+    --border:        var(--base2);
+
+    --accent:        var(--red);     /* link hover accent        */
+    --rule:          var(--base1);   /* hr, blockquote, hovers   */
+
+    /* Resting link color. Plain Solarized red (#dc322f) is only 4.3:1 on the
+       base3 cream, so darken it ~30% toward base03 for a deep oxblood at
+       6.9:1. Links rest in the darkened red and brighten to the plain red
+       (--accent) on hover. */
+    --link:          color-mix(in srgb, var(--red), var(--base03) 30%);
+
+    /* Typographic token (theme-independent — dark doesn't override it): a
+       system sans-serif stack for metadata "furniture" (dates, breadcrumbs,
+       tag labels, footers, UI chips) set against the Newsreader serif body.
+       Applied in meta.css and the component files. */
+    --meta-font:     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                     "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ------------------------------------------------------------
+   Dark theme — deliberately NOT Solarized. The Solarized dark
+   palette read too warm and low-contrast for long-form reading,
+   so we fall back to PaperMod's default neutral-gray dark
+   (defined in themes/PaperMod/assets/css/core/theme-vars.css) by
+   simply not overriding --theme/--entry/--primary/etc. here.
+   Only the custom link + divider accents are set, with links in
+   Solarized cyan.
+   ------------------------------------------------------------ */
+:root[data-theme="dark"] {
+    /* Divider tone derived from PaperMod's dark vars: a step up from --border
+       so hr/blockquote/header/footer rules stay visible but subtle. */
+    --rule:   color-mix(in srgb, var(--border), var(--secondary) 40%);
+
+    /* Prose links in Solarized cyan, lifted slightly for AA on both the page
+       (~5.9:1) and card (~4.8:1) backgrounds; brighter cyan on hover. */
+    --link:   color-mix(in srgb, var(--cyan), white 10%);
+    --accent: color-mix(in srgb, var(--cyan), white 30%);
+}
+
+/* ------------------------------------------------------------
+   Global theme surface
+   ------------------------------------------------------------ */
+body,
+.list {
+    background: var(--theme);
+}

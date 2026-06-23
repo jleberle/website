@@ -1,3 +1,8 @@
+/* ------------------------------------------------------------
+   "Skip to content" link. Visually hidden off the top of the page
+   until focused (keyboard/screen-reader users), then slides into
+   view as the first tab stop. Markup is in baseof.html.
+   ------------------------------------------------------------ */
 .skip-link {
     position: absolute;
     top: -3rem;

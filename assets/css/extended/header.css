@@ -1,0 +1,80 @@
+/* ------------------------------------------------------------
+   Header: quiet text navigation. Keep the site name in the serif
+   body face; set the nav in the metadata sans. Hover/active states
+   use accent color and underlines instead of shaded button fills.
+   ------------------------------------------------------------ */
+.header {
+    background: var(--theme);
+    border-bottom: 1px solid var(--rule);
+}
+
+.menu {
+    font-family: var(--meta-font);
+    column-gap: 1rem;
+    align-items: center;
+}
+
+.menu a {
+    color: var(--secondary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.5;
+    padding: 0.25rem 0;
+    text-decoration: none;
+    text-underline-offset: 0.28rem;
+    transition: color 0.15s ease;
+}
+
+.menu a:hover,
+.menu a:focus-visible {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+}
+
+.menu .active {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.28rem;
+}
+
+/* Step down from the theme's 700 weight so the wordmark has presence
+   without shouting, while keeping it tied to the Newsreader body face. */
+.logo a {
+    font-family: newsreader, Georgia, Cambria, "times new roman", Times, serif;
+    font-weight: 600;
+    letter-spacing: 0;
+    transition: color 0.15s ease;
+}
+
+.logo a:hover {
+    color: var(--accent);
+}
+
+@media (max-width: 720px) {
+    .header-nav {
+        justify-content: center;
+        row-gap: 0.35rem;
+        padding-top: 0.6rem;
+        padding-bottom: 0.7rem;
+        line-height: 1.5;
+    }
+
+    .logo {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .menu {
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-x: visible;
+        white-space: normal;
+        column-gap: 0.85rem;
+        row-gap: 0.25rem;
+    }
+}

@@ -1,0 +1,63 @@
+/* ------------------------------------------------------------
+   Search page (/search/). Restyles PaperMod's search input and
+   the Fuse.js results list to match the site: a soft-filled input
+   with an accent focus ring, and borderless ruled result rows
+   (mirroring the list pages, see list.css) rather than filled
+   cards.
+   ------------------------------------------------------------ */
+.searchbox {
+    margin-top: 0.75rem;
+}
+
+.searchbox input {
+    padding: 0.7rem 0.85rem;
+    color: var(--primary);
+    background: color-mix(in srgb, var(--entry), transparent 35%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-weight: 400;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.searchbox input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent), transparent 78%);
+    background: var(--theme);
+}
+
+.searchResults {
+    gap: 0;
+    margin: 1rem 0 0;
+}
+
+.searchResults li {
+    justify-content: flex-start;
+    gap: 0.55rem;
+    padding: 0.8rem 0.75rem;
+    background: transparent;
+    border: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    font-weight: 400;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.searchResults li:last-child {
+    border-bottom: 1px solid var(--border);
+}
+
+.searchResults li:hover,
+.searchResults li:focus-within,
+.searchResults .focus {
+    transform: none;
+    background: color-mix(in srgb, var(--entry), transparent 72%);
+    border-color: var(--rule);
+}
+
+.searchResults li svg {
+    width: 18px;
+    height: 18px;
+    margin-left: auto;
+    color: var(--secondary);
+}

@@ -1,3 +1,7 @@
+/* ------------------------------------------------------------
+   404 page. Centers a large numeral, a short message and a row of
+   recovery links in the viewport. Markup is in layouts/404.html.
+   ------------------------------------------------------------ */
 .not-found {
     position: absolute;
     left: 0;

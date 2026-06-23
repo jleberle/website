@@ -1,0 +1,106 @@
+/* ------------------------------------------------------------
+   Footnotes. Covers the inline references, the rendered footnote
+   list, back-links, target highlights, and the JS popover
+   enhancement (assets/js/footnotes.js).
+   ------------------------------------------------------------ */
+
+/* Footnote references. The browser's default sup uses vertical-align: super,
+   which can inflate line boxes. line-height: 0 + position/top lifts the
+   reference without adding stray leading. */
+.post-content sup {
+    font-size: 0.7em;
+    line-height: 0;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.6em;
+}
+
+/* Matched on .footnote-ref to outweigh prose hover rules that otherwise
+   leave a tiny superscript underline floating too far below the number. */
+.post-content sup a.footnote-ref,
+.post-content sup a.footnote-ref:hover {
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+}
+
+/* Footnote section at the foot of the article: stepped down and muted so it
+   reads as apparatus rather than body prose. */
+.post-content .footnotes {
+    font-size: 0.9em;
+    color: var(--secondary);
+    margin-top: 2.5em;
+}
+
+.post-content .footnotes hr {
+    margin: 0 0 1.2em;
+}
+
+.post-content .footnotes li {
+    margin-bottom: 0.5em;
+}
+
+/* Back-link arrow: quiet by default, accent on hover, no underline. */
+.post-content a.footnote-backref {
+    text-decoration: none;
+    color: var(--secondary);
+    margin-inline-start: 0.3em;
+}
+
+.post-content a.footnote-backref:hover {
+    color: var(--accent);
+}
+
+/* Breathing room above direct #fn / #fnref jumps. */
+.post-content li[id^="fn:"],
+.post-content sup[id^="fnref:"] {
+    scroll-margin-top: 2rem;
+}
+
+/* Brief tint when you jump back to a reference from a note. */
+.post-content sup[id^="fnref:"] {
+    transition: background-color 0.4s ease;
+}
+
+.post-content sup[id^="fnref:"]:target {
+    background: var(--entry);
+    border-radius: 3px;
+}
+
+/* JS popover. Progressive enhancement: without JS, references still jump to
+   the rendered .footnotes list at the foot of the article. */
+.fn-popover {
+    position: absolute;
+    z-index: 50;
+    width: min(90vw, 30em);
+    max-height: 60vh;
+    overflow-y: auto;
+    background: var(--entry);
+    color: var(--content);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 0.4em 1.1em;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+    display: none;
+}
+
+.fn-popover.is-open {
+    display: block;
+}
+
+.fn-popover p {
+    margin: 0.6em 0;
+}
+
+/* Citation links inside notes — the popover lives outside .post-content,
+   so it doesn't inherit the prose link styling; restate it here. */
+.fn-popover a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.fn-popover a:hover {
+    color: var(--accent);
+}

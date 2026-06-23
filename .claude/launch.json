@@ -6,6 +6,12 @@
       "runtimeExecutable": "hugo",
       "runtimeArgs": ["server", "--buildDrafts"],
       "port": 1313
+    },
+    {
+      "name": "hugo-preview",
+      "runtimeExecutable": "hugo",
+      "runtimeArgs": ["server", "--buildDrafts", "--port", "1314"],
+      "port": 1314
     }
   ]
 }

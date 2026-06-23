@@ -1,0 +1,15 @@
+{{- $address1 := .Get "address1" -}}
+{{- $address2 := .Get "address2" -}}
+{{- $email := .Get "email" -}}
+{{- $siteLabel := .Get "siteLabel" -}}
+{{- $siteURL := .Get "siteURL" | default "/" -}}
+<div class="cv-letterhead">
+    <div class="cv-letterhead-address">
+        {{- with $address1 }}<p>{{ . }}</p>{{ end -}}
+        {{- with $address2 }}<p>{{ . }}</p>{{ end -}}
+    </div>
+    <div class="cv-letterhead-contact">
+        {{- with $email }}<p><a href="mailto:{{ . }}">{{ . }}</a></p>{{ end -}}
+        {{- with $siteLabel }}<p><a href="{{ $siteURL }}">{{ . }}</a></p>{{ end -}}
+    </div>
+</div>

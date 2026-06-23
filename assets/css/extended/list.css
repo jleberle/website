@@ -1,0 +1,70 @@
+/* ------------------------------------------------------------
+   Section & term list pages — every body.list page except the
+   home page. Replaces PaperMod's filled .post-entry cards with
+   quiet ruled rows: borderless, separated by hairlines, with a
+   faint hover wash, to match the low-chrome academic styling used
+   elsewhere. The home page has its own two-column list (home.css),
+   so it is excluded here via :not(.home).
+   ------------------------------------------------------------ */
+body.list:not(.home) .post-entry {
+    padding: 1.05rem 0 1.05rem 0.9rem;
+    margin-bottom: 0;
+    background: transparent;
+    border: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+body.list:not(.home) .post-entry:last-of-type {
+    border-bottom: 1px solid var(--border);
+}
+
+body.list:not(.home) .post-entry:hover,
+body.list:not(.home) .post-entry:focus-within {
+    transform: none;
+    background: color-mix(in srgb, var(--entry), transparent 72%);
+    border-color: var(--rule);
+}
+
+body.list:not(.home) .entry-header h2 {
+    font-size: 1.14rem;
+    line-height: 1.32;
+}
+
+body.list:not(.home) .entry-content {
+    margin: 0.35rem 0 0.45rem;
+    font-size: 0.9rem;
+}
+
+body.list:not(.home) .entry-cover {
+    max-width: min(100%, 520px);
+    margin: 0.75rem 0 0.45rem;
+    text-align: left;
+}
+
+body.list:not(.home) .entry-cover img {
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 1px);
+    background: var(--entry);
+}
+
+body.list:not(.home) .entry-footer {
+    font-size: 0.72rem;
+    line-height: 1.45;
+}
+
+body.list:not(.home) .entry-link {
+    border-radius: 0;
+}
+
+@media (max-width: 520px) {
+    body.list:not(.home) .post-entry {
+        padding-top: 0.9rem;
+        padding-bottom: 0.9rem;
+    }
+
+    body.list:not(.home) .entry-header h2 {
+        font-size: 1.04rem;
+    }
+}

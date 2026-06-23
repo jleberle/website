@@ -3,7 +3,7 @@
    (themes/PaperMod/assets/css/common/footer.css, .footer) with a
    full-bleed panel: a distinct background, a top rule, and a
    four-column area (identity + blurb / navigation / social /
-   subscribe). Markup is in layouts/_partials/footer.html.
+   subscribe). Markup is in layouts/_partials/site_footer.html.
    ------------------------------------------------------------ */
 
 .site-footer {
@@ -25,7 +25,11 @@
     margin-inline: auto;
     padding-inline: var(--gap);
     display: grid;
-    grid-template-columns: minmax(18rem, 1.7fr) minmax(5rem, 0.85fr) minmax(7rem, 0.95fr) minmax(7rem, 0.95fr);
+    grid-template-columns:
+        minmax(18rem, 1.7fr)
+        minmax(5rem, 0.85fr)
+        minmax(7rem, 0.95fr)
+        minmax(7rem, 0.95fr);
     grid-template-areas: "about nav connect subscribe";
     column-gap: clamp(1.5rem, 3.5vw, 3rem);
     row-gap: 2rem;
@@ -55,20 +59,9 @@
     justify-self: end;
 }
 
-/* Column headings: small caps-ish label, muted, to separate the groups. */
-.footer-heading {
-    margin: 0 0 0.9rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    font-family: var(--meta-font);
-    letter-spacing: 0;
-    text-transform: uppercase;
-    color: var(--secondary);
-}
-
-/* --- Identity column: name + an editable Markdown paragraph
-   (params.footer.about). The name is styled to match the other columns'
-   headings (.footer-heading) so it reads as this column's label. --- */
+/* Column headings — and the identity column's name (params.footer.about) —
+   share one small uppercase sans label so all four columns read consistently. */
+.footer-heading,
 .footer-name {
     margin: 0 0 0.9rem;
     font-size: 0.72rem;

@@ -1,3 +1,9 @@
+/* ------------------------------------------------------------
+   Privacy-light media embeds (assets/js/embeds.js, the youtube /
+   bluesky shortcodes). A clickable facade (poster + play button)
+   stands in for the real iframe until the visitor opts in, so no
+   third-party frame loads on page view.
+   ------------------------------------------------------------ */
 .yt-facade {
     position: relative;
     display: block;
