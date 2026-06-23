@@ -44,6 +44,11 @@ h1, h2, h3, h4, h5, h6,
     scroll-margin-top: 1rem;
 }
 
+strong,
+b {
+    font-weight: 600;
+}
+
 /* Section dividers in prose: a full-width hairline under headings so
    sections read as distinct blocks — especially on the long, heavily
    sectioned course pages. h2 (major) and h3 (sub) both get the rule; the
