@@ -27,7 +27,7 @@ If I game it's on a PS5 (no disc version sadly).
 
 ## Software
 
-For writing I primarily rely on [Obsidian](https://obsidian.md) and will fully document my setup at some point. For shorter edits I tend to use [Neovim](https://neovim.io) with my [custom setup](https://codeberg.org/jleberle/dotfiles) or [BBEdit](https://www.barebones.com/products/bbedit/index.html). I try to avoid using any word processor like Word or Pages except when absolutely necessary because it reduces overhead and helps integrate my [Zotero](https://zotero.org) collections more effectively. For quick notes to remember I use [Tot] and I keep a handful of notes on things to buy in Apple Notes.
+For writing I primarily rely on [Obsidian](https://obsidian.md) and will fully document my setup at some point. For shorter edits I tend to use [Neovim](https://neovim.io) with my [custom setup](https://codeberg.org/jleberle/dotfiles) or [BBEdit](https://www.barebones.com/products/bbedit/index.html). I try to avoid using any word processor like Word or Pages except when absolutely necessary because it reduces overhead and helps integrate my [Zotero](https://zotero.org) collections more effectively. For quick notes to remember I use [Tot](https://tot.rocks/) and I keep a handful of notes on things to buy in Apple Notes.
 
 For web browsing my primary browser is Safari for the built-in connections to MacOS and iOS but I have Firefox (with [Betterfox](https://github.com/yokoffing/Betterfox)) as a backup and have a system service set to open the current Safari tab in Firefox if need be. Extensions wise I use [uBlock Origin Lite](https://apps.apple.com/us/app/ublock-origin-lite/id6745342698), [Vinegar](https://apps.apple.com/us/app/vinegar-tube-cleaner/id1591303229), and [StopTheMadness](https://underpassapp.com/StopTheMadness/) to make the web a more sane place. For searches I use Kagi, which restores the feeling of Google when it was far more useful. I also implement [NextDNS](https://nextdns.io) to catch things before they hit the browser.
 
@@ -43,4 +43,4 @@ If I missed anything, my [Brewfile](https://codeberg.org/jleberle/dotfiles/src/b
 
 Increasingly I've found myself defaulting to to-do lists on paper and quick notes in a [Field Notes](https://fieldnotesbrand.com/) or a simple pad on my desk while I'm working. For pens I love the [Zebra Sarasa Clip](https://www.zebrapen.com/pages/sarasa-clip-gel-retractable) or the [Uniball AIR](https://www.unibrands.co/products/air-porous-point-pens?variant=42987340038350).
 
-I also own way to many LEGO sets, records, and CDs.
+I also own way too many LEGO sets, records, and CDs.

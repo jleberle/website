@@ -15,9 +15,9 @@ If you're curious what takes up my time, here's my [media diet](/sources) and th
 
 ## The Site
 
-This site is built with [Hugo](https://gohugo.io) and served through [Codeberg](https://codeberg.org/jleberle/website) and [Statichost.eu](https://statichost.eu). The base theme for the site is [PaperMod](https://github.com/adityatelange/hugo-PaperMod/) which I have customized with the help of Claude. Claude has only touched back-end files on the site, everything you see publicly is written and edited by me, a [real human](/humans.txt) typos and all (for errors, please blame my cat). All my work here is [Creative Commons licensed](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+This site is built with [Hugo](https://gohugo.io) and served through [Codeberg](https://codeberg.org/jleberle/website) and [Statichost.eu](https://statichost.eu). The base theme for the site is [PaperMod](https://github.com/adityatelange/hugo-PaperMod/) which I have customized with the help of Claude. Claude has only touched back-end files on the site, everything you see publicly is written and edited by me, a [real human](/humans.txt). Typos are my own but for errors, please blame my cat. All my work here is [Creative Commons licensed](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-I take internet privacy seriously and have worked to keep the outside pings from this site as minimal as possible which not only speeds up the site. My promise as long as this site exists is the following:
+I take internet privacy seriously and have worked to keep this site as self-contained as possible which protects privacy with the added benefit of speeding up the site. My promises as long as this site exists are the following:
 
 - I will not utilize tracking on the website. 
 - Bluesky and Youtube are the only embeds on the site and both are
@@ -27,13 +27,13 @@ I take internet privacy seriously and have worked to keep the outside pings from
 
 Additionally, I've worked to make this site as environmentally friendly as possible meaning the home page uses only [0.008g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor and my [biggest page](https://jaredeberle.org/articles/past-and-future-of-indian-rodeo-in-las-vegas/) downloads at less than 350KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data (10 times the amount). This is the result of a number of very opinionated decisions:
 
-- A static blog like Hugo is more efficient than software like Wordpress and on
-  top of that all resources are minified when built
-- Images are AVIF format, lazy loaded, and responsive that reduces file sizes and only loads
+- A static blog like Hugo is more efficient than software like Wordpress and to
+  further enhance that, all resources are minified when built
+- Images are AVIF format, lazy loaded, and responsive which reduces file sizes and only loads
   them when needed
 - All PDFs on the site are optimized for web delivery
 - The website uses long cache times, so users are not re-downloading content
-  except the html itself
+  except the html itself.
 
   I've also worked to make this site as fully compliant with web accessibility standards, if you run into issues, please {{< email "jared@jaredeberle.org" "let me know" >}} and I will work to fix the issue as best as possible.
 
