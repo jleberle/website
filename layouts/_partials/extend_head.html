@@ -5,7 +5,7 @@
        their unicode-range / weight (see assets/css/extended/fonts.css). */}}
 <link rel="preload" href="{{ "fonts/newsreader-400-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin="anonymous">
 {{- $js := slice }}
-{{- range slice "js/embeds.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" }}
+{{- range slice "js/embeds.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" "js/archive-filters.js" }}
 {{- with resources.Get . }}{{ $js = $js | append . }}{{ end }}
 {{- end }}
 {{- with $js }}

@@ -19,16 +19,40 @@
 }
 
 .footer-inner {
-    /* Shares the site's nav-width measure and gutters. */
+    /* Shares the wider navigation measure on desktop so the footer feels
+       like a full site panel rather than a compact content footnote. */
     max-width: var(--nav-width);
     margin-inline: auto;
     padding-inline: var(--gap);
     display: grid;
     grid-template-columns: minmax(18rem, 1.7fr) minmax(5rem, 0.85fr) minmax(7rem, 0.95fr) minmax(7rem, 0.95fr);
-    column-gap: clamp(1.25rem, 3vw, 2.25rem);
+    grid-template-areas: "about nav connect subscribe";
+    column-gap: clamp(1.5rem, 3.5vw, 3rem);
     row-gap: 2rem;
     padding-top: 2.75rem;
     padding-bottom: 2.75rem;
+}
+
+.footer-about {
+    grid-area: about;
+}
+
+.footer-nav {
+    grid-area: nav;
+}
+
+.footer-connect {
+    grid-area: connect;
+}
+
+.footer-subscribe {
+    grid-area: subscribe;
+}
+
+.footer-nav,
+.footer-connect,
+.footer-subscribe {
+    justify-self: end;
 }
 
 /* Column headings: small caps-ish label, muted, to separate the groups. */
@@ -183,15 +207,26 @@
     flex-shrink: 0;
 }
 
-/* Two columns only once the four-column footer would truly get cramped. */
-@media (max-width: 700px) {
+/* Once four columns feel pinched, move to an intentional 2x2 layout:
+   Copyright/About | Explore, then Connect | Subscribe. */
+@media (max-width: 860px) {
     .footer-inner {
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
+        max-width: var(--main-width);
+        grid-template-columns: minmax(0, 1fr) max-content;
+        grid-template-areas:
+            "about nav"
+            "connect subscribe";
+        column-gap: clamp(2rem, 10vw, 5rem);
+        row-gap: 2rem;
     }
 
-    .footer-about {
-        grid-column: 1 / -1;
+    .footer-nav,
+    .footer-subscribe {
+        justify-self: end;
+    }
+
+    .footer-connect {
+        justify-self: start;
     }
 }
 
@@ -202,9 +237,27 @@
     }
 
     .footer-inner {
+        max-width: var(--main-width);
         grid-template-columns: 1fr;
+        grid-template-areas:
+            "about"
+            "nav"
+            "connect"
+            "subscribe";
+        justify-items: center;
         gap: 1.35rem;
         padding-top: 2rem;
         padding-bottom: 2rem;
+        text-align: center;
+    }
+
+    .footer-nav,
+    .footer-connect,
+    .footer-subscribe {
+        justify-self: center;
+    }
+
+    .footer-connect .social-icons {
+        align-items: center;
     }
 }

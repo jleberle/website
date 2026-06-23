@@ -33,9 +33,39 @@
 {{- $pages = site.RegularPages }}
 {{- end }}
 
+{{- $sections := slice }}
+{{- range site.Params.mainSections }}
+{{- $sectionPages := where $pages "Section" . }}
+{{- if gt (len $sectionPages) 0 }}
+{{- $sections = $sections | append . }}
+{{- end }}
+{{- end }}
+
+{{- if gt (len $sections) 1 }}
+<nav class="archive-filters" aria-label="Archive filters" data-archive-filters hidden>
+  <button class="archive-filter is-active" type="button" data-archive-filter-button="all" aria-pressed="true">
+    All
+    <span>{{ len $pages }}</span>
+  </button>
+  {{- range $sections }}
+  {{- $section := . }}
+  {{- $sectionPages := where $pages "Section" $section }}
+  {{- $label := $section | title }}
+  {{- with site.GetPage (printf "/%s" $section) }}
+  {{- $label = .Title }}
+  {{- end }}
+  <button class="archive-filter" type="button" data-archive-filter-button="{{ $section }}" aria-pressed="false">
+    {{ $label }}
+    <span>{{ len $sectionPages }}</span>
+  </button>
+  {{- end }}
+</nav>
+{{- end }}
+
+<div class="archive-list" data-archive>
 {{- range $pages.GroupByPublishDate "2006" }}
 {{- if ne .Key "0001" }}
-<div class="archive-year">
+<div class="archive-year" data-archive-year>
   {{- $year := replace .Key "0001" "" }}
   <h2 class="archive-year-header" id="{{ $year }}">
     <a class="archive-header-link" href="#{{ $year }}">
@@ -44,7 +74,7 @@
     <sup class="archive-count">&nbsp;{{ len .Pages }}</sup>
   </h2>
   {{- range .Pages.GroupByDate "January" }}
-  <div class="archive-month">
+  <div class="archive-month" data-archive-month>
     <h3 class="archive-month-header" id="{{ $year }}-{{ .Key }}">
       <a class="archive-header-link" href="#{{ $year }}-{{ .Key }}">
         {{- .Key -}}
@@ -54,7 +84,7 @@
     <div class="archive-posts">
       {{- range .Pages }}
       {{- if eq .Kind "page" }}
-      <div class="archive-entry">
+      <div class="archive-entry" data-archive-entry data-archive-section="{{ .Section }}">
         <h3 class="archive-entry-title entry-hint-parent">
           {{- .Title | markdownify }}
           {{- if .Draft }}
@@ -79,5 +109,6 @@
 </div>
 {{- end }}
 {{- end }}
+</div>
 
 {{- end }}{{/* end main */}}

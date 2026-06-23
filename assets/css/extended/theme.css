@@ -176,6 +176,29 @@ body,
     font-weight: 600;
 }
 
+@media (max-width: 720px) {
+    .header-nav {
+        justify-content: center;
+        row-gap: 0.35rem;
+        padding-top: 0.6rem;
+        padding-bottom: 0.7rem;
+        line-height: 1.5;
+    }
+
+    .logo {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .menu {
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-x: visible;
+        white-space: normal;
+        row-gap: 0.25rem;
+    }
+}
+
 /* ------------------------------------------------------------
    Thin divider line along the bottom of the header
    ------------------------------------------------------------ */
