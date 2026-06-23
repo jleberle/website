@@ -1,19 +1,20 @@
 /* ------------------------------------------------------------
    Serif body type. Overrides PaperMod's system sans-serif stack
-   (themes/PaperMod/assets/css/core/reset.css) with Georgia, a
-   screen-optimized serif present on virtually all platforms.
-   Headings, prose and meta inherit from body; code keeps its
-   monospace stack (see mono.css).
+   (themes/PaperMod/assets/css/core/reset.css) with Newsreader, a
+   self-hosted screen serif (see fonts.css). Georgia is the
+   fallback shown during the font swap and on the rare platform a
+   download fails. Headings, prose and meta inherit from body;
+   code keeps its monospace stack (see mono.css).
    ------------------------------------------------------------ */
 body {
-    font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
+    font-family: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
     line-height: 1.7;          /* a touch airier than the 1.6 default,
                                   which serif body text reads better with */
 
-    /* Grayscale antialiasing on macOS (WebKit + Firefox): renders the
-       serif a touch lighter and cleaner on Retina. No effect elsewhere. */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* No -webkit-font-smoothing override: the default (subpixel where
+       available, grayscale on Retina) renders Newsreader at its intended
+       weight. Forcing `antialiased` thinned the strokes and was part of
+       what made the old Georgia body read soft. */
 }
 
 /* Tighten the reading measure. The theme's 720px column runs ~80
@@ -34,6 +35,9 @@ body {
 h1, h2, h3, h4, h5, h6,
 .post-title {
     text-rendering: optimizeLegibility;
+    font-weight: 600;          /* Newsreader semibold — display weight with
+                                  authority but less bluntness than 700, which
+                                  reads more academic than bloggy */
     line-height: 1.25;
     letter-spacing: -0.01em;
     text-wrap: balance;

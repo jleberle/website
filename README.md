@@ -190,6 +190,7 @@ If you add a new section (e.g. `content/essays/`):
 
 - [PaperMod](https://github.com/adityatelange/hugo-PaperMod) — the Hugo theme this site is built on.
 - [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — the color palette used for the site's light and dark themes.
+- [Newsreader](https://fonts.google.com/specimen/Newsreader) by Production Type ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted serif used for body and heading type (`static/fonts/`, declared in `assets/css/extended/fonts.css`).
 
 ## License
 

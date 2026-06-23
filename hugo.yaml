@@ -79,9 +79,9 @@ params:
     apple_touch_icon: "/icons/apple-touch-icon.png"
 
   label:
-    text: "Home"
-    icon: icons/apple-touch-icon.png
-    iconHeight: 35
+    text: "Jared L. Eberle"
+    # icon: icons/apple-touch-icon.png
+    # iconHeight: 35
 
   # home-info mode
   homeInfoParams:
@@ -108,7 +108,12 @@ params:
 
 
   footer:
-    text: "[Only human crafted content](/humans.txt)"
+    # Left column of the site footer (layouts/_partials/footer.html), rendered
+    # as Markdown below your name. A short paragraph — fold in whatever you
+    # like (license, humans.txt, build credits) using Markdown links. The
+    # literal token {year} is replaced with the current (build) year.
+    about: >-
+      © 2011-{year} Jared L. Eberle. All content here is copyrighted under [creative commons](https://creativecommons.org/licenses/by-nc-sa/4.0/) and is [only human crafted](/humans.txt). Built with [Hugo](https://gohugo.io/) and [PaperMod](https://github.com/adityatelange/hugo-PaperMod/) in Oklahoma.
 
   cover:
     hidden: true # hide everywhere but not in structured data

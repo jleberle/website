@@ -32,7 +32,10 @@
     --theme:         var(--base3);   /* page background        */
     --entry:         var(--base2);   /* cards / highlighted bg  */
     --primary:       var(--base02);  /* headings, links, strong */
-    --content:       var(--base01);  /* body text               */
+    /* Body text: a step darker than the spec's base01 (which read a touch
+       light on the cream) — mixed 30% toward base02 for ~6.5:1, inkier
+       without going all the way to the near-black heading color. */
+    --content:       color-mix(in srgb, var(--base01), var(--base02) 30%);
     --secondary:     var(--base01);  /* meta / muted text       */
     --tertiary:      var(--base2);   /* subtle fills, scrollbar */
     --code-bg:       var(--base2);   /* inline code             */
@@ -41,6 +44,12 @@
 
     --accent:        var(--red);     /* link hover accent        */
     --rule:          var(--base1);   /* hr, blockquote, hovers   */
+
+    /* Resting link color. Plain Solarized red (#dc322f) is only 4.3:1 on the
+       base3 cream, so darken it ~30% toward base03 for a deep oxblood at
+       6.9:1. Links rest in the darkened red and brighten to the plain red
+       (--accent) on hover. */
+    --link:          color-mix(in srgb, var(--red), var(--base03) 30%);
 }
 
 /* ------------------------------------------------------------
@@ -61,8 +70,14 @@
     --code-block-bg: var(--base03);
     --border:        var(--base02);
 
-    --accent:        var(--cyan);   /* better contrast than blue on base03 */
+    --accent:        var(--red);    /* link hover — plain Solarized red, to
+                                       match the light theme (the resting
+                                       --link is a lifted red; see below) */
     --rule:          var(--base01);
+
+    /* Plain red is only 3.3:1 on base03, so lift it ~25% toward white for a
+       readable warm red at 4.6:1 (AA); plain red (--accent) on hover. */
+    --link:          color-mix(in srgb, var(--red), white 25%);
 }
 
 /* ------------------------------------------------------------
@@ -101,6 +116,7 @@ body,
 /* Link hover in prose (post bodies and the home intro — both .md-content):
    shift to the accent color and tighten the underline offset. */
 .md-content a:not(.anchor) {
+    color: var(--link);
     transition: color 0.15s ease;
 }
 
@@ -162,6 +178,22 @@ body,
 .menu a:hover {
     background: var(--entry);
     text-decoration: none;
+}
+
+/* Active page indicator: the theme underlines it at weight 500 (a face we
+   don't ship, so it falls back to 400). Pin it to 600 (semibold, which we do
+   ship) and tint the underline with the accent so the current section reads
+   at a glance — a small, deliberate use of color. */
+.menu .active {
+    font-weight: 600;
+    text-decoration-color: var(--accent);
+}
+
+/* Name wordmark: the theme sets it bold (700), which reads heavy for an
+   academic site. Step down to 600 (semibold) so it has presence without
+   shouting — matching the heading weight. */
+.logo a {
+    font-weight: 600;
 }
 
 /* ------------------------------------------------------------

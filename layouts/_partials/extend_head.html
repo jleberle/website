@@ -1,5 +1,9 @@
 <link type="text/plain" rel="author" href="{{ "humans.txt" | absURL }}">
 <link rel="manifest" href="{{ "site.webmanifest" | absURL }}">
+{{- /* Preload the regular Newsreader face (latin) so body text swaps in fast.
+       Only this one weight/subset is preloaded; the rest load on demand via
+       their unicode-range / weight (see assets/css/extended/fonts.css). */}}
+<link rel="preload" href="{{ "fonts/newsreader-400-latin.woff2" | absURL }}" as="font" type="font/woff2" crossorigin="anonymous">
 {{- $js := slice }}
 {{- range slice "js/embeds.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" }}
 {{- with resources.Get . }}{{ $js = $js | append . }}{{ end }}
