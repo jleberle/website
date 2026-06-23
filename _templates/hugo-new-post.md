@@ -22,7 +22,7 @@ categories: [<% await tp.system.prompt("categories (comma-separated)") %>]
 cover:
   image: "cover.avif"
   alt: "<% await tp.system.prompt("Image Alt Description") %>"
-  hiddenInList: true
+  hiddenInList: false
   hiddenInSingle: false
   caption: ""
   relative: true
