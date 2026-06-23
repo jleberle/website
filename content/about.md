@@ -1,7 +1,7 @@
 ---
 title: About
 hidemetadata: true
-description: "About Jared Eberle and the website you're visiting"
+description: "About myself and the website you're visiting"
 summary: "This is who I am and how I made this little website"
 ---
 
@@ -22,16 +22,19 @@ I take internet privacy seriously and have worked to keep this site as self-cont
 - I will not utilize tracking on the website. 
 - Bluesky and Youtube are the only embeds on the site and both are
   click-to-load, so no resources are sent to either unless you click on the embed.
-- Youtube embeds utilize Youtube's privacy enhanced URL. 
+- Youtube embeds utilize Youtube's privacy enhanced URL.
+- I use one non-system font (Newsreader) and it's self-hosted.
 - No affiliate links or other revenue generating partnerships are on the site.
 
-Additionally, I've worked to make this site as environmentally friendly as possible meaning the home page uses only [0.008g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor and my [biggest page](/articles/past-and-future-of-indian-rodeo-in-las-vegas/) downloads at less than 350KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data (10 times the amount). This is the result of a number of very opinionated decisions:
+Additionally, I've worked to make this site as environmentally friendly as possible meaning the home page uses only [0.089g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor.[^1] In terms of my [biggest page](/articles/past-and-future-of-indian-rodeo-in-las-vegas/), it only uses 0.183g and downloads at under 600KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data (10 times the amount). This is the result of a number of very opinionated decisions:
+
+[^1]: It used to be 0.008g but I added a self-hosted font to make the site better for readability.
 
 - A static blog like Hugo is more efficient than software like Wordpress and to
-  further enhance that, all resources are minified when built
+  further enhance that, all resources are minified when built.
 - Images are AVIF format, lazy loaded, and responsive which reduces file sizes and only loads
-  them when needed
-- All PDFs on the site are optimized for web delivery
+  them when needed.
+- All PDFs on the site are optimized for web delivery.
 - The website uses long cache times, so users are not re-downloading content
   except the html itself.
 
