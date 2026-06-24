@@ -21,6 +21,8 @@ description: "This course provides a general introduction to major themes and ev
 
 *This course was offered as an online course in the Spring 2025 semester*
 
+*If you are enrolled in one of my courses make sure you consult the current syllabus on the course’s Canvas page*
+
 ## Course Description
 
 This course provides a general introduction to major themes and events in the history of North America and the United States beginning with early European-indigenous encounters and continuing through the present day. Students are expected to attend weekly lectures, complete assigned readings, and demonstrate acquired knowledge through exams and an essay assignment. Students are also expected to think critically about the complicated, and possibly controversial, nature of our nation’s shared pasts.

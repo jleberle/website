@@ -17,9 +17,9 @@ slug: 1493
 description: "This course provides a general introduction to major themes and events in the history of North America and the United States since the end of the Civil War in 1865."
 ---
 
-*Syllabus for Spring 2025*
+*This course was offered in-person during the Spring 2025 semester*
 
-*If you are enrolled in one of my courses make sure you consult the current syllabus on the course's Canvas page.*
+*If you are enrolled in one of my courses make sure you consult the current syllabus on the course’s Canvas page*
 
 ## Course Description
 
