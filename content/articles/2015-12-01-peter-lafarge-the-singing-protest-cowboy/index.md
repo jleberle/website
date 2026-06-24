@@ -1,25 +1,24 @@
 ---
-author: Jared L. Eberle
-categories:
-- Indigenous History
+title: "Peter LaFarge, The Singing Protest Cowboy"
+slug: "peter-lafarge-the-singing-protest-cowboy"
 date: 2015-12-01
+author: "Jared L. Eberle"
+description: "Indigeneity and protestor singers"
+summary: "Peter LaFarge used his western heritage and claims of Indigenous heritage to build credibility in the 1950s folk scene."
+categories:
+- "Indigenous History"
 tags:
-- 1960s
-- Folk Music
-- Protest Music
-title: Peter LaFarge, The Singing Protest Cowboy
+- "1960s"
+- "Folk Music"
+- "Protest Music"
 cover:
   image: "cover.avif"
   alt: "Peter LaFarge"
   hiddenInList: false
   hiddenInSingle: false
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: peter-lafarge-the-singing-protest-cowboy
-description: "Indigeneity and protestor singers"
-summary: "Peter LaFarge used his western heritage and claims of Indigenous heritage to build credibility in the 1950s folk scene."
+  relative: true
 ---
-
 There's a fair share of rodeo contestants who have parlayed their time in rodeo into a singing career. Probably most notable is Chris LeDoux, one of the inspirations for Oklahoma State's own Garth Brooks, who won the 1976 bareback championship at the National Finals Rodeo and [sold records out of his truck](https://www.allmusic.com/artist/chris-ledoux-mn0000107466/biography) at rodeo events in the hopes of supporting his rodeo career. LeDoux retained a cult following on the rodeo circuit until Brooks' debut album in 1989 and the song "Much Too Young (To Feel This Damn Old)" about an aging rodeo contestant who only had "The worn out tape of Chris LeDoux, lonely women and bad booze" pushed him to a wider audience. Yet as evidenced by [Armond Duck Chief's performance at the Indian National Finals Rodeo](/articles/past-and-future-of-indian-rodeo-in-las-vegas/), the hard scramble life on the rodeo circuit can provide material for countless songs and aspiring songwriters.
 
 Another cowboy who later transitioned into the music arena was Peter LaFarge. LaFarge was actually born Oliver Albee LaFarge, but allegedly he and another rancher decided that Oliver was "a sissy name" and decided on Pete, later Peter as the name he would go by for the rest of his life. LaFarge began singing during his teenage years, appearing on a few local radio stations, and around the same time, as one writer notes, he went through a Theodore Roosevelt-esque experience in Colorado when his time with horses "helped him grow physically from the weak youngster he was early on."[^1] LaFarge ultimately quit school to join the rodeo circuit, where he rode bareback and saddle bronc. However, he ran into far less success than he did broken bones and trips to the emergency room. However, LaFarge did ride in at least one rodeo at Madison Square Garden and became a successful "mugger"--the team member who holds the wild horse while its saddled--on the Indian horse race circuit. After serving in the Korean War, he tried to resume his rodeo career, along with a stint as an amateur boxer, but he hung up the reins when an accident almost resulted in an amputated leg.

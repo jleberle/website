@@ -1,25 +1,29 @@
 ---
-categories:
-- Reviews
-tags:
-- 2000s
-- Conservative Media
-- Journalism
-draft: false
-date: 2026-05-12
 title: "The Rise and Fall of Tucker Carlson"
-summary: "Review of Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"
+slug: "zengerle-tucker-carlson"
+date: 2026-05-12
+draft: false
+description: "The descent of Tucker Carlson from fresh-faced magazine writer to right-wing pundit, and what it says about today's media landscape"
+reviewed_type: "Book"
+reviewed_title: "Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"
+reviewed_author: "Jason Zengerle"
+reviewed_publisher: "Crooked Media Reads"
+reviewed_year: "2026"
+external_url: "https://zandoprojects.com/books/hated-by-all-the-right-people-hardcover"
+categories:
+- "Reviews"
+tags:
+- "2000s"
+- "Conservative Media"
+- "Journalism"
 cover:
   image: "cover.avif"
   alt: "Front cover of Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"
   hiddenInList: true
   hiddenInSingle: false
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: zengerle-tucker-carlson
-description: "Review of Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"
+  relative: true
 ---
-
 Listing the various ideas and conspiracies Tucker Carlson has embraced over the last decade and a half presents a list of increasingly offensive ideas rooted in opposition to immigrants and the Great Replacement Theory. Yet if you told this list to the 1990s Tucker Carlson who was writing for the *Weekly Standard* and criticizing Pat Buchanan's campaigns, he might he rather appalled. What's clear from Jason Zengerle's *Hated By All the Right People* is that Tucker's views have both shifted over time but also been rooted in the desire to retain popularity, making it hard to fully define where Tucker stands.
 
 In a lot of respects the biggest thing about the book isn't what Carlson believes or does not believe but rather the decline of conservative media. Even though *The Weekly Standard* had it's political ideas and was not shy about hiding it when they started in the 1990s, the magazine also published pieces that were critical of Republicans in Congress. Carlson's tenure as a magazine journalist stands in stark contrast to his position as a television personality where he constantly felt he needed to serve as a loyal voice for the Republican party, even when the party's ideas stood in opposition to his personal views, most significantly the war in Iraq in 2003 which Carlson deeply questioned but nevertheless vocally supported on CNN's *Crossfire*. 

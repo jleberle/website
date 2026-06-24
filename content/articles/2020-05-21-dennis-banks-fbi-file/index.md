@@ -1,17 +1,16 @@
 ---
-categories:
-- Indigenous History
-date: 2020-05-21
-tags:
-- 1970s
-- American Indian Movement
-- FOIA
 title: "Dennis Banks' FBI File"
-slug: dennis-banks-fbi-file
+slug: "dennis-banks-fbi-file"
+date: 2020-05-21
 description: "FBI Files on American Indian Movement leader Dennis Banks"
 summary: "FBI Files on American Indian Movement leader Dennis Banks"
+categories:
+- "Indigenous History"
+tags:
+- "1970s"
+- "American Indian Movement"
+- "FOIA"
 ---
-
 Dennis Banks passed away on October 29, 2017. On November 1, 2017 I filed a Freedom of Information Act request with the FBI for any files related to Banks. Most of the FBI files related to the American Indian Movement have been public for a number of years but I was curious to see if the FBI would release anything new Banks following his death. After I filed the request the only thing I heard was a notice saying my request was overly broad and I could reduce the scope to enable faster processing.
 
 Today, 932 days later, the FBI responded to the FOIA request with 210 pages of information. I can't say there's anything drastically new in the material, but I've uploaded them here for future reference.

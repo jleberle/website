@@ -1,20 +1,21 @@
 ---
-author: Jared L. Eberle
-categories:
-- General History
+title: "Let Them Have Cake"
+slug: "let-them-have-cake"
 date: 2011-11-16
-tags:
-- 19th Century
-- Theodore Roosevelt
-title: Let Them Have Cake
-slug: let-them-have-cake
-external_url: https://archive.org/details/theodoreroosevel0000roos_t4a1/page/122/mode/2up
+author: "Jared L. Eberle"
 description: "Teddy Roosevelt's encounter with homeless children"
 summary: "Teddy Roosevelt's encounter with homeless children"
+source_title: "Diaries of Boyhood and Youth"
+source_author: "Theodore Roosevelt"
+source_year: "1928"
+external_url: "https://archive.org/details/theodoreroosevel0000roos_t4a1/page/122/mode/2up"
+categories:
+- "General History"
+tags:
+- "19th Century"
+- "Theodore Roosevelt"
 ---
 
 > We tossed the cakes to them and I fed them like chickens with small pieces of cake and like chickens they ate it. Mr. Stevens kept guard with a whip with which he pretended to whip a small boy. We made them open their mouths and tossed cake into it. For a ‘Coup de Grace’ we threw a lot of them in a place and a writhing heap of human beings.  We drove on very soon in the moonlight, It was beautiful.…We made the crowds that we gave cake to give three cheers for the U.S.A. before we gave them cake….
->
-> - Theodore Roosevelt, *Diaries of Boyhood and Youth*
 
 The "fun" occurred during a trip to Italy in December of 1869.

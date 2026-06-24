@@ -1,25 +1,24 @@
 ---
-author: Jared L. Eberle
-categories:
-- Indigenous History
-date: 2015-09-03
-tags:
-- 1990s
-- Connecticut
-- Tribal Recognition
 title: "Bob Engelhart's Golden Hill Paugussett Cartoon"
+slug: "bob-engelharts-golden-hill-paugussett-cartoon"
+date: 2015-09-03
+author: "Jared L. Eberle"
+description: "A look a a racist political cartoon"
 summary: "A look at a 1990s anti-Pequot cartoon"
+categories:
+- "Indigenous History"
+tags:
+- "1990s"
+- "Connecticut"
+- "Tribal Recognition"
 cover:
   image: "cover.avif"
   alt: "Front cover of Digital Humanities"
   hiddenInList: false
   hiddenInSingle: true
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: bob-engelharts-golden-hill-paugussett-cartoon
-description: "A look a a racist political cartoon"
+  relative: true
 ---
-
 ![Cartoon of Six Indigenous people with stereotypical names](cover.avif "Bob Engelhart's racist cartoon")
 
 In her book, *Cash, Color, and Colonialism: The Politics of Tribal Acknowledgement*, Renee Cramer made a passing reference to a cartoon in the *Hartford Courant* on the controversy over the potential federal acknowledgement of the Golden Hill Paugussetts in Connecticut. The small tribe, mostly located in the southwest part of the state, had a large percentage of members with African American heritage, which hindered their application for recognition because they didn't "look Indian." The acknowledgement proceedings had been (and remain) contentious because opponents viewed the process as an opportunist move to exploit federal acknowledgement to build a casino. The Golden Hill Paugussetts were ultimately denied recognition but not before Bob Englehart, the longtime political cartoonist for the *Hartford Courant*, produced a cartoon that Cramer described as a "racist cartoon…depicting the Golden Hills as a tribe of six African American opportunists with names like 'Chief So Sioux Me' and 'Nike Hide Tanner'."[^1]

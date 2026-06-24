@@ -1,15 +1,15 @@
 ---
-categories:
-- Indigenous History
-date: 2016-10-19
-tags:
-- 1970s
-- Illinois
-- Rodeo
 title: "From the Archives: Indian Prison Rodeo"
-slug: from-the-archives-indian-prison-rodeo
+slug: "from-the-archives-indian-prison-rodeo"
+date: 2016-10-19
 description: "\"If an indian takes the prize, I think its saying something\""
 summary: "A letter discussing a prison rodeo"
+categories:
+- "Indigenous History"
+tags:
+- "1970s"
+- "Illinois"
+- "Rodeo"
 ---
 I'm in Saint Paul, Minnesota for the Western History Association's annual conference and to explore the archives at the Minnesota Historical Society related to the [Wounded Knee Legal Defense/Offense Committee](https://storage.googleapis.com/mnhs-finding-aids-public/library/findaids/00229.html) (WKLDOC for short). It's an expansive archive that collects 149 boxes related to the organization that defended participants in the occupation of Wounded Knee, South Dakota in 1973. Much of it is outside the purview of my dissertation (thankfully I don't have to read the box upon box of legal proceedings), and given that I only have two days to spelunk through the entire archive, I had to make choices about what I would and would not look at.
 

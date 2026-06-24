@@ -1,26 +1,30 @@
 ---
-author: Jared L. Eberle
-categories:
-- Reviews
-tags:
-- 1960s
-- Oklahoma
-- Red Power
-draft: false
-date: 2015-07-21
 title: "The Birth of Red Power"
-summary: "Review of Clyde Warrior: Tradition, Community, and Red Power"
+slug: "warrior-mckenzie-jones"
+date: 2015-07-21
+draft: false
+author: "Jared L. Eberle"
+description: "An assessment of Ponca activist Clyde Warrior's contributions to Red Power"
+reviewed_type: "Book"
+reviewed_title: "Clyde Warrior: Tradition, Community, and Red Power"
+reviewed_author: "Paul McKenzie-Jones"
+reviewed_publisher: "University of Oklahoma Press"
+reviewed_year: "2015"
+external_url: "https://www.oupress.com/9780806147055/clyde-warrior/"
+categories:
+- "Reviews"
+tags:
+- "1960s"
+- "Oklahoma"
+- "Red Power"
 cover:
   image: "cover.avif"
   alt: "Front cover of Clyde Warrior: Tradition, Community, and Red Power"
   hiddenInList: true
   hiddenInSingle: false
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: warrior-mckenzie-jones
-description: "Review of Clyde Warrior: Tradition, Community, and Red Power"
+  relative: true
 ---
-
 In 1966 Clyde Warrior, Della Warrior, Mel Thom, and other young American Indian activists crashed the National Council of American Indians's parade in Oklahoma City with a rented car that had a sign reading "Red Power National Indian Youth Council" on one side and "Custer Died for Your Sins" on the other. The incident not only marked the first use of "Red Power" but highlighted the growing rift between the older NCAI and the younger NIYC that advocated a more forcible approach to native activism. Yet Warrior's Red Power was not the pan-Indian ideology rooted in militant, direct-action protests famously embodied by the occupations of Alcatraz Island, the Bureau of Indian Affairs, and Wounded Knee, South Dakota between 1969 and 1973. In contrast, as Paul McKenzie-Jones documents in *Clyde Warrior: Tradition, Community, and Red Power*, Warrior advocated a Red Power rooted in tribal traditions and community that sought to reform the system rather than burn it down.
 
 McKenzie-Jones's book, the first full biography of Clyde Warrior to be published, chronicles Warrior's activism with the National Indian Youth Council during the 1960s and the formation of Red Power and how Warrior sought to achieve it. Warrior famously gained attention with activists when he ran for president of the Southwest Regional Indian Youth Council in 1961 and his campaign speech was three short sentences: "I am a full-blood Ponca Indian. This is all I have to offer. The sewage of Europe does not run through these veins." Warrior not only won the election but the speech according to McKenzie-Jones, "Was the first time in generations that such direct, condemnatory, and anti-colonial language had been uttered publicly by an American Indian towards the hegemonic American settler culture." (p. 46) The speech is also significant for McKenzie-Jones because Warrior's embrace of his Ponca heritage highlighted the fundamentals of his Red Power, community and tribal traditions. While Warrior took part in some direct-action protests, a large part of the book is devoted to his contributions to studying education among Native teenagers in Oklahoma. For Warrior, improving the education system at the local level through increased training and classes that resonated with American Indians would build community and teach the traditions he saw as the building blocks for both strong individuals and the way to reshape tribal programs. Warrior never advocated for the dismantling of the Bureau of Indian Affairs like the American Indian Movement and larger activists would, instead he sought to charge the system to work for Natives, to foster traditions instead of assimilation.

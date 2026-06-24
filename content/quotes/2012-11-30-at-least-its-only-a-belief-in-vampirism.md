@@ -1,19 +1,22 @@
 ---
-author: Jared L. Eberle
-categories:
-- General History
-date: 2012-11-30
-tags:
-- 19th Century
-- Folklore
 title: "At Least It's Only a Belief in Vampirism"
-slug: at-least-its-only-a-belief-in-vampirism
-external_url: https://www.jstor.org/stable/658266
+slug: "at-least-its-only-a-belief-in-vampirism"
+date: 2012-11-30
+author: "Jared L. Eberle"
 description: "What's the worst that could happen?"
 summary: "Vampirism in New England is not that bad"
+source_title: "The Animistic Vampire in New England"
+source_author: "George R. Stetson"
+source_year: "1896"
+external_url: "https://www.jstor.org/stable/658266"
+categories:
+- "General History"
+tags:
+- "19th Century"
+- "Folklore"
 ---
 
-George R. Stetson writing about the belief in Vampirism amongst the population in rural Rhode Island during the nineteenth century:
+George R. Stetson writing about vampire superstitions in rural Rhode Island during the nineteenth century:
 
 > …[I]t is perhaps fortunate that the isolation of which this is probably the product, an isolation common in sparsely settled regions, where thought stagnates and insanity and superstition are prevalent, has produced nothing worse.
 

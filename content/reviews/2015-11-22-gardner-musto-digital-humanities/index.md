@@ -1,26 +1,30 @@
 ---
-author: Jared L. Eberle
-categories:
-- Reviews
-tags:
-- Digital Humanities
-- Methodology
-draft: false
-date: 2015-11-22
 title: "Digital Humanities: A Primer"
-summary: "Review of Digital Humanities by Gardiner and Musto"
+slug: "gardner-musto-digital-humanities"
+date: 2015-11-22
+draft: false
+author: "Jared L. Eberle"
+description: "An updated assessment of digital humanities and their uses"
+reviewed_type: "Book"
+reviewed_title: "The Digital Humanities: A Primer for Students and Scholars"
+reviewed_author: "Eileen Gardiner and Ronald G. Musto"
+reviewed_publisher: "Cambridge University Press"
+reviewed_year: "2015"
+external_url: "https://www.cambridge.org/core/books/digital-humanities/E31D46FD97BF94B81B461F7234D29BE4"
+categories:
+- "Reviews"
+tags:
+- "Digital Humanities"
+- "Methodology"
 cover:
   image: "cover.avif"
   alt: "Front cover of Digital Humanities"
   hiddenInList: true
   hiddenInSingle: false
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: gardner-musto-digital-humanities
-description: "Review of Digital Humanities by Gardiner and Musto"
+  relative: true
 ---
-
-No grad student would blink twice about seeing a book from 2005 on the list of assigned reading for a class. Yet because of the pace of technology over the last decade, Dan Cohen and Roy Rosenzweig's milestone book *[Digital History: A Guide to Gathering, Preserving, and Presenting the Past on the Web](https://www.amazon.com/Digital-History-Gathering-Preserving-Presenting/dp/0812219236/ref=sr_1_1?ie=UTF8&amp;qid=1447869564&amp;sr=8-1)* is far more outdated than most other academic monographs published that year. Yet a cursory look over digital history syllabi indicates that the work is still a fundamental part of learning about digital history. In part this is because large chunks of the book remain relevant today, but many are sorely in need of an update. In particular, advancements in technology have allowed for a greater expanse of digital scholarship over the last decade and have opened new frontiers for historians both in the public history field and methodologically. While a number of books have come out since the publication of *Digital History*, there doesn't seem to be a concise, well-structured overview of the subject that addresses the pedagogical, methodological, and public history aspects of digital history. I was, however, intrigued by Eileen Gardiner and Ronald G. Musto's *[The Digital Humanities: A Primer for Students and Scholars](https://www.amazon.com/Digital-Humanities-Primer-Students-Scholars/dp/1107601029/ref=sr_1_1?ie=UTF8&amp;qid=1447869708&amp;sr=8-1&amp;keywords=digital+humanities+a+primer)* as a potential option, albeit one that took the wider view of humanities rather than history. While Gardiner and Musto provide a decent introduction to the subject, their book probably won't be surplanting Cohen and Rosenzweig.
+No grad student would blink twice about seeing a book from 2005 on the list of assigned reading for a class. Yet because of the pace of technology over the last decade, Dan Cohen and Roy Rosenzweig's milestone book *[Digital History: A Guide to Gathering, Preserving, and Presenting the Past on the Web](https://www.amazon.com/Digital-History-Gathering-Preserving-Presenting/dp/0812219236/ref=sr_1_1?ie=UTF8&amp;qid=1447869564&amp;sr=8-1)* is far more outdated than most other academic monographs published that year. Yet a cursory look over digital history syllabi indicates that the work is still a fundamental part of learning about digital history. In part this is because large chunks of the book remain relevant today, but many are sorely in need of an update. In particular, advancements in technology have allowed for a greater expanse of digital scholarship over the last decade and have opened new frontiers for historians both in the public history field and methodologically. While a number of books have come out since the publication of *Digital History*, there doesn't seem to be a concise, well-structured overview of the subject that addresses the pedagogical, methodological, and public history aspects of digital history. I was, however, intrigued by Eileen Gardiner and Ronald G. Musto's *[The Digital Humanities: A Primer for Students and Scholars](https://www.cambridge.org/core/books/digital-humanities/E31D46FD97BF94B81B461F7234D29BE4)* as a potential option, albeit one that took the wider view of humanities rather than history. While Gardiner and Musto provide a decent introduction to the subject, their book probably won't be surplanting Cohen and Rosenzweig.
 
 *Digital Humanities* grew out of Gardiner's 2010 Fullbright Fellowship related to teaching digital humanities at the National University of Ireland, Galway and ultimately transitioned into a book when her and Musto took over the executive director position of the Medieval Studies Association. Both also have a long history of working within the digital humanities as editors of Italica Press and the American Council of Learned Societies History E-Book Project, both of which have been involved in digital publishing since the 1990s. In the book, Gardiner and Musto seek to provide readers with "a comprehensive introduction and practical guide to how humanists use the digital to conduct research, organize materials, analyze and publish findings." (Front matter) They also argue the book comes at an important time for the digital humanities because in 2015, the field has had time to mature so that many people know it exists but cannot provide a clear definition of it and many remain intimidated by it. Furthermore, they argue technological advancements have plateaued and "initial experimential gains are being scaled, consolidated and made sustainable" meaning there are solid examples across the spectrum that allow them "to reflect on how this maturing process is working and what its long-term characteristics might be." (p. ix) While it's true we can now reflect back on the examples covered in Cohen and Rosenzweig and see how far we've come and seemingly slowed down, in another year, let alone five or ten, the "plateau" of 2015 is going to be a distant memory.
 

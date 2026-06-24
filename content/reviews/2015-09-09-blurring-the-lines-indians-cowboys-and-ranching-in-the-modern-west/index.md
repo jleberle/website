@@ -1,26 +1,29 @@
 ---
-author: Jared L. Eberle
-categories:
-- Reviews
-date: 2015-09-09
-tags:
-- 19th Century
-- American West
-- Cattle Ranching
 title: "Blurring the Lines: Indians, Cowboys and Ranching in the Modern West"
-summary: "Review of When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West"
+slug: "blurring-the-lines-indians-cowboys-and-ranching-in-the-modern-west"
+date: 2015-09-09
+author: "Jared L. Eberle"
+description: "Sometimes the cowboys and Indians were one and the same"
+reviewed_type: "Book"
+reviewed_title: "When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West"
+reviewed_author: "Peter Iverson"
+reviewed_publisher: "University of Oklahoma Press"
+reviewed_year: "1994"
+external_url: "https://www.oupress.com/9780806128849/when-indians-became-cowboys/"
+categories:
+- "Reviews"
+tags:
+- "19th Century"
+- "American West"
+- "Cattle Ranching"
 cover:
   image: "cover.avif"
   alt: "Front cover of When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West"
   hiddenInList: true
   hiddenInSingle: false
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: blurring-the-lines-indians-cowboys-and-ranching-in-the-modern-west
-description: "Review of When Indians Became Cowboys"
+  relative: true
 ---
-
-Iverson, Peter. *When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West.* Norman: University of Oklahoma Press, 1994.
 
 Even growing up in suburban Connecticut, where the closest you got to a cowboy was attending a football game involving the Dallas Cowboys, we still invariably played Cowboys and Indians at some point. While no one could ever answer why it was cowboys and Indians and not Indians and the cavalry, the basic idea that the mythic west had a firm dichotomy between the good and the bad was firmly in place, even if as an eight year old all I wanted to do was run and and imagine shooting at people, rather than consider the deeper symbolic meanings of recess games. Even though our larger cultural image of cowboys is firmly rooted in the image of the Marlboro Man, a stoic white male, academics have noted that "cowboy" began as a racial epitaph for African Americans working cattle drives.[^1] Yet more shockingly for childhood memories and recess games, as evidenced by the title of Peter Iverson's book, over the course of the nineteenth and twentieth centuries, Native Americans increasingly moved into the cattle business and developed into cowboys on par with their Euro-American neighbors. While Euro-American and Indian ranchers came into conflict over grazing rights and land allotments, the rise of the urban west in the latter half of the twentieth century has presented the interesting fact that today white ranchers have come to increasingly feel like the Indians of the nineteenth century thanks to the growing divide between rural and urban and the rapidly diminishing availability of open grazing lands. As such by the start of the new millennium the Indians had developed into cowboys and the cowboys had become Indians.
 

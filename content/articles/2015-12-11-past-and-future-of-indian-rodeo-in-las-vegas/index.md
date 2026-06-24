@@ -1,25 +1,24 @@
 ---
-author: Jared L. Eberle
-categories:
-- Indigenous History
+title: "Past and Future of Indian Rodeo in Las Vegas"
+slug: "past-and-future-of-indian-rodeo-in-las-vegas"
 date: 2015-12-11
+author: "Jared L. Eberle"
+description: "A trip to the Indian National Finals Rodeo"
+summary: "A report on the trip to the Indian National Finals Rodeo in 2015"
+categories:
+- "Indigenous History"
 tags:
-- 2010s
-- Nevada
-- Rodeo
-title: Past and Future of Indian Rodeo in Las Vegas
-slug: past-and-future-of-indian-rodeo-in-las-vegas
+- "2010s"
+- "Nevada"
+- "Rodeo"
 cover:
   image: "cover.avif"
   alt: "40 years of INFR contestants"
   hiddenInList: false
   hiddenInSingle: false
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-description: "A trip to the Indian National Finals Rodeo"
-summary: "A report on the trip to the Indian National Finals Rodeo in 2015"
+  relative: true
 ---
-
 I was lucky enough to be accepted to present some of my dissertation research at the American Society for Ethnohistory's 2015 conference in Las Vegas at the Tropicana hotel. I know it's a hard life, and to break the cardinal rule of Las Vegas, everything that happened there is going on this blog. The Ethnohistory conference is one of the premier conferences for American Indian studies and is always a rich and rewarding experience. However, given that this was my first time presenting at a big name conference, and I was presenting new research outside of my traditional area of focus I was a little nervous going in. Luckily my presentation was in the second panel session of the conference so I was able to get it out of the way pretty quick and focus on the important things like exploring Vegas and attending one of the rounds of the 40th Indian National Finals Rodeo at the South Point Hotel &amp; Casino.
 
 {{< figure src="stairs.avif" align=center alt="Stairs labelled with Indian National Finals branding" >}}

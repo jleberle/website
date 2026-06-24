@@ -1,18 +1,17 @@
 ---
-title: Mary Lease, Suffrage, and Prohibition
+title: "Mary Lease, Suffrage, and Prohibition"
+slug: "mary-lease-suffrage-and-prohibition"
 date: 2022-10-11
-categories:
-  - General History
-tags:
-  - 19th Century
-  - Populism
-  - Women's History
 draft: false
-slug: mary-lease-suffrage-and-prohibition
 description: "An incomplete historical assessment"
 summary: "An incomplete historical assessment of Mary Lease and her involvement in prohibition and women's suffrage"
+categories:
+- "General History"
+tags:
+- "19th Century"
+- "Populism"
+- "Women's History"
 ---
-
 I teach primarily introductory level survey courses and the notes for those courses are a Frankenstein's monster of assembled sources. I used to try and keep track of what came from where but found the citations too distracting, so I just settled for double checking notes when I add new material in. Every now and then I stumble across something that makes me question what is in my notes and leads me to dig around trying to figure out if I'm saying the right or wrong thing in class. Recently I went down a rabbit hole thanks to [Wikipedia entry for Mary Lease](https://en.wikipedia.org/wiki/Mary_Elizabeth_Lease) because the opening sentence caught me off guard:
 
 >Mary Elizabeth Lease (September 11, 1850 – October 29, 1933) was an American lecturer, writer, Georgist, and political activist. She was an advocate of the suffrage movement as well as temperance but she was best known for her work with the People's Party (Populists).

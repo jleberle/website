@@ -1,25 +1,29 @@
 ---
-categories:
-- Reviews
-tags:
-- 1990s
-- Federal Law Enforcement
-- Idaho
-draft: false
-date: 2026-05-07
 title: "The Apocalypse at Ruby Ridge"
-summary: "Review of End of Days: Ruby Ridge, the Apocalypse, and the Unmaking of America"
+slug: "jennings-ruby-ridge"
+date: 2026-05-07
+draft: false
+description: "Religion, economic crises, and the standoff that further fueled 1990s right-wing fears"
+reviewed_type: "Book"
+reviewed_title: "End of Days: Ruby Ridge, the Apocalypse, and the Unmaking of America"
+reviewed_author: "Chris Jennings"
+reviewed_publisher: "Little, Brown and Company"
+reviewed_year: "2026"
+external_url: "https://www.hachettebookgroup.com/titles/chris-jennings/end-of-days/9780316381949/"
+categories:
+- "Reviews"
+tags:
+- "1990s"
+- "Federal Law Enforcement"
+- "Idaho"
 cover:
   image: "cover.avif"
   alt: "Front cover of End of Days: Ruby Ridge, the Apocalypse, and the Unmaking of America"
   hiddenInList: true
   hiddenInSingle: false
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: jennings-ruby-ridge
-description: "Review of *End of Days: Ruby Ridge, the Apocalypse, and the Unmaking of America"
+  relative: true
 ---
-
 The idea of the apocalypse and the rapture has been a defining feature for many evangelical Christians for much of the 20th century and throughout that time there always seemed to be times when the Book of Revelations seemed to be coming into reality. Whether it was the World Wars, the nuclear arms race of the Cold War, or by the 1990s the end of that 50 year period of geo-political tensions, Christians of a certain strand found copious amounts of material to draw on for claiming the end of the world was nay. 
 
 The problem, of course, is when you make the predictions and they don't come true, people tend to move away, leaving only the most die-hard believers still committed to the cause. Randy and Vicki Weaver, especially the latter, because some of those true believers as they delved deeper into the apocalyptic predictions as they lived in Iowa during the 1970s and 1980s. For a lot of Iowans the idea of the apocalypse in the 1980s seemed like a very real reality as they grappled with declining farm earnings and bankruptcies. Maybe the world was not fully ending, but many livelihoods were disappearing as farmers simply could not survive declining crop prices. For the Weavers this apocalyptic world view ended with the infamous standoff at Ruby Ridge in August of 1992 that left Vicki Weaver, Samuel Weaver, Striker the family dog, and a US Marshal dead by the time the ten day siege ended.

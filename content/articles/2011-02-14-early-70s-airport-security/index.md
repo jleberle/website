@@ -1,17 +1,16 @@
 ---
-categories:
-- General History
-date: 2011-02-14
-tags:
-- 1970s
-- Airport Security
-- Civil Liberties
 title: "Early '70s Airport Security"
-slug: early-70s-airport-security
+slug: "early-70s-airport-security"
+date: 2011-02-14
 description: "The hassles of 1970s airport security"
 summary: "The hassles of airport security and your drugs"
+categories:
+- "General History"
+tags:
+- "1970s"
+- "Airport Security"
+- "Civil Liberties"
 ---
-
 While conducting some research on Leon Russell I managed to come across a gem of a *Rolling Stone* article from February of 1972. In response to the destruction of four airliners in 1970 by Palestinian guerrillas, Richard Nixon implemented an anti-hijacking program which *RS* panned as ineffective and setting “a dangerous precedent for future violations of two basic constitutional freedoms–freedom to travel and freedom from unreasonable search.”
 
 The article details the “one-two-three model” of airport security that is nothing compared to today’s gate rapes. The process included behavioral profiling (a profile which wasn’t released because it would endanger national security) and magnetometers. A person was only suppose to be subject to search if they both matched the behavior profile (of a hijacker) and set off the metal detector, but *RS* argued the process subjected those who “look freaky” (i.e. long haired hippie types) to unreasonable searches.

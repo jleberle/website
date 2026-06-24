@@ -1,16 +1,16 @@
 ---
-author: Jared L. Eberle
-categories:
-- General History
+title: "I Got Sick of Watching the Tulsa World Die"
+slug: "i-got-sick-of-watching-the-tulsa-world-die"
 date: 2020-09-17
-tags:
-- 2020s
-- Journalism
-- Oklahoma
-title: I Got Sick of Watching the Tulsa World Die
-slug: i-got-sick-of-watching-the-tulsa-world-die
+author: "Jared L. Eberle"
 description: "Why I cancelled the Tulsa World"
 summary: "Why I cancelled the Tulsa World"
+categories:
+- "General History"
+tags:
+- "2020s"
+- "Journalism"
+- "Oklahoma"
 ---
 In the immediate aftermath of 2016 election there were calls for people to increase their civic understanding, and in particular funnel money into local news. In the years that have followed we've seen stories highlighting the [decline of local news](https://www.nytimes.com/2020/07/10/us/alden-global-capital-pottstown-mercury.html) that have left towns without anyone regularly covering the boring but important events of school boards, town councils, and zoning boards. Local events truly do need good journalists working to document them and those journalists need our support on a regular basis, whether we agree with the events going on or not.
 

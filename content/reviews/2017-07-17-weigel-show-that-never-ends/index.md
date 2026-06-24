@@ -1,26 +1,30 @@
 ---
-author: Jared L. Eberle
-categories:
-- Reviews
-tags:
-- 1970s
-- Prog Rock
-- Rock Music
-draft: false
-date: 2017-07-17
 title: "Redeeming the Uncool"
-summary: "Review of The Show That Never Ends By Dave Weigel"
+slug: "weigel-show-that-never-ends"
+date: 2017-07-17
+draft: false
+author: "Jared L. Eberle"
+description: "A nerdy assessment of how prog rock became uncool"
+reviewed_type: "Book"
+reviewed_title: "The Show That Never Ends: The Rise and Downfall of Prog Rock"
+reviewed_author: "Dave Weigel"
+reviewed_publisher: "W.W. Norton"
+reviewed_year: "2017"
+external_url: "https://bookshop.org/p/books/the-show-that-never-ends-the-rise-and-fall-of-prog-rock-david-weigel/c0328b31031f2338"
+categories:
+- "Reviews"
+tags:
+- "1970s"
+- "Prog Rock"
+- "Rock Music"
 cover:
   image: "cover.avif"
   alt: "Front cover of The Show That Never Ends"
   hiddenInList: true
   hiddenInSingle: false
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: weigel-show-that-never-ends
-description: "Review of The Show That Never Ends By Dave Weigel"
+  relative: true
 ---
-
 It's appropriate that political reporter Dave Weigel has released *The Show That Never Ends: The Rise and Downfall of Prog Rock* in 2017. Just after we've finished one of the most divisive elections (and the Democratic party continues to hold a primary fight for some reason) we get a survey of the most divisive subgenre of rock music. Critiques of prog rock vary from complete rejection of music deemed over-the-top, pompous, and unlistenable to views that the genre marked the pinnacle of rock music as a true art form. Yet the history of prog isn't as clear cut and Weigel attempts to briskly explain why we got the music and what ultimately killed most of it by the end of the 1970s.
 
 Weigel centers *The Show That Never Ends* around major tentpoles of English prog —— Robert Fripp's King Crimson, Yes, and Emerson, Lake, and Palmer (the title is pulled from an ELP lyric) —— with others appearing for periods ranging from short segments to only passing mentions. The end result is a book that tries to bring some sense and order to a group of musicians that sought to reject order at every note. In contrast to counterparts like the Rolling Stones or Eric Clapton that drew influence from American blues music, prog rockers rooted themselves in Anglican Church music and classical works. As a result prog, at least in part, helped construct an English identity in the post-war years as the British Empire saw it's power decline. With Ian Andrerson's flute, Keith Emerson's Moog, and Peter Gabriel's vocals and costumes, English artists both conquered charts and left critics (and many listeners) befuddled as to what exactly they were experiencing. While some prog rock songs are mainstays of classic rock radio, much of the genre resides in twenty-plus minute songs that only devoted fans seek out on a regular basis.

@@ -1,18 +1,17 @@
 ---
-author: Jared L. Eberle
-categories:
-- Indigenous History
-date: 2015-09-15
-tags:
-- 1970s
-- Wikipedia
-- Wounded Knee
 title: "Where'd the Death Come From?"
-slug: whered-the-death-come-from
+slug: "whered-the-death-come-from"
+date: 2015-09-15
+author: "Jared L. Eberle"
 description: "Trying to combat misinformation on Wikipedia."
 summary: "Trying to understand why Wikipedia reports a federal officer's death at the Wounded Knee occupation"
+categories:
+- "Indigenous History"
+tags:
+- "1970s"
+- "Wikipedia"
+- "Wounded Knee"
 ---
-
 According to Alexa site tracking, the English language version of Wikipedia is one of the most visited sites on the Internet and the only vaguely academic site besides the omnipotent Google on the list.[^3] Yet even though Wikipedia and its five million articles have become a ubiquitous part of how we figure out the answer to life’s vexing questions, most people know little about how the content actually gets on Wikipedia. While most theoretically know anyone can edit Wikipedia and contribute additional information or fix errors, few people outside of Wikipedia’s inner circle of active volunteer editors regularly contribute to the site and understand the intricacies of the process. In part this may be the result of technological barriers, but as Tom Simonite noted in an MIT Technology Review article on the “decline of Wikipedia,” [Wikipedia’s internal dynamics also play a critical role](https://www.technologyreview.com/2013/10/22/175674/the-decline-of-wikipedia/):
 
 > The loose collective running the site today, estimated to be 90 percent male, operates a crushing bureaucracy with an often abrasive atmosphere that deters newcomers who might increase participation in Wikipedia and broaden its coverage.

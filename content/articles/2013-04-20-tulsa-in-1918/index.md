@@ -1,24 +1,23 @@
 ---
-categories:
-- General History
-date: 2013-04-20
-tags:
-- 1910s
-- Oklahoma
-- Urban History
 title: "Tulsa in 1918"
+slug: "tulsa-in-1918"
+date: 2013-04-20
+description: "1918 map of Tulsa, Oklahoma"
+summary: "1918 map of Tulsa, Oklahoma"
+categories:
+- "General History"
+tags:
+- "1910s"
+- "Oklahoma"
+- "Urban History"
 cover:
   image: "cover.avif"
   alt: "1918 Aerial Map of Tulsa, Oklahoma"
   hiddenInList: false
   hiddenInSingle: true
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: tulsa-in-1918
-description: "1918 map of Tulsa, Oklahoma"
-summary: "1918 map of Tulsa, Oklahoma"
+  relative: true
 ---
-
 ![1918 Map of Tulsa](cover.avif)
 
 The hand-drawn map (not done to scale) comes from the Library of Congress's [panoramic maps collection](https://www.loc.gov/collections/panoramic-maps). The full version can be [downloaded or viewed here](https://www.loc.gov/item/87692752/). Here's [some other historical maps from Oklahoma](https://www.loc.gov/collections/general-maps/?fa=location:oklahoma).

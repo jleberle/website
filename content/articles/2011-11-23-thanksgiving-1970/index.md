@@ -1,24 +1,23 @@
 ---
-categories:
-- Indigenous History
-date: 2011-11-23
-tags:
-- 1970s
-- American Indian Movement
-- Massachusetts
 title: "Thanksgiving 1970"
+slug: "thanksgiving-1970"
+date: 2011-11-23
+description: "AIM's 1970 Thanksgiving protest"
 summary: "The American Indian Movement's Thanksgiving anti-commemoration in 1970"
+categories:
+- "Indigenous History"
+tags:
+- "1970s"
+- "American Indian Movement"
+- "Massachusetts"
 cover:
   image: "cover.avif"
   alt: "Russell Means in front of the statue of Massasoit"
   hiddenInList: false
   hiddenInSingle: false
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: thanksgiving-1970
-description: "AIM's 1970 Thanksgiving protest"
+  relative: true
 ---
-
 1970 marked the 350th anniversary of the pilgrims landing at Plymouth Rock and like usual the residents of Plymouth, Massachusetts were planning the annual *Pilgrim’s Progress* festival. The festival included a parade and feast, complete with residents in period clothes. The whole affair was a celebration of American progress. Empire, if you will.
 
 Frank James, a Wampanoag Indian, decided to change the agenda for that year’s Thanksgiving. James and other tribal members, including the Narragansets and Passamaquoddies, planned to demonstrate in a “dignified and responsible manner” about the repression and poverty endured by Indigenous Americans.[^1]

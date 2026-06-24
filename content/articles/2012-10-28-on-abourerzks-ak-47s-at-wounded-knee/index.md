@@ -1,16 +1,16 @@
 ---
-author: Jared L. Eberle
-categories:
-- Indigenous History
-date: 2012-10-28
-tags:
-- 1970s
-- American Indian Movement
-- Wounded Knee
 title: "On Abourerzk's AK-47s at Wounded Knee"
-slug: on-abourerzks-ak-47s-at-wounded-knee
+slug: "on-abourerzks-ak-47s-at-wounded-knee"
+date: 2012-10-28
+author: "Jared L. Eberle"
 description: "Were there AK-47s at Wounded Knee?"
 summary: "Were there AK-47s at Wounded Knee?"
+categories:
+- "Indigenous History"
+tags:
+- "1970s"
+- "American Indian Movement"
+- "Wounded Knee"
 ---
 [Former Senator Jim Abourezk discussing his visit to the occupied town of Wounded Knee in 1973 with the South Dakota CBS affiliate](https://web.archive.org/web/20160611061224/http://www.keloland.com/news/article/news/abourezk-shares-means--mcgovern-memories):
 

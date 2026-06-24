@@ -1,25 +1,24 @@
 ---
-author: Jared L. Eberle
-categories:
-- Indigenous History
-date: 2017-08-03
-tags:
-- 1970s
-- Archives
-- Music
 title: "From the Archives: The Vanishing Americans"
+slug: "from-the-archives-the-vanishing-americans"
+date: 2017-08-03
+author: "Jared L. Eberle"
+description: "Native Rock with the Vanishing Americans"
 summary: "Screenshot of Article detailing Native Rock Band"
+categories:
+- "Indigenous History"
+tags:
+- "1970s"
+- "Archives"
+- "Music"
 cover:
   image: "cover.avif"
   alt: "Front cover of Screenshot of an article on the band the Vanishing Americnas"
   hiddenInList: false
   hiddenInSingle: true
   caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
-slug: from-the-archives-the-vanishing-americans
-description: "Native Rock with the Vanishing Americans"
+  relative: true
 ---
-
 ![Article on the Vanishing Americans a Native Rock Band](cover.avif)
 
 Here's a little article I pulled from a digital copy of *The Indian*, May 28, 1970

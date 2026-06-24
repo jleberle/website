@@ -1,18 +1,17 @@
 ---
-author: Jared L. Eberle
-categories:
-- Indigenous History
+title: "Always Take First Hand Accounts With a Grain of Salt"
+slug: "always-take-first-hand-accounts-with-a-grain-of-salt"
 date: 2014-07-24
-tags:
-- 1970s
-- American Indian Movement
-- Historiography
-title: Always Take First Hand Accounts With a Grain of Salt
-slug: always-take-first-hand-accounts-with-a-grain-of-salt
+author: "Jared L. Eberle"
 description: "Raymond Yellow Thunder and the Wounded Knee Occupation"
 summary: "Raymond Yellow Thunder and the Wounded Knee Occupation"
+categories:
+- "Indigenous History"
+tags:
+- "1970s"
+- "American Indian Movement"
+- "Historiography"
 ---
-
 One of the many books I picked up today at the library was [*We Are Still Here: A Photographic History of The American Indian Movement*](https://archive.org/details/wearestillhereph0000banc), a good looking, large glossy text produced by the Minnesota Historical Society Press which included photographs by Dick Bancroft and text by Laura Waterman Wittstock. Both Bancroft and Wittstock had interactions with AIM during the height of the Red Power period; Bancroft as a sympathetic photographer and Wittstock as a journalist. Yet in both of their introductions to the text, they argue that the death of Raymond Yellow Thunder was the major contributing factor that lead to the occupation of Wounded Knee. Here's how Bancroft describes it:
 
 > One thing leading to Wounded Knee was the death of Raymond Yellow Thunder, which happened in Nebraska, just over the border from Pine Ridge. Very tiny liquor stores were selling enormous quantities of beer and spirits to Indians from the reservation, and race relations were just terrible. Four white men seized Yellow Thunder from the street, stripped him of his pants, beat him, made him dance at a VFW hall, and left him badly hurt. He died of injuries and exposure.
