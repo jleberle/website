@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# Scaffold a new post matching the site's conventions: articles and reviews are
-# Hugo page bundles, while quotes are flat files. This is the CLI sibling of the
-# Obsidian Templater templates in _templates/.
+# Scaffold an ignored Obsidian-compatible draft matching the site's conventions.
+# Drafts live outside the tracked content tree until scripts/publish-draft.sh
+# moves them into Hugo content. Articles and reviews publish as page bundles;
+# quotes publish as flat files.
 
 set -euo pipefail
 
 usage() {
   echo "Usage: $(basename "$0") <article|review|quote> [--cover] [\"Title\"]" >&2
+  echo "Creates an ignored draft under drafts/<articles|reviews|quotes>/." >&2
   exit 1
 }
 
@@ -126,6 +128,7 @@ fi
 ADD_COVER=false
 COVER_ALT=""
 COVER_CAPTION=""
+SECTION="${KIND}s"
 if [[ "$KIND" != "quote" ]]; then
   if $COVER; then
     ADD_COVER=true
@@ -170,15 +173,15 @@ EOF
 
 case "$KIND" in
   article)
-    DIR=$(unique_path "$REPO_ROOT/content/articles/$BASE" "")
-    FILE="$DIR/index.md"
-    mkdir -p "$DIR"
+    FILE=$(unique_path "$REPO_ROOT/drafts/articles/$BASE" ".md")
+    mkdir -p "$REPO_ROOT/drafts/articles"
     {
       cat <<EOF
 ---
 title: "$(yaml_escape "$TITLE")"
 slug: $SLUG
 date: $TODAY
+draft: true
 author: Jared L. Eberle
 EOF
       field "description" "$DESCRIPTION"
@@ -190,16 +193,15 @@ EOF
     } > "$FILE"
     ;;
   review)
-    DIR=$(unique_path "$REPO_ROOT/content/reviews/$BASE" "")
-    FILE="$DIR/index.md"
-    mkdir -p "$DIR"
+    FILE=$(unique_path "$REPO_ROOT/drafts/reviews/$BASE" ".md")
+    mkdir -p "$REPO_ROOT/drafts/reviews"
     {
       cat <<EOF
 ---
 title: "$(yaml_escape "$TITLE")"
 slug: $SLUG
 date: $TODAY
-draft: false
+draft: true
 EOF
       field "description" "$DESCRIPTION"
       field "summary" "$SUMMARY"
@@ -216,14 +218,15 @@ EOF
     } > "$FILE"
     ;;
   quote)
-    FILE=$(unique_path "$REPO_ROOT/content/quotes/$BASE" ".md")
-    mkdir -p "$REPO_ROOT/content/quotes"
+    FILE=$(unique_path "$REPO_ROOT/drafts/quotes/$BASE" ".md")
+    mkdir -p "$REPO_ROOT/drafts/quotes"
     {
       cat <<EOF
 ---
 title: "$(yaml_escape "$TITLE")"
 slug: $SLUG
 date: $TODAY
+draft: true
 author: Jared L. Eberle
 EOF
       field "description" "$DESCRIPTION"
@@ -240,8 +243,9 @@ EOF
 esac
 
 if $ADD_COVER; then
-  echo "Add the cover with: scripts/add-images.sh ${FILE%/index.md} --cover <image>" >&2
+  echo "After publishing, add the cover with: scripts/add-images.sh content/$SECTION/$BASE --cover <image>" >&2
 fi
-echo "Created $FILE" >&2
+echo "Created ignored draft: ${FILE#$REPO_ROOT/}" >&2
+echo "Publish with: scripts/publish-draft.sh ${FILE#$REPO_ROOT/}" >&2
 EDITOR_CMD="${VISUAL:-${EDITOR:-vi}}"
 exec $EDITOR_CMD "$FILE"
