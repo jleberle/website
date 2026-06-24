@@ -82,6 +82,8 @@ GitHub Actions lives in `.github/workflows/site-checks.yml` and runs on pushes t
 the private mirror, on manual dispatch, and weekly. Every run executes
 `scripts/preflight.sh --strict` and `npm run test:axe`. Manual and scheduled runs
 also execute the full external lychee link check against the generated site.
+Dependabot version updates are configured in `.github/dependabot.yml` for monthly,
+grouped npm and GitHub Actions updates.
 
 ## Shortcodes
 
