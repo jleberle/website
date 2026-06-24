@@ -30,16 +30,16 @@
    above as a reference/heritage palette; these are the site tone.
    ------------------------------------------------------------ */
 :root {
-    --prairie-paper:  #f5ecd3;
-    --prairie-panel:  #e8dcc0;
-    --prairie-ink:    #243331;
-    --prairie-text:   #4e5f58;
-    --prairie-muted:  #54645c;
-    --prairie-rule:   #b6a36f;
-    --prairie-border: #dfd0ad;
-    --prairie-clay:   #934331;
-    --prairie-rust:   #74391f;
-    --prairie-ochre:  #8f6b18;
+    --prairie-paper:  #f6edd8;
+    --prairie-panel:  #eadfc5;
+    --prairie-ink:    #253431;
+    --prairie-text:   #4f5f57;
+    --prairie-muted:  #5b665d;
+    --prairie-rule:   #b8a068;
+    --prairie-border: #ddcfaa;
+    --prairie-clay:   #8f3f2d;
+    --prairie-rust:   #6f351f;
+    --prairie-ochre:  #9b741d;
 
     --theme:         var(--prairie-paper);   /* page background        */
     --entry:         var(--prairie-panel);   /* cards / highlighted bg  */
