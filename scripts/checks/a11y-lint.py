@@ -10,7 +10,7 @@ html-validate don't reliably cover:
 
 Exits non-zero if any issues are found, so it can gate CI after `hugo`.
 
-Usage: python3 scripts/a11y-lint.py [public ...]
+Usage: python3 scripts/checks/a11y-lint.py [public ...]
 """
 import sys
 import glob

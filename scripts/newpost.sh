@@ -58,6 +58,13 @@ trim() {
   printf '%s' "$value"
 }
 
+rfc3339_now() {
+  local stamp offset
+  stamp=$(date +%Y-%m-%dT%H:%M:%S)
+  offset=$(date +%z)
+  printf '%s%s:%s' "$stamp" "${offset:0:3}" "${offset:3:2}"
+}
+
 field() {
   local key="$1" value
   value=$(trim "$2")
@@ -89,6 +96,7 @@ list_field() {
 SLUG=$(slugify "$TITLE")
 [[ -z "$SLUG" ]] && SLUG="untitled"
 TODAY=$(date +%Y-%m-%d)
+NOW=$(rfc3339_now)
 BASE="$TODAY-$SLUG"
 
 DESCRIPTION=$(read_optional "Description (optional)")
@@ -180,7 +188,7 @@ case "$KIND" in
 ---
 title: "$(yaml_escape "$TITLE")"
 slug: $SLUG
-date: $TODAY
+date: "$NOW"
 draft: true
 author: Jared L. Eberle
 EOF
@@ -200,7 +208,7 @@ EOF
 ---
 title: "$(yaml_escape "$TITLE")"
 slug: $SLUG
-date: $TODAY
+date: "$NOW"
 draft: true
 EOF
       field "description" "$DESCRIPTION"
@@ -225,7 +233,7 @@ EOF
 ---
 title: "$(yaml_escape "$TITLE")"
 slug: $SLUG
-date: $TODAY
+date: "$NOW"
 draft: true
 author: Jared L. Eberle
 EOF

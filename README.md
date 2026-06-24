@@ -34,7 +34,7 @@ The site will be available at `http://localhost:1313`.
 | `content/quotes/` | Short quote posts |
 | `drafts/` | Obsidian-only draft workspace, synced by Obsidian Sync and ignored by Git |
 
-Published posts follow the naming convention `YYYY-MM-DD-slug/index.md` (articles and reviews are page bundles; quotes are flat files). Create ignored drafts from the CLI with `scripts/newpost.sh`, or use the Obsidian templates in `_templates/` to write first in `drafts/`.
+Published posts follow the naming convention `YYYY-MM-DD-slug/index.md` (articles and reviews are page bundles; quotes are flat files). Create ignored drafts from the CLI with `scripts/newpost.sh`, or use the Obsidian templates in `_templates/` to write first in `drafts/`. Draft front matter is timestamped in the site's local timezone (`America/Chicago`) so feeds don't shift posts backward a day.
 
 ## Publishing workflow
 
@@ -52,7 +52,7 @@ scripts/add-images.sh content/articles/<dir> img1.jpg img2.png   # body images �
 scripts/preflight.sh && git push                  # pre-push gate, then push to Codeberg + GitHub
 ```
 
-Obsidian drafts live under `drafts/articles/`, `drafts/reviews/`, and `drafts/quotes/`. The folder is intentionally ignored by Git so drafts can sync through Obsidian Sync without appearing in commits. The Obsidian templates ask for optional metadata, omit blank fields, and ask whether article/review drafts should include a cover block. `description` is the canonical public and SEO blurb; `summary` is only written when you want a different list/feed teaser. When a draft is ready, run `scripts/publish-draft.sh` with the draft path; the script moves it into the proper Hugo section and changes `draft: true` to `draft: false`.
+Obsidian drafts live under `drafts/articles/`, `drafts/reviews/`, and `drafts/quotes/`. The folder is intentionally ignored by Git so drafts can sync through Obsidian Sync without appearing in commits. The Obsidian templates ask for optional metadata, omit blank fields, and ask whether article/review drafts should include a cover block. `description` is the canonical public and SEO blurb; `summary` is only written when you want a different list/feed teaser. When a draft is ready, run `scripts/publish-draft.sh` with the draft path; the script moves it into the proper Hugo section, changes `draft: true` to `draft: false`, and stamps `publishDate` plus `lastmod` with the local publish time when those fields are absent so RSS and JSON feeds sort the post by when it actually went live.
 
 Reviews can carry optional bibliographic context with `reviewed_type`, `reviewed_title`, `reviewed_author`, `reviewed_publisher`, and `reviewed_year`. Quote posts can carry optional source context with `source_title`, `source_author`, and `source_year`. `external_url` links the reviewed/source title in that context line; it does not turn the post title into an outbound link. When present, these fields render beneath the post description on the single-post page.
 
@@ -128,14 +128,15 @@ The first three share `layouts/_partials/responsive-img.html` — the single sou
 |---|---|
 | `scripts/newpost.sh` | Create an ignored article (`--cover` optional), review, or quote draft |
 | `scripts/publish-draft.sh` | Move an Obsidian draft from `drafts/` into `content/`, preserving page bundles for articles/reviews |
-| `scripts/content-resource-lint.py` | Validate source Markdown resource references, especially cover blocks pointing at missing files |
 | `scripts/add-images.sh` | Add images to a post bundle: `--cover` → AVIF + OG JPEG; body → AVIF only, prints figure snippets |
 | `scripts/preflight.sh` | Pre-push gate: build + warnings, CSP check, offline link check, published-reference scan (`--strict` fails on warnings) |
 | `scripts/to-avif.sh` | Convert images to AVIF + JPEG (for OG images); `--og-only` re-optimizes the OG JPEG without touching the AVIF |
 | `scripts/archive-links.sh` | Check all posts for dead links and replace with Wayback Machine snapshots |
 | `scripts/csp-hashes.sh` | Regenerate / verify Content Security Policy hashes (inline styles *and* scripts) after Hugo or PaperMod updates |
-| `scripts/axe-check.mjs` | Serve `public/` locally and run axe against representative rendered pages |
 | `scripts/sync-hugo-version.sh` | Update GitHub Actions and StaticHost Hugo versions to match local Hugo |
+
+Preflight and CI helpers that are not normally called by hand live under
+`scripts/checks/`.
 
 ## Link checking
 
@@ -254,6 +255,15 @@ scripts/csp-hashes.sh --check --no-build   # reuse an existing public/ (used by 
 `--check` reports per directive: `OK` (match), `DRIFT` (a hash is in the build but missing from `_headers` — would be blocked; fails with exit 1), or `WARN` (a stale hash in `_headers` is no longer used — safe to remove). When it reports drift, run `scripts/csp-hashes.sh`, paste the new hashes into **both** CSP blocks in `static/_headers` (the `*` block and the `/iframe-page/*` block), then commit.
 
 GitHub Actions runs `scripts/preflight.sh --strict` on every push to the private testing mirror. That includes `csp-hashes.sh --check --no-build`, reusing the `public/` generated by the build. It fails the CI build on drift as a background alarm — note that a failed GitHub Actions run does **not** block StaticHost from deploying from Codeberg, so local preflight remains the hard pre-push gate.
+When CI fails, the workflow uploads a short-lived artifact bundle with the generated `public/` directory plus captured `preflight`, `axe`, and external-link logs (when that step ran), so breakage can be inspected away from the local machine.
+If the weekly scheduled run fails, GitHub Actions also opens a standing issue on the private mirror (or comments on the existing one) with a link back to the failing run.
+
+### Feed checks
+
+`scripts/checks/feed-lint.py` runs inside preflight after Hugo builds. It parses the
+generated RSS and JSON Feed files, checks feed-level URLs, and scans syndicated
+HTML for relative `href`, `src`, and `srcset` references. This catches feed-reader
+portability issues locally without depending on the online W3C validator.
 
 ### Rendered accessibility checks
 

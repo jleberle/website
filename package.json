@@ -5,7 +5,7 @@
   "description": "Tooling for jaredeberle.org (Hugo site). Single source of truth for validation dependencies used by GitHub Actions and scripts/preflight.sh.",
   "scripts": {
     "validate": "hugo --minify && html-validate \"public/**/*.html\"",
-    "test:axe": "node scripts/axe-check.mjs public"
+    "test:axe": "node scripts/checks/axe-check.mjs public"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",

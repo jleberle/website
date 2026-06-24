@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: site-checks-${{ github.ref }}
@@ -25,12 +26,12 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           submodules: recursive
 
       - name: Set up Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: "24"
           cache: npm
@@ -61,11 +62,103 @@ jobs:
           echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
 
       - name: Run full preflight
-        run: scripts/preflight.sh --strict
+        run: |
+          mkdir -p .ci-artifacts
+          bash -o pipefail -c 'scripts/preflight.sh --strict 2>&1 | tee .ci-artifacts/preflight.log'
 
       - name: Run axe accessibility checks
-        run: npm run test:axe
+        run: |
+          mkdir -p .ci-artifacts
+          bash -o pipefail -c 'npm run test:axe 2>&1 | tee .ci-artifacts/axe.log'
 
       - name: Run external link check
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        run: docker run --rm -v "$PWD":/work -w /work "$LYCHEE_IMAGE" --no-progress --config lychee.toml public/
+        run: |
+          mkdir -p .ci-artifacts
+          bash -o pipefail -c 'docker run --rm -v "$PWD":/work -w /work "$LYCHEE_IMAGE" --no-progress --config lychee.toml public/ 2>&1 | tee .ci-artifacts/external-links.log'
+
+      - name: Upload failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: site-checks-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            .ci-artifacts/
+            public/
+
+      - name: Open or update scheduled failure issue
+        if: failure() && github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          GH_RUN_ID: ${{ github.run_id }}
+          GH_SERVER_URL: ${{ github.server_url }}
+          GH_WORKFLOW: ${{ github.workflow }}
+          GH_JOB: verify
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+          import urllib.parse
+          import urllib.request
+
+          token = os.environ["GH_TOKEN"]
+          repo = os.environ["GH_REPO"]
+          run_id = os.environ["GH_RUN_ID"]
+          server_url = os.environ["GH_SERVER_URL"]
+          workflow = os.environ["GH_WORKFLOW"]
+          job = os.environ["GH_JOB"]
+
+          owner, name = repo.split("/", 1)
+          run_url = f"{server_url}/{repo}/actions/runs/{run_id}"
+          title = f"Scheduled CI failure: {workflow}"
+          body = (
+              "The scheduled site check failed.\n\n"
+              f"- Workflow: `{workflow}`\n"
+              f"- Job: `{job}`\n"
+              f"- Run: {run_url}\n"
+              f"- Trigger: `schedule`\n\n"
+              "Failure artifacts should be attached to the workflow run."
+          )
+          comment = (
+              "Another scheduled failure was detected.\n\n"
+              f"- Run: {run_url}\n"
+              "Failure artifacts should be attached to the workflow run."
+          )
+
+          def request(url, method="GET", data=None):
+              req = urllib.request.Request(url, method=method)
+              req.add_header("Accept", "application/vnd.github+json")
+              req.add_header("Authorization", f"Bearer {token}")
+              req.add_header("X-GitHub-Api-Version", "2022-11-28")
+              if data is not None:
+                  payload = json.dumps(data).encode("utf-8")
+                  req.add_header("Content-Type", "application/json")
+              else:
+                  payload = None
+              with urllib.request.urlopen(req, payload) as resp:
+                  return json.loads(resp.read().decode("utf-8"))
+
+          query = urllib.parse.quote(f'repo:{repo} is:issue is:open in:title "{title}"')
+          search = request(f"https://api.github.com/search/issues?q={query}")
+          items = search.get("items", [])
+
+          if items:
+              issue_number = items[0]["number"]
+              request(
+                  f"https://api.github.com/repos/{owner}/{name}/issues/{issue_number}/comments",
+                  method="POST",
+                  data={"body": comment},
+              )
+              print(f"Updated existing issue #{issue_number}")
+          else:
+              created = request(
+                  f"https://api.github.com/repos/{owner}/{name}/issues",
+                  method="POST",
+                  data={"title": title, "body": body},
+              )
+              print(f"Created issue #{created['number']}")
+          PY

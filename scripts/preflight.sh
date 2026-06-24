@@ -7,10 +7,11 @@
 #   3. generated junk files — fail if OS/editor metadata lands in public/
 #   4. html-validate        — HTML5 validation of every page (same as CI; rules
 #                              tuned in .htmlvalidate.json)
-#   5. a11y-lint.py          — content images without alt + heading-level skips
-#   6. csp-hashes.sh --check — CSP hash drift against the fresh build (same as CI)
-#   7. lychee --offline      — internal links/files in public/ (CI cron covers external)
-#   8. reference scan        — every internal src/href/srcset/feed URL in the
+#   5. checks/a11y-lint.py  — content images without alt + heading-level skips
+#   6. checks/feed-lint.py  — RSS/JSON Feed well-formedness + absolute URLs
+#   7. csp-hashes.sh --check — CSP hash drift against the fresh build (same as CI)
+#   8. lychee --offline      — internal links/files in public/ (CI cron covers external)
+#   9. reference scan        — every internal src/href/srcset/feed URL in the
 #                              output must resolve to a published file; guards the
 #                              build.publishResources=false resource-invocation
 #                              pattern (see hugo.yaml)
@@ -55,7 +56,7 @@ else
 fi
 
 step "content resources"
-if RESOURCE_OUT=$(python3 scripts/content-resource-lint.py content 2>&1); then
+if RESOURCE_OUT=$(python3 scripts/checks/content-resource-lint.py content 2>&1); then
   pass "$RESOURCE_OUT"
 else
   echo "$RESOURCE_OUT"
@@ -95,11 +96,19 @@ else
 fi
 
 step "content a11y lint"
-if A11Y_OUT=$(python3 scripts/a11y-lint.py public 2>&1); then
+if A11Y_OUT=$(python3 scripts/checks/a11y-lint.py public 2>&1); then
   pass "content a11y lint clean"
 else
   tail -20 <<<"$A11Y_OUT"
   fail "content a11y issues (missing alt / heading skips)"
+fi
+
+step "feed lint"
+if FEED_OUT=$(python3 scripts/checks/feed-lint.py public 2>&1); then
+  pass "$FEED_OUT"
+else
+  echo "$FEED_OUT" | head -20
+  fail "feed validation issues"
 fi
 
 step "CSP hashes"

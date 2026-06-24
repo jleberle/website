@@ -1,5 +1,6 @@
 <%*
 const date = tp.date.now("YYYY-MM-DD");
+const timestamp = tp.date.now("YYYY-MM-DDTHH:mm:ssZ");
 
 const titleInput = await tp.system.prompt("Quote title");
 const title = (titleInput || "Untitled").trim() || "Untitled";
@@ -31,8 +32,7 @@ await tp.file.move(`drafts/quotes/${date}-${slug}`);
 tR += "---\n";
 tR += `title: ${q(title)}\n`;
 tR += `slug: ${slug}\n`;
-tR += `date: ${date}\n`;
-tR += `lastmod: ${date}\n`;
+tR += `date: ${q(timestamp)}\n`;
 tR += "draft: true\n";
 tR += field("description", description);
 tR += field("summary", summary);

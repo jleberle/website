@@ -23,6 +23,13 @@ EOF
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 REPO_ROOT="$( cd "$SCRIPT_DIR/.." >/dev/null 2>&1 && pwd )"
 
+rfc3339_now() {
+  local stamp offset
+  stamp=$(date +%Y-%m-%dT%H:%M:%S)
+  offset=$(date +%z)
+  printf '%s%s:%s' "$stamp" "${offset:0:3}" "${offset:3:2}"
+}
+
 DRAFT_INPUT="$1"
 case "$DRAFT_INPUT" in
   /*) DRAFT_PATH="$DRAFT_INPUT" ;;
@@ -56,7 +63,8 @@ esac
 [[ ! -e "$TARGET_PATH" ]] || { echo "Refusing to overwrite existing content: $TARGET_PATH" >&2; exit 1; }
 
 TMP_FILE="$(mktemp)"
-awk '
+PUBLISH_DATE="$(rfc3339_now)"
+awk -v publish_date="$PUBLISH_DATE" '
   NR == 1 && $0 == "---" {
     in_yaml = 1
     saw_yaml = 1
@@ -67,6 +75,8 @@ awk '
   NR == 1 {
     print "---"
     print "draft: false"
+    print "publishDate: \"" publish_date "\""
+    print "lastmod: \"" publish_date "\""
     print "---"
     print ""
     print
@@ -77,6 +87,12 @@ awk '
     if (!saw_draft) {
       print "draft: false"
     }
+    if (!saw_publish_date) {
+      print "publishDate: \"" publish_date "\""
+    }
+    if (!saw_lastmod) {
+      print "lastmod: \"" publish_date "\""
+    }
     in_yaml = 0
     print
     next
@@ -85,6 +101,18 @@ awk '
   saw_yaml && in_yaml && $0 ~ /^draft:[[:space:]]*/ {
     print "draft: false"
     saw_draft = 1
+    next
+  }
+
+  saw_yaml && in_yaml && $0 ~ /^publishDate:[[:space:]]*/ {
+    saw_publish_date = 1
+    print
+    next
+  }
+
+  saw_yaml && in_yaml && $0 ~ /^lastmod:[[:space:]]*/ {
+    saw_lastmod = 1
+    print
     next
   }
 
