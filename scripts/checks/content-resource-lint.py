@@ -101,5 +101,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    os.chdir(Path(__file__).resolve().parents[1])
+    os.chdir(Path(__file__).resolve().parents[2])
     raise SystemExit(main())
