@@ -6,21 +6,24 @@
    apparatus instead — a keyword line and plain-text post-nav.
    ------------------------------------------------------------ */
 
-/* The modified date / suggestion line sits above the tags, with a
-   short rule that only spans the width of the meta text itself. */
-.post-meta-footer {
-    width: fit-content;
+/* End matter: modified date, suggestion link and topics share one
+   compact apparatus block before post navigation. */
+.post-apparatus {
+    margin-top: 1.8rem;
+    padding-top: 0.75rem;
     border-top: 1px solid var(--border);
-    padding-top: 0.6rem;
-    margin-top: 0.75rem;
-    margin-bottom: 0.75rem;
+    color: var(--secondary);
+}
+
+.post-meta-footer {
+    margin: 0;
 }
 
 /* --- Tags as a journal-style keyword line --- */
 .post-tags {
     gap: 0;                       /* override PaperMod's 10px pill gap */
     align-items: baseline;
-    margin-top: 0.6rem;
+    margin-top: 0.35rem;
     font-size: 0.82rem;
     color: var(--secondary);
 }
@@ -32,7 +35,7 @@
     margin-inline-end: 0.55rem;
     font-family: inherit;
     font-variant-caps: all-small-caps;
-    font-size: 0.74rem;
+    font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: 0.015em;
     text-transform: lowercase;

@@ -3,19 +3,21 @@
 # command before publishing. Run as: scripts/preflight.sh && git push
 #
 #   1. hugo --minify        — fails on ERROR, surfaces WARN (missing figure alt etc.)
-#   2. generated junk files — fail if OS/editor metadata lands in public/
-#   3. html-validate        — HTML5 validation of every page (same as CI; rules
+#   2. content resources    — source Markdown cover blocks point at real files
+#   3. generated junk files — fail if OS/editor metadata lands in public/
+#   4. html-validate        — HTML5 validation of every page (same as CI; rules
 #                              tuned in .htmlvalidate.json)
-#   4. a11y-lint.py          — content images without alt + heading-level skips
-#   5. csp-hashes.sh --check — CSP hash drift against the fresh build (same as CI)
-#   6. lychee --offline      — internal links/files in public/ (CI cron covers external)
-#   7. reference scan        — every internal src/href/srcset/feed URL in the
+#   5. a11y-lint.py          — content images without alt + heading-level skips
+#   6. csp-hashes.sh --check — CSP hash drift against the fresh build (same as CI)
+#   7. lychee --offline      — internal links/files in public/ (CI cron covers external)
+#   8. reference scan        — every internal src/href/srcset/feed URL in the
 #                              output must resolve to a published file; guards the
 #                              build.publishResources=false resource-invocation
 #                              pattern (see hugo.yaml)
 #
-# This must stay in lockstep with .woodpecker.yml — StaticHost deploys on push
-# independently of CI, so preflight is the only gate that can stop a bad deploy.
+# This must stay in lockstep with .github/workflows/site-checks.yml. StaticHost
+# deploys on push independently of GitHub Actions, so preflight is the only gate
+# that can stop a bad deploy before it leaves your machine.
 #
 # Usage:
 #   scripts/preflight.sh             # warnings are reported but don't fail
@@ -50,6 +52,14 @@ elif [[ $WARNINGS -gt 0 ]]; then
   fi
 else
   pass "build passed, no warnings"
+fi
+
+step "content resources"
+if RESOURCE_OUT=$(python3 scripts/content-resource-lint.py content 2>&1); then
+  pass "$RESOURCE_OUT"
+else
+  echo "$RESOURCE_OUT"
+  fail "content resource issues (e.g. cover block references a missing file)"
 fi
 
 step "generated junk files"

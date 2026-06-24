@@ -41,9 +41,10 @@
                 src="{{ $cover.RelPermalink }}"
                 sizes="(min-width: 768px) 720px, 100vw"
                 width="{{ $cover.Width }}" height="{{ $cover.Height }}"
+                data-lightbox-src="{{ $imgdl }}"
                 alt="{{ $alt }}">
         {{- else }}{{/* Unprocessable image or responsive images disabled */}}
-            <img class="u-featured" loading="{{ $loading }}" decoding="async"{{ if $.IsSingle }} fetchpriority="high"{{ end }} src="{{ $imgdl }}" alt="{{ $alt }}">
+            <img class="u-featured" loading="{{ $loading }}" decoding="async"{{ if $.IsSingle }} fetchpriority="high"{{ end }} src="{{ $imgdl }}"{{ if $cover }} data-lightbox-src="{{ $imgdl }}"{{ end }} alt="{{ $alt }}">
         {{- end }}
     {{- else }}
         {{- /* For absolute urls and external links, no img processing here */}}

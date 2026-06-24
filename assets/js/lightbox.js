@@ -61,7 +61,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     createOverlay();
 
-    document.querySelectorAll('.post-content img, .md-content img').forEach(function (img) {
+    document.querySelectorAll('.post-content img, .md-content img, .post-single .entry-cover img[data-lightbox-src]').forEach(function (img) {
       // YouTube facades and carousels have their own click/keyboard handling
       if (img.closest('.yt-facade') || img.closest('.carousel')) return;
       img.style.cursor = 'zoom-in';
@@ -75,7 +75,8 @@
         var name = cap && cap.textContent.trim();
         img.setAttribute('aria-label', name || 'View full-size image');
       }
-      img.addEventListener('click', function () {
+      img.addEventListener('click', function (e) {
+        e.preventDefault();
         openLightbox(img);
       });
       img.addEventListener('keydown', function (e) {

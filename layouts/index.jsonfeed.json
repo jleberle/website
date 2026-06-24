@@ -30,14 +30,9 @@
     {{- if $i }},{{ end }}
     {
       "id": {{ $page.Permalink | jsonify }},
-      {{- /* `url` is our page (where we write about it); `external_url` is the
-             outside source we're linking to — per the JSON Feed spec. */ -}}
       "url": {{ $page.Permalink | jsonify }},
-      {{- with $page.Params.external_url }}
-      "external_url": {{ . | jsonify }},
-      {{- end }}
       "title": {{ $page.Title | jsonify }},
-      "summary": {{ $page.Summary | plainify | jsonify }},
+      "summary": {{ partial "page_summary.html" $page | plainify | jsonify }},
       {{- /* Resolve the cover image once, for both the body and the `image`
              field. Invoke the bundle resource so it stays published under
              build.publishResources=false; else join the path onto the URL. */ -}}
@@ -58,10 +53,6 @@
           {{- $alt := $page.Params.cover.alt | default $page.Title -}}
           {{- $c = printf "<img src=%q alt=%q>\n%s" . $alt $c -}}
         {{- end -}}
-      {{- end -}}
-      {{- /* Link posts: close with a link to the external source. */ -}}
-      {{- with $page.Params.external_url -}}
-        {{- $c = printf "%s\n<p><a href=%q>Source &rarr;</a></p>" $c . -}}
       {{- end -}}
       "content_html": {{ $c | jsonify }},
       "date_published": {{ $page.Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},

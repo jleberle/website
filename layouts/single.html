@@ -1,17 +1,13 @@
 {{- define "main" }}
 
-{{- $externalURL := .Params.external_url }}
+{{- $hasPostContext := or .Params.reviewed_title .Params.reviewed_author .Params.reviewed_publisher .Params.reviewed_year .Params.reviewed_type .Params.source_title .Params.source_author .Params.source_year }}
 
-<article class="post-single h-entry{{ with $externalURL }} link-post{{ end }}">
+<article class="post-single h-entry">
   <a class="u-url" href="{{ .RelPermalink }}" hidden></a>
   <header class="post-header">
     {{ partial "breadcrumbs.html" . }}
     <h1 class="post-title entry-hint-parent p-name">
-      {{- with $externalURL }}
-      <a class="link-post-title" href="{{ . }}" rel="external noopener" target="_blank">{{ $.Title }}&nbsp;<span class="link-post-arrow" aria-hidden="true">↗</span></a>
-      {{- else }}
       {{ .Title }}
-      {{- end }}
       {{- if .Draft }}
       <span class="entry-hint" title="Draft">
         <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
@@ -21,19 +17,20 @@
       </span>
       {{- end }}
     </h1>
+    {{- if not (.Param "hideMeta") }}
+    <div class="post-meta post-meta-header">
+      {{- $top := slice }}
+      {{- if not .Date.IsZero }}{{ $top = $top | append (printf "<time class='dt-published' datetime='%s' title='%s'>%s</time>" (.Date.Format "2006-01-02T15:04:05Z07:00") .Date (.Date | time.Format (default ":date_long" site.Params.DateFormat))) }}{{ end }}
+      {{- with (partial "author.html" .) }}{{ $top = $top | append (printf "<span class='p-author'>%s</span>" .) }}{{ end }}
+      {{- delimit $top "&nbsp;·&nbsp;" | safeHTML -}}
+    </div>
+    {{- end }}
     {{- if .Description }}
-    <div class="post-description p-summary">
+    <div class="post-description p-summary{{ if $hasPostContext }} has-context{{ end }}">
       {{ .Description }}
     </div>
     {{- end }}
-    {{- if not (.Param "hideMeta") }}
-    <div class="post-meta">
-      {{- $top := slice }}
-      {{- with (partial "author.html" .) }}{{ $top = $top | append (printf "<span class='p-author'>%s</span>" .) }}{{ end }}
-      {{- if not .Date.IsZero }}{{ $top = $top | append (printf "<time class='dt-published' datetime='%s' title='%s'>%s</time>" (.Date.Format "2006-01-02T15:04:05Z07:00") .Date (.Date | time.Format (default ":date_long" site.Params.DateFormat))) }}{{ end }}
-      {{- delimit $top "&nbsp;-&nbsp;" | safeHTML -}}
-    </div>
-    {{- end }}
+    {{- partial "post_context.html" . }}
   </header>
   {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
@@ -52,8 +49,8 @@
   {{- partial "extend_post_content.html" . }}
 
   <footer class="post-footer">
-    {{- if not (.Param "hideMeta") }}
     {{- $foot := slice }}
+    {{- if not (.Param "hideMeta") }}
     {{- if and (not .Lastmod.IsZero) (not (eq (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02"))) }}
       {{- $foot = $foot | append (printf "<span title='%s'>Updated %s</span>" .Lastmod (.Lastmod | time.Format (default ":date_long" site.Params.DateFormat))) }}
     {{- end }}
@@ -63,17 +60,22 @@
       {{- $editText := .Param "editPost.Text" | default (i18n "edit_post") }}
       {{- $foot = $foot | append (printf "<span><a href=\"%s\" rel=\"noopener noreferrer edit\" target=\"_blank\">%s</a></span>" $editURL $editText) }}
     {{- end }}
-    {{- with $foot }}
-    <div class="post-meta post-meta-footer">{{ delimit . "&nbsp;·&nbsp;" | safeHTML }}</div>
-    {{- end }}
     {{- end }}
     {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
-    {{- with ($.GetTerms $tags) }}
+    {{- $terms := $.GetTerms $tags }}
+    {{- if or $foot $terms }}
+    <div class="post-apparatus">
+      {{- with $foot }}
+      <div class="post-meta post-meta-footer">{{ delimit . "&nbsp;·&nbsp;" | safeHTML }}</div>
+      {{- end }}
+      {{- with $terms }}
     <ul class="post-tags">
       {{- range . }}
       <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
       {{- end }}
     </ul>
+      {{- end }}
+    </div>
     {{- end }}
     {{- if (.Param "ShowPostNavLinks") }}
     {{- partial "post_nav_links.html" . }}

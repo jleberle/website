@@ -16,6 +16,17 @@
     border-radius: calc(var(--radius) + 2px);
 }
 
+.post-single .entry-cover figcaption {
+    margin-top: 0.45rem;
+    font-family: var(--meta-font);
+    font-size: 0.76rem;
+    line-height: 1.35;
+    color: var(--secondary);
+    text-align: center;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+}
+
 /* Drop the tags/footer below a tall cover on short posts. */
 .post-single .post-footer {
     clear: both;

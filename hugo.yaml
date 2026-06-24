@@ -1,14 +1,23 @@
+# ------------------------------------------------------------
+# Site identity
+# ------------------------------------------------------------
 baseURL: https://jaredeberle.org/
 locale: en-us
 title: Jared L. Eberle
+copyright: "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)"
+
+# ------------------------------------------------------------
+# Theme and build behavior
+# ------------------------------------------------------------
 theme: ["PaperMod"]
 
 enableRobotsTXT: true
 cleanDestinationDir: true
+enableGitInfo: true
+
 buildDrafts: false
 buildFuture: false
 buildExpired: false
-enableGitInfo: true
 
 pagination:
   pagerSize: 10
@@ -19,9 +28,9 @@ minify:
   tdewolff:
     html:
       # Keep attribute quotes: NetNewsWire's home-page icon parser misses
-      # unquoted <link rel=icon …> tags and falls back to the og:image
+      # unquoted <link rel=icon …> tags and falls back to og:image
       # (card.jpg) for the RSS feed icon. Quoted attrs let it find the
-      # apple-touch-icon. Costs ~400 bytes on the homepage.
+      # apple-touch-icon. Costs roughly 400 bytes on the homepage.
       keepQuotes: true
 
 caches:
@@ -29,25 +38,134 @@ caches:
     dir: :cacheDir/images
 
 # Publish page-bundle resources only when a template invokes them
-# (.Permalink/.RelPermalink). Without this, Hugo copies every bundle file into
-# public/ — including the full-size image originals that only the fingerprinted
-# copies of are ever referenced. Templates that reference bundle files by
-# string path were converted to invoke the resource instead: render-link.html
-# (PDFs), schema_json.html and index.jsonfeed.json (cover image).
+# (.Permalink/.RelPermalink). This prevents Hugo from copying unreferenced
+# full-size image originals into public/. Templates that reference bundle files
+# must resolve them as resources rather than constructing string paths.
 cascade:
   - build:
       publishResources: false
 
+# ------------------------------------------------------------
+# Content model
+# ------------------------------------------------------------
+taxonomies:
+  category: categories
+  tag: tags
+
+menu:
+  main:
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 10
+    - identifier: cv
+      name: CV
+      url: /cv/
+      weight: 20
+    - identifier: archive
+      name: Archive
+      url: /archives/
+      weight: 30
+    - identifier: contact
+      name: Contact
+      url: /contact/
+      weight: 40
+    - identifier: search
+      name: Search
+      url: /search/
+      weight: 50
+
+# ------------------------------------------------------------
+# Output formats
+# ------------------------------------------------------------
+mediaTypes:
+  application/feed+json:
+    suffixes:
+      - json
+  application/manifest+json:
+    suffixes:
+      - webmanifest
+
+outputFormats:
+  jsonfeed:
+    mediaType: application/feed+json
+    baseName: feed
+    isPlainText: true
+    notAlternative: false
+  manifest:
+    mediaType: application/manifest+json
+    baseName: site # /site.webmanifest
+    isPlainText: true
+    notAlternative: true # linked explicitly in head, not treated as feed alternate
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON # search index
+    - jsonfeed
+    - manifest
+
+# ------------------------------------------------------------
+# Markdown and syntax highlighting
+# ------------------------------------------------------------
+markup:
+  # PaperMod FAQ: using Hugo's built-in Chroma highlighter.
+  # Keep noClasses true unless switching to class-based Chroma CSS.
+  highlight:
+    noClasses: true
+
+# ------------------------------------------------------------
+# Module mounts and ignored authoring files
+# ------------------------------------------------------------
+module:
+  mounts:
+    - source: assets
+      target: assets
+    # Expose static/icons to the asset pipeline so the header logo and favicon
+    # can share the same source image.
+    - source: static/icons
+      target: assets/icons
+
+ignoreFiles:
+  - .obsidian/
+  - _templates/
+
+# ------------------------------------------------------------
+# Privacy
+# ------------------------------------------------------------
+privacy:
+  youTube:
+    disable: false
+    privacyEnhanced: true
+
+# ------------------------------------------------------------
+# PaperMod and site parameters
+# ------------------------------------------------------------
 params:
-  env: production # enables opengraph, twitter-cards, and schema.org structured data
+  # Site metadata used by head templates, feeds, schema, and manifest output.
+  env: production # enables Open Graph, Twitter Cards, and schema.org data
   title: Jared L. Eberle
   description: "Historian of late 20th Century Indigenous Activism"
   keywords: [CV, Indigenous History, Oklahoma]
   author: Jared L. Eberle
   images: ["/images/card.jpg"]
   DateFormat: "January 2, 2006"
-  defaultTheme: auto # dark, light
+
+  # Primary sections included in archives, RSS/JSON feeds, and prev/next links.
+  mainSections:
+    - articles
+    - reviews
+    - quotes
+
+  # PaperMod display behavior.
+  defaultTheme: auto
   disableThemeToggle: false
+  disableSpecial1stPost: false
+  disableScrollToTop: true
+  comments: false
+  hidemeta: false
+  hideSummary: false
 
   ShowReadingTime: true
   ShowShareButtons: false
@@ -58,21 +176,10 @@ params:
   ShowRssButtonInSectionTermList: true
   ShowFullTextinRSS: true # emit <content:encoded> full article body in RSS
   UseHugoToc: true
-  disableSpecial1stPost: false
-  disableScrollToTop: true
-  comments: false
-  hidemeta: false
-  hideSummary: false
   showtoc: false
   tocopen: false
-  mainSections:
-    - articles
-    - reviews
-    - quotes
 
   assets:
-    # disableHLJS: true # to disable highlight.js
-    # disableFingerprinting: true
     favicon: "favicon.ico"
     favicon16x16: "/icons/favicon-16x16.png"
     favicon32x32: "/icons/favicon-32x32.png"
@@ -80,10 +187,7 @@ params:
 
   label:
     text: "Jared L. Eberle"
-    # icon: icons/apple-touch-icon.png
-    # iconHeight: 35
 
-  # home-info mode
   homeInfoParams:
     Title: "Historian of Modern Indigenous Activism"
     Content: Welcome, I'm [Jared Eberle](/about), a historian primarily focused on Indigenous activism in the late 20th century and the connections it had to global events. I'm currently a lecturer at [Oklahoma State University](https://experts.okstate.edu/jared.eberle) where my primary teaching focus is US History since 1865 and Oklahoma History.
@@ -106,23 +210,20 @@ params:
   social:
     fediverse_creator: "@jared@eberle.blog"
 
-
   footer:
-    # Left column of the site footer (layouts/_partials/footer.html), rendered
-    # as Markdown below your name. A short paragraph — fold in whatever you
-    # like (license, humans.txt, build credits) using Markdown links. The
-    # literal token {year} is replaced with the current (build) year.
+    # Rendered as Markdown in the left column of layouts/_partials/site_footer.html.
+    # The literal {year} token is replaced with the current build year.
     about: >-
       © 2011-{year} Jared L. Eberle. All content here is copyrighted under [creative commons](https://creativecommons.org/licenses/by-nc-sa/4.0/) and is [only human crafted](/humans.txt). Built with [Hugo](https://gohugo.io/) and [PaperMod](https://github.com/adityatelange/hugo-PaperMod/) in Oklahoma.
 
   cover:
-    hidden: true # hide everywhere but not in structured data
-    hiddenInList: true # hide on list pages and home
-    hiddenInSingle: true # hide on single page
+    hidden: true # hidden by default, but still available to structured data
+    hiddenInList: true
+    hiddenInSingle: true
 
   schema:
     publisherType: Person
-    image: "images/profile.avif" # Person image in JSON-LD (see layouts/_partials/templates/schema_json.html)
+    image: "images/profile.avif" # Person image in JSON-LD
     sameAs:
       - "https://orcid.org/0000-0002-0867-6561"
       - "https://experts.okstate.edu/jared.eberle"
@@ -131,11 +232,10 @@ params:
 
   editPost:
     URL: "https://codeberg.org/jleberle/website/src/branch/main/content"
-    Text: "Suggest Changes" # edit text
-    appendFilePath: true # to append file path to Edit link
+    Text: "Suggest Changes"
+    appendFilePath: true
 
-  # for search
-  # https://fusejs.io/api/options.html
+  # Fuse.js options used by the search index.
   fuseOpts:
     isCaseSensitive: false
     shouldSort: true
@@ -143,85 +243,5 @@ params:
     distance: 1000
     threshold: 0.4
     minMatchCharLength: 0
-    limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
+    limit: 10
     keys: ["title", "permalink", "summary", "content"]
-mediaTypes:
-  application/feed+json:
-    suffixes:
-      - json
-  application/manifest+json:
-    suffixes:
-      - webmanifest
-
-outputFormats:
-  jsonfeed:
-    mediaType: application/feed+json
-    baseName: feed
-    isPlainText: true
-    notAlternative: false
-  manifest:
-    mediaType: application/manifest+json
-    baseName: site # -> /site.webmanifest
-    isPlainText: true
-    notAlternative: true # not a feed alternate; linked explicitly in head
-
-outputs:
-  home:
-    - HTML
-    - RSS
-    - JSON # necessary for search
-    - jsonfeed
-    - manifest # /site.webmanifest (PWA)
-menu:
-  main:
-  - identifier: about
-    name: About
-    url: /about/
-    weight: 10
-  - identifier: cv
-    name: CV
-    url: /cv/
-    weight: 20
-  - identifier: archive
-    name: Archive
-    url: /archives/
-    weight: 30
-  - identifier: contact
-    name: Contact
-    url: /contact/
-    weight: 40
-  - identifier: search
-    name: Search
-    url: /search/
-    weight: 50
-# Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
-markup:
-  highlight:
-    noClasses: true
-    # anchorLineNos: true
-    # codeFences: true
-    # guessSyntax: true
-    # lineNos: true
-    # style: monokai
-
-taxonomies:
-  category: categories
-  tag: tags
-
-# Expose static/icons to the asset pipeline too, so the header logo can resize
-# the same apple-touch-icon.png that is served as the favicon (single source).
-module:
-  mounts:
-    - source: assets
-      target: assets
-    - source: static/icons
-      target: assets/icons
-
-ignoreFiles:
-  - .obsidian/
-  - _templates/
-privacy:
-  youTube:
-    disable: false
-    privacyEnhanced: true
-copyright: "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)"

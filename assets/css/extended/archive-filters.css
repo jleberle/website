@@ -30,7 +30,6 @@
 .archive-filter span {
     color: inherit;
     font-variant-numeric: tabular-nums;
-    opacity: 0.72;
 }
 
 .archive-filter:hover,

@@ -12,6 +12,7 @@ The colors for the site were originally utilizing Ethan Schoonover's [Solarized]
 
 - [Hugo](https://gohugo.io/installation/) (extended edition, see version in `statichost.yml`)
 - [ImageMagick](https://imagemagick.org) (`magick`) for `scripts/to-avif.sh` / `scripts/add-images.sh`
+- [Node.js](https://nodejs.org/) / npm for HTML validation and rendered axe checks (`npm ci`)
 - [Lychee](https://lychee.cli.rs) for link checking (optional; `scripts/preflight.sh` skips it when absent)
 
 ## Local Development
@@ -30,25 +31,57 @@ The site will be available at `http://localhost:1313`.
 | `content/reviews/` | Book and film reviews |
 | `content/cv/` | Curriculum vitae |
 | `content/courses/` | Course listings |
-| `content/quotes/` | Short quote and link posts |
+| `content/quotes/` | Short quote posts |
+| `drafts/` | Obsidian-only draft workspace, synced by Obsidian Sync and ignored by Git |
 
-New posts follow the naming convention `YYYY-MM-DD-slug/index.md` (articles and reviews are page bundles; quotes are flat files). Scaffold from the CLI with `scripts/newpost.sh`, or use the Obsidian templates in `_templates/`.
+Published posts follow the naming convention `YYYY-MM-DD-slug/index.md` (articles and reviews are page bundles; quotes are flat files). Scaffold directly into `content/` from the CLI with `scripts/newpost.sh`, or use the Obsidian templates in `_templates/` to write first in `drafts/`.
 
 ## Publishing workflow
 
 ```sh
 scripts/newpost.sh article "Post Title"           # scaffold (article|review|quote)
-scripts/newpost.sh article --cover "Post Title"   #   articles: cover block on request
-                                                  #   reviews: cover block always
-                                                  #   quotes: prompts for external_url
+scripts/newpost.sh article --cover "Post Title"   # skip the cover prompt and add cover metadata
+                                                  # articles/reviews prompt for optional covers
+                                                  # quotes prompt for optional external_url
+scripts/publish-draft.sh drafts/articles/2026-06-24-post-title.md
+                                                  # publish an Obsidian draft:
+                                                  #   articles/reviews -> page bundles
+                                                  #   quotes -> flat files
 scripts/add-images.sh content/articles/<dir> --cover photo.jpg   # cover.avif + OG cover.jpg
 scripts/add-images.sh content/articles/<dir> img1.jpg img2.png   # body images → AVIF only
-scripts/preflight.sh && git push                  # pre-push gate, then deploy
+scripts/preflight.sh && git push both main        # pre-push gate, then push to Codeberg + GitHub
 ```
 
-`preflight.sh` runs the same build and CSP checks as CI plus an offline internal-link
-check and a scan that every internal `src`/`href`/`srcset`/feed URL resolves to a
-published file. `--strict` also fails on build warnings (e.g. figures missing alt text).
+Obsidian drafts live under `drafts/articles/`, `drafts/reviews/`, and `drafts/quotes/`. The folder is intentionally ignored by Git so drafts can sync through Obsidian Sync without appearing in commits. The Obsidian templates ask for optional metadata, omit blank fields, and ask whether article/review drafts should include a cover block. `description` is the canonical public and SEO blurb; `summary` is only written when you want a different list/feed teaser. When a draft is ready, run `scripts/publish-draft.sh` with the draft path; the script moves it into the proper Hugo section and changes `draft: true` to `draft: false`.
+
+Reviews can carry optional bibliographic context with `reviewed_type`, `reviewed_title`, `reviewed_author`, `reviewed_publisher`, and `reviewed_year`. Quote posts can carry optional source context with `source_title`, `source_author`, and `source_year`. `external_url` links the reviewed/source title in that context line; it does not turn the post title into an outbound link. When present, these fields render beneath the post description on the single-post page.
+
+`preflight.sh` runs the same build and CSP checks as CI plus source-content resource
+validation, an offline internal-link check, and a scan that every internal
+`src`/`href`/`srcset`/feed URL resolves to a published file. `--strict` also fails on
+build warnings (e.g. figures missing alt text).
+
+## Remotes and CI
+
+Codeberg is the public canonical remote. GitHub is a private testing mirror used
+only for GitHub Actions checks; it has no deploy secrets and the workflow grants
+only read access to repository contents.
+
+Configured remotes:
+
+| Remote | Purpose |
+|---|---|
+| `origin` | Codeberg fetch/push (`codeberg:jle/website.git`) |
+| `github` | Private GitHub testing mirror (`github:jleberle/website.git`) |
+| `both` | Fetches from Codeberg, pushes to both Codeberg and GitHub |
+
+Use `git push both main` for the normal publishing path after local preflight.
+Use `git push origin main` only when you intentionally want a Codeberg-only push.
+
+GitHub Actions lives in `.github/workflows/site-checks.yml` and runs on pushes to
+the private mirror, on manual dispatch, and weekly. Every run executes
+`scripts/preflight.sh --strict` and `npm run test:axe`. Manual and scheduled runs
+also execute the full external lychee link check against the generated site.
 
 ## Shortcodes
 
@@ -90,16 +123,19 @@ The first three share `layouts/_partials/responsive-img.html` — the single sou
 | Script | Purpose |
 |---|---|
 | `scripts/newpost.sh` | Scaffold an article (`--cover` optional), review, or quote |
+| `scripts/publish-draft.sh` | Move an Obsidian draft from `drafts/` into `content/`, preserving page bundles for articles/reviews |
+| `scripts/content-resource-lint.py` | Validate source Markdown resource references, especially cover blocks pointing at missing files |
 | `scripts/add-images.sh` | Add images to a post bundle: `--cover` → AVIF + OG JPEG; body → AVIF only, prints figure snippets |
 | `scripts/preflight.sh` | Pre-push gate: build + warnings, CSP check, offline link check, published-reference scan (`--strict` fails on warnings) |
 | `scripts/to-avif.sh` | Convert images to AVIF + JPEG (for OG images); `--og-only` re-optimizes the OG JPEG without touching the AVIF |
 | `scripts/archive-links.sh` | Check all posts for dead links and replace with Wayback Machine snapshots |
 | `scripts/csp-hashes.sh` | Regenerate / verify Content Security Policy hashes (inline styles *and* scripts) after Hugo or PaperMod updates |
-| `scripts/sync-hugo-version.sh` | Update CI build images to match local Hugo version |
+| `scripts/axe-check.mjs` | Serve `public/` locally and run axe against representative rendered pages |
+| `scripts/sync-hugo-version.sh` | Update GitHub Actions and StaticHost Hugo versions to match local Hugo |
 
 ## Link checking
 
-Run manually when needed — Woodpecker CI also runs lychee on a schedule.
+Run manually when needed — GitHub Actions also runs lychee on a schedule.
 
 ```sh
 scripts/archive-links.sh --dry-run --all   # preview
@@ -113,7 +149,7 @@ The site deploys automatically via [statichost.eu](https://statichost.eu) on eve
 ## Maintenance
 
 ### After upgrading Hugo locally
-Run `scripts/sync-hugo-version.sh` to update the CI build images in `statichost.yml` and `.woodpecker.yml` to match. The weekly Homebrew job will notify you when Hugo updates — its notification also reminds you to run `scripts/csp-hashes.sh --check`, because a changed minifier can silently invalidate the CSP hashes (see below).
+Run `scripts/sync-hugo-version.sh` to update the Hugo versions in `statichost.yml` and `.github/workflows/site-checks.yml` to match. The weekly Homebrew job will notify you when Hugo updates — its notification also reminds you to run `scripts/csp-hashes.sh --check`, because a changed minifier can silently invalidate the CSP hashes (see below).
 
 ### After updating PaperMod
 
@@ -182,11 +218,11 @@ For each diff: if PaperMod changed unrelated lines, copy their new version and r
 - `layouts/_partials/templates/twitter_cards.html` — uses JPEG cover companions for X/Twitter cards and emits `twitter:image:alt`
 - `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`, and early list-paginator storage for `<head>` metadata
 - `layouts/list.html` — keeps the PaperMod list loop but uses `RelPermalink`, microformats, local pagination links, stored paginator data, and delegates the custom home-page grid to `layouts/_partials/home_sections.html`
-- `layouts/single.html` — adds microformats, link-post title handling, a simplified top metadata line, a separate updated/edit footer metadata line, and relative tag links
+- `layouts/single.html` — adds microformats, source/review context metadata, a simplified top metadata line, a separate updated/edit footer metadata line, and relative tag links
 - `layouts/archives.html` — adds archive filters and data attributes for `assets/js/archive-filters.js`, plus relative post links
 - `layouts/taxonomy.html` — switches term links to `RelPermalink`
 - `layouts/robots.txt` — keeps the sitemap but replaces PaperMod's environment-based allow/disallow with explicit allow rules plus AI/training crawler disallows
-- `layouts/rss.xml` — aligns the home RSS feed with the JSON feed sections, uses the square site icon for channel image, absolutizes feed content URLs, includes cover images, and appends source links for link posts
+- `layouts/rss.xml` — aligns the home RSS feed with the JSON feed sections, uses the square site icon for channel image, absolutizes feed content URLs, and includes cover images
 - `layouts/index.json` — uses local `RelPermalink` values in the Fuse search index
 
 **4. Re-check the CSP hashes**
@@ -213,10 +249,14 @@ scripts/csp-hashes.sh --check --no-build   # reuse an existing public/ (used by 
 
 `--check` reports per directive: `OK` (match), `DRIFT` (a hash is in the build but missing from `_headers` — would be blocked; fails with exit 1), or `WARN` (a stale hash in `_headers` is no longer used — safe to remove). When it reports drift, run `scripts/csp-hashes.sh`, paste the new hashes into **both** CSP blocks in `static/_headers` (the `*` block and the `/iframe-page/*` block), then commit.
 
-Woodpecker CI runs `csp-hashes.sh --check --no-build` on every push as the `csp-check` step (reusing the build step's `public/`). It fails the CI build on drift as a background alarm — note that a failed Woodpecker run does **not** block statichost from deploying, so treat it as a signal to re-hash, not a hard gate.
+GitHub Actions runs `scripts/preflight.sh --strict` on every push to the private testing mirror. That includes `csp-hashes.sh --check --no-build`, reusing the `public/` generated by the build. It fails the CI build on drift as a background alarm — note that a failed GitHub Actions run does **not** block StaticHost from deploying from Codeberg, so local preflight remains the hard pre-push gate.
+
+### Rendered accessibility checks
+
+GitHub Actions also runs `npm run test:axe` after preflight. The axe check serves the generated `public/` directory locally and scans representative rendered pages (home, article, review, quote, course, archive, CV, contact, and search). This catches page-level accessibility regressions that source-content linting and HTML validation do not cover.
 
 ### Dead link check
-Run `scripts/archive-links.sh --all` periodically to find and replace dead outbound links with Wayback Machine snapshots. Woodpecker's scheduled lychee job will flag broken links in CI.
+Run `scripts/archive-links.sh --all` periodically to find and replace dead outbound links with Wayback Machine snapshots. GitHub Actions' scheduled lychee job will flag broken links in CI.
 
 ### Adding a new content type
 If you add a new section (e.g. `content/essays/`):

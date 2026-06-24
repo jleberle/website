@@ -1,0 +1,9 @@
+{{- with .Params.summary -}}
+{{- . -}}
+{{- else -}}
+{{- with .Description -}}
+{{- . -}}
+{{- else -}}
+{{- .Summary -}}
+{{- end -}}
+{{- end -}}

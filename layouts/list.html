@@ -63,15 +63,11 @@
 {{- $class = "post-entry tag-entry" }}
 {{- end }}
 
-{{- $externalURL := .Params.external_url }}
-
-<article class="{{ $class }} h-entry{{ with $externalURL }} link-post{{ end }}">
+<article class="{{ $class }} h-entry">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
   <header class="entry-header">
     <h2 class="entry-hint-parent p-name">
-      {{/* Link posts still point the listing title + card at the local single
-           post; the external URL is only invoked from the single post. */}}
       {{- .Title }}
       {{- if .Draft }}
       <span class="entry-hint" title="Draft">
@@ -83,9 +79,11 @@
       {{- end }}
     </h2>
   </header>
-  {{- if (ne (.Param "hideSummary") true) }}
+  {{- $summary := partial "page_summary.html" . }}
+  {{- $usesAutoSummary := not (or .Params.summary .Description) }}
+  {{- if and (ne (.Param "hideSummary") true) $summary }}
   <div class="entry-content p-summary">
-    <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+    <p>{{ $summary | plainify | htmlUnescape }}{{ if and $usesAutoSummary .Truncated }}...{{ end }}</p>
   </div>
   {{- end }}
   {{- if not (.Param "hideMeta") }}

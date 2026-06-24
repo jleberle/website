@@ -1,19 +1,7 @@
 #!/usr/bin/env bash
-# Scaffold a new post matching the site's conventions — the CLI sibling of the
-# Obsidian Templater templates in _templates/:
-#
-#   article → bundle  content/articles/YYYY-MM-DD-slug/index.md
-#             (cover block only with --cover; pairs with add-images.sh)
-#   review  → bundle  content/reviews/YYYY-MM-DD-slug/index.md  (cover block always)
-#   quote   → flat    content/quotes/YYYY-MM-DD-slug.md
-#             (always has external_url; prompted, left empty to fill in the editor)
-#
-# The slug front-matter field keeps the date prefix out of the URL.
-#
-# Usage:
-#   scripts/newpost.sh article [--cover] ["Title"]
-#   scripts/newpost.sh review ["Title"]
-#   scripts/newpost.sh quote ["Title"]
+# Scaffold a new post matching the site's conventions: articles and reviews are
+# Hugo page bundles, while quotes are flat files. This is the CLI sibling of the
+# Obsidian Templater templates in _templates/.
 
 set -euo pipefail
 
@@ -41,29 +29,118 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+read_optional() {
+  local prompt="$1" value
+  read -r -p "$prompt: " value || value=""
+  printf '%s' "$value"
+}
+
 if [[ -z "$TITLE" ]]; then
-  read -r -p "Title: " TITLE || TITLE=""
+  TITLE=$(read_optional "Title")
 fi
 [[ -z "$TITLE" ]] && { echo "Title is required." >&2; exit 1; }
-
-URL=""
-if [[ "$KIND" == "quote" ]]; then
-  read -r -p "External URL (Enter to fill in later): " URL || URL=""
-fi
 
 slugify() {
   printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | \
     sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//'
 }
-SLUG=$(slugify "$TITLE")
-[[ -z "$SLUG" ]] && SLUG="untitled"
 
 yaml_escape() {
   printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
 }
 
+trim() {
+  local value="$1"
+  value="${value#"${value%%[![:space:]]*}"}"
+  value="${value%"${value##*[![:space:]]}"}"
+  printf '%s' "$value"
+}
+
+field() {
+  local key="$1" value
+  value=$(trim "$2")
+  [[ -z "$value" ]] && return 0
+  printf '%s: "%s"\n' "$key" "$(yaml_escape "$value")"
+}
+
+indented_field() {
+  local key="$1" value
+  value=$(trim "$2")
+  [[ -z "$value" ]] && return 0
+  printf '  %s: "%s"\n' "$key" "$(yaml_escape "$value")"
+}
+
+list_field() {
+  local key="$1" raw="$2" item printed=false
+  IFS=',' read -r -a items <<< "$raw"
+  for item in "${items[@]}"; do
+    item=$(trim "$item")
+    [[ -z "$item" ]] && continue
+    if ! $printed; then
+      printf '%s:\n' "$key"
+      printed=true
+    fi
+    printf -- '- "%s"\n' "$(yaml_escape "$item")"
+  done
+}
+
+SLUG=$(slugify "$TITLE")
+[[ -z "$SLUG" ]] && SLUG="untitled"
 TODAY=$(date +%Y-%m-%d)
 BASE="$TODAY-$SLUG"
+
+DESCRIPTION=$(read_optional "Description (optional)")
+SUMMARY=$(read_optional "Summary override (optional)")
+TAGS=$(read_optional "Tags, comma-separated (optional)")
+
+REVIEWED_TYPE=""
+REVIEWED_TITLE=""
+REVIEWED_AUTHOR=""
+REVIEWED_PUBLISHER=""
+REVIEWED_YEAR=""
+SOURCE_TITLE=""
+SOURCE_AUTHOR=""
+SOURCE_YEAR=""
+URL=""
+
+if [[ "$KIND" == "review" ]]; then
+  REVIEWED_TYPE=$(read_optional "Reviewed type, e.g. Book/Film (optional)")
+  REVIEWED_TITLE=$(read_optional "Reviewed work title (optional)")
+  REVIEWED_AUTHOR=$(read_optional "Reviewed work author/creator (optional)")
+  REVIEWED_PUBLISHER=$(read_optional "Reviewed work publisher/studio (optional)")
+  REVIEWED_YEAR=$(read_optional "Reviewed work year (optional)")
+  URL=$(read_optional "Reviewed work URL (optional)")
+  CATEGORIES=$(read_optional "Categories, comma-separated (optional; defaults to Reviews)")
+  [[ -z "$CATEGORIES" ]] && CATEGORIES="Reviews"
+else
+  CATEGORIES=$(read_optional "Categories, comma-separated (optional)")
+fi
+
+if [[ "$KIND" == "quote" ]]; then
+  SOURCE_TITLE=$(read_optional "Source title (optional)")
+  SOURCE_AUTHOR=$(read_optional "Source author (optional)")
+  SOURCE_YEAR=$(read_optional "Source year (optional)")
+  URL=$(read_optional "External URL (optional)")
+fi
+
+ADD_COVER=false
+COVER_ALT=""
+COVER_CAPTION=""
+if [[ "$KIND" != "quote" ]]; then
+  if $COVER; then
+    ADD_COVER=true
+  else
+    read -r -p "Add cover metadata? [y/N]: " COVER_ANSWER || COVER_ANSWER=""
+    case "$COVER_ANSWER" in
+      y|Y|yes|YES|Yes) ADD_COVER=true ;;
+    esac
+  fi
+
+  if $ADD_COVER; then
+    COVER_ALT=$(read_optional "Cover alt text (optional)")
+    COVER_CAPTION=$(read_optional "Cover caption (optional)")
+  fi
+fi
 
 unique_path() {
   local candidate="$1" suffix="$2" n=2
@@ -75,18 +152,20 @@ unique_path() {
   printf '%s' "$try"
 }
 
-# article covers show in lists (matching existing articles); review covers don't
+# Article covers show in lists; review covers stay hidden in list pages.
 cover_block() {
   local hidden_in_list="$1"
   cat <<EOF
 cover:
   image: "cover.avif"
-  alt: ""
+EOF
+  indented_field "alt" "$COVER_ALT"
+  cat <<EOF
   hiddenInList: $hidden_in_list
   hiddenInSingle: false
-  caption: ""
-  relative: true # To use relative path for cover image, used in hugo Page-bundles
 EOF
+  indented_field "caption" "$COVER_CAPTION"
+  printf '  relative: true\n'
 }
 
 case "$KIND" in
@@ -97,18 +176,16 @@ case "$KIND" in
     {
       cat <<EOF
 ---
-author: Jared L. Eberle
-categories:
--
-date: $TODAY
-tags:
--
 title: "$(yaml_escape "$TITLE")"
 slug: $SLUG
-description: ""
-summary: ""
+date: $TODAY
+author: Jared L. Eberle
 EOF
-      $COVER && cover_block false
+      field "description" "$DESCRIPTION"
+      field "summary" "$SUMMARY"
+      list_field "categories" "$CATEGORIES"
+      list_field "tags" "$TAGS"
+      $ADD_COVER && cover_block false
       printf -- '---\n\n'
     } > "$FILE"
     ;;
@@ -119,46 +196,50 @@ EOF
     {
       cat <<EOF
 ---
-categories:
-- Reviews
-tags:
--
-draft: false
-date: $TODAY
 title: "$(yaml_escape "$TITLE")"
-summary: "Review of "
-EOF
-      cover_block true
-      cat <<EOF
 slug: $SLUG
-description: "Review of "
----
-
+date: $TODAY
+draft: false
 EOF
+      field "description" "$DESCRIPTION"
+      field "summary" "$SUMMARY"
+      field "reviewed_type" "$REVIEWED_TYPE"
+      field "reviewed_title" "$REVIEWED_TITLE"
+      field "reviewed_author" "$REVIEWED_AUTHOR"
+      field "reviewed_publisher" "$REVIEWED_PUBLISHER"
+      field "reviewed_year" "$REVIEWED_YEAR"
+      field "external_url" "$URL"
+      list_field "categories" "$CATEGORIES"
+      list_field "tags" "$TAGS"
+      $ADD_COVER && cover_block true
+      printf -- '---\n\n'
     } > "$FILE"
     ;;
   quote)
     FILE=$(unique_path "$REPO_ROOT/content/quotes/$BASE" ".md")
     mkdir -p "$REPO_ROOT/content/quotes"
-    cat > "$FILE" <<EOF
+    {
+      cat <<EOF
 ---
-author: Jared L. Eberle
-categories:
--
-date: $TODAY
-tags:
--
 title: "$(yaml_escape "$TITLE")"
 slug: $SLUG
-external_url: "$(yaml_escape "$URL")"
-description: ""
----
-
+date: $TODAY
+author: Jared L. Eberle
 EOF
+      field "description" "$DESCRIPTION"
+      field "summary" "$SUMMARY"
+      field "source_title" "$SOURCE_TITLE"
+      field "source_author" "$SOURCE_AUTHOR"
+      field "source_year" "$SOURCE_YEAR"
+      field "external_url" "$URL"
+      list_field "categories" "$CATEGORIES"
+      list_field "tags" "$TAGS"
+      printf -- '---\n\n'
+    } > "$FILE"
     ;;
 esac
 
-if [[ "$KIND" == "review" ]] || { [[ "$KIND" == "article" ]] && $COVER; }; then
+if $ADD_COVER; then
   echo "Add the cover with: scripts/add-images.sh ${FILE%/index.md} --cover <image>" >&2
 fi
 echo "Created $FILE" >&2

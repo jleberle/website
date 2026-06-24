@@ -2,11 +2,14 @@
   "name": "jaredeberle-website",
   "version": "0.0.0",
   "private": true,
-  "description": "Tooling for jaredeberle.org (Hugo site). Single source of truth for the html-validate version used by both .woodpecker.yml and scripts/preflight.sh.",
+  "description": "Tooling for jaredeberle.org (Hugo site). Single source of truth for validation dependencies used by GitHub Actions and scripts/preflight.sh.",
   "scripts": {
-    "validate": "hugo --minify && html-validate \"public/**/*.html\""
+    "validate": "hugo --minify && html-validate \"public/**/*.html\"",
+    "test:axe": "node scripts/axe-check.mjs public"
   },
   "devDependencies": {
-    "html-validate": "^11.5.3"
+    "@axe-core/playwright": "^4.12.1",
+    "html-validate": "^11.5.3",
+    "playwright": "^1.61.1"
   }
 }
