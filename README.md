@@ -4,7 +4,9 @@ Source for [jaredeberle.org](https://jaredeberle.org), the personal and academic
 
 Built with [Hugo](https://gohugo.io) using the [PaperMod](https://github.com/adityatelange/hugo-PaperMod) theme.
 
-**Note**: I had Claude write this to document what was created and where to look for issues in the future. Anything on [my site](https://jaredeberle.org) is written solely my me, Claude is banned from making any edits to content itself.
+**Note**: I had Claude write this to document what was created and where to look for issues in the future. Anything on [my site](https://jaredeberle.org) is written solely by me, Claude is banned from making any edits to content itself.
+
+The colors for the site were originally utilizing Ethan Schoonover's [Solarized](https://ethanschoonover.com/solarized/) palette but I've since moved towards a theme based around subtly invoking the Oklahoma red dirt prairies at sunrise or sunset with deeper earthy tones
 
 ## Prerequisites
 
@@ -12,7 +14,7 @@ Built with [Hugo](https://gohugo.io) using the [PaperMod](https://github.com/adi
 - [ImageMagick](https://imagemagick.org) (`magick`) for `scripts/to-avif.sh` / `scripts/add-images.sh`
 - [Lychee](https://lychee.cli.rs) for link checking (optional; `scripts/preflight.sh` skips it when absent)
 
-## Local development
+## Local Development
 
 ```sh
 hugo server
@@ -225,7 +227,7 @@ If you add a new section (e.g. `content/essays/`):
 ## Credits
 
 - [PaperMod](https://github.com/adityatelange/hugo-PaperMod) — the Hugo theme this site is built on.
-- [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — the color palette used for the site's light and dark themes.
+- [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — the inspiration for the color palette and where dark mode's cyan is pulled from.
 - [Newsreader](https://fonts.google.com/specimen/Newsreader) by Production Type ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted serif used for body and heading type (`static/fonts/`, declared in `assets/css/extended/fonts.css`).
 
 ## License
