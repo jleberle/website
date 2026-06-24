@@ -34,12 +34,12 @@ The site will be available at `http://localhost:1313`.
 | `content/quotes/` | Short quote posts |
 | `drafts/` | Obsidian-only draft workspace, synced by Obsidian Sync and ignored by Git |
 
-Published posts follow the naming convention `YYYY-MM-DD-slug/index.md` (articles and reviews are page bundles; quotes are flat files). Scaffold directly into `content/` from the CLI with `scripts/newpost.sh`, or use the Obsidian templates in `_templates/` to write first in `drafts/`.
+Published posts follow the naming convention `YYYY-MM-DD-slug/index.md` (articles and reviews are page bundles; quotes are flat files). Create ignored drafts from the CLI with `scripts/newpost.sh`, or use the Obsidian templates in `_templates/` to write first in `drafts/`.
 
 ## Publishing workflow
 
 ```sh
-scripts/newpost.sh article "Post Title"           # scaffold (article|review|quote)
+scripts/newpost.sh article "Post Title"           # create ignored draft (article|review|quote)
 scripts/newpost.sh article --cover "Post Title"   # skip the cover prompt and add cover metadata
                                                   # articles/reviews prompt for optional covers
                                                   # quotes prompt for optional external_url
@@ -49,7 +49,7 @@ scripts/publish-draft.sh drafts/articles/2026-06-24-post-title.md
                                                   #   quotes -> flat files
 scripts/add-images.sh content/articles/<dir> --cover photo.jpg   # cover.avif + OG cover.jpg
 scripts/add-images.sh content/articles/<dir> img1.jpg img2.png   # body images → AVIF only
-scripts/preflight.sh && git push both main        # pre-push gate, then push to Codeberg + GitHub
+scripts/preflight.sh && git push                  # pre-push gate, then push to Codeberg + GitHub
 ```
 
 Obsidian drafts live under `drafts/articles/`, `drafts/reviews/`, and `drafts/quotes/`. The folder is intentionally ignored by Git so drafts can sync through Obsidian Sync without appearing in commits. The Obsidian templates ask for optional metadata, omit blank fields, and ask whether article/review drafts should include a cover block. `description` is the canonical public and SEO blurb; `summary` is only written when you want a different list/feed teaser. When a draft is ready, run `scripts/publish-draft.sh` with the draft path; the script moves it into the proper Hugo section and changes `draft: true` to `draft: false`.
@@ -73,10 +73,12 @@ Configured remotes:
 |---|---|
 | `origin` | Codeberg fetch/push (`codeberg:jle/website.git`) |
 | `github` | Private GitHub testing mirror (`github:jleberle/website.git`) |
-| `both` | Fetches from Codeberg, pushes to both Codeberg and GitHub |
+| `both` | Legacy helper: fetches from Codeberg, pushes to both Codeberg and GitHub |
 
-Use `git push both main` for the normal publishing path after local preflight.
-Use `git push origin main` only when you intentionally want a Codeberg-only push.
+The local `origin` remote should fetch from Codeberg and carry two push URLs:
+Codeberg plus the private GitHub testing mirror. Use plain `git push` for the
+normal publishing path after local preflight. If you need a one-off Codeberg-only
+push, target the URL directly: `git push codeberg:jle/website.git main`.
 
 GitHub Actions lives in `.github/workflows/site-checks.yml` and runs on pushes to
 the private mirror, on manual dispatch, and weekly. Every run executes
@@ -124,7 +126,7 @@ The first three share `layouts/_partials/responsive-img.html` — the single sou
 
 | Script | Purpose |
 |---|---|
-| `scripts/newpost.sh` | Scaffold an article (`--cover` optional), review, or quote |
+| `scripts/newpost.sh` | Create an ignored article (`--cover` optional), review, or quote draft |
 | `scripts/publish-draft.sh` | Move an Obsidian draft from `drafts/` into `content/`, preserving page bundles for articles/reviews |
 | `scripts/content-resource-lint.py` | Validate source Markdown resource references, especially cover blocks pointing at missing files |
 | `scripts/add-images.sh` | Add images to a post bundle: `--cover` → AVIF + OG JPEG; body → AVIF only, prints figure snippets |
