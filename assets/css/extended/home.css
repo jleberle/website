@@ -129,7 +129,7 @@ body.home .home-info {
 .home-list-date {
     color: var(--secondary);
     font-family: var(--meta-font);
-    font-size: 0.72rem;
+    font-size: 0.76rem;
     line-height: 1.35;
     white-space: nowrap;
     flex-shrink: 0;

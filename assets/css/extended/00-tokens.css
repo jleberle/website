@@ -24,32 +24,40 @@
 }
 
 /* ------------------------------------------------------------
-   Solarized Light (default) — maps PaperMod's theme vars onto
-   the palette. Per the spec: base3 background, base2 highlights,
-   base00 body text, base01 emphasized, base1 muted comments.
+   Prairie Light (default) — Solarized-adjacent, but warmer and
+   earthier: field paper, wheat card stock, sage-gray text,
+   clay links, ochre quote marks. The Solarized constants stay
+   above as a reference/heritage palette; these are the site tone.
    ------------------------------------------------------------ */
 :root {
-    --theme:         var(--base3);   /* page background        */
-    --entry:         var(--base2);   /* cards / highlighted bg  */
-    --primary:       var(--base02);  /* headings, links, strong */
-    /* Body text: a step darker than the spec's base01 (which read a touch
-       light on the cream) — mixed 30% toward base02 for ~6.5:1, inkier
-       without going all the way to the near-black heading color. */
-    --content:       color-mix(in srgb, var(--base01), var(--base02) 30%);
-    --secondary:     var(--base01);  /* meta / muted text       */
-    --tertiary:      var(--base2);   /* subtle fills, scrollbar */
-    --code-bg:       var(--base2);   /* inline code             */
-    --code-block-bg: var(--base03);  /* code blocks (dark)      */
-    --border:        var(--base2);
+    --prairie-paper:  #f5ecd3;
+    --prairie-panel:  #e8dcc0;
+    --prairie-ink:    #243331;
+    --prairie-text:   #4e5f58;
+    --prairie-muted:  #54645c;
+    --prairie-rule:   #b6a36f;
+    --prairie-border: #dfd0ad;
+    --prairie-clay:   #934331;
+    --prairie-rust:   #74391f;
+    --prairie-ochre:  #8f6b18;
 
-    --accent:        var(--red);     /* link hover accent        */
-    --rule:          var(--base1);   /* hr, blockquote, hovers   */
+    --theme:         var(--prairie-paper);   /* page background        */
+    --entry:         var(--prairie-panel);   /* cards / highlighted bg  */
+    --primary:       var(--prairie-ink);     /* headings, strong        */
+    --content:       var(--prairie-text);    /* body text               */
+    --secondary:     var(--prairie-muted);   /* meta / muted text       */
+    --tertiary:      var(--prairie-panel);   /* subtle fills, scrollbar */
+    --code-bg:       var(--prairie-panel);   /* inline code             */
+    --code-block-bg: var(--base03);          /* code blocks (dark)      */
+    --border:        var(--prairie-border);
 
-    /* Resting link color. Plain Solarized red (#dc322f) is only 4.3:1 on the
-       base3 cream, so darken it ~30% toward base03 for a deep oxblood at
-       6.9:1. Links rest in the darkened red and brighten to the plain red
-       (--accent) on hover. */
-    --link:          color-mix(in srgb, var(--red), var(--base03) 30%);
+    --accent:        var(--prairie-rust);    /* link hover accent       */
+    --rule:          var(--prairie-rule);    /* hr, rules, hovers       */
+    --quote-rule:    var(--prairie-ochre);
+
+    /* Clay at rest, warmer rust on hover: still descended from Solarized's
+       red/orange vocabulary, but less digital and more earth-red. */
+    --link:          var(--prairie-clay);
 
     /* Typographic token (theme-independent — dark doesn't override it): a
        system sans-serif stack for metadata "furniture" (dates, breadcrumbs,
@@ -71,12 +79,13 @@
 :root[data-theme="dark"] {
     /* Divider tone derived from PaperMod's dark vars: a step up from --border
        so hr/blockquote/header/footer rules stay visible but subtle. */
-    --rule:   color-mix(in srgb, var(--border), var(--secondary) 40%);
+    --rule:       color-mix(in srgb, var(--border), var(--secondary) 40%);
+    --quote-rule: color-mix(in srgb, var(--yellow), white 18%);
 
     /* Prose links in Solarized cyan, lifted slightly for AA on both the page
        (~5.9:1) and card (~4.8:1) backgrounds; brighter cyan on hover. */
-    --link:   color-mix(in srgb, var(--cyan), white 10%);
-    --accent: color-mix(in srgb, var(--cyan), white 30%);
+    --link:       color-mix(in srgb, var(--cyan), white 10%);
+    --accent:     color-mix(in srgb, var(--cyan), white 30%);
 }
 
 /* ------------------------------------------------------------

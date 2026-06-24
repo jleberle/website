@@ -30,11 +30,12 @@
 .post-tags::before {
     content: "Topics";
     margin-inline-end: 0.55rem;
-    font-family: var(--meta-font);
-    font-size: 0.68rem;
+    font-family: inherit;
+    font-variant-caps: all-small-caps;
+    font-size: 0.74rem;
     font-weight: 600;
-    letter-spacing: 0;
-    text-transform: uppercase;
+    letter-spacing: 0.015em;
+    text-transform: lowercase;
     color: var(--secondary);
 }
 

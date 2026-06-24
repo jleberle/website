@@ -73,6 +73,7 @@ b {
    pull the deliberate first-line quote-mark indent into the margin. */
 .post-content {
     hanging-punctuation: first;
+    font-variant-numeric: oldstyle-nums proportional-nums;
 }
 
 .post-content blockquote {

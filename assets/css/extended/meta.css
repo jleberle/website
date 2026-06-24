@@ -1,11 +1,9 @@
 /* ------------------------------------------------------------
-   Metadata typography. Sets theme-rendered "furniture" — post
-   dates, entry footers, breadcrumbs, pagination — in the sans
-   --meta-font (token defined in 00-tokens.css), so small print reads
-   cleanly against the Newsreader serif body and stays visually
-   distinct from the prose. Component files (footer, home, social,
-   archive-filters, post-footer) set the same token on their own
-   elements.
+   Metadata typography. Traditional serif small-caps treatment for
+   theme-rendered "furniture" — post dates, entry footers, tags,
+   breadcrumbs, pagination, archive filters, header navigation and
+   the site footer. Social pills outside the footer intentionally
+   keep their sans UI treatment in their component file.
    ------------------------------------------------------------ */
 .post-meta,
 .entry-footer,
@@ -17,6 +15,29 @@
 }
 
 .post-meta,
+.entry-footer,
+.post-meta-footer,
+.breadcrumb,
+.pagination,
+.home-section-all,
+.menu,
+.home-list-date,
+.archive-filter,
+.post-tags,
+.post-tags::before,
+.site-footer,
+.site-footer .social-icons a,
+.footer-heading,
+.footer-name,
+.footer-theme-toggle,
+.footer-feed {
+    font-family: inherit;
+    font-variant-caps: all-small-caps;
+    text-transform: lowercase;
+    letter-spacing: 0.015em;
+}
+
+.post-meta,
 .post-meta-footer {
     font-size: 0.78rem;
     line-height: 1.45;
@@ -24,4 +45,18 @@
 
 .post-meta-footer {
     color: var(--secondary);
+}
+
+.breadcrumb a,
+.post-meta-footer a {
+    color: inherit;
+    transition: color 0.15s ease;
+}
+
+.breadcrumb a:hover,
+.breadcrumb a:focus-visible,
+.post-meta-footer a:hover,
+.post-meta-footer a:focus-visible {
+    color: var(--accent);
+    text-underline-offset: 0.24rem;
 }

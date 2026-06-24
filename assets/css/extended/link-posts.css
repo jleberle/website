@@ -13,6 +13,7 @@
 
 .entry-header h2 .link-post-title:hover,
 .post-title .link-post-title:hover {
+  color: var(--accent);
   text-decoration: underline;
 }
 

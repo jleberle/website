@@ -8,21 +8,35 @@
 }
 
 .md-content blockquote {
-    border-inline-start: 2px solid var(--rule);
+    margin: 1.4rem 0;
+    padding: 0.15rem 0 0.15rem 1rem;
+    border-inline-start: 2px solid var(--quote-rule);
+    color: var(--content);
 }
 
-/* Large muted opening quote at the start of blockquotes. Decorative
-   pseudo-element only; line-height: 0 keeps it from inflating the line. */
-.md-content blockquote p:first-of-type::before {
-    content: "\201C";
-    margin-inline-end: 0.12em;
-    font-size: 3em;
-    line-height: 0;
-    vertical-align: -0.4em;
-    color: var(--rule);
-    opacity: 0.55;
-    pointer-events: none;
-    user-select: none;
+.md-content blockquote p {
+    margin: 0.45rem 0;
+}
+
+.md-content blockquote p:first-child {
+    margin-top: 0;
+}
+
+.md-content blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+.post-content figcaption {
+    margin-top: 0.5rem;
+    font-family: var(--meta-font);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--secondary);
+    text-align: center;
+}
+
+.post-content figcaption p {
+    margin: 0.15rem 0 0;
 }
 
 .md-content a:not(.anchor) {
