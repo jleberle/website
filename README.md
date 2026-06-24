@@ -34,7 +34,7 @@ The site will be available at `http://localhost:1313`.
 | `content/quotes/` | Short quote posts |
 | `drafts/` | Obsidian-only draft workspace, synced by Obsidian Sync and ignored by Git |
 
-Published posts follow the naming convention `YYYY-MM-DD-slug/index.md` (articles and reviews are page bundles; quotes are flat files). Create ignored drafts from the CLI with `scripts/newpost.sh`, or use the Obsidian templates in `_templates/` to write first in `drafts/`.
+Published posts follow the naming convention `YYYY-MM-DD-slug/index.md` (articles and reviews are page bundles; quotes are flat files). Create ignored drafts from the CLI with `scripts/newpost.sh`, or use the Obsidian templates in `_templates/` to write first in `drafts/`. Draft front matter is timestamped in the site's local timezone (`America/Chicago`) so feeds don't shift posts backward a day.
 
 ## Publishing workflow
 
@@ -52,7 +52,7 @@ scripts/add-images.sh content/articles/<dir> img1.jpg img2.png   # body images â
 scripts/preflight.sh && git push                  # pre-push gate, then push to Codeberg + GitHub
 ```
 
-Obsidian drafts live under `drafts/articles/`, `drafts/reviews/`, and `drafts/quotes/`. The folder is intentionally ignored by Git so drafts can sync through Obsidian Sync without appearing in commits. The Obsidian templates ask for optional metadata, omit blank fields, and ask whether article/review drafts should include a cover block. `description` is the canonical public and SEO blurb; `summary` is only written when you want a different list/feed teaser. When a draft is ready, run `scripts/publish-draft.sh` with the draft path; the script moves it into the proper Hugo section and changes `draft: true` to `draft: false`.
+Obsidian drafts live under `drafts/articles/`, `drafts/reviews/`, and `drafts/quotes/`. The folder is intentionally ignored by Git so drafts can sync through Obsidian Sync without appearing in commits. The Obsidian templates ask for optional metadata, omit blank fields, and ask whether article/review drafts should include a cover block. `description` is the canonical public and SEO blurb; `summary` is only written when you want a different list/feed teaser. When a draft is ready, run `scripts/publish-draft.sh` with the draft path; the script moves it into the proper Hugo section, changes `draft: true` to `draft: false`, and stamps `publishDate` plus `lastmod` with the local publish time when those fields are absent so RSS and JSON feeds sort the post by when it actually went live.
 
 Reviews can carry optional bibliographic context with `reviewed_type`, `reviewed_title`, `reviewed_author`, `reviewed_publisher`, and `reviewed_year`. Quote posts can carry optional source context with `source_title`, `source_author`, and `source_year`. `external_url` links the reviewed/source title in that context line; it does not turn the post title into an outbound link. When present, these fields render beneath the post description on the single-post page.
 
