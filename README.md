@@ -56,10 +56,12 @@ Obsidian drafts live under `drafts/articles/`, `drafts/reviews/`, and `drafts/qu
 
 Reviews can carry optional bibliographic context with `reviewed_type`, `reviewed_title`, `reviewed_author`, `reviewed_publisher`, and `reviewed_year`. Quote posts can carry optional source context with `source_title`, `source_author`, and `source_year`. `external_url` links the reviewed/source title in that context line; it does not turn the post title into an outbound link. When present, these fields render beneath the post description on the single-post page.
 
-`preflight.sh` runs the same build and CSP checks as CI plus source-content resource
-validation, an offline internal-link check, and a scan that every internal
-`src`/`href`/`srcset`/feed URL resolves to a published file. `--strict` also fails on
-build warnings (e.g. figures missing alt text).
+`preflight.sh` is intentionally lighter locally: by default it runs the
+deploy-critical checks (build, content resources, feed lint, CSP drift, and
+published-reference scanning). `--strict` also fails on build warnings (e.g.
+figures missing alt text). `--full` adds the slower CI-grade checks
+(`html-validate`, rendered-content a11y lint, and offline internal-link
+checking).
 
 ## Remotes and CI
 
@@ -82,10 +84,16 @@ push, target the URL directly: `git push codeberg:jle/website.git main`.
 
 GitHub Actions lives in `.github/workflows/site-checks.yml` and runs on pushes to
 the private mirror, on manual dispatch, and weekly. Every run executes
-`scripts/preflight.sh --strict` and `npm run test:axe`. Manual and scheduled runs
-also execute the full external lychee link check against the generated site.
-Dependabot version updates are configured in `.github/dependabot.yml` for monthly,
-grouped npm and GitHub Actions updates.
+`scripts/preflight.sh --strict --full` and `npm run test:axe`. Manual and
+scheduled runs also execute the full external lychee link check against the
+generated site. Dependabot version updates are configured in
+`.github/dependabot.yml` for monthly, grouped npm and GitHub Actions updates.
+
+For scheduled-run failure notices, rely on GitHub's native Actions
+notifications on the private mirror rather than issue creation. In GitHub's
+notification settings, enable failed workflow run alerts (email or web) for the
+repository; the workflow also uploads failure artifacts so the broken build can
+be inspected without reproducing it locally.
 
 ## Shortcodes
 
@@ -184,9 +192,7 @@ diff themes/PaperMod/layouts/_partials/home_info.html layouts/_partials/home_inf
 diff themes/PaperMod/layouts/_partials/footer.html layouts/_partials/footer.html
 diff themes/PaperMod/layouts/_partials/head.html layouts/_partials/head.html
 diff themes/PaperMod/layouts/_partials/extend_head.html layouts/_partials/extend_head.html
-diff themes/PaperMod/layouts/_partials/breadcrumbs.html layouts/_partials/breadcrumbs.html
 diff themes/PaperMod/layouts/_partials/post_meta.html layouts/_partials/post_meta.html
-diff themes/PaperMod/layouts/_partials/post_nav_links.html layouts/_partials/post_nav_links.html
 diff themes/PaperMod/layouts/_partials/social_icons.html layouts/_partials/social_icons.html
 diff themes/PaperMod/layouts/_partials/templates/_funcs/get-page-images.html layouts/_partials/templates/_funcs/get-page-images.html
 diff themes/PaperMod/layouts/_partials/templates/opengraph.html layouts/_partials/templates/opengraph.html
@@ -196,7 +202,6 @@ diff themes/PaperMod/layouts/baseof.html layouts/baseof.html
 diff themes/PaperMod/layouts/list.html layouts/list.html
 diff themes/PaperMod/layouts/single.html layouts/single.html
 diff themes/PaperMod/layouts/archives.html layouts/archives.html
-diff themes/PaperMod/layouts/taxonomy.html layouts/taxonomy.html
 diff themes/PaperMod/layouts/robots.txt layouts/robots.txt
 diff themes/PaperMod/layouts/rss.xml layouts/rss.xml
 diff themes/PaperMod/layouts/index.json layouts/index.json
@@ -213,9 +218,7 @@ For each diff: if PaperMod changed unrelated lines, copy their new version and r
 - `layouts/_partials/footer.html` — thin local wrapper that calls `site_footer.html` for the custom multi-column footer and `footer_behavior.html` for the PaperMod footer hooks/scripts; compare PaperMod's footer scripts against `footer_behavior.html` after theme updates
 - `layouts/_partials/head.html` — uses the stored list paginator to self-canonicalize paginated list pages and emit `rel=prev`/`rel=next`
 - `layouts/_partials/extend_head.html` — adds `humans.txt`, the web manifest, Newsreader preload, and the fingerprinted/minified deferred JS bundle; changes here can affect CSP and resource loading
-- `layouts/_partials/breadcrumbs.html` — removes the redundant `role="navigation"` while keeping `aria-label="Breadcrumb"`
 - `layouts/_partials/post_meta.html` — uses `collections.NewScratch`, emits `dt-published`, includes updated dates when different from publish dates, and marks the author with `p-author`
-- `layouts/_partials/post_nav_links.html` — adds an accessible label and switches previous/next post links to `RelPermalink`
 - `layouts/_partials/social_icons.html` — adds visible labels, `rel="me"`, and the custom icon fallback path through `custom_icons.html`
 - `layouts/_partials/templates/_funcs/get-page-images.html` — fingerprints site asset images used in metadata and preserves relative/absolute URL data for downstream templates
 - `layouts/_partials/templates/opengraph.html` — jpeg OG companion lookup and `site.Language.Lang`
@@ -225,7 +228,6 @@ For each diff: if PaperMod changed unrelated lines, copy their new version and r
 - `layouts/list.html` — keeps the PaperMod list loop but uses `RelPermalink`, microformats, local pagination links, stored paginator data, and delegates the custom home-page grid to `layouts/_partials/home_sections.html`
 - `layouts/single.html` — adds microformats, source/review context metadata, a simplified top metadata line, a separate updated/edit footer metadata line, and relative tag links
 - `layouts/archives.html` — adds archive filters and data attributes for `assets/js/archive-filters.js`, plus relative post links
-- `layouts/taxonomy.html` — switches term links to `RelPermalink`
 - `layouts/robots.txt` — keeps the sitemap but replaces PaperMod's environment-based allow/disallow with explicit allow rules plus AI/training crawler disallows
 - `layouts/rss.xml` — aligns the home RSS feed with the JSON feed sections, uses the square site icon for channel image, absolutizes feed content URLs, and includes cover images
 - `layouts/index.json` — uses local `RelPermalink` values in the Fuse search index
@@ -254,9 +256,8 @@ scripts/csp-hashes.sh --check --no-build   # reuse an existing public/ (used by 
 
 `--check` reports per directive: `OK` (match), `DRIFT` (a hash is in the build but missing from `_headers` — would be blocked; fails with exit 1), or `WARN` (a stale hash in `_headers` is no longer used — safe to remove). When it reports drift, run `scripts/csp-hashes.sh`, paste the new hashes into **both** CSP blocks in `static/_headers` (the `*` block and the `/iframe-page/*` block), then commit.
 
-GitHub Actions runs `scripts/preflight.sh --strict` on every push to the private testing mirror. That includes `csp-hashes.sh --check --no-build`, reusing the `public/` generated by the build. It fails the CI build on drift as a background alarm — note that a failed GitHub Actions run does **not** block StaticHost from deploying from Codeberg, so local preflight remains the hard pre-push gate.
+GitHub Actions runs `scripts/preflight.sh --strict --full` on every push to the private testing mirror. That includes `csp-hashes.sh --check --no-build`, reusing the `public/` generated by the build. It fails the CI build on drift as a background alarm — note that a failed GitHub Actions run does **not** block StaticHost from deploying from Codeberg, so local preflight remains the hard pre-push gate.
 When CI fails, the workflow uploads a short-lived artifact bundle with the generated `public/` directory plus captured `preflight`, `axe`, and external-link logs (when that step ran), so breakage can be inspected away from the local machine.
-If the weekly scheduled run fails, GitHub Actions also opens a standing issue on the private mirror (or comments on the existing one) with a link back to the failing run.
 
 ### Feed checks
 
