@@ -1,28 +1,29 @@
 #!/usr/bin/env bash
-# Pre-push gate: everything CI checks, plus an internal-integrity scan, in one
-# command before publishing. Run as: scripts/preflight.sh && git push
+# Pre-push gate for the deploy-critical checks you want locally before a push.
+# CI runs `--full` for the slower structural and accessibility checks.
 #
-#   1. hugo --minify        — fails on ERROR, surfaces WARN (missing figure alt etc.)
-#   2. content resources    — source Markdown cover blocks point at real files
-#   3. generated junk files — fail if OS/editor metadata lands in public/
-#   4. html-validate        — HTML5 validation of every page (same as CI; rules
-#                              tuned in .htmlvalidate.json)
-#   5. checks/a11y-lint.py  — content images without alt + heading-level skips
-#   6. checks/feed-lint.py  — RSS/JSON Feed well-formedness + absolute URLs
-#   7. csp-hashes.sh --check — CSP hash drift against the fresh build (same as CI)
-#   8. lychee --offline      — internal links/files in public/ (CI cron covers external)
-#   9. reference scan        — every internal src/href/srcset/feed URL in the
-#                              output must resolve to a published file; guards the
-#                              build.publishResources=false resource-invocation
-#                              pattern (see hugo.yaml)
+# Default local gate:
+#   1. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
+#   2. content resources     — source Markdown cover blocks point at real files
+#   3. generated junk files  — fail if OS/editor metadata lands in public/
+#   4. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs
+#   5. csp-hashes.sh --check — CSP hash drift against the fresh build
+#   6. published references  — every internal src/href/srcset/feed URL in the
+#                               output must resolve to a published file; guards
+#                               the build.publishResources=false resource pattern
 #
-# This must stay in lockstep with .github/workflows/site-checks.yml. StaticHost
-# deploys on push independently of GitHub Actions, so preflight is the only gate
-# that can stop a bad deploy before it leaves your machine.
+# Full mode adds:
+#   7. html-validate         — HTML5 validation of every page
+#   8. checks/a11y-lint.py   — content images without alt + heading-level skips
+#   9. lychee --offline      — internal links/files in public/
+#
+# StaticHost deploys on push independently of GitHub Actions, so the default
+# gate stays focused on "will this build and publish correctly right now?"
 #
 # Usage:
-#   scripts/preflight.sh             # warnings are reported but don't fail
-#   scripts/preflight.sh --strict    # hugo WARN lines also fail the gate
+#   scripts/preflight.sh              # local deploy gate
+#   scripts/preflight.sh --strict     # fail on Hugo WARN lines too
+#   scripts/preflight.sh --full       # add the slower CI-grade checks
 
 set -uo pipefail
 
@@ -30,7 +31,16 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
 
 STRICT=false
-[[ "${1:-}" == "--strict" ]] && STRICT=true
+FULL=false
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --strict) STRICT=true ;;
+    --full) FULL=true ;;
+    *) echo "Unknown option: $1" >&2; exit 1 ;;
+  esac
+  shift
+done
 
 FAILURES=0
 step() { printf '\n\033[1m== %s\033[0m\n' "$1"; }
@@ -72,37 +82,6 @@ else
   fail "generated output contains OS/editor metadata"
 fi
 
-step "html-validate (all pages)"
-# Prefer the version pinned in package.json (run `npm ci` once); fall back to
-# npx so the gate still works on a machine without node_modules installed.
-if [[ -x node_modules/.bin/html-validate ]]; then
-  HV=(node_modules/.bin/html-validate)
-elif command -v npx >/dev/null; then
-  echo "node_modules not installed — run 'npm ci' to use the pinned version; falling back to npx"
-  HV=(npx --yes html-validate)
-else
-  HV=()
-fi
-if [[ ${#HV[@]} -gt 0 ]]; then
-  HV_OUT=$("${HV[@]}" "public/**/*.html" 2>&1)
-  if [[ $? -eq 0 ]]; then
-    pass "html-validate clean"
-  else
-    tail -20 <<<"$HV_OUT"
-    fail "html-validate errors (rules tuned in .htmlvalidate.json)"
-  fi
-else
-  echo "node/npx not found — skipping html-validate (npm ci); CI still runs it"
-fi
-
-step "content a11y lint"
-if A11Y_OUT=$(python3 scripts/checks/a11y-lint.py public 2>&1); then
-  pass "content a11y lint clean"
-else
-  tail -20 <<<"$A11Y_OUT"
-  fail "content a11y issues (missing alt / heading skips)"
-fi
-
 step "feed lint"
 if FEED_OUT=$(python3 scripts/checks/feed-lint.py public 2>&1); then
   pass "$FEED_OUT"
@@ -119,70 +98,58 @@ else
   fail "CSP hash drift — run scripts/csp-hashes.sh and update static/_headers"
 fi
 
-step "internal links (lychee --offline)"
-if command -v lychee >/dev/null; then
-  LYCHEE_OUT=$(lychee --offline --root-dir "$REPO_ROOT/public" --no-progress public/ 2>&1)
-  if [[ $? -eq 0 ]]; then
-    pass "internal links resolve"
-  else
-    tail -15 <<<"$LYCHEE_OUT"
-    fail "broken internal links"
-  fi
-else
-  echo "lychee not installed — skipping (brew install lychee); CI cron still checks links"
-fi
-
 step "published-reference scan"
-SCAN_OUT=$(python3 - <<'PY'
-import re, os, sys, html, urllib.parse
-
-pub = 'public'
-exists = set()
-for root, _, files in os.walk(pub):
-    for f in files:
-        exists.add(os.path.relpath(os.path.join(root, f), pub))
-
-def check(url, src, missing):
-    u = urllib.parse.urlparse(url)
-    if u.scheme and u.netloc not in ('', 'jaredeberle.org'):
-        return
-    p = urllib.parse.unquote(u.path)
-    if not p.startswith('/'):
-        return
-    p = p.lstrip('/')
-    if not p:
-        return
-    cand = [p, p + 'index.html', p.rstrip('/') + '/index.html']
-    if not any(c in exists for c in cand):
-        missing.add((src, url))
-
-missing = set()
-for root, _, files in os.walk(pub):
-    for f in files:
-        if not f.endswith(('.html', '.xml', '.json')):
-            continue
-        rel = os.path.relpath(os.path.join(root, f), pub)
-        txt = open(os.path.join(root, f), encoding='utf8', errors='ignore').read()
-        # feeds embed entity-escaped HTML; unescape so quoted URLs parse cleanly
-        txt = html.unescape(txt)
-        for m in re.findall(r'(?:src|href|poster|content|data-lightbox-src)=(?:"([^"]+)"|([^ >"\']+))', txt):
-            check(m[0] or m[1], rel, missing)
-        for ss in re.findall(r'srcset=(?:"([^"]+)"|\'([^\']+)\')', txt):
-            for part in (ss[0] or ss[1]).split(','):
-                check(part.strip().split(' ')[0], rel, missing)
-        for m in re.findall(r'https://jaredeberle\.org(/[^"\\\s<>)]+)', txt):
-            check(m, rel, missing)
-
-for src, url in sorted(missing):
-    print(f"  {src}  ->  {url}")
-sys.exit(1 if missing else 0)
-PY
-)
-if [[ $? -eq 0 ]]; then
-  pass "every internal reference resolves to a published file"
+if SCAN_OUT=$(python3 scripts/checks/published-reference-lint.py public 2>&1); then
+  pass "$SCAN_OUT"
 else
   echo "$SCAN_OUT" | head -20
   fail "dangling references (a template likely builds a URL by string instead of invoking the resource)"
+fi
+
+if $FULL; then
+  step "html-validate (all pages)"
+  # Prefer the version pinned in package.json (run `npm ci` once); fall back to
+  # npx so the gate still works on a machine without node_modules installed.
+  if [[ -x node_modules/.bin/html-validate ]]; then
+    HV=(node_modules/.bin/html-validate)
+  elif command -v npx >/dev/null; then
+    echo "node_modules not installed — run 'npm ci' to use the pinned version; falling back to npx"
+    HV=(npx --yes html-validate)
+  else
+    HV=()
+  fi
+  if [[ ${#HV[@]} -gt 0 ]]; then
+    HV_OUT=$("${HV[@]}" "public/**/*.html" 2>&1)
+    if [[ $? -eq 0 ]]; then
+      pass "html-validate clean"
+    else
+      tail -20 <<<"$HV_OUT"
+      fail "html-validate errors (rules tuned in .htmlvalidate.json)"
+    fi
+  else
+    echo "node/npx not found — skipping html-validate (npm ci); CI still runs it"
+  fi
+
+  step "content a11y lint"
+  if A11Y_OUT=$(python3 scripts/checks/a11y-lint.py public 2>&1); then
+    pass "content a11y lint clean"
+  else
+    tail -20 <<<"$A11Y_OUT"
+    fail "content a11y issues (missing alt / heading skips)"
+  fi
+
+  step "internal links (lychee --offline)"
+  if command -v lychee >/dev/null; then
+    LYCHEE_OUT=$(lychee --offline --root-dir "$REPO_ROOT/public" --no-progress public/ 2>&1)
+    if [[ $? -eq 0 ]]; then
+      pass "internal links resolve"
+    else
+      tail -15 <<<"$LYCHEE_OUT"
+      fail "broken internal links"
+    fi
+  else
+    echo "lychee not installed — skipping (brew install lychee); CI still runs it"
+  fi
 fi
 
 echo
