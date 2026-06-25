@@ -1,4 +1,6 @@
-{{- $p := .Params -}}
+{{- $page := .page | default . -}}
+{{- $kind := .kind | default "" -}}
+{{- $p := $page.Params -}}
 {{- $reviewTitle := $p.reviewed_title -}}
 {{- $reviewAuthor := $p.reviewed_author -}}
 {{- $reviewPublisher := $p.reviewed_publisher -}}
@@ -9,37 +11,41 @@
 {{- $sourceYear := $p.source_year -}}
 {{- $externalURL := $p.external_url -}}
 
-{{- if or $reviewTitle $reviewAuthor $reviewPublisher $reviewYear $reviewType }}
-<div class="post-context">
-  <span class="post-context-label">Reviewed</span><span aria-hidden="true">: </span>
-  {{- with $reviewAuthor }}<span>{{ . | plainify }}</span>{{ end -}}
-  {{- if and $reviewAuthor $reviewTitle }}<span aria-hidden="true">, </span>{{ end -}}
-  {{- with $reviewTitle }}
-    {{- if $externalURL -}}
-    <cite><a href="{{ $externalURL }}" rel="external noopener" target="_blank">{{ . | markdownify }}</a></cite>
-    {{- else -}}
-    <cite>{{ . | markdownify }}</cite>
+{{- if and (eq $kind "review") (or $reviewTitle $reviewAuthor $reviewPublisher $reviewYear $reviewType) }}
+<div class="post-context post-context-review" aria-label="Reviewed work">
+  <span class="post-context-kicker">{{ with $reviewType }}Reviewed {{ . | lower | plainify }}{{ else }}Reviewed work{{ end }}</span>
+  <p class="post-context-entry">
+    {{- with $reviewAuthor }}<span>{{ . | plainify }}</span>{{ end -}}
+    {{- if and $reviewAuthor $reviewTitle }}<span aria-hidden="true">, </span>{{ end -}}
+    {{- with $reviewTitle }}
+      {{- if $externalURL -}}
+      <cite><a href="{{ $externalURL }}" rel="external noopener" target="_blank">{{ . | markdownify }}</a></cite>
+      {{- else -}}
+      <cite>{{ . | markdownify }}</cite>
+      {{- end -}}
     {{- end -}}
-  {{- end -}}
-  {{- if or $reviewPublisher $reviewYear }}
-  <span>
-    {{- if or $reviewTitle $reviewAuthor }} {{ end -}}
-    {{- with $reviewPublisher }}({{ . | plainify }}{{ with $reviewYear }}, {{ . | plainify }}{{ end }}){{ else }}({{ $reviewYear | plainify }}){{ end -}}
-  </span>
-  {{- end }}
+    {{- if or $reviewPublisher $reviewYear }}
+    <span>
+      {{- if or $reviewTitle $reviewAuthor }} {{ end -}}
+      {{- with $reviewPublisher }}({{ . | plainify }}{{ with $reviewYear }}, {{ . | plainify }}{{ end }}){{ else }}({{ $reviewYear | plainify }}){{ end -}}
+    </span>
+    {{- end }}
+  </p>
 </div>
-{{- else if or $sourceTitle $sourceAuthor $sourceYear }}
-<div class="post-context">
-  <span class="post-context-label">Source</span><span aria-hidden="true">: </span>
-  {{- with $sourceAuthor }}<span>{{ . | plainify }}</span>{{ end -}}
-  {{- if and $sourceAuthor $sourceTitle }}<span aria-hidden="true">, </span>{{ end -}}
-  {{- with $sourceTitle }}
-    {{- if $externalURL -}}
-    <cite><a href="{{ $externalURL }}" rel="external noopener" target="_blank">{{ . | markdownify }}</a></cite>
-    {{- else -}}
-    <cite>{{ . | markdownify }}</cite>
+{{- else if and (eq $kind "quote") (or $sourceTitle $sourceAuthor $sourceYear) }}
+<div class="post-context post-context-source" aria-label="Source information">
+  <span class="post-context-kicker">Source</span>
+  <p class="post-context-entry">
+    {{- with $sourceAuthor }}<span>{{ . | plainify }}</span>{{ end -}}
+    {{- if and $sourceAuthor $sourceTitle }}<span aria-hidden="true">, </span>{{ end -}}
+    {{- with $sourceTitle }}
+      {{- if $externalURL -}}
+      <cite><a href="{{ $externalURL }}" rel="external noopener" target="_blank">{{ . | markdownify }}</a></cite>
+      {{- else -}}
+      <cite>{{ . | markdownify }}</cite>
+      {{- end -}}
     {{- end -}}
-  {{- end -}}
-  {{- with $sourceYear }}<span> ({{ . | plainify }})</span>{{ end -}}
+    {{- with $sourceYear }}<span> ({{ . | plainify }})</span>{{ end -}}
+  </p>
 </div>
 {{- end }}
