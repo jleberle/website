@@ -1,6 +1,7 @@
 {{- define "main" }}
 
-{{- $hasPostContext := or .Params.reviewed_title .Params.reviewed_author .Params.reviewed_publisher .Params.reviewed_year .Params.reviewed_type .Params.source_title .Params.source_author .Params.source_year }}
+{{- $hasReviewContext := or .Params.reviewed_title .Params.reviewed_author .Params.reviewed_publisher .Params.reviewed_year .Params.reviewed_type }}
+{{- $hasSourceContext := or .Params.source_title .Params.source_author .Params.source_year }}
 
 <article class="post-single h-entry">
   <a class="u-url" href="{{ .RelPermalink }}" hidden></a>
@@ -26,16 +27,19 @@
     </div>
     {{- end }}
     {{- if .Description }}
-    <div class="post-description p-summary{{ if $hasPostContext }} has-context{{ end }}">
+    <div class="post-description p-summary">
       {{ .Description }}
     </div>
     {{- end }}
-    {{- partial "post_context.html" . }}
   </header>
   {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
   {{- if (.Param "ShowToc") }}
   {{- partial "toc.html" . }}
+  {{- end }}
+
+  {{- if $hasReviewContext }}
+  {{- partial "post_context.html" (dict "page" . "kind" "review") }}
   {{- end }}
 
   {{- if .Content }}
@@ -44,6 +48,10 @@
     {{- partial "anchored_headings.html" .Content -}}
     {{- else }}{{ .Content }}{{ end }}
   </div>
+  {{- end }}
+
+  {{- if $hasSourceContext }}
+  {{- partial "post_context.html" (dict "page" . "kind" "quote") }}
   {{- end }}
 
   {{- partial "extend_post_content.html" . }}

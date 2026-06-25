@@ -1,0 +1,60 @@
+/* ------------------------------------------------------------
+   Review and quote source apparatus. Reviews now lead with a
+   bibliographic block before the prose, while quote sources sit
+   at the end as an attribution line.
+   ------------------------------------------------------------ */
+.post-context {
+    color: var(--secondary);
+}
+
+.post-context-review {
+    margin: 1.4rem 0 1.8rem;
+    padding: 0.9rem 0 1rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.post-context-source {
+    margin-top: 1.5rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border);
+}
+
+.post-context-kicker {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.84rem;
+    font-variant-caps: all-small-caps;
+    font-weight: 600;
+    letter-spacing: 0.018em;
+    text-transform: lowercase;
+}
+
+.post-context-entry {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.post-context-review .post-context-entry {
+    font-size: 0.98rem;
+}
+
+.post-context-source .post-context-entry {
+    font-size: 0.92rem;
+}
+
+.post-context cite {
+    color: var(--content);
+    font-style: italic;
+}
+
+.post-context a {
+    color: var(--link);
+    text-decoration-thickness: 1px;
+    transition: color 0.15s ease;
+}
+
+.post-context a:hover {
+    color: var(--accent);
+    text-underline-offset: 0.25rem;
+}
