@@ -1,9 +1,10 @@
 /* ------------------------------------------------------------
-   Newsreader — self-hosted body/heading serif (Production Type,
-   via Google Fonts, v26). Replaces Georgia (see serif.css). A
-   screen-optimized text serif with higher stroke contrast than
-   Georgia, which reads crisper on high-DPR displays, plus a true
-   italic that suits a citation-heavy academic site.
+   Literata — self-hosted body/heading serif (TypeTogether, via
+   Google Fonts). Replaces Newsreader (see serif.css) specifically
+   for its 'onum' (oldstyle figures) support, which Newsreader
+   lacks in every version upstream. Designed for Google Play
+   Books — a screen-optimized text serif with a true italic that
+   suits a citation-heavy academic site.
 
    Files live in static/fonts/ and are served from /fonts/ (no
    fingerprint — the faces are versioned by name and effectively
@@ -22,72 +23,72 @@
 
 /* ---- 400 regular ---- */
 @font-face {
-    font-family: 'Newsreader';
+    font-family: 'Literata';
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url(/fonts/newsreader-400-latin.woff2) format('woff2');
+    src: url(/fonts/literata-400-latin.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-    font-family: 'Newsreader';
+    font-family: 'Literata';
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url(/fonts/newsreader-400-latin-ext.woff2) format('woff2');
+    src: url(/fonts/literata-400-latin-ext.woff2) format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 /* ---- 400 italic ---- */
 @font-face {
-    font-family: 'Newsreader';
+    font-family: 'Literata';
     font-style: italic;
     font-weight: 400;
     font-display: swap;
-    src: url(/fonts/newsreader-400i-latin.woff2) format('woff2');
+    src: url(/fonts/literata-400i-latin.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-    font-family: 'Newsreader';
+    font-family: 'Literata';
     font-style: italic;
     font-weight: 400;
     font-display: swap;
-    src: url(/fonts/newsreader-400i-latin-ext.woff2) format('woff2');
+    src: url(/fonts/literata-400i-latin-ext.woff2) format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 /* ---- 600 semibold (headings) ---- */
 @font-face {
-    font-family: 'Newsreader';
+    font-family: 'Literata';
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url(/fonts/newsreader-600-latin.woff2) format('woff2');
+    src: url(/fonts/literata-600-latin.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-    font-family: 'Newsreader';
+    font-family: 'Literata';
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url(/fonts/newsreader-600-latin-ext.woff2) format('woff2');
+    src: url(/fonts/literata-600-latin-ext.woff2) format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 /* ---- 600 semibold italic ---- */
 @font-face {
-    font-family: 'Newsreader';
+    font-family: 'Literata';
     font-style: italic;
     font-weight: 600;
     font-display: swap;
-    src: url(/fonts/newsreader-600i-latin.woff2) format('woff2');
+    src: url(/fonts/literata-600i-latin.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-    font-family: 'Newsreader';
+    font-family: 'Literata';
     font-style: italic;
     font-weight: 600;
     font-display: swap;
-    src: url(/fonts/newsreader-600i-latin-ext.woff2) format('woff2');
+    src: url(/fonts/literata-600i-latin-ext.woff2) format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }

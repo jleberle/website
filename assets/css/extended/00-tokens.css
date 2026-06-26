@@ -61,7 +61,7 @@
 
     /* Typographic token (theme-independent — dark doesn't override it): a
        system sans-serif stack for metadata "furniture" (dates, breadcrumbs,
-       tag labels, footers, UI chips) set against the Newsreader serif body.
+       tag labels, footers, UI chips) set against the Literata serif body.
        Applied in meta.css and the component files. */
     --meta-font:     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
                      "Helvetica Neue", Arial, sans-serif;

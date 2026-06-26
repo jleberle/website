@@ -43,9 +43,9 @@
 }
 
 /* Step down from the theme's 700 weight so the wordmark has presence
-   without shouting, while keeping it tied to the Newsreader body face. */
+   without shouting, while keeping it tied to the Literata body face. */
 .logo a {
-    font-family: newsreader, Georgia, Cambria, "times new roman", Times, serif;
+    font-family: literata, Georgia, Cambria, "times new roman", Times, serif;
     font-weight: 600;
     letter-spacing: 0;
     transition: color 0.15s ease;

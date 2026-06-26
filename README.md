@@ -218,7 +218,7 @@ If you add a new section (e.g. `content/essays/`):
 
 - [PaperMod](https://github.com/adityatelange/hugo-PaperMod) — the Hugo theme this site's layouts and core CSS/JS originated from (MIT licensed); no longer tracked as a dependency, see [Theme history](#theme-history).
 - [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — the inspiration for the color palette and where dark mode's cyan is pulled from.
-- [Newsreader](https://fonts.google.com/specimen/Newsreader) by Production Type ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted serif used for body and heading type (`static/fonts/`, declared in `assets/css/extended/fonts.css`).
+- [Literata](https://fonts.google.com/specimen/Literata) by TypeTogether ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted serif used for body and heading type (`static/fonts/`, declared in `assets/css/extended/fonts.css`). Replaced Newsreader for its `onum` (oldstyle figures) support.
 
 ## License
 

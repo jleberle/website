@@ -1,18 +1,18 @@
 /* ------------------------------------------------------------
    Serif body type. Overrides PaperMod's system sans-serif stack
-   (themes/PaperMod/assets/css/core/reset.css) with Newsreader, a
+   (themes/PaperMod/assets/css/core/reset.css) with Literata, a
    self-hosted screen serif (see fonts.css). Georgia is the
    fallback shown during the font swap and on the rare platform a
    download fails. Headings, prose and meta inherit from body;
    code keeps its monospace stack (see mono.css).
    ------------------------------------------------------------ */
 body {
-    font-family: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
+    font-family: 'Literata', Georgia, Cambria, 'Times New Roman', Times, serif;
     line-height: 1.7;          /* a touch airier than the 1.6 default,
                                   which serif body text reads better with */
 
     /* No -webkit-font-smoothing override: the default (subpixel where
-       available, grayscale on Retina) renders Newsreader at its intended
+       available, grayscale on Retina) renders Literata at its intended
        weight. Forcing `antialiased` thinned the strokes and was part of
        what made the old Georgia body read soft. */
 }
@@ -29,13 +29,13 @@ body {
    too airy for 40/32/24px display type, so a wrapped heading looks gappy.
    - optimizeLegibility: kerning + ligatures (heading-only; see note above)
    - line-height 1.25: tighter, appropriate for large display type
-   - letter-spacing: neutral tracking; Newsreader has enough character
+   - letter-spacing: neutral tracking; Literata has enough character
    - text-wrap: balance: evens multi-line headings, kills one-word orphans
    - scroll-margin-top: breathing room when an anchor link jumps here */
 h1, h2, h3, h4, h5, h6,
 .post-title {
     text-rendering: optimizeLegibility;
-    font-weight: 600;          /* Newsreader semibold — display weight with
+    font-weight: 600;          /* Literata semibold — display weight with
                                   authority but less bluntness than 700, which
                                   reads more academic than bloggy */
     line-height: 1.25;
