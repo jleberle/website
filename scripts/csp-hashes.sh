@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Recompute SHA-256 hash-sources for the Content-Security-Policy in
 # static/_headers — both style-src (inline <style>) and script-src (inline
-# <script>, excluding src= and ld+json). Run after Hugo/PaperMod upgrades or
-# theme changes that touch inline styles or scripts: a changed minifier (Hugo)
-# or changed theme script (PaperMod) silently breaks a hash otherwise.
+# <script>, excluding src= and ld+json). Run after Hugo upgrades or template
+# changes that touch inline styles or scripts: a changed minifier or a changed
+# inline script silently breaks a hash otherwise.
 #
 # Usage:
 #   scripts/csp-hashes.sh              # print current hashes for copy-paste into _headers

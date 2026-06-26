@@ -50,24 +50,11 @@
 
 {{- /* Styles */}}
 
-{{- /* includes */}}
-{{- $includes := slice }}
-{{- $includes = $includes | append (" " | resources.FromString "assets/css/includes-blank.css")}}
+{{- /* license.css stays out of the bundle below so resources.Minify can't strip its attribution comment */}}
+{{- $license_css := (resources.Get "css/license.css") }}
 
-{{- $includes_all := $includes | resources.Concat "assets/css/includes.css" }}
-
-{{- $theme_vars := (resources.Get "css/core/theme-vars.css") }}
-{{- $reset := (resources.Get "css/core/reset.css") }}
-{{- $media := (resources.Get "css/core/zmedia.css") }}
-{{- $license_css := (resources.Get "css/core/license.css") }}
-{{- $common := (resources.Match "css/common/*.css") | resources.Concat "assets/css/common.css" }}
-
-{{- /* markup.highlight.noClasses should be set to `false` */}}
-{{- $chroma_styles := (resources.Get "css/includes/chroma-styles.css") }}
-{{- $chroma_mod := (resources.Get "css/includes/chroma-mod.css") }}
-
-{{- /* order is important */}}
-{{- $core := (slice $theme_vars $reset $common $chroma_styles $chroma_mod $includes_all $media) | resources.Concat "assets/css/core.css" | resources.Minify }}
+{{- /* numeric filename prefixes in css/base/ encode concatenation order */}}
+{{- $core := (resources.Match "css/base/*.css") | resources.Concat "assets/css/core.css" | resources.Minify }}
 {{- $extended := (resources.Match "css/extended/*.css") | resources.Concat "assets/css/extended.css" | resources.Minify }}
 
 {{- /* bundle all required css */}}

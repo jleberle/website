@@ -2,7 +2,7 @@
 
 Source for [jaredeberle.org](https://jaredeberle.org), the personal and academic site of Jared L. Eberle — historian of late 20th century Indigenous activism and lecturer at Oklahoma State University.
 
-Built with [Hugo](https://gohugo.io) using the [PaperMod](https://github.com/adityatelange/hugo-PaperMod) theme.
+Built with [Hugo](https://gohugo.io). The layouts started as a fork of the [PaperMod](https://github.com/adityatelange/hugo-PaperMod) theme; PaperMod is no longer tracked as a dependency — every template and stylesheet now lives in this repo (see [Credits](#credits)).
 
 **Note**: I had Claude write this to document what was created and where to look for issues in the future. Anything on [my site](https://jaredeberle.org) is written solely by me, Claude is banned from making any edits to content itself.
 
@@ -122,11 +122,9 @@ Two stages, two tools:
 
 The first three share `layouts/_partials/responsive-img.html` — the single source of truth for breakpoints and the `sizes` hint (sized to the 680px content column), so they can't drift apart. Each smaller variant is only generated when the source is wider than that breakpoint; the original is always included as the largest `srcset` candidate (so a `srcset` is still emitted for images that only exceed one breakpoint, e.g. 400–800px). Every `<img>` gets explicit `width`/`height` to prevent layout shift (paired with a global `img { height: auto }` so constrained widths keep the aspect ratio), `decoding="async"`, and lazy-loading — except the single-page cover, which loads eagerly with `fetchpriority="high"` as the likely LCP element. AVIF encoding uses Hugo's default quality (no `imaging` override in `hugo.yaml`).
 
-> **Gotcha:** Hugo *extended* can resize AVIF, but two upstream PaperMod templates don't process it out of the box, so both are overridden here:
-> - `cover.html` — its hardcoded `$processableFormats` list omits `avif`; the override appends it.
-> - `figure.html` — the stock shortcode emits a plain `<img>` with no resizing; the override resolves `src` as a page resource and uses the `responsive-img` partial (falling back to a plain `<img>` for external/static sources, and keeping the `#center` centering fragment).
->
-> If you re-pull either file from the theme, re-apply these (see the PaperMod-update notes below) or those images silently fall back to full-size, unsized downloads.
+> **Gotcha:** Hugo *extended* can resize AVIF, but PaperMod's original templates didn't process it out of the box, so both were rewritten:
+> - `cover.html` — its hardcoded `$processableFormats` list omitted `avif`; this version appends it.
+> - `figure.html` — the stock shortcode emitted a plain `<img>` with no resizing; this version resolves `src` as a page resource and uses the `responsive-img` partial (falling back to a plain `<img>` for external/static sources, and keeping the `#center` centering fragment).
 
 **Bundle resources publish only when invoked.** `build.publishResources` is `false` site-wide (see the comment in `hugo.yaml`), so Hugo no longer copies unreferenced originals into `public/`. Any template that references a page-bundle file must resolve it (`.Resources.Get`/`GetMatch`) and invoke `.RelPermalink`/`.Permalink` — never build the URL as a string, or the file won't be published. `scripts/preflight.sh`'s reference scan catches violations.
 
@@ -140,7 +138,7 @@ The first three share `layouts/_partials/responsive-img.html` — the single sou
 | `scripts/preflight.sh` | Pre-push gate: build + warnings, CSP check, offline link check, published-reference scan (`--strict` fails on warnings) |
 | `scripts/to-avif.sh` | Convert images to AVIF + JPEG (for OG images); `--og-only` re-optimizes the OG JPEG without touching the AVIF |
 | `scripts/archive-links.sh` | Check all posts for dead links and replace with Wayback Machine snapshots |
-| `scripts/csp-hashes.sh` | Regenerate / verify Content Security Policy hashes (inline styles *and* scripts) after Hugo or PaperMod updates |
+| `scripts/csp-hashes.sh` | Regenerate / verify Content Security Policy hashes (inline styles *and* scripts) after Hugo updates or template changes |
 | `scripts/sync-hugo-version.sh` | Update GitHub Actions and StaticHost Hugo versions to match local Hugo |
 
 Preflight and CI helpers that are not normally called by hand live under
@@ -164,89 +162,26 @@ The site deploys automatically via [statichost.eu](https://statichost.eu) on eve
 ### After upgrading Hugo locally
 Run `scripts/sync-hugo-version.sh` to update the Hugo versions in `statichost.yml` and `.github/workflows/site-checks.yml` to match. The weekly Homebrew job will notify you when Hugo updates — its notification also reminds you to run `scripts/csp-hashes.sh --check`, because a changed minifier can silently invalidate the CSP hashes (see below).
 
-### After updating PaperMod
+### Theme history
 
-**1. Pull the update**
-```sh
-git submodule update --remote themes/PaperMod
-```
-
-**2. Build and check for errors**
-```sh
-hugo server
-```
-
-If it builds cleanly, most things are fine. If it fails, the error will point at what broke.
-
-**3. Check the most likely conflict files**
-
-Diff each override against its updated PaperMod source:
-
-```sh
-diff themes/PaperMod/layouts/_partials/cover.html layouts/_partials/cover.html
-diff themes/PaperMod/layouts/_markup/render-image.html layouts/_markup/render-image.html
-diff themes/PaperMod/layouts/_shortcodes/figure.html layouts/shortcodes/figure.html
-diff themes/PaperMod/layouts/404.html layouts/404.html
-diff themes/PaperMod/layouts/_partials/header.html layouts/_partials/header.html
-diff themes/PaperMod/layouts/_partials/home_info.html layouts/_partials/home_info.html
-diff themes/PaperMod/layouts/_partials/footer.html layouts/_partials/footer.html
-diff themes/PaperMod/layouts/_partials/head.html layouts/_partials/head.html
-diff themes/PaperMod/layouts/_partials/extend_head.html layouts/_partials/extend_head.html
-diff themes/PaperMod/layouts/_partials/post_meta.html layouts/_partials/post_meta.html
-diff themes/PaperMod/layouts/_partials/social_icons.html layouts/_partials/social_icons.html
-diff themes/PaperMod/layouts/_partials/templates/_funcs/get-page-images.html layouts/_partials/templates/_funcs/get-page-images.html
-diff themes/PaperMod/layouts/_partials/templates/opengraph.html layouts/_partials/templates/opengraph.html
-diff themes/PaperMod/layouts/_partials/templates/schema_json.html layouts/_partials/templates/schema_json.html
-diff themes/PaperMod/layouts/_partials/templates/twitter_cards.html layouts/_partials/templates/twitter_cards.html
-diff themes/PaperMod/layouts/baseof.html layouts/baseof.html
-diff themes/PaperMod/layouts/list.html layouts/list.html
-diff themes/PaperMod/layouts/single.html layouts/single.html
-diff themes/PaperMod/layouts/archives.html layouts/archives.html
-diff themes/PaperMod/layouts/robots.txt layouts/robots.txt
-diff themes/PaperMod/layouts/rss.xml layouts/rss.xml
-diff themes/PaperMod/layouts/index.json layouts/index.json
-```
-
-For each diff: if PaperMod changed unrelated lines, copy their new version and re-apply the change noted below. If they changed the same lines, merge manually.
-
-- `layouts/_partials/cover.html` — `($cover | fingerprint).RelPermalink` instead of `.Permalink`; and `avif` appended to `$processableFormats` so AVIF covers get responsive variants (see [Images](#images))
-- `layouts/_markup/render-image.html` — resolves Markdown images to page/assets resources, emits responsive AVIF `srcset`/`sizes`/dimensions via `responsive-img`, fingerprints non-raster resources, adds `decoding="async"` and `data-lightbox-src`, and always emits `alt`
-- `layouts/shortcodes/figure.html` — resolves `src` to a page resource and uses the `responsive-img` partial for the AVIF `srcset` + `width`/`height` (see [Images](#images)); always emits `alt` (never copied from the caption) and warns at build when both are missing; the stock shortcode does no image processing
-- `layouts/404.html` — replaces PaperMod's bare `404` with the styled not-found panel and helpful local links
-- `layouts/_partials/header.html` — the header logo uses a processed local resource with `.RelPermalink` so it stays crisp on high-DPR screens without hard-wiring production URLs into local or preview builds
-- `layouts/_partials/home_info.html` — the home avatar resolves `imageUrl` as a resource and emits 1x/2x fingerprinted AVIF variants (`$img.Resize … | fingerprint`, `.RelPermalink`); also adds the microformats2 `h-card` markup (see [Images](#images))
-- `layouts/_partials/footer.html` — thin local wrapper that calls `site_footer.html` for the custom multi-column footer and `footer_behavior.html` for the PaperMod footer hooks/scripts; compare PaperMod's footer scripts against `footer_behavior.html` after theme updates
-- `layouts/_partials/head.html` — uses the stored list paginator to self-canonicalize paginated list pages and emit `rel=prev`/`rel=next`
-- `layouts/_partials/extend_head.html` — adds `humans.txt`, the web manifest, Newsreader preload, and the fingerprinted/minified deferred JS bundle; changes here can affect CSP and resource loading
-- `layouts/_partials/post_meta.html` — uses `collections.NewScratch`, emits `dt-published`, includes updated dates when different from publish dates, and marks the author with `p-author`
-- `layouts/_partials/social_icons.html` — adds visible labels, `rel="me"`, and the custom icon fallback path through `custom_icons.html`
-- `layouts/_partials/templates/_funcs/get-page-images.html` — fingerprints site asset images used in metadata and preserves relative/absolute URL data for downstream templates
-- `layouts/_partials/templates/opengraph.html` — jpeg OG companion lookup and `site.Language.Lang`
-- `layouts/_partials/templates/schema_json.html` — uses a resized portrait for Person schema and resolves cover page resources so schema images are published with `build.publishResources=false`
-- `layouts/_partials/templates/twitter_cards.html` — uses JPEG cover companions for X/Twitter cards and emits `twitter:image:alt`
-- `layouts/baseof.html` — `.home` class on body for home page, `.Language.Direction`, and early list-paginator storage for `<head>` metadata
-- `layouts/list.html` — keeps the PaperMod list loop but uses `RelPermalink`, microformats, local pagination links, stored paginator data, and delegates the custom home-page grid to `layouts/_partials/home_sections.html`
-- `layouts/single.html` — adds microformats, source/review context metadata, a simplified top metadata line, a separate updated/edit footer metadata line, and relative tag links
-- `layouts/archives.html` — adds archive filters and data attributes for `assets/js/archive-filters.js`, plus relative post links
-- `layouts/robots.txt` — keeps the sitemap but replaces PaperMod's environment-based allow/disallow with explicit allow rules plus AI/training crawler disallows
-- `layouts/rss.xml` — aligns the home RSS feed with the JSON feed sections, uses the square site icon for channel image, absolutizes feed content URLs, and includes cover images
-- `layouts/index.json` — uses local `RelPermalink` values in the Fuse search index
-
-**4. Re-check the CSP hashes**
-
-A PaperMod update can change an inline style or script without failing the build, which silently invalidates a CSP hash. Run `scripts/csp-hashes.sh --check` and re-hash if it reports drift (see [Content Security Policy hashes](#content-security-policy-hashes)).
-
-**5. Commit the submodule update**
-```sh
-git add themes/PaperMod
-git commit -m "Update PaperMod to latest"
-```
+This site no longer tracks PaperMod as a dependency — there is no `themes/`
+submodule and no upstream to diff against. The layouts and core CSS/JS under
+`layouts/`, `assets/css/base/`, `assets/css/license.css`, and
+`assets/js/{fastsearch,fuse.basic.min,license}.js` originated in PaperMod and
+were vendored directly into this repo; `assets/css/extended/` and the heavily
+modified layouts (`single.html`, `list.html`, `cover.html`, `figure.html`,
+etc.) are local rewrites on top of that base. Dead PaperMod-only code (unused
+shortcodes, the multi-language `translation_list` partial, the disabled
+`comments` hook, etc.) was pruned rather than carried forward once it no
+longer needed to stay drop-in compatible with a theme. Treat all of it as
+first-class local code — `git log`/`git blame` are the way to understand why
+a given file looks the way it does, not a theme diff.
 
 ### Content Security Policy hashes
 
-The `Content-Security-Policy` header in `static/_headers` allows PaperMod's inline `<style>` and `<script>` blocks by their exact SHA-256 hashes — there is **no `'unsafe-inline'`** in `script-src` or `style-src`. The hashes cover the bytes Hugo's minifier actually emits, so they break if either PaperMod changes a theme style/script **or** Hugo changes how it minifies. When a script hash breaks, the browser silently blocks that script (e.g. dark-mode-on-load or the theme toggle stops working) with only a console CSP error — so verify after upgrades.
+The `Content-Security-Policy` header in `static/_headers` allows the site's inline `<style>` and `<script>` blocks by their exact SHA-256 hashes — there is **no `'unsafe-inline'`** in `script-src` or `style-src`. The hashes cover the bytes Hugo's minifier actually emits, so they break if a template's inline style/script changes **or** Hugo changes how it minifies. When a script hash breaks, the browser silently blocks that script (e.g. dark-mode-on-load or the theme toggle stops working) with only a console CSP error — so verify after upgrades.
 
-Currently hashed scripts: the FOUC theme-on-load setter, the theme toggle, and the menu-scroll / anchor-smooth-scroll handler. PaperMod's scroll-to-top script is intentionally dropped via `disableScrollToTop: true` in `hugo.yaml` so it needs no hash; re-enabling it would require adding its hash.
+Currently hashed scripts: the FOUC theme-on-load setter, the theme toggle, and the menu-scroll / anchor-smooth-scroll handler. The vendored scroll-to-top script is intentionally dropped via `disableScrollToTop: true` in `hugo.yaml` so it needs no hash; re-enabling it would require adding its hash.
 
 ```sh
 scripts/csp-hashes.sh             # build, then print current hashes to paste into static/_headers
@@ -281,7 +216,7 @@ If you add a new section (e.g. `content/essays/`):
 
 ## Credits
 
-- [PaperMod](https://github.com/adityatelange/hugo-PaperMod) — the Hugo theme this site is built on.
+- [PaperMod](https://github.com/adityatelange/hugo-PaperMod) — the Hugo theme this site's layouts and core CSS/JS originated from (MIT licensed); no longer tracked as a dependency, see [Theme history](#theme-history).
 - [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — the inspiration for the color palette and where dark mode's cyan is pulled from.
 - [Newsreader](https://fonts.google.com/specimen/Newsreader) by Production Type ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted serif used for body and heading type (`static/fonts/`, declared in `assets/css/extended/fonts.css`).
 

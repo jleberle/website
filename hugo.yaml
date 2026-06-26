@@ -8,10 +8,8 @@ title: Jared L. Eberle
 copyright: "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)"
 
 # ------------------------------------------------------------
-# Theme and build behavior
+# Build behavior
 # ------------------------------------------------------------
-theme: ["PaperMod"]
-
 enableRobotsTXT: true
 cleanDestinationDir: true
 enableGitInfo: true
@@ -164,7 +162,6 @@ params:
   disableThemeToggle: false
   disableSpecial1stPost: false
   disableScrollToTop: true
-  comments: false
   hidemeta: false
   hideSummary: false
 
