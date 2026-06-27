@@ -1,7 +1,9 @@
 /* ------------------------------------------------------------
-   Review and quote source apparatus. Reviews now lead with a
-   bibliographic block before the prose, while quote sources sit
-   at the end as an attribution line.
+   Review and quote source apparatus, plus multi-part series
+   navigation. Reviews now lead with a bibliographic block before
+   the prose, while quote sources sit at the end as an attribution
+   line. Series nav (layouts/_partials/series_nav.html) reuses the
+   same kicker label and link styling.
    ------------------------------------------------------------ */
 .post-context {
     color: var(--secondary);
@@ -57,4 +59,21 @@
 .post-context a:hover {
     color: var(--accent);
     text-underline-offset: 0.25rem;
+}
+
+.series-nav {
+    margin: 1.1rem 0 0;
+}
+
+.series-nav-list {
+    margin: 0;
+    padding: 0;
+    list-style: decimal inside;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.series-nav-list li.current {
+    color: var(--primary);
+    font-weight: 600;
 }

@@ -1,0 +1,28 @@
+{{- /* Multi-part post series. Set `series: some-slug` in front matter on
+       every part; they're linked together automatically, ordered by date.
+       No-op for posts with no series param or whose series has only one
+       member. */ -}}
+{{- with .Params.series }}
+{{- $seriesKey := . }}
+{{- $siblings := (where site.RegularPages "Params.series" $seriesKey).ByDate }}
+{{- if gt (len $siblings) 1 }}
+{{- $total := len $siblings }}
+{{- $currentNum := 0 }}
+{{- $page := $ }}
+{{- range $i, $p := $siblings }}{{ if eq $p.RelPermalink $page.RelPermalink }}{{ $currentNum = add $i 1 }}{{ end }}{{ end }}
+<div class="post-context series-nav" aria-label="Series navigation">
+  <span class="post-context-kicker">Part {{ $currentNum }} of {{ $total }} in this series</span>
+  <ol class="series-nav-list">
+    {{- range $siblings }}
+    <li{{ if eq .RelPermalink $page.RelPermalink }} class="current" aria-current="page"{{ end }}>
+      {{- if eq .RelPermalink $page.RelPermalink }}
+      {{ .Title }}
+      {{- else }}
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      {{- end }}
+    </li>
+    {{- end }}
+  </ol>
+</div>
+{{- end }}
+{{- end }}

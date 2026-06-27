@@ -1,0 +1,75 @@
+/* ------------------------------------------------------------
+   Print stylesheet. Strips interactive/on-screen-only chrome and
+   forces a light, ink-efficient palette regardless of which theme
+   was active on screen, so a printed CV or article reads as a
+   clean document rather than carrying dark-mode colors or
+   unusable controls (nav, carousel arrows, theme toggle) onto
+   paper. Loads after every other extended/ file alphabetically
+   except prose.css onward, so its overrides win on source order
+   alone in most cases; a few get !important since this file
+   loads *before* toc.css/social.css/tables.css and needs to beat
+   them regardless of order.
+   ------------------------------------------------------------ */
+@media print {
+    :root,
+    :root[data-theme="dark"] {
+        --theme: #ffffff;
+        --entry: #ffffff;
+        --primary: #000000;
+        --content: #1a1a1a;
+        --secondary: #444444;
+        --tertiary: #eeeeee;
+        --code-bg: #f3f3f3;
+        --code-block-bg: #f3f3f3;
+        --border: #cccccc;
+        --link: #000000;
+        --accent: #000000;
+        --rule: #999999;
+        --quote-rule: #999999;
+    }
+
+    /* Code block text is hardcoded light-on-dark for the always-dark
+       on-screen treatment (15-md-content.css); needs a dark color of
+       its own against the light print background set above. */
+    .md-content pre code {
+        color: #111111;
+    }
+
+    .header,
+    .site-footer,
+    .skip-link,
+    .archive-filters,
+    .pagination,
+    .paginav,
+    .top-link,
+    #theme-toggle,
+    .toc,
+    .carousel-btn,
+    .carousel-dots,
+    #lightbox-overlay,
+    /* CV's "Download the PDF version" link — redundant once you're
+       already printing (same selector cv.css uses to center it). */
+    .post-content > p:first-child:has(a[href$=".pdf"]) {
+        display: none !important;
+    }
+
+    /* Show every carousel slide stacked instead of just the active one —
+       there's no "click next" on paper. */
+    .carousel-slide {
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    .post-content h2,
+    .post-content h3 {
+        break-after: avoid;
+    }
+
+    .main {
+        max-width: 100%;
+    }
+}
