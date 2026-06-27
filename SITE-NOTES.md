@@ -238,6 +238,18 @@ by actually visiting pages, not just reasoning about the code):
   card.jpg`, 1000×688) already existed for exactly this purpose — visible
   in a comment in `rss.xml` describing it as "the OG card" — but nothing
   actually read it. Both templates now fall back to it as a final tier.
+- **Related posts**: `layouts/_partials/related_posts.html` uses Hugo's
+  built-in `.Related` against pages in `mainSections`, with `related:` in
+  `hugo.yaml` restricted to the `tags` index only (Hugo's default config
+  also scores by keyword/date proximity, which would surface undated
+  coincidences as "related" with no actual topical overlap — not wanted
+  here). Up to 3 results, ranked by shared-tag count, no-op if nothing
+  shares a tag. Sits in the post footer, after the tags block and before
+  the prev/next chronological nav, reusing the same `.post-context` kicker
+  styling as series-nav/review-context. Verified against real content
+  (e.g. "Dennis Banks FBI File" correctly surfaces 3 other 1970s/AIM-tagged
+  posts, ranked by shared-tag count) — not committed yet, built for you to
+  inspect first.
 
 ## Explicitly declined (with reasoning, so it isn't re-litigated by accident)
 
@@ -256,12 +268,6 @@ by actually visiting pages, not just reasoning about the code):
 
 ## Open / pending — for you to decide, not done
 
-- **Related posts** (by shared tags, at the bottom of articles) — **you
-  asked to hold this for your own assessment**, not yes or no yet. Nothing
-  built. If you want it: needs a design/placement decision (how many, where,
-  by tag overlap or category), then it's a straightforward `where`/`intersect`
-  query in `single.html` plus matching CSS — not a big lift once you decide
-  the shape of it.
 - **VoiceOver screen-reader pass** — see Accessibility above. Only
   remaining manual-testing gap.
 - **"As of [date]" / last-reviewed disclaimer for older historical posts**

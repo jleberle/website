@@ -1,0 +1,15 @@
+{{- /* Up to 3 other articles/reviews/quotes sharing the most tags with this
+       page (related: config in hugo.yaml restricts matching to tags only).
+       No-op if nothing shares a tag with this page. */ -}}
+{{- $candidates := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $related := $candidates.Related . | first 3 }}
+{{- with $related }}
+<div class="post-context related-posts" aria-label="Related posts">
+  <span class="post-context-kicker">Related</span>
+  <ul class="related-posts-list">
+    {{- range . }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- end }}
+  </ul>
+</div>
+{{- end }}

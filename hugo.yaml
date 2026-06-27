@@ -52,6 +52,19 @@ taxonomies:
   tag: tags
   series: series
 
+# "Related" footer block (layouts/_partials/related_posts.html) matches on
+# shared tags only - Hugo's default config also scores by keyword and date
+# proximity, which would surface undated coincidences as "related" with no
+# actual topical overlap. threshold: 0 means any shared tag counts; the
+# template caps the result count, so this doesn't need to do that filtering.
+related:
+  threshold: 0
+  includeNewer: true
+  toLower: false
+  indices:
+    - name: tags
+      weight: 100
+
 menu:
   main:
     - identifier: about
