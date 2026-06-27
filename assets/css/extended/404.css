@@ -30,6 +30,10 @@
 }
 
 .not-found-nav {
+    /* Reset the 160px/700 inherited from .not-found (base/10-404.css),
+       which was only ever meant to size the big numeral. */
+    font-size: 1rem;
+    font-weight: 400;
     display: flex;
     gap: 1.5rem;
     justify-content: center;
