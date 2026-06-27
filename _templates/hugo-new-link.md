@@ -12,7 +12,7 @@ const slug = title.toLowerCase()
 
 const description = (await tp.system.prompt("Description (optional)")) || "";
 const summary = (await tp.system.prompt("Summary override (optional)")) || "";
-const series = (await tp.system.prompt("Series slug, for multi-part posts (optional)")) || "";
+const series = (await tp.system.prompt('Series name, for multi-part posts (optional; same name on every part, e.g. "My Summer With Claude")')) || "";
 const sourceTitle = (await tp.system.prompt("Source title (optional)")) || "";
 const sourceAuthor = (await tp.system.prompt("Source author (optional)")) || "";
 const sourceYear = (await tp.system.prompt("Source year (optional)")) || "";

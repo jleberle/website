@@ -24,7 +24,17 @@
   <meta name="twitter:image" content="{{ .Permalink }}">
   <meta name="twitter:image:alt" content="{{ $imgAlt }}">
 {{- else }}
+  {{- /* Text-only pages with no cover and no in-body image: fall back to
+         the site-wide share card (site.Params.images, assets/images/card.jpg). */}}
+  {{- with index site.Params.images 0 }}
+    {{- with resources.Get (strings.TrimPrefix "/" .) }}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ .Permalink }}">
+  <meta name="twitter:image:alt" content="{{ $imgAlt }}">
+    {{- end }}
+  {{- else }}
   <meta name="twitter:card" content="summary">
+  {{- end }}
 {{- end }}
 {{- end }}
 

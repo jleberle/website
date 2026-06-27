@@ -107,14 +107,25 @@ re-deriving it from git history.
   rest are page bundles.
 - Courses are slugged by catalog number (`content/courses/3793/` etc.), not
   by title — intentional, matches how the university catalogs them.
-- **Series support** (new): set `series: some-slug` in front matter on every
-  part of a multi-post series; `layouts/_partials/series_nav.html` finds all
-  pages sharing that value, orders them by date, and renders a "Part X of N"
-  block with links to every part, right under the post description. No-op
-  if the field is absent or only one post has a given value. Currently set
-  on `content/articles/2026-06-24-my-summer-with-claude-pt-1-maintenance/`
-  with value `my-summer-with-claude`; future parts need the same value added
-  by hand (Claude doesn't touch `content/`).
+- **Series support**: `series` is a real taxonomy (`hugo.yaml`), same status
+  as `categories`/`tags`. Set `series: "A Series Name"` in front matter on
+  every part — a **natural display name**, not a hyphenated slug; Hugo
+  title-cases each word of a taxonomy term but doesn't turn hyphens into
+  spaces, so a slug-style value renders as the literal ugly "My-Summer-
+  With-Claude" instead of "My Summer With Claude." Same convention as
+  tags/categories, which are already written as natural strings (`"Indigenous
+  History"`, not `indigenous-history`).
+  `layouts/_partials/series_nav.html` reads `.GetTerms "series"`, orders the
+  term's pages by date, and renders a "Part X of N" block with links to
+  every part, right under the post description. No-op if the field is
+  absent or the series has only one member. Being a taxonomy also means:
+  `/series/` and `/series/<term>/` browse pages exist automatically (same
+  generic `taxonomy.html`/`list.html` used by tags/categories), and
+  `templates/opengraph.html`'s `og:see_also` block — written assuming this
+  taxonomy would exist, dead until now — is live.
+  Currently set on `content/articles/2026-06-24-my-summer-with-claude-pt-1-maintenance/`
+  with value `series: "My Summer With Claude"`. Future parts need the same
+  value added by hand.
 - Reviews can carry `reviewed_*` bibliographic fields; quotes can carry
   `source_*` fields. Both render via the shared `post_context.html` partial,
   which `series_nav.html` deliberately mirrors visually (same
@@ -211,6 +222,22 @@ by actually visiting pages, not just reasoning about the code):
   directly) — worth a real Cmd+P sanity check on the CV page next time
   you're near it.
 - **Series navigation** — see Content model above.
+- **Adaptive `theme-color`**: `head.html` previously emitted one static
+  `<meta name="theme-color" content="#2e2e33">` always — fine in dark mode,
+  wrong in light mode, where mobile browser chrome (Safari address bar,
+  Android Chrome) rendered dark gray above the warm cream light-mode page.
+  Now two `media`-scoped tags (`#f6edd8` light / `#1d1e20` dark, matching
+  `--theme` exactly in both palettes) so the chrome always matches. The PWA
+  manifest's `theme_color` stays a single static value — manifests don't
+  support per-scheme values, and that one only paints the installed-app
+  icon/splash, not live browser chrome.
+- **Site-default OG/Twitter share image**: text-only posts and all `quotes`
+  (flat files, no images) previously got a card with **no image at all** —
+  `opengraph.html`/`twitter_cards.html` only tried the post's cover, then
+  any in-body image, then gave up. `site.Params.images` (`assets/images/
+  card.jpg`, 1000×688) already existed for exactly this purpose — visible
+  in a comment in `rss.xml` describing it as "the OG card" — but nothing
+  actually read it. Both templates now fall back to it as a final tier.
 
 ## Explicitly declined (with reasoning, so it isn't re-litigated by accident)
 

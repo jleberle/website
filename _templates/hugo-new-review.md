@@ -12,7 +12,7 @@ const slug = title.toLowerCase()
 
 const description = (await tp.system.prompt("Description (optional)")) || "";
 const summary = (await tp.system.prompt("Summary override (optional)")) || "";
-const series = (await tp.system.prompt("Series slug, for multi-part posts (optional)")) || "";
+const series = (await tp.system.prompt('Series name, for multi-part posts (optional; same name on every part, e.g. "My Summer With Claude")')) || "";
 const reviewedType = (await tp.system.prompt("Reviewed type, e.g. Book/Film (optional)")) || "";
 const reviewedTitle = (await tp.system.prompt("Reviewed work title (optional)")) || "";
 const reviewedAuthor = (await tp.system.prompt("Reviewed work author/creator (optional)")) || "";

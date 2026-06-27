@@ -67,6 +67,17 @@
       {{- end }}
       <meta property="og:image:alt" content="{{ $imgAlt }}">
     {{- end }}
+  {{- else }}
+    {{- /* Text-only pages with no cover and no in-body image: fall back to
+           the site-wide share card (site.Params.images, assets/images/card.jpg). */}}
+    {{- with index site.Params.images 0 }}
+      {{- with resources.Get (strings.TrimPrefix "/" .) }}
+      <meta property="og:image" content="{{ .Permalink }}">
+      <meta property="og:image:width" content="{{ .Width }}">
+      <meta property="og:image:height" content="{{ .Height }}">
+      <meta property="og:image:alt" content="{{ $imgAlt }}">
+      {{- end }}
+    {{- end }}
   {{- end }}
 {{- end }}
 

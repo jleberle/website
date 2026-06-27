@@ -101,7 +101,7 @@ BASE="$TODAY-$SLUG"
 
 DESCRIPTION=$(read_optional "Description (optional)")
 SUMMARY=$(read_optional "Summary override (optional)")
-SERIES=$(read_optional "Series slug, for multi-part posts (optional)")
+SERIES=$(read_optional 'Series name, for multi-part posts (optional; same name on every part, e.g. "My Summer With Claude")')
 TAGS=$(read_optional "Tags, comma-separated (optional)")
 
 REVIEWED_TYPE=""

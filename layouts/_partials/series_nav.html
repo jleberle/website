@@ -1,10 +1,12 @@
-{{- /* Multi-part post series. Set `series: some-slug` in front matter on
-       every part; they're linked together automatically, ordered by date.
-       No-op for posts with no series param or whose series has only one
-       member. */ -}}
-{{- with .Params.series }}
-{{- $seriesKey := . }}
-{{- $siblings := (where site.RegularPages "Params.series" $seriesKey).ByDate }}
+{{- /* Multi-part post series. Set `series: "A Series Name"` in front
+       matter on every part — a natural display name, same as tags/
+       categories, not a hyphenated slug (Hugo title-cases each word of
+       the taxonomy term but won't turn hyphens into spaces). The same
+       value on every part links them together automatically via the
+       `series` taxonomy (hugo.yaml), ordered by date. No-op for posts
+       with no series param or whose series has only one member. */ -}}
+{{- with .GetTerms "series" }}
+{{- $siblings := (index . 0).Pages.ByDate }}
 {{- if gt (len $siblings) 1 }}
 {{- $total := len $siblings }}
 {{- $currentNum := 0 }}
