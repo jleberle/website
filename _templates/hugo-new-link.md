@@ -12,6 +12,7 @@ const slug = title.toLowerCase()
 
 const description = (await tp.system.prompt("Description (optional)")) || "";
 const summary = (await tp.system.prompt("Summary override (optional)")) || "";
+const series = (await tp.system.prompt("Series slug, for multi-part posts (optional)")) || "";
 const sourceTitle = (await tp.system.prompt("Source title (optional)")) || "";
 const sourceAuthor = (await tp.system.prompt("Source author (optional)")) || "";
 const sourceYear = (await tp.system.prompt("Source year (optional)")) || "";
@@ -36,6 +37,7 @@ tR += `date: ${q(timestamp)}\n`;
 tR += "draft: true\n";
 tR += field("description", description);
 tR += field("summary", summary);
+tR += field("series", series);
 tR += field("source_title", sourceTitle);
 tR += field("source_author", sourceAuthor);
 tR += field("source_year", sourceYear);

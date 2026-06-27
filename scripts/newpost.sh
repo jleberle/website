@@ -101,6 +101,7 @@ BASE="$TODAY-$SLUG"
 
 DESCRIPTION=$(read_optional "Description (optional)")
 SUMMARY=$(read_optional "Summary override (optional)")
+SERIES=$(read_optional "Series slug, for multi-part posts (optional)")
 TAGS=$(read_optional "Tags, comma-separated (optional)")
 
 REVIEWED_TYPE=""
@@ -194,6 +195,7 @@ author: Jared L. Eberle
 EOF
       field "description" "$DESCRIPTION"
       field "summary" "$SUMMARY"
+      field "series" "$SERIES"
       list_field "categories" "$CATEGORIES"
       list_field "tags" "$TAGS"
       $ADD_COVER && cover_block false
@@ -213,6 +215,7 @@ draft: true
 EOF
       field "description" "$DESCRIPTION"
       field "summary" "$SUMMARY"
+      field "series" "$SERIES"
       field "reviewed_type" "$REVIEWED_TYPE"
       field "reviewed_title" "$REVIEWED_TITLE"
       field "reviewed_author" "$REVIEWED_AUTHOR"
@@ -239,6 +242,7 @@ author: Jared L. Eberle
 EOF
       field "description" "$DESCRIPTION"
       field "summary" "$SUMMARY"
+      field "series" "$SERIES"
       field "source_title" "$SOURCE_TITLE"
       field "source_author" "$SOURCE_AUTHOR"
       field "source_year" "$SOURCE_YEAR"

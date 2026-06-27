@@ -12,6 +12,7 @@ const slug = title.toLowerCase()
 
 const description = (await tp.system.prompt("Description (optional)")) || "";
 const summary = (await tp.system.prompt("Summary override (optional)")) || "";
+const series = (await tp.system.prompt("Series slug, for multi-part posts (optional)")) || "";
 const tags = (await tp.system.prompt("Tags, comma-separated (optional)")) || "";
 const categories = (await tp.system.prompt("Categories, comma-separated (optional)")) || "";
 const wantsCover = /^y(es)?$/i.test(((await tp.system.prompt("Add cover metadata? yes/no")) || "").trim());
@@ -35,6 +36,7 @@ tR += `date: ${q(timestamp)}\n`;
 tR += "draft: true\n";
 tR += field("description", description);
 tR += field("summary", summary);
+tR += field("series", series);
 tR += listField("categories", categories);
 tR += listField("tags", tags);
 if (wantsCover) {

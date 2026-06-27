@@ -12,6 +12,7 @@ const slug = title.toLowerCase()
 
 const description = (await tp.system.prompt("Description (optional)")) || "";
 const summary = (await tp.system.prompt("Summary override (optional)")) || "";
+const series = (await tp.system.prompt("Series slug, for multi-part posts (optional)")) || "";
 const reviewedType = (await tp.system.prompt("Reviewed type, e.g. Book/Film (optional)")) || "";
 const reviewedTitle = (await tp.system.prompt("Reviewed work title (optional)")) || "";
 const reviewedAuthor = (await tp.system.prompt("Reviewed work author/creator (optional)")) || "";
@@ -42,6 +43,7 @@ tR += `date: ${q(timestamp)}\n`;
 tR += "draft: true\n";
 tR += field("description", description);
 tR += field("summary", summary);
+tR += field("series", series);
 tR += field("reviewed_type", reviewedType);
 tR += field("reviewed_title", reviewedTitle);
 tR += field("reviewed_author", reviewedAuthor);
