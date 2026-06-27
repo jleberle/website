@@ -241,6 +241,17 @@ by actually visiting pages, not just reasoning about the code):
     the 800w original now fetches the 480w candidate (360w at 1×). The
     `width`/`height` attrs stay the intrinsic dimensions (for CLS); only the
     `sizes` hint changed.
+  - *LCP image lazy-loaded / no fetchpriority* (category & section list
+    pages) → every list cover was `loading="lazy"` with no fetchpriority,
+    including the first one, which is usually the LCP element on desktop.
+    `cover.html` now takes an `isFirst` flag and gives that cover
+    `loading="eager"` + `fetchpriority="high"` (the rest stay lazy).
+    `list.html` precomputes the index of the first entry with a *visible*
+    cover — skipping entries whose cover is hidden in lists (reviews) or
+    absent — so a mixed article/review page primes the real first image, not
+    blindly entry 0. Verified exactly one eager/high cover per page (zero on
+    all-review lists). Home page is unaffected — `home_sections.html` renders
+    text-only entries, no cover images, so its LCP is text.
 
 ## New features added this pass
 

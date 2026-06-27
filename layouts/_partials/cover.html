@@ -1,7 +1,11 @@
 {{- with .cxt}} {{/* Apply proper context from dict */}}
 {{- if (and .Params.cover.image (not $.isHidden)) }}
 <figure class="entry-cover">
-    {{- $loading := cond $.IsSingle "eager" "lazy" }}
+    {{- /* The LCP image gets eager loading + high fetchpriority: single-page
+           covers, and the first cover on a list/category page (isFirst, passed
+           by list.html). Every other list cover stays lazy. */}}
+    {{- $priority := (or $.IsSingle $.isFirst) }}
+    {{- $loading := cond $priority "eager" "lazy" }}
     {{- $addLink := (and site.Params.cover.linkFullImages $.IsSingle) }}
     {{- $prod := (hugo.IsProduction | or (eq site.Params.env "production")) }}
     {{- $alt := (.Params.cover.alt | default .Params.cover.caption | plainify) }}
@@ -31,7 +35,7 @@
     {{- if $cover -}}
         {{/* i.e it is present in page bundle */}}
         {{- if (and (in $processableFormats $cover.MediaType.SubType) ($responsiveImages) (eq $prod true)) }}
-            <img class="u-featured" loading="{{$loading}}" decoding="async"{{ if $.IsSingle }} fetchpriority="high"{{ end }}
+            <img class="u-featured" loading="{{$loading}}" decoding="async"{{ if $priority }} fetchpriority="high"{{ end }}
                 srcset='{{- range $size := $sizes -}}
                             {{- if (ge $cover.Width $size) }}
                                 {{- printf "%s %s" (($cover.Resize (printf "%sx avif" $size)).RelPermalink) (printf "%sw," $size) }}
@@ -48,11 +52,11 @@
                 data-lightbox-src="{{ $imgdl }}"
                 alt="{{ $alt }}">
         {{- else }}{{/* Unprocessable image or responsive images disabled */}}
-            <img class="u-featured" loading="{{ $loading }}" decoding="async"{{ if $.IsSingle }} fetchpriority="high"{{ end }} src="{{ $imgdl }}"{{ if $cover }} data-lightbox-src="{{ $imgdl }}"{{ end }} alt="{{ $alt }}">
+            <img class="u-featured" loading="{{ $loading }}" decoding="async"{{ if $priority }} fetchpriority="high"{{ end }} src="{{ $imgdl }}"{{ if $cover }} data-lightbox-src="{{ $imgdl }}"{{ end }} alt="{{ $alt }}">
         {{- end }}
     {{- else }}
         {{- /* For absolute urls and external links, no img processing here */}}
-        <img loading="{{ $loading }}" decoding="async"{{ if $.IsSingle }} fetchpriority="high"{{ end }} src="{{ $imgdl }}" alt="{{ $alt }}">
+        <img loading="{{ $loading }}" decoding="async"{{ if $priority }} fetchpriority="high"{{ end }} src="{{ $imgdl }}" alt="{{ $alt }}">
     {{- end }}
 
     {{- if $addLink }}
