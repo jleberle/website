@@ -14,7 +14,7 @@ tags:
 ---
 [Former Senator Jim Abourezk discussing his visit to the occupied town of Wounded Knee in 1973 with the South Dakota CBS affiliate](https://web.archive.org/web/20160611061224/http://www.keloland.com/news/article/news/abourezk-shares-means--mcgovern-memories):
 
-“We got into the Indians’ perimeter and there’s all these Indian Vietnam vets who were there with AK-47′s Kalashnikovs, I don’t know where they got them all, but they had them. And we were driving slowly right, and they were following us, just like that. And the tension, I’m telling you was thick enough to slice,” Abourezk said.
+> “We got into the Indians’ perimeter and there’s all these Indian Vietnam vets who were there with AK-47′s Kalashnikovs, I don’t know where they got them all, but they had them. And we were driving slowly right, and they were following us, just like that. And the tension, I’m telling you was thick enough to slice,” Abourezk said.
 > 
 > …
 > 
