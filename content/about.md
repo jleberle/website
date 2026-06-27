@@ -23,7 +23,7 @@ I take internet privacy seriously and have worked to keep this site as self-cont
 - Bluesky and Youtube are the only embeds on the site and both are
   click-to-load, so no resources are sent to either unless you click on the embed.
 - Youtube embeds utilize Youtube's privacy enhanced URL.
-- I use one non-system font (Literata) and it's self-hosted.
+- I use one non-system font (Source Serif) and it's self-hosted.
 - No affiliate links or other revenue generating partnerships are on the site.
 
 Additionally, I've worked to make this site as environmentally friendly as possible meaning the home page uses only [0.089g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor.[^1] In terms of my [biggest page](/articles/past-and-future-of-indian-rodeo-in-las-vegas/), it only uses 0.183g and downloads at under 600KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data (10 times the amount). This is the result of a number of very opinionated decisions:

@@ -1,20 +1,12 @@
 /* ------------------------------------------------------------
-   Metadata typography. Traditional serif small-caps treatment for
+   Metadata typography. Small-caps/lowercase treatment for
    theme-rendered "furniture" — post dates, entry footers, tags,
-   breadcrumbs, pagination, archive filters, header navigation and
-   the site footer. Social pills outside the footer intentionally
-   keep their sans UI treatment in their component file.
-   ------------------------------------------------------------ */
-.post-meta,
-.entry-footer,
-.post-meta-footer,
-.breadcrumbs,
-.breadcrumb,
-.pagination,
-.home-section-all {
-    font-family: var(--meta-font);
-}
-
+   breadcrumbs, pagination. These inherit the surrounding serif
+   body face. Header navigation and the site footer are the sans
+   exceptions that still want this small-caps look — set directly
+   in their own component files and handled separately below. The
+   archive filter pills are also sans (archive-filters.css), but
+   skip the small-caps look entirely, like the social pills. */
 .post-meta,
 .entry-footer,
 .post-meta-footer,
@@ -22,17 +14,9 @@
 .breadcrumb,
 .pagination,
 .home-section-all,
-.menu,
 .home-list-date,
-.archive-filter,
 .post-tags,
-.post-tags::before,
-.site-footer,
-.site-footer .social-icons a,
-.footer-heading,
-.footer-name,
-.footer-theme-toggle,
-.footer-feed {
+.post-tags::before {
     font-family: inherit;
     font-variant-caps: all-small-caps;
     text-transform: lowercase;
@@ -43,6 +27,19 @@
 .post-meta-footer {
     font-size: 0.78rem;
     line-height: 1.45;
+}
+
+/* Same small-caps/lowercase treatment as above, but kept separate from
+   font-family: inherit — these set their own font-family directly in
+   header.css/footer.css and have no meta-font ancestor to inherit from. */
+.menu,
+.site-footer,
+.site-footer .social-icons a,
+.footer-theme-toggle,
+.footer-feed {
+    font-variant-caps: all-small-caps;
+    text-transform: lowercase;
+    letter-spacing: 0.015em;
 }
 
 .post-meta-footer {
