@@ -252,6 +252,20 @@ by actually visiting pages, not just reasoning about the code):
     blindly entry 0. Verified exactly one eager/high cover per page (zero on
     all-review lists). Home page is unaffected — `home_sections.html` renders
     text-only entries, no cover images, so its LCP is text.
+  - *Properly size images, round 2* (in-content figures & carousel) →
+    `responsive-img.html` (shared by the markdown image hook, the figure
+    shortcode and the carousel) had drifted from the actual layout: its
+    `sizes` claimed `720px`, its `src` fallback `800`, and its candidate
+    widths were `400 800 1200` — but the content column is **680px**
+    (`serif.css` overrides `--main-width` from the PaperMod base 720 to 680).
+    With no candidate near 680, a full-width 800px-source figure/slide was
+    served at 800w for a 680px slot at 1× desktop. Fixed by aligning the
+    helper to the real column: widths `400 680 800 1200` (680 added), `sizes`
+    `…680px`, `display` fallback `680`. Now a 1× desktop full-width image
+    fetches the 680w candidate; 800w/1200w remain for 2×/3× and mobile. This
+    is the single source of truth, so every figure, carousel slide and inline
+    image benefits. (The earlier *round 1* covered the cover `<img>`, which
+    has its own `sizes` in `cover.html` and is unaffected by this helper.)
 
 ## New features added this pass
 

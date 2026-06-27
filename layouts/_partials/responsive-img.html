@@ -6,9 +6,11 @@
 
   Input  (dict):
     resource  R          required — a page/asset image resource
-    widths    (slice …)  optional — candidate widths (default 400 800 1200)
+    widths    (slice …)  optional — candidate widths (default 400 680 800 1200;
+                                    680 = the content column at 1x desktop, so
+                                    a full-width image isn't forced up to 800)
     display   N          optional — width used for the `src` fallback that
-                                    non-srcset browsers load (default 800;
+                                    non-srcset browsers load (default 680;
                                     matches the 680px content column at 1x)
 
   Returns (dict):
@@ -20,8 +22,8 @@
     height  display height (string, for the height attribute)
 */ -}}
 {{- $r := .resource -}}
-{{- $widths := .widths | default (slice 400 800 1200) -}}
-{{- $displayW := .display | default 800 -}}
+{{- $widths := .widths | default (slice 400 680 800 1200) -}}
+{{- $displayW := .display | default 680 -}}
 {{- $full := $r | fingerprint -}}
 {{- $parts := slice -}}
 {{- $display := $r -}}
@@ -42,6 +44,6 @@
      "full"   $full.RelPermalink
      "src"    $disp.RelPermalink
      "srcset" $srcset
-     "sizes"  "(max-width: 768px) 100vw, 720px"
+     "sizes"  "(max-width: 768px) 100vw, 680px"
      "width"  (string $display.Width)
      "height" (string $display.Height)) -}}
