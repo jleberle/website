@@ -17,7 +17,15 @@
     {{- /* We are not using the .Param.cover.relative to decide the location of image */}}
     {{- /* If we have the image in pageBundle or globalResources we can process the image */}}
 
-    {{- $sizes := (slice "360" "480" "720" "1080" "1500") }}
+    {{- /* Candidate widths. 520 matches the list column cap (cover.css/list.css
+           cap list covers at 520px, the 1x desktop slot); 650/660 sit right at
+           the real mobile display sizes — list covers paint ~367px CSS and
+           single covers ~374px CSS, which at the ~1.75 DPR of Lighthouse's
+           mobile profile land at ~643px and ~655px. Without those two the
+           browser had to jump 480 -> 720 (or the original), shipping an image
+           far larger than the slot. The list and single `sizes` below differ,
+           so each context resolves to its own nearest candidate (650 vs 660). */}}
+    {{- $sizes := (slice "360" "480" "520" "650" "660" "720" "1080" "1500") }}
     {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
     {{- if hugo.IsExtended -}}
         {{- $processableFormats = $processableFormats | append "webp" "avif" -}}
@@ -44,10 +52,17 @@
                         {{- printf "%s %dw" ($cover.RelPermalink) ($cover.Width) }}'
                 src="{{ $cover.RelPermalink }}"
                 {{- /* Match the actual rendered slot so the browser doesn't
-                       fetch a 720w candidate for a small box. Single covers
-                       float at 220px (cover.css), unfloating to full width
-                       at <=640px; list covers are min(100%, 520px). */}}
-                sizes="{{ if $.IsSingle }}(max-width: 640px) 100vw, 220px{{ else }}(max-width: 520px) 100vw, 520px{{ end }}"
+                       fetch a 720w candidate (or the original) for a small box.
+                       Single covers float at 220px (cover.css), unfloating to
+                       full width at <=640px; the unfloated image paints ~38px
+                       narrower than the viewport (page gutters + the 4px frame
+                       padding + 1px border). List covers are min(100%, 520px),
+                       and below the ~562px viewport where the 520 cap stops
+                       biting they paint ~44px narrower than the viewport (page
+                       + card gutters + 1px border). Declaring the content width
+                       (not 100vw) keeps the mobile candidate at ~650/660w
+                       instead of forcing the original. */}}
+                sizes="{{ if $.IsSingle }}(max-width: 640px) calc(100vw - 38px), 220px{{ else }}(max-width: 560px) calc(100vw - 44px), 520px{{ end }}"
                 width="{{ $cover.Width }}" height="{{ $cover.Height }}"
                 data-lightbox-src="{{ $imgdl }}"
                 alt="{{ $alt }}">
