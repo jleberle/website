@@ -39,7 +39,11 @@
                         {{- end }}
                         {{- printf "%s %dw" ($cover.RelPermalink) ($cover.Width) }}'
                 src="{{ $cover.RelPermalink }}"
-                sizes="(min-width: 768px) 720px, 100vw"
+                {{- /* Match the actual rendered slot so the browser doesn't
+                       fetch a 720w candidate for a small box. Single covers
+                       float at 220px (cover.css), unfloating to full width
+                       at <=640px; list covers are min(100%, 520px). */}}
+                sizes="{{ if $.IsSingle }}(max-width: 640px) 100vw, 220px{{ else }}(max-width: 520px) 100vw, 520px{{ end }}"
                 width="{{ $cover.Width }}" height="{{ $cover.Height }}"
                 data-lightbox-src="{{ $imgdl }}"
                 alt="{{ $alt }}">

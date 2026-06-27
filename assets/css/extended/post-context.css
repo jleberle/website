@@ -92,3 +92,12 @@
     font-size: 0.92rem;
     line-height: 1.6;
 }
+
+/* Vertical padding lifts each stacked link to a >=24px tap target (WCAG
+   2.5.8 / Lighthouse); inline-block so the padding takes effect while the
+   series marker stays on the same line. */
+.related-posts-list a,
+.series-nav-list a {
+    display: inline-block;
+    padding-block: 0.2rem;
+}

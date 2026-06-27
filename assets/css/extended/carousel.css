@@ -67,33 +67,51 @@
 .carousel-dots {
     display: flex;
     justify-content: center;
-    gap: 0.4rem;
+    /* No gap: the 24px dot buttons sit edge-to-edge, leaving ~16px between
+       the 8px visual dots — tight enough to read as a group. */
+    gap: 0;
     padding: 0.6rem 0 0.2rem;
 }
 
+/* A 24x24 hit target (WCAG 2.5.8 / Lighthouse tap-target minimum) wrapping
+   an 8px visual dot drawn with ::before, so the dots stay small but tap
+   comfortably. */
 .carousel-dot {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.carousel-dot::before {
+    content: "";
     width: 8px;
     height: 8px;
-    padding: 0;
     border-radius: 50%;
     background: var(--rule);
-    cursor: pointer;
     transition: background 0.2s;
-    border: none;
 }
 
 .carousel-dot:focus-visible {
+    outline: none;
+}
+
+.carousel-dot:focus-visible::before {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
 }
 
-.carousel-dot.active {
+.carousel-dot.active::before {
     background: var(--primary);
 }
 
 @media (prefers-reduced-motion: reduce) {
     .carousel-btn,
-    .carousel-dot {
+    .carousel-dot::before {
         transition: none;
     }
 }

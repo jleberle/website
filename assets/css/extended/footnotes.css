@@ -39,10 +39,16 @@
     margin-bottom: 0.5em;
 }
 
-/* Back-link arrow: quiet by default, accent on hover, no underline. */
+/* Back-link arrow. Takes the clay --link color from prose.css's
+   `.md-content a:not(.anchor)` rule — same specificity (0,2,1) as this
+   selector, and prose.css loads later in the alphabetical extended/ glob,
+   so it wins the tie (a `color:` here would be dead). Underlined so it
+   doesn't read as a link by color alone inside the footnote text block
+   (WCAG 1.4.1 / Lighthouse "links rely on color"); accent on hover. */
 .post-content a.footnote-backref {
-    text-decoration: none;
-    color: var(--secondary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
     margin-inline-start: 0.3em;
 }
 

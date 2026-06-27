@@ -207,6 +207,40 @@ by actually visiting pages, not just reasoning about the code):
   anywhere defining `.page-footer` margin. Fixed with `margin-top:
   var(--gap)` (correctly responsive — 24px desktop, 14px under the 768px
   mobile breakpoint where `--gap` itself shrinks).
+- **Lighthouse a11y nits** (PageSpeed flagged a few non-100 pages):
+  - *Links rely on color* → the footnote back-link arrow (`.footnote-backref`)
+    had `text-decoration: none` and sits in the footnote text block. Now
+    underlined. Uncovered a same-specificity cascade bug while there: its
+    `color: var(--secondary)` was always dead — `prose.css`'s
+    `.md-content a:not(.anchor)` ties at (0,2,1) and loads later, so the
+    backref has always rendered clay (`--link`), not the muted secondary the
+    old comment claimed. Left it clay (matches every other link), removed the
+    dead declaration, fixed the comment. *(If the original "quiet/muted"
+    intent is preferred, bump specificity with `.footnotes` — flagged, not
+    done.)*
+  - *Touch targets too small* → carousel dots were 8×8px; now a 24×24px hit
+    target wrapping an 8px visual dot drawn with `::before` (gap dropped to 0
+    so the visible dots stay grouped). The carousel prev/next buttons were
+    already ~45px and fine; carousel images are excluded from the lightbox
+    (`lightbox.js:66`) so there's no overlapping-target issue.
+  - *Touch targets too small* → `.related-posts-list`/`.series-nav-list`
+    links were ~23.5px tall stacked; now `inline-block` + `padding-block:
+    0.2rem` → 30px. (Series-nav wasn't Lighthouse-flagged only because no
+    2-part series exists yet to render it — fixed pre-emptively since it's
+    structurally identical.) `.post-tags` deliberately left alone: it's an
+    inline comma-separated keyword line, which is the WCAG 2.5.8 inline-text
+    exemption — making those block targets would break the design.
+  - *Improve image delivery / properly size images* → the cover `<img>`
+    (`cover.html`) hardcoded `sizes="(min-width: 768px) 720px, 100vw"`, but
+    a single-page cover is a floated **220px** book-jacket (`cover.css`),
+    unfloating to full width only at ≤640px; list covers are
+    `min(100%, 520px)`. So the browser fetched a 720/800w candidate for a
+    ~210px slot. `sizes` is now context-aware via `$.IsSingle`:
+    `(max-width: 640px) 100vw, 220px` for single, `(max-width: 520px) 100vw,
+    520px` for list. Verified: a desktop single cover that previously pulled
+    the 800w original now fetches the 480w candidate (360w at 1×). The
+    `width`/`height` attrs stay the intrinsic dimensions (for CLS); only the
+    `sizes` hint changed.
 
 ## New features added this pass
 
