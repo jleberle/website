@@ -20,6 +20,13 @@ body.list:not(.home) .post-entry:last-of-type {
     border-bottom: 1px solid var(--border);
 }
 
+/* Breathing room between the last entry's divider and the pagination
+   control — .page-footer otherwise has no margin anywhere and sits
+   flush against the border above. */
+.page-footer {
+    margin-top: var(--gap);
+}
+
 body.list:not(.home) .post-entry:hover,
 body.list:not(.home) .post-entry:focus-within {
     transform: none;
