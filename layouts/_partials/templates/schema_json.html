@@ -113,13 +113,15 @@
   {{- if $i }}, {{end -}}
   {
     "@type": "Person",
-    "name": {{ $v }}
+    "name": {{ $v }},
+    "url": {{ site.Home.Permalink }}
   }
   {{- end }}],
     {{- else -}}
   {
     "@type": "Person",
-    "name": {{ . }}
+    "name": {{ . }},
+    "url": {{ site.Home.Permalink }}
   },
     {{- end -}}
   {{- end }}
