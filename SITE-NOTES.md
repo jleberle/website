@@ -217,10 +217,12 @@ by actually visiting pages, not just reasoning about the code):
   which theme was active on screen (so dark mode never prints dark, and the
   always-dark code-block background doesn't print as a giant black
   rectangle), and shows every carousel slide stacked instead of just the
-  active one. Verified by code-level reasoning about cascade order/
-  specificity (no print rendering tool was available to screenshot it
-  directly) — worth a real Cmd+P sanity check on the CV page next time
-  you're near it.
+  active one. Also hides `.related-posts` (cross-page nav, useless on
+  paper, same logic as `.paginav`) while deliberately keeping `.series-nav`
+  ("Part 2 of N" is meaningful printed context). Verified by code-level
+  reasoning about cascade order/specificity (no print rendering tool was
+  available to screenshot it directly) — worth a real Cmd+P sanity check on
+  the CV page next time you're near it.
 - **Series navigation** — see Content model above.
 - **Adaptive `theme-color`**: `head.html` previously emitted one static
   `<meta name="theme-color" content="#2e2e33">` always — fine in dark mode,
