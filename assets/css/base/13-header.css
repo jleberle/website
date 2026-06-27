@@ -50,37 +50,6 @@
     display: none;
 }
 
-.logo-switches {
-    display: inline-flex;
-    gap: 0.4rem;
-    align-items: inherit;
-    min-height: stretch;
-    flex-wrap: inherit;
-}
-
-.logo-switches>* {
-    min-height: inherit;
-    align-items: center;
-    display: inline-flex;
-}
-
-.nav-sep {
-    color: var(--secondary);
-}
-
-.lang-menu * {
-    display: inherit;
-    min-height: inherit;
-    align-items: inherit;
-}
-
-.lang-menu a {
-    font-size: 1rem;
-    font-weight: 500;
-    padding: 0 0.4rem;
-    display: inline-flex
-}
-
 .menu {
     list-style: none;
     word-break: keep-all;

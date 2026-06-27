@@ -11,7 +11,6 @@
 .entry-footer,
 .post-meta-footer,
 .breadcrumbs,
-.breadcrumb,
 .pagination,
 .home-section-all,
 .home-list-date,
@@ -47,7 +46,6 @@
 }
 
 .breadcrumbs a,
-.breadcrumb a,
 .post-meta-footer a {
     color: inherit;
     transition: color 0.15s ease;
@@ -55,8 +53,6 @@
 
 .breadcrumbs a:hover,
 .breadcrumbs a:focus-visible,
-.breadcrumb a:hover,
-.breadcrumb a:focus-visible,
 .post-meta-footer a:hover,
 .post-meta-footer a:focus-visible {
     color: var(--accent);

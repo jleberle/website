@@ -160,7 +160,6 @@ params:
   # PaperMod display behavior.
   defaultTheme: auto
   disableThemeToggle: false
-  disableSpecial1stPost: false
   disableScrollToTop: true
   hidemeta: false
   hideSummary: false
@@ -212,7 +211,7 @@ params:
     # Rendered as Markdown in the left column of layouts/_partials/site_footer.html.
     # The literal {year} token is replaced with the current build year.
     about: >-
-      © 2011-{year} Jared L. Eberle. All content here is copyrighted under [creative commons](https://creativecommons.org/licenses/by-nc-sa/4.0/) and is [only human crafted](/humans.txt). Built with [Hugo](https://gohugo.io/) and [PaperMod](https://github.com/adityatelange/hugo-PaperMod/) in Oklahoma.
+      © 2011-{year} Jared L. Eberle. All content here is copyrighted under [creative commons](https://creativecommons.org/licenses/by-nc-sa/4.0/) and is [only human crafted](/humans.txt). Built with [Hugo](https://gohugo.io/) in Oklahoma.
 
   cover:
     hidden: true # hidden by default, but still available to structured data
