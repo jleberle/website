@@ -32,7 +32,11 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-{{- $attributes := merge .Attributes (dict "alt" .Text "src" $src "title" (.Title | transform.HTMLEscape) "loading" "lazy" "decoding" "async") -}}
+{{- /* Defaults first, then author attributes win: a leading/hero image marked
+       `{loading="eager" fetchpriority="high"}` overrides the lazy default so the
+       LCP image isn't lazy-loaded. Computed src/srcset/width/height are merged
+       on top below, so those can't be clobbered from content. */ -}}
+{{- $attributes := merge (dict "alt" .Text "src" $src "title" (.Title | transform.HTMLEscape) "loading" "lazy" "decoding" "async") .Attributes -}}
 {{- if $fullSrc -}}
   {{- $attributes = merge $attributes (dict "data-lightbox-src" $fullSrc) -}}
 {{- end -}}

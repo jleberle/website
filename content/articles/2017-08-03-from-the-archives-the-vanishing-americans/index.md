@@ -20,6 +20,7 @@ cover:
   relative: true
 ---
 ![Article on the Vanishing Americans a Native Rock Band](cover.avif)
+{loading="eager" fetchpriority="high"}
 
 Here's a little article I pulled from a digital copy of *The Indian*, May 28, 1970
 

@@ -127,6 +127,20 @@ markup:
   # Keep noClasses true unless switching to class-based Chroma CSS.
   highlight:
     noClasses: true
+  goldmark:
+    parser:
+      # Don't wrap a standalone image in <p>, so a trailing attribute list
+      # binds to the image (block) rather than leaking as inline text. Content
+      # images are styled via `.md-content img` (margins/radius on the img
+      # itself), so dropping the <p> wrapper changes no rendering.
+      wrapStandAloneImageWithinParagraph: false
+      attribute:
+        # Allow Markdown attribute lists on block elements, e.g. a standalone
+        # image trailing `{loading="eager" fetchpriority="high"}`. Used to mark
+        # a post's leading hero image as the LCP so render-image.html serves it
+        # eagerly instead of lazily (the cover figure is hidden in single view
+        # on those posts). title stays at its default (true).
+        block: true
 
 # ------------------------------------------------------------
 # Module mounts and ignored authoring files
