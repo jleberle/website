@@ -143,6 +143,23 @@ markup:
         block: true
 
 # ------------------------------------------------------------
+# Image processing (applies only to Hugo-resized output — the responsive
+# srcset candidates and the profile/schema resizes; source files served
+# as-is, e.g. the cover.jpg OG companions, are unaffected).
+#
+# Set explicitly for reproducibility (so a Hugo upgrade can't shift it
+# silently). 50 is a deliberate choice for AVIF: measured across all resized
+# candidates it cuts total weight ~30% vs Hugo's implicit AVIF default
+# (~q57-equivalent), and was eyeballed at the actual display sizes on the
+# hardest cases — a book cover with fine subtitle text and a detailed rodeo
+# photo — with no visible loss or gradient banding. Note Hugo's AVIF quality
+# is monotonic but NOT a JPEG-style scale: q65/q75 produce *larger* files
+# than the default, so don't "raise" this expecting smaller output.
+# ------------------------------------------------------------
+imaging:
+  quality: 50
+
+# ------------------------------------------------------------
 # Module mounts and ignored authoring files
 # ------------------------------------------------------------
 module:
