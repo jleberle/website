@@ -9,12 +9,24 @@
        its RelPermalink. The invocation is what publishes the file now that
        build.publishResources is false site-wide. */ -}}
 {{- $href := .Destination -}}
+{{- $lightbox := "" -}}
 {{- if and (not $url.IsAbs) (not (strings.HasPrefix $url.Path "/")) -}}
   {{- $path := strings.TrimPrefix "./" $url.Path -}}
   {{- with and $path (or (.PageInner.Resources.Get $path) (resources.Get $path)) -}}
-    {{- $href = .RelPermalink -}}
+    {{- if eq .MediaType.MainType "image" -}}
+      {{- /* A prose link pointing at an image opens it in the lightbox
+             (lightbox.js keys off data-lightbox-src). Fingerprint it like the
+             cover/content-image pipeline so it's content-addressed and ships
+             once, and keep href on the image so the link still works (opens
+             the file) without JS. */ -}}
+      {{- $fp := . | fingerprint -}}
+      {{- $href = $fp.RelPermalink -}}
+      {{- $lightbox = $fp.RelPermalink -}}
+    {{- else -}}
+      {{- $href = .RelPermalink -}}
+    {{- end -}}
     {{- with $url.RawQuery }}{{ $href = printf "%s?%s" $href . }}{{ end -}}
     {{- with $url.Fragment }}{{ $href = printf "%s#%s" $href . }}{{ end -}}
   {{- end -}}
 {{- end -}}
-<a href="{{ $href | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ with $rel }} rel="{{ delimit . " " }}"{{ end }}>{{ .Text | safeHTML }}</a>{{- "" -}}
+<a href="{{ $href | safeURL }}"{{ with $lightbox }} data-lightbox-src="{{ . }}"{{ end }}{{ with .Title }} title="{{ . }}"{{ end }}{{ with $rel }} rel="{{ delimit . " " }}"{{ end }}>{{ .Text | safeHTML }}</a>{{- "" -}}

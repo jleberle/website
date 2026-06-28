@@ -40,10 +40,12 @@
     });
   }
 
-  function openLightbox(img) {
-    lastFocused = img;
-    overlayImg.src = img.dataset.lightboxSrc || img.src;
-    overlayImg.alt = img.alt || img.getAttribute('aria-label') || '';
+  // Accepts either an <img> (covers, content images) or an <a> (a prose link
+  // pointing at an image, tagged data-lightbox-src by render-link.html).
+  function openLightbox(el) {
+    lastFocused = el;
+    overlayImg.src = el.dataset.lightboxSrc || el.src || el.getAttribute('href');
+    overlayImg.alt = el.alt || el.getAttribute('aria-label') || (el.textContent || '').trim();
     overlay.classList.add('is-open');
     document.body.style.overflow = 'hidden';
     overlayClose.focus();
@@ -84,6 +86,20 @@
           e.preventDefault();
           openLightbox(img);
         }
+      });
+    });
+
+    // Prose links pointing at an image (render-link.html tags them with
+    // data-lightbox-src) open in the lightbox instead of navigating. Anchors
+    // are natively focusable and Enter fires a click, so no extra keyboard
+    // wiring is needed. Skip an image-as-link wrapper (the inner img already
+    // handles its own click) to avoid a double-open.
+    document.querySelectorAll('.post-content a[data-lightbox-src], .md-content a[data-lightbox-src]').forEach(function (a) {
+      if (a.querySelector('img[data-lightbox-src]')) return;
+      a.setAttribute('aria-haspopup', 'dialog');
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        openLightbox(a);
       });
     });
   });
