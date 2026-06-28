@@ -1,12 +1,10 @@
 <link type="text/plain" rel="author" href="{{ "humans.txt" | relURL }}">
 <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
 {{- /* Registered link relations (WHATWG link types) so browsers, extensions and
-       crawlers can find the policy/terms from any page. Both are sections on the
-       About page — anchors depend on the exact headings (autoheadingid, github
-       style): "## Privacy" -> #privacy, "## Terms of Use" -> #terms-of-use. Keep
-       those headings in sync with these hrefs. */}}
-<link rel="privacy-policy" href="{{ "about/" | relURL }}#privacy">
-<link rel="terms-of-service" href="{{ "about/" | relURL }}#terms-of-use">
+       crawlers can find the policy/terms from any page. Each points at its own
+       dedicated page (content/privacy.md, content/terms.md). */}}
+<link rel="privacy-policy" href="{{ "privacy/" | relURL }}">
+<link rel="terms-of-service" href="{{ "terms/" | relURL }}">
 {{- /* Preload the regular face (latin) so body text swaps in fast.
        Only this one weight/subset is preloaded; the rest load on demand via
        their unicode-range / weight (see assets/css/extended/fonts.css). */}}

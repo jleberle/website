@@ -201,6 +201,29 @@
     flex-shrink: 0;
 }
 
+/* --- Legal sub-row (Privacy / Terms) beneath the columns. Sits outside the
+   grid, set off by a hairline so it reads as a deliberate strip rather than a
+   stray fifth column. --- */
+.footer-legal {
+    max-width: var(--nav-width);
+    margin-inline: auto;
+    padding: 1.1rem var(--gap) 1.7rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    gap: 1.25rem;
+    font-size: 0.8rem;
+}
+
+.footer-legal a {
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.footer-legal a:hover {
+    color: var(--accent);
+}
+
 /* Once four columns feel pinched, move to an intentional 2x2 layout:
    Copyright/About | Explore, then Connect | Subscribe. */
 @media (max-width: 860px) {
@@ -253,5 +276,10 @@
 
     .footer-connect .social-icons {
         align-items: center;
+    }
+
+    /* Match the centered single-column stack. */
+    .footer-legal {
+        justify-content: center;
     }
 }

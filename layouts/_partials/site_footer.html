@@ -88,5 +88,12 @@
         {{- end }}
 
     </div>
+
+    {{- /* Legal sub-row beneath the columns (kept out of the main nav/menu, so
+           it stays out of the header). */}}
+    <div class="footer-legal">
+        <a href="{{ "privacy/" | relLangURL }}">Privacy</a>
+        <a href="{{ "terms/" | relLangURL }}">Terms of Use</a>
+    </div>
 </footer>
 {{- end }}
