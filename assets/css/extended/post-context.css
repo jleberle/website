@@ -11,6 +11,12 @@
 }
 
 .post-context-review {
+    /* flow-root gives the block its own formatting context so it sits beside
+       the floated single cover instead of flowing under it — the top/bottom
+       rules then span only the meta's own column and stop short of the cover
+       photo rather than running into it. Below 640px the cover unfloats, so
+       this is inert (the block is full width with no float beside it). */
+    display: flow-root;
     margin: 1.4rem 0 1.8rem;
     padding: 0.9rem 0 1rem;
     border-top: 1px solid var(--border);
