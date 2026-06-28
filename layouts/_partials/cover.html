@@ -49,8 +49,13 @@
                                 {{- printf "%s %s" (($cover.Resize (printf "%sx avif" $size)).RelPermalink) (printf "%sw," $size) }}
                             {{- end }}
                         {{- end }}
-                        {{- printf "%s %dw" ($cover.RelPermalink) ($cover.Width) }}'
-                src="{{ $cover.RelPermalink }}"
+                        {{- /* Largest candidate + src use the *fingerprinted* original
+                               ($imgdl), same file the lightbox/schema reference — so the
+                               original ships once (not raw + fingerprinted) and the content
+                               hash makes the immutable cache header in _headers correct on
+                               in-place cover replacement. Mirrors responsive-img.html. */ -}}
+                        {{- printf "%s %dw" $imgdl ($cover.Width) }}'
+                src="{{ $imgdl }}"
                 {{- /* Match the actual rendered slot so the browser doesn't
                        fetch a 720w candidate (or the original) for a small box.
                        Single covers float at 220px (cover.css), unfloating to

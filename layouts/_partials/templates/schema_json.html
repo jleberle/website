@@ -87,9 +87,12 @@
   "inLanguage": {{ .Language.Lang | default "en-us" }},
   {{ if .Params.cover.image -}}
   {{- /* Prefer the resolved page resource: invoking .Permalink publishes the
-         file under build.publishResources=false; string-built URLs don't. */ -}}
+         file under build.publishResources=false; string-built URLs don't.
+         Fingerprint it so this points at the same content-hashed file the
+         cover img/lightbox use (cover.html) — the original then ships once
+         rather than as a raw + fingerprinted pair. */ -}}
   {{- with .Resources.GetMatch .Params.cover.image -}}
-  "image": {{ .Permalink }},
+  "image": {{ (. | fingerprint).Permalink }},
   {{- else -}}
   "image":
     {{- if (ne .Params.cover.relative true) -}}

@@ -85,7 +85,9 @@
              .Content, so it's otherwise absent), unless the body embeds it. */ -}}
       {{- with $page.Params.cover.image }}
       {{- $cover := "" }}
-      {{- with $page.Resources.GetMatch . }}{{ $cover = .Permalink }}{{ else }}{{ $cover = print $page.Permalink . }}{{ end }}
+      {{- /* Fingerprint so the feed shares the one content-hashed cover file with
+             the page/schema rather than publishing a second raw copy. */ -}}
+      {{- with $page.Resources.GetMatch . }}{{ $cover = (. | resources.Fingerprint).Permalink }}{{ else }}{{ $cover = print $page.Permalink . }}{{ end }}
       {{- $stem := strings.TrimSuffix (path.Ext .) (path.Base .) }}
       {{- if not (strings.Contains $c (printf "/%s." $stem)) }}
       {{- $alt := $page.Params.cover.alt | default $page.Title }}

@@ -38,7 +38,9 @@
              build.publishResources=false; else join the path onto the URL. */ -}}
       {{- $cover := "" -}}
       {{- with $page.Params.cover.image -}}
-        {{- with $page.Resources.GetMatch . -}}{{ $cover = .Permalink }}{{- else -}}{{ $cover = print $page.Permalink . }}{{- end -}}
+        {{- /* Fingerprint so the feed shares the one content-hashed cover file
+               with the page/schema rather than publishing a second raw copy. */ -}}
+        {{- with $page.Resources.GetMatch . -}}{{ $cover = (. | resources.Fingerprint).Permalink }}{{- else -}}{{ $cover = print $page.Permalink . }}{{- end -}}
       {{- end -}}
       {{- /* Feeds have no base to resolve root-relative URLs and no responsive/
              lightbox JS, so strip those attributes and absolutize src/href.
