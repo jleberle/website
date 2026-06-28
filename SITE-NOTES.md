@@ -130,6 +130,24 @@ re-deriving it from git history.
   `source_*` fields. Both render via the shared `post_context.html` partial,
   which `series_nav.html` deliberately mirrors visually (same
   `.post-context`/kicker-label pattern).
+- **Hero image as LCP** (authoring convention): when a post hides its
+  single-view cover (`cover.hiddenInSingle: true`) but opens the body with
+  that same image, mark the image eager so it isn't lazy-loaded as the LCP.
+  The attribute list goes on its **own line** directly beneath the image,
+  never same-line:
+
+  ```markdown
+  ![alt text](cover.avif)
+  {loading="eager" fetchpriority="high"}
+  ```
+
+  Same-line `![](x){…}` silently does nothing (see the round-2 LCP note in
+  the verification ledger for the mechanism). Currently applied to three
+  posts (tulsa-in-1918, vanishing-americans, bob-engelharts). These in-body
+  attribute tags are rendering directives, not prose or front matter — and
+  they are the one place Claude has touched files under `content/`, added
+  with the owner's sign-off; the "Claude never edits content" rule otherwise
+  stands.
 
 ## Verification ledger (what's actually been confirmed, not assumed)
 
@@ -266,6 +284,41 @@ by actually visiting pages, not just reasoning about the code):
     is the single source of truth, so every figure, carousel slide and inline
     image benefits. (The earlier *round 1* covered the cover `<img>`, which
     has its own `sizes` in `cover.html` and is unaffected by this helper.)
+  - *LCP image lazy-loaded, round 2* (single posts whose cover is hidden in
+    single view) → measured real LCP elements with a `PerformanceObserver`
+    across the home page, a text post, and a cover post: home/text-post LCP
+    is always the first body paragraph (weight 400, already preloaded — the
+    weight-600 heading face never wins, it's always smaller in area than the
+    body block beneath it, so a second font preload would help nothing and
+    would only contend with the cover image's bandwidth). But on the three
+    posts that set `cover.hiddenInSingle: true` and open the body with that
+    same image as a Markdown `![]()`, the *visible* LCP image was
+    `loading="lazy"` with no fetchpriority — `render-image.html` hardcoded
+    `lazy` for every in-content image, with no escape hatch. Fixed by
+    enabling Goldmark `parser.attribute.block` +
+    `wrapStandAloneImageWithinParagraph: false` (`hugo.yaml`) so a standalone
+    image can carry a trailing attribute list, and fixing a merge-order bug
+    in `render-image.html` so author attributes now win over the lazy
+    default instead of being silently clobbered. See the authoring
+    convention under Content model above (own-line attribute syntax is
+    required; same-line is silently swallowed by Goldmark). Verified via
+    `npm run validate` (zero html-validate problems across all 185 pages
+    after the side effect of unwrapping standalone images from their `<p>`
+    — `.md-content img` carries its own margin/radius, so this changed no
+    rendering) and in-browser (all three posts: eager + high fetchpriority,
+    no `<p>` wrapper, no leaked `{…}` text, title-attribute tooltip on the
+    Bob Engelhart image preserved).
+  - *Review-meta rules ran into the floated cover* → on review single pages
+    with `cover.hiddenInSingle: false`, the bibliographic meta block
+    (`.post-context-review`) flowed under the floated 220px cover rather
+    than beside it, so its top/bottom rules spanned the full content column
+    and visibly crossed the cover photo. Fixed with `display: flow-root` on
+    `.post-context-review`, giving it its own block formatting context so
+    it narrows to sit beside the float instead of under it. Inert below the
+    640px breakpoint where the cover unfloats (verified: box is full column
+    width there, same as before). Quote-source variant
+    (`.post-context-source`) untouched — it doesn't share a page with a
+    floated cover in the same way.
   - *Layout shift, every page* → the self-hosted Source Serif 4
     (`fonts.css`) uses `font-display: swap` with no metric-matching, so
     every page reflows once when the web font replaces the Georgia fallback
