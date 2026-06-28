@@ -112,9 +112,19 @@ body.home .home-info {
     font-size: 0.9rem;
 }
 
+/* The title is a real heading (h3) for a11y/outline purposes — see
+   home_sections.html — but visually it must stay a plain flex-row title, not
+   a bold/larger browser-default heading. font: inherit + margin: 0 neutralize
+   the heading box; flex: 1 (moved here from the anchor, now its parent) keeps
+   the row layout identical to before. */
+.home-list-title {
+    margin: 0;
+    font: inherit;
+    flex: 1;
+}
+
 .home-list-entry a {
     color: var(--primary);
-    flex: 1;
     overflow-wrap: anywhere;
 }
 

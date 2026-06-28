@@ -19,7 +19,7 @@
         <h2 class="home-section-title"><a href="{{ $articlesPage.RelPermalink }}">{{ $articlesPage.Title }}</a></h2>
         {{- range $articles }}
         <article class="home-list-entry h-entry">
-            <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
             <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
         </article>
         {{- end }}
@@ -31,7 +31,7 @@
         <h2 class="home-section-title"><a href="{{ $reviewsPage.RelPermalink }}">{{ $reviewsPage.Title }}</a></h2>
         {{- range $reviews }}
         <article class="home-list-entry h-entry">
-            <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
             <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
         </article>
         {{- end }}
@@ -43,7 +43,7 @@
         <h2 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Quotes</a></h2>
         {{- range $quotes }}
         <article class="home-list-entry h-entry">
-            <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
             <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
         </article>
         {{- end }}
@@ -55,7 +55,7 @@
         <h2 class="home-section-title"><a href="{{ $coursesPage.RelPermalink }}">{{ $coursesPage.Title }}</a></h2>
         {{- range $courses }}
         <article class="home-list-entry h-entry">
-            <a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
             <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
         </article>
         {{- end }}
