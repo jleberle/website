@@ -1,0 +1,3 @@
+# ads.txt for jaredeberle.org
+# No ads are served on this site; there are no authorized digital sellers.
+CONTACT=jared@jaredeberle.org

@@ -1,0 +1,8 @@
+# ai.txt — generative-AI usage policy for jaredeberle.org
+# AI crawling, training, and summarization are disallowed for all agents.
+# The authoritative, per-bot list — and the signal crawlers actually honor —
+# lives in robots.txt: https://jaredeberle.org/robots.txt
+# Contact: jared@jaredeberle.org
+
+User-agent: *
+Disallow: /
