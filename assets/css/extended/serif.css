@@ -1,13 +1,16 @@
 /* ------------------------------------------------------------
    Serif body type. Overrides the base sans-serif stack
    (assets/css/base/01-reset.css) with Source Serif 4, a
-   self-hosted text serif (see fonts.css). Georgia is the
-   fallback shown during the font swap and on the rare platform a
-   download fails. Headings, prose and meta inherit from body;
-   code keeps its monospace stack (see mono.css).
+   self-hosted text serif (see fonts.css). 'Source Serif 4 Fallback'
+   is a metrics-matched proxy for Georgia (fonts.css) shown during
+   the font swap, so paragraphs don't reflow when the web font
+   arrives; plain Georgia/Cambria/etc. after it are the true
+   last-resort chain if even that proxy can't resolve. Headings,
+   prose and meta inherit from body; code keeps its monospace stack
+   (see mono.css).
    ------------------------------------------------------------ */
 body {
-    font-family: 'Source Serif 4', Georgia, Cambria, 'Times New Roman', Times, serif;
+    font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, Cambria, 'Times New Roman', Times, serif;
     line-height: 1.7;          /* a touch airier than the 1.6 default,
                                   which serif body text reads better with */
 

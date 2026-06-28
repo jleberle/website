@@ -266,6 +266,31 @@ by actually visiting pages, not just reasoning about the code):
     is the single source of truth, so every figure, carousel slide and inline
     image benefits. (The earlier *round 1* covered the cover `<img>`, which
     has its own `sizes` in `cover.html` and is unaffected by this helper.)
+  - *Layout shift, every page* → the self-hosted Source Serif 4
+    (`fonts.css`) uses `font-display: swap` with no metric-matching, so
+    every page reflows once when the web font replaces the Georgia fallback
+    (different fonts, different glyph widths → different line-wrap points →
+    different paragraph height). Fixed with a `'Source Serif 4 Fallback'`
+    proxy `@font-face` (`src: local('Georgia'), …`, no network fetch) given
+    `size-adjust`/`ascent-override`/`descent-override`/`line-gap-override`,
+    inserted into the `body` font stack between `'Source Serif 4'` and
+    plain `Georgia` (`serif.css`). The `size-adjust` value was measured
+    empirically in a real browser (render the same sentence in both fonts
+    at a fixed size, compare pixel widths: Source Serif 4 ≈4.06% wider) —
+    **not** taken from either font's OS/2 table, after the two standard
+    table-based formulas (`xHeight` ratio vs. `xAvgCharWidth` ratio)
+    disagreed by 30 points; `xAvgCharWidth` is a known-unreliable field
+    across font vendors and would have shipped a visibly wrong scale.
+    Verified by forcing `.post-content` to the fallback face and the real
+    web font in turn and diffing `getBoundingClientRect().height` on a real
+    article — **0px delta** (was effectively the size of the swap-shift
+    before the fix). ascent/descent/line-gap-override matter less than
+    usual here since body `line-height` is a fixed `1.7` multiplier
+    (font-metric-independent), not `normal` — they're included anyway for
+    correctness in inline/baseline contexts where it does matter, computed
+    from Source Serif 4's own OS/2 typo ascent/descent/line-gap divided by
+    the size-adjust factor. Headings inherit `body`'s font-family (no
+    separate declaration), so they're covered automatically.
 
 ## New features added this pass
 
