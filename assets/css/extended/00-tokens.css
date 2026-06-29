@@ -37,9 +37,9 @@
     --prairie-ink:    #253431;
     --prairie-text:   #4f5f57;
     --prairie-muted:  #5b665d;
-    --prairie-rule:   #b8a068;
-    --prairie-border: #ddcfaa;
-    --prairie-ochre:  #9b741d;
+    --prairie-rule:   #a6a6a6;
+    --prairie-border: #c9c9c9;
+    --prairie-quote:  #8c8c8c;
     --theme:         var(--prairie-paper);   /* page background        */
     --entry:         var(--prairie-panel);   /* cards / highlighted bg  */
     --primary:       var(--prairie-ink);     /* headings, strong        */
@@ -50,7 +50,7 @@
     --code-block-bg: var(--base03);          /* code blocks (dark)      */
     --border:        var(--prairie-border);
     --rule:          var(--prairie-rule);    /* hr, rules, hovers       */
-    --quote-rule:    var(--prairie-ochre);
+    --quote-rule:    var(--prairie-quote);
 
     /* Solarized cyan, darkened for AA contrast against the light-gray
        surfaces above (raw --cyan is only ~2.9:1 here, well under the 4.5:1
