@@ -16,11 +16,20 @@
    has ever used a glyph in that range — keeping it just meant
    paying ~206 KiB for an unused subset.
 
-   Weights: 400 (body) and 600 (headings/strong emphasis). Italics at
-   400/600. font-display: swap so
-   text paints immediately in the fallback and re-renders when the
-   web font arrives (the regular face is preloaded in
-   extend_head.html to minimize that swap).
+   Weight: 400 only — bold is synthesized, not shipped. The 600
+   semibold faces (regular + italic) were dropped (-47.7 KB); headings/
+   strong/b still request font-weight: 600 in serif.css, so the browser
+   thickens this 400 face algorithmically instead of downloading a real
+   600 design. Checked side by side against the real 600 face in
+   Chromium (visually near-identical at heading sizes) and confirmed
+   acceptable in Safari and Firefox too (headings, body strong/b, and
+   small-text bold all held up — no clogged counters or artifacts in
+   any of the three). If a future browser/OS update ever makes this
+   look wrong, the real 600 faces are recoverable from git history
+   (last present in commit 7ba5205). font-display: swap so text paints
+   immediately in the fallback and re-renders when the web font
+   arrives (the regular face is preloaded in extend_head.html to
+   minimize that swap).
    ------------------------------------------------------------ */
 
 /* ---- 400 regular ---- */
@@ -40,26 +49,6 @@
     font-weight: 400;
     font-display: swap;
     src: url("/fonts/sourceserif4-400i-latin.woff2") format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-/* ---- 600 semibold (headings) ---- */
-@font-face {
-    font-family: 'Source Serif 4';
-    font-style: normal;
-    font-weight: 600;
-    font-display: swap;
-    src: url("/fonts/sourceserif4-600-latin.woff2") format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-/* ---- 600 semibold italic ---- */
-@font-face {
-    font-family: 'Source Serif 4';
-    font-style: italic;
-    font-weight: 600;
-    font-display: swap;
-    src: url("/fonts/sourceserif4-600i-latin.woff2") format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 

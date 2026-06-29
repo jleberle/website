@@ -483,6 +483,21 @@ by actually visiting pages, not just reasoning about the code):
   (no error, the substitution just won't apply) since those features
   (`ordn`, `frac`/`dnom`/`numr`, `subs`/`sups`) were dropped — add them
   back to `--layout-features` and regenerate if that's ever needed.
+- **The 600 semibold faces are gone; bold is synthesized, not shipped**
+  (90.3 KiB → 43.7 KiB, −51.6%, on top of the resubsetting above — only
+  `sourceserif4-400-latin.woff2` + `sourceserif4-400i-latin.woff2`
+  remain). `serif.css` still requests `font-weight: 600` for headings/
+  `strong`/`b`; with no 600 face declared, the browser algorithmically
+  thickens the 400 face instead. Checked side by side against the real
+  600 face in Chromium (near-identical at heading sizes) and confirmed
+  acceptable in Safari and Firefox too — headings, body `strong`/`b`,
+  and small bold text all held up with no clogged counters. The
+  trade-off: synthetic-bold rendering isn't standardized across
+  engines, so a future browser/OS update could in principle render it
+  differently than tested here. If that ever looks wrong, the real 600
+  faces (both regular and italic, already correctly resubset) are
+  recoverable from git history — last present in commit `7ba5205`,
+  just restore the two files and their `@font-face` blocks.
 - **stylelint** (`.stylelintrc.json`, extends `stylelint-config-standard`) runs
   in `npm run validate` and as a step in `scripts/preflight.sh --full`/CI. Four
   rules are tuned, each backed by a real false-positive found when first
