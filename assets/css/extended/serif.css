@@ -91,16 +91,65 @@ b {
 }
 
 /* Abbreviations (via the {{< abbr >}} shortcode). Small caps so runs of
-   capitals blend into the serif body instead of shouting; the dotted
-   underline + help cursor is the conventional signal for a hover-to-expand
-   title. The tooltip is desktop-hover and screen-reader only — touch
-   devices show nothing, so never rely on it to carry essential meaning. */
+   capitals blend into the serif body instead of shouting (Source Serif 4
+   has a real `smcp` feature, so these are true small-cap glyphs, not the
+   browser-synthesized faux small caps a sans without that feature would
+   fall back to).
+
+   The dotted underline is the static signal that a term is glossed;
+   cursor: pointer (not the old help cursor, which only made sense for a
+   hover-only affordance) signals it's actually actionable. The shortcode
+   gives the <abbr> tabindex="0", so click, tap, and Tab all set :focus the
+   same way — one mechanism covers desktop, touch, and keyboard, instead of
+   a hover tooltip that touch devices simply can't trigger. The tooltip
+   itself is CSS-only (content: attr(title) on ::after), so there's no
+   dismiss logic to write: focusing anything else blurs it shut for free.
+   Styled like the footnote popover (footnotes.css's .fn-popover) for visual
+   consistency — same surface, border, radius, and shadow. */
 .post-content abbr[title] {
+    position: relative;
     font-variant: all-small-caps;
     letter-spacing: 0;
     text-decoration: underline dotted;
     text-underline-offset: 0.2em;
-    cursor: help;
+    cursor: pointer;
+}
+
+.post-content abbr[title]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* left: 0 instead of centering — a short term that wraps to the start of a
+   line sits at the column's left edge, and a centered tooltip would clip
+   its own opening words off the left of the viewport (confirmed in
+   testing). Anchoring left means the tooltip can still run off the right
+   edge for a term near the *end* of a line, but that's the less damaging
+   direction to clip in, and there's no JS here to detect available space
+   and flip sides like a real tooltip library would. */
+.post-content abbr[title]:focus::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 0.4em;
+    width: max-content;
+    max-width: min(85vw, 18em);
+    background: var(--entry);
+    color: var(--content);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 0.35em 0.7em;
+    font-family: var(--meta-font);
+    font-size: 0.78rem;
+    font-variant: normal;
+    letter-spacing: normal;
+    line-height: 1.4;
+    text-align: left;
+    text-decoration: none;
+    box-shadow: 0 4px 18px rgb(0 0 0 / 18%);
+    z-index: 50;
+    pointer-events: none;
 }
 
 /* Form controls don't inherit font-family by default — pull them
