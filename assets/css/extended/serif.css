@@ -94,11 +94,15 @@ b {
     text-decoration-thickness: 1px;
 }
 
-/* Abbreviations (via the {{< abbr >}} shortcode). Public Sans has no
-   `smcp` feature either (same gap as Inter, unlike Source Serif 4), so
-   font-variant: all-small-caps here still falls back to browser-
-   synthesized faux small caps (scaled-down regular capitals) rather than
-   true small-cap glyphs — a real, if minor, quality step down from main.
+/* Abbreviations (via the {{< abbr >}} shortcode). No small caps: dropped
+   because the convention only works if every instance of an acronym in a
+   document goes through the shortcode, and this site doesn't — plenty of
+   plain, unshortcoded full-caps mentions of the same terms appear in the
+   same paragraphs (the shortcode is for subsequent-mention glosses, not
+   every occurrence). A standalone small-capped term next to its own
+   regular-capped neighbors looked inconsistent rather than quieter, and a
+   plain capped acronym is unremarkable in printed historical writing
+   anyway, so there's nothing to fix here typographically.
 
    The dotted underline is the static signal that a term is glossed;
    cursor: pointer (not the old help cursor, which only made sense for a
@@ -112,8 +116,6 @@ b {
    consistency — same surface, border, radius, and shadow. */
 .post-content abbr[title] {
     position: relative;
-    font-variant: all-small-caps;
-    letter-spacing: 0;
     text-decoration: underline dotted;
     text-underline-offset: 0.2em;
     cursor: pointer;
@@ -146,8 +148,6 @@ b {
     padding: 0.35em 0.7em;
     font-family: var(--meta-font);
     font-size: 0.78rem;
-    font-variant: normal;
-    letter-spacing: normal;
     line-height: 1.4;
     text-align: left;
     text-decoration: none;
