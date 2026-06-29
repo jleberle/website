@@ -43,9 +43,9 @@
 }
 
 /* Step down from the theme's 700 weight so the wordmark has presence
-   without shouting, while keeping it tied to the Source Serif 4 body face. */
+   without shouting, while keeping it tied to the Inter body face. */
 .logo a {
-    font-family: "Source Serif 4", Georgia, Cambria, "times new roman", Times, serif;
+    font-family: Inter, Arial, Helvetica, sans-serif;
     font-weight: 600;
     letter-spacing: 0;
     transition: color 0.15s ease;

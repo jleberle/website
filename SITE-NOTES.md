@@ -6,6 +6,52 @@ what's still genuinely open. Written after a long audit/build pass; meant to
 let a future session (human or Claude) pick up context fast without
 re-deriving it from git history.
 
+**This is the `theme-gray-inter` branch, not `main`.** Everything below
+describes `main`'s state except where a note explicitly says otherwise.
+This branch is a self-contained visual/typography experiment, requested
+explicitly as a separate branch so `main` stays untouched:
+- Light mode only: body background and footer/card background both shifted
+  to neutral grays (`--prairie-paper: #f5f5f5`, `--prairie-panel: #e7e7e7`,
+  replacing the earth-tone cream/wheat palette). Dark mode is byte-for-byte
+  unchanged from `main`.
+- Links recolored to Solarized cyan, darkened via `color-mix(in sRGB,
+  var(--cyan), black 30%)` for the resting state (raw `--cyan` is only
+  ~2.9:1 against the new light gray, well under the 4.5:1 AA minimum) and
+  `black 50%` on hover — darkening on hover, the opposite direction from
+  dark mode's lightening, since this is a light surface. Measured in-browser
+  (not just hand-calculated): 5.33:1 against the body, 4.70:1 against the
+  footer/card background, both clear of AA. The now-unused `--prairie-clay`/
+  `--prairie-rust` tokens that used to back `--link`/`--accent` were removed.
+- Body/heading font switched from Source Serif 4 to Inter, self-hosted and
+  subset with the exact same pipeline (see `fonts.css`'s header comment):
+  Google's variable-font delivery instanced to static 400/600 weights via
+  `fontTools.varLib.instancer`, then `pyftsubset` to the same Latin-1
+  Supplement coverage, keeping only the OpenType features Inter actually has
+  that this site's CSS invokes (`ccmp,locl,kern,calt,mark,mkmk,pnum`) plus
+  `--no-hinting`. Inter has no `onum` (oldstyle figures) or `smcp` (small
+  caps) at all, so two existing CSS rules degrade gracefully rather than
+  doing nothing different: `font-variant-numeric: oldstyle-nums` silently
+  no-ops (figures stay default lining, `pnum`'s proportional spacing still
+  applies), and the `abbr` shortcode's `font-variant: all-small-caps` falls
+  back to browser-synthesized faux small caps. `OFL.txt` was replaced with
+  Inter's actual upstream license (rsms/inter, not Adobe's Source Serif 4
+  text). A new metric-matched fallback face was built the same way as
+  Source Serif 4's (empirically measured in-browser, not from OS/2
+  xAvgCharWidth, which is unreliable across vendors): Inter renders ~6.9%
+  wider than Arial at the same size, calibrated against Arial specifically
+  since it's the most cross-platform-available sans (vs. Mac-only Helvetica
+  Neue, measured separately at ~5.9%).
+- Several font-specific code comments elsewhere (`serif.css`, `header.css`)
+  were updated to stop describing Source Serif 4/Georgia specifics that no
+  longer apply on this branch — line-height (1.7), letter-spacing, and the
+  link-underline thickness were *not* independently re-tuned for Inter's
+  different metrics, just carried over; flagged inline as unverified for
+  Inter specifically, not asserted as correct.
+- Full `preflight.sh --full` passes on this branch (stylelint caught and
+  fixed one real issue along the way: Inter is a single-word font name and
+  shouldn't be quoted in `font-family`, unlike multi-word `'Source Serif
+  4'`/`'Inter Fallback'`).
+
 ## Identity and values
 
 - `jaredeberle.org` — personal/academic site for Jared L. Eberle, historian

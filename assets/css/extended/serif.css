@@ -1,23 +1,19 @@
 /* ------------------------------------------------------------
-   Serif body type. Overrides the base sans-serif stack
-   (assets/css/base/01-reset.css) with Source Serif 4, a
-   self-hosted text serif (see fonts.css). 'Source Serif 4 Fallback'
-   is a metrics-matched proxy for Georgia (fonts.css) shown during
-   the font swap, so paragraphs don't reflow when the web font
-   arrives; plain Georgia/Cambria/etc. after it are the true
-   last-resort chain if even that proxy can't resolve. Headings,
-   prose and meta inherit from body; code keeps its monospace stack
-   (see mono.css).
+   Body type. Overrides the base sans-serif stack
+   (assets/css/base/01-reset.css) with Inter, a self-hosted sans
+   (see fonts.css) — theme-gray-inter branch experiment, replacing
+   Source Serif 4 (still the body font on main). 'Inter Fallback' is
+   a metrics-matched proxy for Arial (fonts.css) shown during the
+   font swap, so paragraphs don't reflow when the web font arrives;
+   plain Arial/Helvetica/etc. after it are the true last-resort chain
+   if even that proxy can't resolve. Headings, prose and meta inherit
+   from body; code keeps its monospace stack (see mono.css).
    ------------------------------------------------------------ */
 body {
-    font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, Cambria, 'Times New Roman', Times, serif;
-    line-height: 1.7;          /* a touch airier than the 1.6 default,
-                                  which serif body text reads better with */
-
-    /* No -webkit-font-smoothing override: the default (subpixel where
-       available, grayscale on Retina) renders Source Serif 4 at its
-       intended weight. Forcing `antialiased` thinned the strokes and was
-       part of what made the old Georgia body read soft. */
+    font-family: Inter, 'Inter Fallback', Arial, Helvetica, sans-serif;
+    line-height: 1.7;          /* kept from the previous serif tuning —
+                                  airier than the 1.6 default; not yet
+                                  re-tuned specifically for Inter's metrics */
 }
 
 /* Tighten the reading measure. The theme's 720px column runs ~80
@@ -30,17 +26,20 @@ body {
 
 /* Headings (prose + page title). They inherit the body's 1.7, which is
    too airy for 40/32/24px display type, so a wrapped heading looks gappy.
-   - optimizeLegibility: kerning + ligatures (heading-only; see note above)
+   - optimizeLegibility: kerning precision (heading-only; Inter has no
+     `liga` feature, just `calt` + GPOS kern, so the ligature half of this
+     doesn't apply the way it did for Source Serif 4 — kept for the kerning
+     benefit alone)
    - line-height 1.25: tighter, appropriate for large display type
-   - letter-spacing: neutral tracking; Source Serif 4 has enough character
+   - letter-spacing: neutral tracking; not yet re-evaluated for Inter
+     specifically (carried over from the serif tuning)
    - text-wrap: balance: evens multi-line headings, kills one-word orphans
    - scroll-margin-top: breathing room when an anchor link jumps here */
 h1, h2, h3, h4, h5, h6,
 .post-title {
     text-rendering: optimizeLegibility;
-    font-weight: 600;          /* Source Serif 4 semibold — display weight with
-                                  authority but less bluntness than 700, which
-                                  reads more academic than bloggy */
+    font-weight: 600;          /* Inter semibold — display weight with
+                                  authority but less bluntness than 700 */
     line-height: 1.25;
     letter-spacing: 0;
     text-wrap: balance;
@@ -76,6 +75,11 @@ b {
    pull the deliberate first-line quote-mark indent into the margin. */
 .post-content {
     hanging-punctuation: first;
+
+    /* oldstyle-nums is a no-op on Inter (no `onum` feature) — numerals fall
+       back to default lining figures. proportional-nums still applies
+       (Inter has `pnum`), so spacing stays proportional rather than
+       tabular even though the oldstyle look itself is gone. */
     font-variant-numeric: oldstyle-nums proportional-nums;
 }
 
@@ -84,17 +88,21 @@ b {
 }
 
 /* Cleaner resting underlines for prose links: a thin, slightly dropped
-   line so Georgia's descenders don't collide with it. The theme sets the
-   offset; this pins the thickness for a consistent serif-friendly weight. */
+   line. The theme sets the offset; this pins the thickness for a
+   consistent weight (carried over from the serif tuning — not re-verified
+   against Inter's specific descender shapes). */
 .post-content a {
     text-decoration-thickness: 1px;
 }
 
-/* Abbreviations (via the {{< abbr >}} shortcode). Small caps so runs of
-   capitals blend into the serif body instead of shouting; the dotted
-   underline + help cursor is the conventional signal for a hover-to-expand
-   title. The tooltip is desktop-hover and screen-reader only — touch
-   devices show nothing, so never rely on it to carry essential meaning. */
+/* Abbreviations (via the {{< abbr >}} shortcode). Inter has no `smcp`
+   feature at all (unlike Source Serif 4), so font-variant: all-small-caps
+   here falls back to browser-synthesized faux small caps (scaled-down
+   regular capitals) rather than true small-cap glyphs — a real, if minor,
+   quality step down from main. The dotted underline + help cursor is the
+   conventional signal for a hover-to-expand title. The tooltip is
+   desktop-hover and screen-reader only — touch devices show nothing, so
+   never rely on it to carry essential meaning. */
 .post-content abbr[title] {
     font-variant: all-small-caps;
     letter-spacing: 0;
@@ -104,7 +112,7 @@ b {
 }
 
 /* Form controls don't inherit font-family by default — pull them
-   into the serif stack so search, buttons, etc. match the site. */
+   into the body font stack so search, buttons, etc. match the site. */
 input,
 button,
 textarea,
