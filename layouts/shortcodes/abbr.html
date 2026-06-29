@@ -1,5 +1,12 @@
 {{- /* Inline abbreviation: {{< abbr "WCTU" "Woman's Christian Temperance Union" >}}
-       Renders <abbr title="…">WCTU</abbr>. Mark abbreviations on first use per
-       article; the title shows on desktop hover and to screen readers. */ -}}
+       Renders <abbr title="…">WCTU</abbr>; the title shows on desktop hover
+       and to screen readers. This always displays the short form with the
+       long form hidden behind a tooltip — it's a gloss-on-demand, not a
+       first-use/subsequent-use distinction. So it's backwards for academic
+       style on first mention: spell the term out in plain prose there (full
+       name, abbreviation in parens, as usual), then reach for this shortcode
+       on the subsequent abbreviated mentions, where the tooltip is a helpful
+       reminder for a reader who skipped ahead rather than a substitute for
+       spelling it out. */ -}}
 {{- $short := .Get 0 -}}
 {{- $long := .Get 1 -}}<abbr title="{{ $long }}">{{ $short }}</abbr>&#8288;{{- /* trailing word joiner: ends the output in text, not a tag, so Goldmark keeps the source space after the shortcode (e.g. "the WCTU was") */ -}}
