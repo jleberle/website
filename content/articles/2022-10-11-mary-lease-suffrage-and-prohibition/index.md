@@ -38,7 +38,7 @@ She also notes that the party would probably have adopted a suffrage plank had L
 
 > Although she had been ambivalent concerning woman suffrage at St. Louis, Lease "made an eloquent plea to the end that her sex might be recognized in the state platform." Accordingly, the convention proposed a woman suffrage amendment for the state constitution.[^5]
 
-Digging around Wagner also notes that Lease's political career started in the Women's Christian Temperance Union where she began publicly speaking prior to becoming a full-blown populist.[^6] Postel's citation for Clanton's book is a footnote, which leads us to this:
+Digging around Wagner also notes that Lease's political career started in the Woman's Christian Temperance Union where she began publicly speaking prior to becoming a full-blown populist.[^6] Postel's citation for Clanton's book is a footnote, which leads us to this:
 
 > A strong commitment to woman suffrage and prohibition, two causes she felt were threatened by fusion with Democrats, could explain Mrs. Lease's action in the controversy were it not for the fact that she abandoned the cause of equal suffrage during the summer of 1894, and by 1896 she renounced prohibition (Topeka Daily Capital, September 15, 1894; Topeka State Journal, May 25, 1896). Her actions were unbelievably erratic.[^7]
 
