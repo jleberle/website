@@ -1,21 +1,14 @@
 /* ------------------------------------------------------------
-   Body type. Overrides the base sans-serif stack
-   (assets/css/base/01-reset.css) with Public Sans, a self-hosted
-   sans (see fonts.css) — theme-gray-inter branch experiment,
-   replacing Inter (which itself replaced Source Serif 4, still the
-   body font on main). 'Public Sans Fallback' is a metrics-matched
-   proxy for Arial (fonts.css) shown during the font swap, so
-   paragraphs don't reflow when the web font arrives; plain
-   Arial/Helvetica/etc. after it are the true last-resort chain if
-   even that proxy can't resolve. Headings, prose and meta inherit
-   from body; code keeps its monospace stack (see mono.css).
+   Body type. System-ui font stack — no web font download for body
+   text, so there is no FOUT or layout shift for paragraphs. Users
+   get San Francisco on Apple, Segoe UI on Windows, Roboto on
+   Android. Headings use Source Serif 4 (fonts.css) for editorial
+   contrast. Code keeps its monospace stack (see mono.css).
    ------------------------------------------------------------ */
 body {
-    font-family: "Public Sans", 'Public Sans Fallback', Arial, Helvetica, sans-serif;
-    line-height: 1.7;          /* kept from the previous serif tuning —
-                                  airier than the 1.6 default; not yet
-                                  re-tuned specifically for Public Sans's
-                                  metrics */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
 }
 
 /* Tighten the reading measure. The theme's 720px column runs ~80
@@ -26,22 +19,18 @@ body {
     --main-width: 680px;
 }
 
-/* Headings (prose + page title). They inherit the body's 1.7, which is
-   too airy for 40/32/24px display type, so a wrapped heading looks gappy.
-   - optimizeLegibility: kerning + ligatures (heading-only; Public Sans has
-     a real `liga` feature, unlike Inter, so both halves of this apply)
-   - line-height 1.25: tighter, appropriate for large display type
-   - letter-spacing: neutral tracking; not yet re-evaluated for Public Sans
-     specifically (carried over from the serif tuning)
-   - text-wrap: balance: evens multi-line headings, kills one-word orphans
-   - scroll-margin-top: breathing room when an anchor link jumps here */
+/* Headings (prose + page title). Source Serif 4 for editorial contrast
+   against the system-sans body. Bold is synthesized from the 400 face
+   (no real 600 shipped). letter-spacing: -0.01em tightens the tracking
+   slightly — serif display type at large sizes tends to read looser than
+   intended at the default tracking set for small text. */
 h1, h2, h3, h4, h5, h6,
 .post-title {
+    font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
     text-rendering: optimizeLegibility;
-    font-weight: 600;          /* Public Sans semibold — display weight
-                                  with authority but less bluntness than 700 */
+    font-weight: 600;
     line-height: 1.25;
-    letter-spacing: 0;
+    letter-spacing: -0.01em;
     text-wrap: balance;
     scroll-margin-top: 1rem;
 }
@@ -76,10 +65,9 @@ b {
 .post-content {
     hanging-punctuation: first;
 
-    /* Public Sans has a real `onum` feature (unlike Inter, where this was
-       a no-op) — numerals actually render as oldstyle figures again, the
-       behavior this rule was originally written for under Source Serif 4. */
-    font-variant-numeric: oldstyle-nums proportional-nums;
+    /* system-ui fonts have inconsistent onum support (works on Apple,
+       not on Windows/Android), so this is omitted rather than applied
+       unreliably. */
 }
 
 .post-content blockquote {
