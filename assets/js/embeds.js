@@ -48,4 +48,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // PDF click-to-load: same facade-swap pattern as YouTube above.
+    document.querySelectorAll(".pdf-facade").forEach(function (facade) {
+        facade.addEventListener("click", function () {
+            var wrapper = document.createElement("div");
+            wrapper.className = "pdf-embed";
+
+            var iframe = document.createElement("iframe");
+            iframe.src = this.dataset.url;
+            iframe.title = this.getAttribute("aria-label") || "PDF document";
+
+            wrapper.appendChild(iframe);
+            this.closest(".pdf-block").replaceChild(wrapper, this);
+        });
+    });
+
 });

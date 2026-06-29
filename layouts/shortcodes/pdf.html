@@ -1,0 +1,19 @@
+{{- /* Inline PDF, click-to-load: {{< pdf "file.pdf" "Optional label" >}}
+       Renders a facade button (mirrors yt-facade/bsky-facade in embeds.js)
+       so the PDF is never fetched until a visitor opts in, plus a plain
+       direct link as a no-JS/no-iframe-rendering fallback — unlike the
+       video/social facades, these are often primary-source documents
+       central to the post, not supplementary embeds, so losing access
+       entirely without JS isn't an acceptable trade-off here. */ -}}
+{{- $file := .Get 0 -}}
+{{- $label := .Get 1 | default $file -}}
+{{- $resource := $.Page.Resources.Get $file -}}
+{{- $url := $file -}}
+{{- with $resource -}}{{- $url = .RelPermalink -}}{{- end -}}
+<div class="pdf-block">
+    <button type="button" class="pdf-facade" data-url="{{ $url }}" aria-label="Load PDF inline: {{ $label }}">
+        <span class="pdf-facade-label">{{ $label }}</span>
+        <span class="pdf-facade-meta">PDF — click to view here</span>
+    </button>
+    <a class="pdf-direct-link" href="{{ $url }}">Open PDF directly</a>
+</div>
