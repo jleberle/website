@@ -444,6 +444,18 @@ by actually visiting pages, not just reasoning about the code):
 - `static/fonts/OFL.txt` must match whichever font is currently live
   (currently Source Serif 4 / Adobe) — verified correct as of this writing,
   but worth checking again if the body font ever changes again.
+- **Only the `latin` subset of Source Serif 4 is shipped** (the `latin-ext`
+  files were deleted, −206 KiB / 4 files). Audited every non-ASCII character
+  actually used in `content/` and confirmed all of it — including Western
+  European accents (Spanish/French/German/Italian/Portuguese: á é í ó ú ñ ü
+  ç è à) — falls inside Latin-1 Supplement (U+0000–00FF), which the base
+  `latin` subset already covers. `latin-ext` is for a different language
+  group entirely (Polish/Czech/Croatian/Romanian/Turkish/Vietnamese/Baltic)
+  that isn't a goal for this English-only site, and confirmed via the
+  network panel zero requests for it ever fired. If a future post needs a
+  glyph outside Latin-1 (e.g. a Polish ł or Czech č in a quoted name), it'll
+  silently render in the metric-matched fallback face instead of Source
+  Serif 4 — an accepted trade-off, not a bug, given the stated scope.
 - **stylelint** (`.stylelintrc.json`, extends `stylelint-config-standard`) runs
   in `npm run validate` and as a step in `scripts/preflight.sh --full`/CI. Four
   rules are tuned, each backed by a real false-positive found when first
