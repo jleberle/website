@@ -39,7 +39,7 @@
     transform: translate(-50%, -50%);
     width: 68px;
     height: 48px;
-    background: #ff0000;
+    background: #f00;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -49,7 +49,7 @@
 
 .yt-facade:hover .yt-play,
 .yt-facade:focus-visible .yt-play {
-    background: #cc0000;
+    background: #c00;
     transform: translate(-50%, -50%) scale(1.1);
 }
 
@@ -117,12 +117,14 @@
     text-align: left;
 }
 
+/* stylelint-disable-next-line no-duplicate-selectors -- intentional: button-chrome reset is grouped above with .bsky-facade, this is the yt-only layout block */
 .yt-facade {
     border: 0;
     padding: 0;
     color: inherit;
 }
 
+/* stylelint-disable-next-line no-duplicate-selectors -- intentional: button-chrome reset is grouped above with .yt-facade, this is the bsky-only layout block */
 .bsky-facade {
     width: 100%;
     background: transparent;

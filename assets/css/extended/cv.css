@@ -28,7 +28,7 @@
     text-align: right;
 }
 
-@media (max-width: 520px) {
+@media (width <= 520px) {
     .cv-letterhead {
         grid-template-columns: 1fr;
         gap: 0.4rem;

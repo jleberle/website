@@ -13,26 +13,26 @@
 @media print {
     :root,
     :root[data-theme="dark"] {
-        --theme: #ffffff;
-        --entry: #ffffff;
-        --primary: #000000;
+        --theme: #fff;
+        --entry: #fff;
+        --primary: #000;
         --content: #1a1a1a;
-        --secondary: #444444;
-        --tertiary: #eeeeee;
+        --secondary: #444;
+        --tertiary: #eee;
         --code-bg: #f3f3f3;
         --code-block-bg: #f3f3f3;
-        --border: #cccccc;
-        --link: #000000;
-        --accent: #000000;
-        --rule: #999999;
-        --quote-rule: #999999;
+        --border: #ccc;
+        --link: #000;
+        --accent: #000;
+        --rule: #999;
+        --quote-rule: #999;
     }
 
     /* Code block text is hardcoded light-on-dark for the always-dark
        on-screen treatment (15-md-content.css); needs a dark color of
        its own against the light print background set above. */
     .md-content pre code {
-        color: #111111;
+        color: #111;
     }
 
     .header,

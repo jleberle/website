@@ -33,7 +33,7 @@
 }
 
 /* On narrow screens, unfloat and center the cover above the text. */
-@media (max-width: 640px) {
+@media (width <= 640px) {
     .post-single .entry-cover {
         float: none;
         width: auto;

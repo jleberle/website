@@ -30,7 +30,7 @@ body.list:not(.home) .post-entry:last-of-type {
 body.list:not(.home) .post-entry:hover,
 body.list:not(.home) .post-entry:focus-within {
     transform: none;
-    background: color-mix(in srgb, var(--entry), transparent 72%);
+    background: color-mix(in sRGB, var(--entry), transparent 72%);
     border-color: var(--rule);
 }
 
@@ -65,7 +65,7 @@ body.list:not(.home) .entry-link {
     border-radius: 0;
 }
 
-@media (max-width: 520px) {
+@media (width <= 520px) {
     body.list:not(.home) .post-entry {
         padding-top: 0.9rem;
         padding-bottom: 0.9rem;

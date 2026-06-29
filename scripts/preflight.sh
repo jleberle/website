@@ -14,8 +14,9 @@
 #
 # Full mode adds:
 #   7. html-validate         — HTML5 validation of every page
-#   8. checks/a11y-lint.py   — content images without alt + heading-level skips
-#   9. lychee --offline      — internal links/files in public/
+#   8. stylelint             — CSS lint (rules tuned in .stylelintrc.json)
+#   9. checks/a11y-lint.py   — content images without alt + heading-level skips
+#   10. lychee --offline     — internal links/files in public/
 #
 # StaticHost deploys on push independently of GitHub Actions, so the default
 # gate stays focused on "will this build and publish correctly right now?"
@@ -128,6 +129,29 @@ if $FULL; then
     fi
   else
     echo "node/npx not found — skipping html-validate (npm ci); CI still runs it"
+  fi
+
+  step "stylelint"
+  # Prefer the version pinned in package.json (run `npm ci` once); fall back to
+  # npx so the gate still works on a machine without node_modules installed.
+  if [[ -x node_modules/.bin/stylelint ]]; then
+    SL=(node_modules/.bin/stylelint)
+  elif command -v npx >/dev/null; then
+    echo "node_modules not installed — run 'npm ci' to use the pinned version; falling back to npx"
+    SL=(npx --yes stylelint)
+  else
+    SL=()
+  fi
+  if [[ ${#SL[@]} -gt 0 ]]; then
+    SL_OUT=$("${SL[@]}" "assets/css/**/*.css" 2>&1)
+    if [[ $? -eq 0 ]]; then
+      pass "stylelint clean"
+    else
+      tail -20 <<<"$SL_OUT"
+      fail "stylelint errors (rules tuned in .stylelintrc.json)"
+    fi
+  else
+    echo "node/npx not found — skipping stylelint (npm ci); CI still runs it"
   fi
 
   step "content a11y lint"

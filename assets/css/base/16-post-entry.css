@@ -35,6 +35,7 @@
 
 .home-info .entry-content {
     --content-gap: 0.5rem;
+
     -webkit-line-clamp: unset;
     margin: 0;
 }
@@ -81,8 +82,7 @@
 }
 
 .home-info .entry-content p {
-    margin-block-start: 1em;
-    margin-block-end: 1em;
+    margin-block: 1em;
 }
 
 .entry-footer {
@@ -92,10 +92,7 @@
 
 .entry-link {
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    inset: 0;
     border-radius: var(--radius);
 }
 

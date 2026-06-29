@@ -12,7 +12,6 @@
     --base1:   #93a1a1;
     --base2:   #eee8d5;
     --base3:   #fdf6e3;
-
     --yellow:  #b58900;
     --orange:  #cb4b16;
     --red:     #dc322f;
@@ -29,6 +28,7 @@
    clay links, ochre quote marks. The Solarized constants stay
    above as a reference/heritage palette; these are the site tone.
    ------------------------------------------------------------ */
+/* stylelint-disable-next-line no-duplicate-selectors -- intentional: separate block from the heritage palette above, kept apart for the documentation comments */
 :root {
     --prairie-paper:  #f6edd8;
     --prairie-panel:  #eadfc5;
@@ -40,7 +40,6 @@
     --prairie-clay:   #8f3f2d;
     --prairie-rust:   #6f351f;
     --prairie-ochre:  #9b741d;
-
     --theme:         var(--prairie-paper);   /* page background        */
     --entry:         var(--prairie-panel);   /* cards / highlighted bg  */
     --primary:       var(--prairie-ink);     /* headings, strong        */
@@ -50,7 +49,6 @@
     --code-bg:       var(--prairie-panel);   /* inline code             */
     --code-block-bg: var(--base03);          /* code blocks (dark)      */
     --border:        var(--prairie-border);
-
     --accent:        var(--prairie-rust);    /* link hover accent       */
     --rule:          var(--prairie-rule);    /* hr, rules, hovers       */
     --quote-rule:    var(--prairie-ochre);
@@ -79,13 +77,13 @@
 :root[data-theme="dark"] {
     /* Divider tone derived from PaperMod's dark vars: a step up from --border
        so hr/blockquote/header/footer rules stay visible but subtle. */
-    --rule:       color-mix(in srgb, var(--border), var(--secondary) 40%);
-    --quote-rule: color-mix(in srgb, var(--yellow), white 18%);
+    --rule:       color-mix(in sRGB, var(--border), var(--secondary) 40%);
+    --quote-rule: color-mix(in sRGB, var(--yellow), white 18%);
 
     /* Prose links in Solarized cyan, lifted slightly for AA on both the page
        (~5.9:1) and card (~4.8:1) backgrounds; brighter cyan on hover. */
-    --link:       color-mix(in srgb, var(--cyan), white 10%);
-    --accent:     color-mix(in srgb, var(--cyan), white 30%);
+    --link:       color-mix(in sRGB, var(--cyan), white 10%);
+    --accent:     color-mix(in sRGB, var(--cyan), white 30%);
 }
 
 /* ------------------------------------------------------------

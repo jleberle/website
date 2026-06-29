@@ -12,7 +12,7 @@
 .searchbox input {
     padding: 0.7rem 0.85rem;
     color: var(--primary);
-    background: color-mix(in srgb, var(--entry), transparent 35%);
+    background: color-mix(in sRGB, var(--entry), transparent 35%);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     font-weight: 400;
@@ -22,7 +22,7 @@
 .searchbox input:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent), transparent 78%);
+    box-shadow: 0 0 0 3px color-mix(in sRGB, var(--accent), transparent 78%);
     background: var(--theme);
 }
 
@@ -51,7 +51,7 @@
 .searchResults li:focus-within,
 .searchResults .focus {
     transform: none;
-    background: color-mix(in srgb, var(--entry), transparent 72%);
+    background: color-mix(in sRGB, var(--entry), transparent 72%);
     border-color: var(--rule);
 }
 

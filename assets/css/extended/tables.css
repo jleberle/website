@@ -36,7 +36,7 @@
 
 /* Quiet zebra striping for scanning long tables. */
 .post-content table tbody tr:nth-child(even) td {
-    background: color-mix(in srgb, var(--entry), transparent 55%);
+    background: color-mix(in sRGB, var(--entry), transparent 55%);
 }
 
 .post-content table caption {
@@ -50,7 +50,9 @@
    hook (Goldmark's default inline styles are blocked by the site CSP). */
 .post-content table th.align-left,
 .post-content table td.align-left { text-align: left; }
+
 .post-content table th.align-center,
 .post-content table td.align-center { text-align: center; }
+
 .post-content table th.align-right,
 .post-content table td.align-right { text-align: right; }

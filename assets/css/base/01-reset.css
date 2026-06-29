@@ -102,8 +102,8 @@ textarea {
 }
 
 button,
-input[type=button],
-input[type=submit] {
+input[type="button"],
+input[type="submit"] {
     cursor: pointer;
 }
 

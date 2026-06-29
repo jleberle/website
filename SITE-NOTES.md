@@ -416,6 +416,20 @@ by actually visiting pages, not just reasoning about the code):
 - **Footer's PaperMod credit line** — was flagged as possibly stale; you
   already edited `hugo.yaml`'s `params.footer.about` yourself to drop "and
   PaperMod," independent of any Claude edit. Resolved.
+- **`profileMode` dead code deleted** — `site.Params.profileMode.enabled`
+  was never set in `hugo.yaml`, so `layouts/_partials/index_profile.html`,
+  `assets/css/base/18-profile-mode.css`, and the profile-only lines in
+  `90-zmedia.css` (`.profile img`, `.button:active`) were unreachable.
+  Removed the dead `{{ if }}` branch from `list.html` and deleted both
+  files. A follow-up full-codebase sweep (config-gated feature flags,
+  orphaned partials/shortcodes/JS, i18n keys, every CSS class selector,
+  unreferenced static assets) found nothing else in this class — verified
+  clean across the board, this was the one real remnant.
+- **`.searchResults` camelCase naming** — vendored PaperMod name, still tied
+  to matching JS/templates (`fastsearch.js`, `search.html`). Now that
+  PaperMod has no upstream to stay compatible with, a rename to kebab-case
+  is a safe, optional, coordinated cleanup across those files whenever you
+  want it. Low priority — not done.
 
 ## Maintenance reminders (not new — carried forward from `README.md`, restated here for completeness)
 
@@ -430,3 +444,33 @@ by actually visiting pages, not just reasoning about the code):
 - `static/fonts/OFL.txt` must match whichever font is currently live
   (currently Source Serif 4 / Adobe) — verified correct as of this writing,
   but worth checking again if the body font ever changes again.
+- **stylelint** (`.stylelintrc.json`, extends `stylelint-config-standard`) runs
+  in `npm run validate` and as a step in `scripts/preflight.sh --full`/CI. Four
+  rules are tuned, each backed by a real false-positive found when first
+  auditing the codebase, not a blanket preference:
+  - `no-descending-specificity` — off. Every hit was the standard "general
+    rule, then a more specific exception" pattern (e.g. `.md-content ol` then
+    `.md-content ol:not(:last-child)`), which is this codebase's intentional
+    base→extended override architecture, not a cascade bug.
+  - `selector-class-pattern` — kebab-case + an optional BEM `--modifier`
+    suffix, plus one literal exception (`searchResults`): a PaperMod-vendored
+    class name also referenced by matching JS/templates (`fastsearch.js`,
+    `search.html`), so renaming the CSS alone would break the feature. (A
+    second exception, `profile_inner`, was removed along with the rest of
+    the dead `profileMode` feature — see below.)
+  - `property-no-vendor-prefix` — ignores `-webkit-text-size-adjust` and
+    `-webkit-appearance` specifically; both are paired with their standard
+    unprefixed sibling already and exist for real Safari/iOS gaps the
+    standard property doesn't fully cover.
+  - `value-keyword-case` — `camelCaseSvgKeywords: true` (so
+    `text-rendering: optimizeLegibility` isn't flagged) and ignores
+    `--meta-font` (a custom property holding a font stack; the rule can't
+    tell it's not a generic keyword list and was lowercasing
+    `BlinkMacSystemFont` — a Blink-internal sentinel token, not a real font
+    name, risky to lowercase since no source confirms it's matched
+    case-insensitively).
+  Three genuinely intentional same-name reuses remain and are silenced inline
+  with `stylelint-disable-next-line` + a reason comment rather than a config
+  exception, since they're one-off: the heritage-vs-live `:root` token blocks
+  in `00-tokens.css`, and the `.yt-facade`/`.bsky-facade` selectors repeated
+  across separate thematic rule blocks in `embeds.css`.

@@ -34,7 +34,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
+    background: rgb(0 0 0 / 50%);
     color: #fff;
     border: none;
     padding: 0.5rem 0.9rem;
@@ -48,7 +48,7 @@
 
 .carousel-btn:hover,
 .carousel-btn:focus-visible {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgb(0 0 0 / 80%);
 }
 
 .carousel-btn:focus-visible {
@@ -67,6 +67,7 @@
 .carousel-dots {
     display: flex;
     justify-content: center;
+
     /* No gap: the 24px dot buttons sit edge-to-edge, leaving ~16px between
        the 8px visual dots — tight enough to read as a group. */
     gap: 0;
