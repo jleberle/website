@@ -22,35 +22,41 @@ explicitly as a separate branch so `main` stays untouched:
   (not just hand-calculated): 5.33:1 against the body, 4.70:1 against the
   footer/card background, both clear of AA. The now-unused `--prairie-clay`/
   `--prairie-rust` tokens that used to back `--link`/`--accent` were removed.
-- Body/heading font switched from Source Serif 4 to Inter, self-hosted and
-  subset with the exact same pipeline (see `fonts.css`'s header comment):
-  Google's variable-font delivery instanced to static 400/600 weights via
-  `fontTools.varLib.instancer`, then `pyftsubset` to the same Latin-1
-  Supplement coverage, keeping only the OpenType features Inter actually has
-  that this site's CSS invokes (`ccmp,locl,kern,calt,mark,mkmk,pnum`) plus
-  `--no-hinting`. Inter has no `onum` (oldstyle figures) or `smcp` (small
-  caps) at all, so two existing CSS rules degrade gracefully rather than
-  doing nothing different: `font-variant-numeric: oldstyle-nums` silently
-  no-ops (figures stay default lining, `pnum`'s proportional spacing still
-  applies), and the `abbr` shortcode's `font-variant: all-small-caps` falls
-  back to browser-synthesized faux small caps. `OFL.txt` was replaced with
-  Inter's actual upstream license (rsms/inter, not Adobe's Source Serif 4
-  text). A new metric-matched fallback face was built the same way as
-  Source Serif 4's (empirically measured in-browser, not from OS/2
-  xAvgCharWidth, which is unreliable across vendors): Inter renders ~6.9%
-  wider than Arial at the same size, calibrated against Arial specifically
-  since it's the most cross-platform-available sans (vs. Mac-only Helvetica
-  Neue, measured separately at ~5.9%).
+- Body/heading font switched from Source Serif 4 to Inter, then from Inter
+  to **Public Sans** (GSA/USWDS, a fork of Libre Franklin), all on this same
+  branch. Inter was tried first and dropped specifically because it has
+  neither `onum` (oldstyle figures) nor `smcp` (small caps) at all — Public
+  Sans has `onum` (confirmed empirically via `hb-shape`: the digit glyph IDs
+  it substitutes under the `onum` feature are genuinely different from the
+  default lining-figure glyphs), restoring the behavior `font-variant-
+  numeric: oldstyle-nums` was originally written for under Source Serif 4.
+  It still lacks `smcp`, same gap as Inter, so the `abbr` shortcode's
+  `font-variant: all-small-caps` still falls back to browser-synthesized
+  faux small caps either way. Unlike Inter, Google/USWDS ships Public Sans
+  as real static per-weight files already, so no variable-font instancing
+  step was needed — straight `pyftsubset` (same Latin-1 Supplement coverage,
+  `ccmp,locl,kern,calt,liga,mark,mkmk,onum,pnum`, `--no-hinting`) on the
+  upstream 400/400italic/600/600italic statics. Resulting files are smaller
+  than Inter's (~12-13 KiB each vs. ~17-18 KiB), Public Sans being a simpler
+  design. `OFL.txt` now carries Public Sans's actual upstream license (GSA
+  modifications under CC0, combined with Libre Franklin's original SIL OFL
+  — the full dual-license text, not just a copyright-holder swap). The
+  metric-matched fallback face was re-measured in-browser for Public Sans
+  specifically: it renders only ~3.95% wider than Arial at the same size
+  (vs. Inter's ~6.9%), unsurprising since Public Sans was explicitly
+  designed as a Helvetica/Arial substitute for government forms.
 - Several font-specific code comments elsewhere (`serif.css`, `header.css`)
-  were updated to stop describing Source Serif 4/Georgia specifics that no
-  longer apply on this branch — line-height (1.7), letter-spacing, and the
-  link-underline thickness were *not* independently re-tuned for Inter's
-  different metrics, just carried over; flagged inline as unverified for
-  Inter specifically, not asserted as correct.
+  were updated through both font swaps to stop describing whichever
+  previous face's specifics no longer applied — line-height (1.7),
+  letter-spacing, and the link-underline thickness were *not* independently
+  re-tuned for Public Sans's metrics, just carried over across all three
+  fonts; flagged inline as unverified for Public Sans specifically, not
+  asserted as correct.
 - Full `preflight.sh --full` passes on this branch (stylelint caught and
-  fixed one real issue along the way: Inter is a single-word font name and
-  shouldn't be quoted in `font-family`, unlike multi-word `'Source Serif
-  4'`/`'Inter Fallback'`).
+  fixed one real issue along the way, back when Inter was still in use:
+  single-word font names like `Inter` shouldn't be quoted in `font-family`,
+  unlike multi-word `'Source Serif 4'`/`'Inter Fallback'`/`"Public Sans"`
+  Fallback — `"Public Sans"` itself is two words and does need quoting).
 
 ## Identity and values
 

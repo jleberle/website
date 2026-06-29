@@ -1,25 +1,29 @@
 /* ------------------------------------------------------------
-   Inter — self-hosted body/heading sans (Google Fonts, rsms/inter
-   upstream). theme-gray-inter branch experiment, replacing Source
-   Serif 4 (see git history / main for that face's notes).
+   Public Sans — self-hosted body/heading sans (GSA/USWDS, a fork of
+   Libre Franklin). theme-gray-inter branch experiment, replacing
+   Inter (which itself replaced Source Serif 4 — see git history /
+   main for that face's notes). Switched from Inter because Public
+   Sans actually has an `onum` (oldstyle figures) OpenType feature,
+   matching what Source Serif 4 was originally chosen for; Inter has
+   neither onum nor smcp at all.
 
    Files live in static/fonts/ and are served from /fonts/ (no
    fingerprint — the faces are versioned by name and effectively
    immutable). Only the latin subset is shipped (ASCII + Latin-1
    Supplement, U+0000-00FF, plus the same small set of extra
-   punctuation/ligature codepoints used for Source Serif 4) — covers
-   every Western European accent this English-only site needs.
+   punctuation/ligature codepoints used for Source Serif 4 and
+   Inter) — covers every Western European accent this English-only
+   site needs.
 
-   Google now distributes Inter as a variable font (a single file
-   spanning the whole wght axis); these 4 files are static instances
-   extracted at exactly the two weights this site uses (fontTools
-   varLib.instancer), then subset the same way Source Serif 4 was:
-   stripped to the OpenType features Inter actually has that this
-   site's CSS invokes (ccmp, locl, kern, calt, mark, mkmk, pnum — no
-   onum or smcp; Inter doesn't have small caps or oldstyle figures at
-   all, so those CSS requests now silently no-op rather than do
-   nothing different from before) plus --no-hinting, same as Source
-   Serif 4's pipeline.
+   Unlike Inter, Google/USWDS distributes Public Sans as real static
+   per-weight files already (no variable-font instancing step
+   needed) — these 4 are pyftsubset straight off the upstream
+   static woff2s, stripped to the OpenType features Public Sans
+   actually has that this site's CSS invokes (ccmp, locl, kern, calt,
+   liga, mark, mkmk, onum, pnum — no smcp; Public Sans has no small
+   caps, so the abbr shortcode's font-variant: all-small-caps still
+   falls back to browser-synthesized faux small caps, same as under
+   Inter) plus --no-hinting, same pipeline as the other two faces.
 
    Weights: 400 (body) and 600 (headings/strong emphasis). Italics at
    400/600. font-display: swap so text paints immediately in the
@@ -29,69 +33,68 @@
 
 /* ---- 400 regular ---- */
 @font-face {
-    font-family: Inter;
+    font-family: "Public Sans";
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url("/fonts/inter-400-latin.woff2") format('woff2');
+    src: url("/fonts/publicsans-400-latin.woff2") format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* ---- 400 italic ---- */
 @font-face {
-    font-family: Inter;
+    font-family: "Public Sans";
     font-style: italic;
     font-weight: 400;
     font-display: swap;
-    src: url("/fonts/inter-400i-latin.woff2") format('woff2');
+    src: url("/fonts/publicsans-400i-latin.woff2") format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* ---- 600 semibold (headings) ---- */
 @font-face {
-    font-family: Inter;
+    font-family: "Public Sans";
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url("/fonts/inter-600-latin.woff2") format('woff2');
+    src: url("/fonts/publicsans-600-latin.woff2") format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* ---- 600 semibold italic ---- */
 @font-face {
-    font-family: Inter;
+    font-family: "Public Sans";
     font-style: italic;
     font-weight: 600;
     font-display: swap;
-    src: url("/fonts/inter-600i-latin.woff2") format('woff2');
+    src: url("/fonts/publicsans-600i-latin.woff2") format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* Fallback-metric proxy: a font-face that resolves to a *system* font (no
-   network fetch) but is scaled/shaped to match Inter's own metrics, so the
-   text painted before the web font arrives already wraps the same way and
-   occupies the same space — no reflow on swap. Without this, font-display:
-   swap causes a layout shift on every page.
+   network fetch) but is scaled/shaped to match Public Sans's own metrics,
+   so the text painted before the web font arrives already wraps the same
+   way and occupies the same space — no reflow on swap. Without this,
+   font-display: swap causes a layout shift on every page.
 
-   size-adjust is empirically measured (not from the OS/2 tables — the same
-   unreliable-xAvgCharWidth problem found with Source Serif 4/Georgia
-   applies here too): a representative sentence of real body text rendered
-   ~6.9% wider in Inter than Arial at the same font-size in an actual
-   browser. Calibrated against Arial specifically (first in the local()
-   chain) since it's the most universally available sans across platforms
-   (default on Windows and Mac, aliased to Liberation Sans on most Linux
-   distros) — Helvetica Neue measured a slightly different ~5.9% delta, so
-   the match is closest wherever Arial actually resolves. ascent/descent/
-   line-gap-override are Inter's own OS/2 "typo" ratios (extracted via
-   fontTools: sTypoAscender 1984, sTypoDescender -494, sTypoLineGap 0, all
-   over unitsPerEm 2048), divided by size-adjust per spec (override
-   percentages resolve against the font's own em *after* size-adjust
-   scaling). */
+   size-adjust is empirically measured (not from the OS/2 tables — same
+   unreliable-xAvgCharWidth problem found with the other two faces): a
+   representative sentence of real body text rendered ~3.95% wider in
+   Public Sans than Arial at the same font-size in an actual browser —
+   much closer than Inter's ~6.9% delta, unsurprising since Public Sans was
+   explicitly designed as a Helvetica/Arial substitute for government
+   forms. Calibrated against Arial specifically (first in the local()
+   chain) since it's the most universally available sans across platforms.
+   ascent/descent/line-gap-override are Public Sans's own OS/2 "typo"
+   ratios (extracted via fontTools: sTypoAscender 1900, sTypoDescender
+   -450, sTypoLineGap 0, all over unitsPerEm 2000), divided by size-adjust
+   per spec (override percentages resolve against the font's own em *after*
+   size-adjust scaling). */
 @font-face {
-    font-family: 'Inter Fallback';
+    font-family: 'Public Sans Fallback';
     src: local('Arial'), local('Helvetica'), local('Helvetica Neue');
-    size-adjust: 106.90%;
-    ascent-override: 90.62%;
-    descent-override: 22.56%;
+    size-adjust: 103.95%;
+    ascent-override: 91.39%;
+    descent-override: 21.64%;
     line-gap-override: 0%;
 }

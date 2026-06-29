@@ -1,19 +1,21 @@
 /* ------------------------------------------------------------
    Body type. Overrides the base sans-serif stack
-   (assets/css/base/01-reset.css) with Inter, a self-hosted sans
-   (see fonts.css) — theme-gray-inter branch experiment, replacing
-   Source Serif 4 (still the body font on main). 'Inter Fallback' is
-   a metrics-matched proxy for Arial (fonts.css) shown during the
-   font swap, so paragraphs don't reflow when the web font arrives;
-   plain Arial/Helvetica/etc. after it are the true last-resort chain
-   if even that proxy can't resolve. Headings, prose and meta inherit
+   (assets/css/base/01-reset.css) with Public Sans, a self-hosted
+   sans (see fonts.css) — theme-gray-inter branch experiment,
+   replacing Inter (which itself replaced Source Serif 4, still the
+   body font on main). 'Public Sans Fallback' is a metrics-matched
+   proxy for Arial (fonts.css) shown during the font swap, so
+   paragraphs don't reflow when the web font arrives; plain
+   Arial/Helvetica/etc. after it are the true last-resort chain if
+   even that proxy can't resolve. Headings, prose and meta inherit
    from body; code keeps its monospace stack (see mono.css).
    ------------------------------------------------------------ */
 body {
-    font-family: Inter, 'Inter Fallback', Arial, Helvetica, sans-serif;
+    font-family: "Public Sans", 'Public Sans Fallback', Arial, Helvetica, sans-serif;
     line-height: 1.7;          /* kept from the previous serif tuning —
                                   airier than the 1.6 default; not yet
-                                  re-tuned specifically for Inter's metrics */
+                                  re-tuned specifically for Public Sans's
+                                  metrics */
 }
 
 /* Tighten the reading measure. The theme's 720px column runs ~80
@@ -26,20 +28,18 @@ body {
 
 /* Headings (prose + page title). They inherit the body's 1.7, which is
    too airy for 40/32/24px display type, so a wrapped heading looks gappy.
-   - optimizeLegibility: kerning precision (heading-only; Inter has no
-     `liga` feature, just `calt` + GPOS kern, so the ligature half of this
-     doesn't apply the way it did for Source Serif 4 — kept for the kerning
-     benefit alone)
+   - optimizeLegibility: kerning + ligatures (heading-only; Public Sans has
+     a real `liga` feature, unlike Inter, so both halves of this apply)
    - line-height 1.25: tighter, appropriate for large display type
-   - letter-spacing: neutral tracking; not yet re-evaluated for Inter
+   - letter-spacing: neutral tracking; not yet re-evaluated for Public Sans
      specifically (carried over from the serif tuning)
    - text-wrap: balance: evens multi-line headings, kills one-word orphans
    - scroll-margin-top: breathing room when an anchor link jumps here */
 h1, h2, h3, h4, h5, h6,
 .post-title {
     text-rendering: optimizeLegibility;
-    font-weight: 600;          /* Inter semibold — display weight with
-                                  authority but less bluntness than 700 */
+    font-weight: 600;          /* Public Sans semibold — display weight
+                                  with authority but less bluntness than 700 */
     line-height: 1.25;
     letter-spacing: 0;
     text-wrap: balance;
@@ -76,10 +76,9 @@ b {
 .post-content {
     hanging-punctuation: first;
 
-    /* oldstyle-nums is a no-op on Inter (no `onum` feature) — numerals fall
-       back to default lining figures. proportional-nums still applies
-       (Inter has `pnum`), so spacing stays proportional rather than
-       tabular even though the oldstyle look itself is gone. */
+    /* Public Sans has a real `onum` feature (unlike Inter, where this was
+       a no-op) — numerals actually render as oldstyle figures again, the
+       behavior this rule was originally written for under Source Serif 4. */
     font-variant-numeric: oldstyle-nums proportional-nums;
 }
 
@@ -90,19 +89,20 @@ b {
 /* Cleaner resting underlines for prose links: a thin, slightly dropped
    line. The theme sets the offset; this pins the thickness for a
    consistent weight (carried over from the serif tuning — not re-verified
-   against Inter's specific descender shapes). */
+   against Public Sans's specific descender shapes). */
 .post-content a {
     text-decoration-thickness: 1px;
 }
 
-/* Abbreviations (via the {{< abbr >}} shortcode). Inter has no `smcp`
-   feature at all (unlike Source Serif 4), so font-variant: all-small-caps
-   here falls back to browser-synthesized faux small caps (scaled-down
-   regular capitals) rather than true small-cap glyphs — a real, if minor,
-   quality step down from main. The dotted underline + help cursor is the
-   conventional signal for a hover-to-expand title. The tooltip is
-   desktop-hover and screen-reader only — touch devices show nothing, so
-   never rely on it to carry essential meaning. */
+/* Abbreviations (via the {{< abbr >}} shortcode). Public Sans has no
+   `smcp` feature either (same gap as Inter, unlike Source Serif 4), so
+   font-variant: all-small-caps here still falls back to browser-
+   synthesized faux small caps (scaled-down regular capitals) rather than
+   true small-cap glyphs — a real, if minor, quality step down from main.
+   The dotted underline + help cursor is the conventional signal for a
+   hover-to-expand title. The tooltip is desktop-hover and screen-reader
+   only — touch devices show nothing, so never rely on it to carry
+   essential meaning. */
 .post-content abbr[title] {
     font-variant: all-small-caps;
     letter-spacing: 0;
