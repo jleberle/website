@@ -456,6 +456,33 @@ by actually visiting pages, not just reasoning about the code):
   glyph outside Latin-1 (e.g. a Polish ł or Czech č in a quoted name), it'll
   silently render in the metric-matched fallback face instead of Source
   Serif 4 — an accepted trade-off, not a bug, given the stated scope.
+- **The 4 `latin` font files are hand-resubset with `pyftsubset` to strip
+  unused OpenType features and hinting** (341.3 KiB → 90.3 KiB, −73.6%, on
+  top of the `latin-ext` removal above). The as-downloaded Google Fonts
+  files carried 19 OpenType features (`aalt, c2sc, case, ccmp, dnom, frac,
+  liga, lnum, locl, numr, onum, ordn, pnum, sinf, smcp, subs, sups, tnum,
+  zero`) plus full TrueType hinting instructions, none of which this site's
+  CSS needs except `onum`+`pnum` (`font-variant-numeric: oldstyle-nums
+  proportional-nums` in `serif.css`) and `smcp`/`c2sc` (the `abbr`
+  shortcode's small caps). Same exact Unicode coverage as before — nothing
+  about language support changed, only unused glyph variants/features were
+  dropped. Verified with `hb-shape` that `onum`+`pnum` still produce the
+  same proportional oldstyle-figure widths as the original file (a first
+  pass that omitted `pnum` was caught this way — it silently fell back to
+  tabular-spaced figures, a real but subtle regression), and confirmed
+  small caps render correctly in-browser. The regenerate command, if the
+  font is ever re-downloaded from Google Fonts:
+  ```
+  pyftsubset <input>.woff2 \
+    --unicodes="U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD" \
+    --layout-features="ccmp,locl,kern,liga,onum,pnum,smcp,c2sc" \
+    --no-hinting --flavor=woff2 --output-file=<output>.woff2
+  ```
+  If any future CSS adds `font-variant-numeric: ordinal` / fraction
+  styling, or `font-variant-position: sub/super`, it'll silently no-op
+  (no error, the substitution just won't apply) since those features
+  (`ordn`, `frac`/`dnom`/`numr`, `subs`/`sups`) were dropped — add them
+  back to `--layout-features` and regenerate if that's ever needed.
 - **stylelint** (`.stylelintrc.json`, extends `stylelint-config-standard`) runs
   in `npm run validate` and as a step in `scripts/preflight.sh --full`/CI. Four
   rules are tuned, each backed by a real false-positive found when first
