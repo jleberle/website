@@ -51,6 +51,28 @@
     display: none;
 }
 
+/* Each archive row is a click target via the absolutely-positioned
+   .entry-link overlay (base/16-post-entry.css), but the row itself had no
+   hover/focus feedback — nothing here signaled it was a link until the
+   cursor changed. Same faint background wash as the section/list rows
+   (list.css) for visual consistency. :focus-within covers keyboard tabbing
+   to the overlay anchor; the explicit :focus-visible outline on the anchor
+   itself gives a visible ring rather than relying on the wash alone. */
+.archive-entry {
+    border-radius: var(--radius);
+    transition: background-color 0.15s ease;
+}
+
+.archive-entry:hover,
+.archive-entry:focus-within {
+    background: color-mix(in sRGB, var(--entry), transparent 72%);
+}
+
+.archive-entry .entry-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
 @media (width <= 520px) {
     .archive-filters {
         gap: 0.35rem;
