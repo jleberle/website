@@ -1,6 +1,6 @@
 ---
 title: Privacy
-hidemetadata: true
+hideMeta: true
 ---
 
 I take internet privacy seriously and have worked to keep this site as self-contained as possible which protects privacy with the added benefit of speeding up the site. My promises as long as this site exists are the following:

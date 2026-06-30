@@ -7,10 +7,10 @@
 {{- $pages := union .RegularPages .Sections }}
 {{- .Store.Set "listPaginator" (.Paginate $pages) }}
 {{- end }}
-{{- $theme := site.Params.defaultTheme | default "auto" }}
-{{- if eq $theme "dark" }}
+{{- $themeMode := site.Params.themeMode | default "auto" }}
+{{- if eq $themeMode "dark" }}
 <html lang="{{ site.Language }}" dir="{{ .Language.Direction | default "auto" }}" data-theme="dark">
-{{- else if eq $theme "light" }}
+{{- else if eq $themeMode "light" }}
 <html lang="{{ site.Language }}" dir="{{ .Language.Direction | default "auto" }}" data-theme="light">
 {{- else }}
 <html lang="{{ site.Language }}" dir="{{ .Language.Direction | default "auto" }}" data-theme="auto">
@@ -32,8 +32,8 @@
     <main id="main" class="main">
         {{- block "main" . }}{{ end }}
     </main>
-    {{ partialCached "site_footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
-    {{ partialCached "footer_scripts.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
+    {{ partialCached "site_footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "showCodeCopyButtons") -}}
+    {{ partialCached "footer_scripts.html" . .Layout .Kind (.Param "hideFooter") (.Param "showCodeCopyButtons") -}}
 </body>
 
 </html>

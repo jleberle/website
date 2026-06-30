@@ -1,4 +1,4 @@
-{{- if (.Param "ShowBreadCrumbs") -}}
+{{- if (.Param "showBreadcrumbs") -}}
 <nav class="breadcrumbs" aria-label="Breadcrumb">
     {{- $ancestors := .Ancestors.Reverse -}}
     {{- range $i, $bc := $ancestors }}
@@ -18,4 +18,3 @@
     </svg>
 </nav>
 {{- end -}}
-

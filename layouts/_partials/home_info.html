@@ -1,4 +1,4 @@
-{{- with site.Params.homeInfoParams }}
+{{- with site.Params.homeIntro }}
 <article class="first-entry home-info h-card">
     <data class="p-name" value="{{ site.Params.author }}"></data>
     <a class="u-url u-uid" href="{{ site.Home.RelPermalink }}" hidden></a>
@@ -24,11 +24,11 @@
     {{- end }}
     <div class="home-info-content">
         <header class="entry-header">
-            <h1 class="p-job-title">{{ .Title | markdownify }}</h1>
+            <h1 class="p-job-title">{{ .title | markdownify }}</h1>
         </header>
         <div class="entry-content md-content p-note">
             {{ $opts := dict "display" "block" }}
-            {{ .Content | $.Page.RenderString $opts }}
+            {{ .content | $.Page.RenderString $opts }}
         </div>
         <footer class="entry-footer">
             {{ partial "social_icons.html" . }}

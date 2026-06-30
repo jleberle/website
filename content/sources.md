@@ -2,7 +2,7 @@
 title: "Media Diet"
 description: "An overview of what I read, listen to, and watch on a regular basis."
 summary: "An overview of what I read, listen to, and watch on a regular basis."
-hidemetadata: true
+hideMeta: true
 ---
 Here's a relatively extensive semi-list of the things I read and listen to on a regular basis. Anything digital that has a plus after it is something I actively pay for.
 

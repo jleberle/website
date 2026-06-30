@@ -1,4 +1,4 @@
-{{- if (not site.Params.disableScrollToTop) }}
+{{- if site.Params.showScrollToTop }}
 <a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
@@ -45,7 +45,7 @@
 
 </script>
 
-{{- if (not site.Params.disableScrollToTop) }}
+{{- if site.Params.showScrollToTop }}
 <script>
     var toplink = document.getElementById("top-link");
     window.onscroll = function () {
@@ -60,7 +60,7 @@
 </script>
 {{- end }}
 
-{{- if (not site.Params.disableThemeToggle) }}
+{{- if site.Params.showThemeToggle }}
 <script>
     document.getElementById("theme-toggle").addEventListener("click", () => {
         const html = document.querySelector("html");
@@ -76,7 +76,7 @@
 </script>
 {{- end }}
 
-{{- if (and (eq .Kind "page") (ne .Layout "archives") (ne .Layout "search") (.Param "ShowCodeCopyButtons")) }}
+{{- if (and (eq .Kind "page") (ne .Layout "archives") (ne .Layout "search") (.Param "showCodeCopyButtons")) }}
 <script>
     document.querySelectorAll('pre > code').forEach((codeblock) => {
         const container = codeblock.parentNode.parentNode;

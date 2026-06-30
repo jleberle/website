@@ -1,13 +1,13 @@
 {{- $headers := findRE "<h[1-6].*?>(.|\n])+?</h[1-6]>" .Content -}}
 {{- $has_headers := ge (len $headers) 1 -}}
 {{- if $has_headers -}}
-<details class="toc" {{if (.Param "TocOpen") }} open{{ end }}>
+<details class="toc" {{if (.Param "tocOpen") }} open{{ end }}>
     <summary accesskey="c" title="(Alt + C)">
         <span class="title">{{- i18n "toc" | default "Table of Contents" }}</span>
     </summary>
 
     <div class="inner">
-        {{- if (.Param "UseHugoToc") }}
+        {{- if (.Param "useBuiltInToc") }}
         {{- .TableOfContents -}}
         {{- else }}
         {{- $largest := 6 -}}

@@ -194,32 +194,34 @@ params:
   keywords: [CV, Indigenous History, Oklahoma]
   author: Jared L. Eberle
   images: ["/images/card.jpg"]
-  DateFormat: "January 2, 2006"
+  dateFormat: "January 2, 2006"
 
   # Primary sections included in archives, RSS/JSON feeds, and prev/next links.
-  mainSections:
+  contentSections:
     - articles
     - reviews
     - quotes
 
   # Site display behavior.
-  defaultTheme: auto
-  disableThemeToggle: false
-  disableScrollToTop: true
-  hidemeta: false
+  themeMode: auto
+  showThemeToggle: true
+  showScrollToTop: false
+  hideMeta: false
   hideSummary: false
 
-  ShowReadingTime: true
-  ShowShareButtons: false
-  ShowPostNavLinks: true
-  ShowBreadCrumbs: true
-  ShowCodeCopyButtons: false
-  ShowWordCount: true
-  ShowRssButtonInSectionTermList: true
-  ShowFullTextinRSS: true # emit <content:encoded> full article body in RSS
-  UseHugoToc: true
-  showtoc: false
-  tocopen: false
+  showReadingTime: true
+  showShareButtons: false
+  showPostNavLinks: true
+  showBreadcrumbs: true
+  showCodeCopyButtons: false
+  showWordCount: true
+  showSectionRssLink: true
+  rssFullContent: true # emit <content:encoded> full article body in RSS
+  useBuiltInToc: true
+  showToc: false
+  tocOpen: false
+  showPageNumbers: false
+  archiveShowAllPages: false
 
   assets:
     favicon: "favicon.ico"
@@ -227,18 +229,18 @@ params:
     favicon32x32: "/icons/favicon-32x32.png"
     apple_touch_icon: "/icons/apple-touch-icon.png"
 
-  label:
+  brand:
     text: "Jared L. Eberle"
 
-  homeInfoParams:
-    Title: "Historian of Modern Indigenous Activism"
-    Content: Welcome, I'm [Jared Eberle](/about), a historian primarily focused on Indigenous activism in the late 20th century and the connections it had to global events. I'm currently a lecturer at [Oklahoma State University](https://experts.okstate.edu/jared.eberle) where my primary teaching focus is US History since 1865 and Oklahoma History.
+  homeIntro:
+    title: "Historian of Modern Indigenous Activism"
+    content: Welcome, I'm [Jared Eberle](/about), a historian primarily focused on Indigenous activism in the late 20th century and the connections it had to global events. I'm currently a lecturer at [Oklahoma State University](https://experts.okstate.edu/jared.eberle) where my primary teaching focus is US History since 1865 and Oklahoma History.
     imageUrl: "/images/profile.avif"
     imageWidth: 120
     imageHeight: 120
     imageTitle: "Profile picture of Jared Eberle"
 
-  socialIcons:
+  socialLinks:
     - name: microblog
       title: "Micro.blog"
       url: "https://eberle.blog"
@@ -272,13 +274,13 @@ params:
       - "https://bsky.app/profile/jaredeberle.org"
       - "https://eberle.blog"
 
-  editPost:
-    URL: "https://codeberg.org/jleberle/website/src/branch/main/content"
-    Text: "Suggest Changes"
+  suggestChanges:
+    url: "https://codeberg.org/jleberle/website/src/branch/main/content"
+    text: "Suggest Changes"
     appendFilePath: true
 
   # Fuse.js options used by the search index.
-  fuseOpts:
+  search:
     isCaseSensitive: false
     shouldSort: true
     location: 0

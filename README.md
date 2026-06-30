@@ -181,7 +181,7 @@ a given file looks the way it does, not a theme diff.
 
 The `Content-Security-Policy` header in `static/_headers` allows the site's inline `<style>` and `<script>` blocks by their exact SHA-256 hashes — there is **no `'unsafe-inline'`** in `script-src` or `style-src`. The hashes cover the bytes Hugo's minifier actually emits, so they break if a template's inline style/script changes **or** Hugo changes how it minifies. When a script hash breaks, the browser silently blocks that script (e.g. dark-mode-on-load or the theme toggle stops working) with only a console CSP error — so verify after upgrades.
 
-Currently hashed scripts: the FOUC theme-on-load setter, the theme toggle, and the menu-scroll / anchor-smooth-scroll handler. The vendored scroll-to-top script is intentionally dropped via `disableScrollToTop: true` in `hugo.yaml` so it needs no hash; re-enabling it would require adding its hash.
+Currently hashed scripts: the FOUC theme-on-load setter, the theme toggle, and the menu-scroll / anchor-smooth-scroll handler. The vendored scroll-to-top script is intentionally dropped via `showScrollToTop: false` in `hugo.yaml` so it needs no hash; re-enabling it would require adding its hash.
 
 ```sh
 scripts/csp-hashes.sh             # build, then print current hashes to paste into static/_headers
@@ -210,7 +210,7 @@ Run `scripts/archive-links.sh --all` periodically to find and replace dead outbo
 
 ### Adding a new content type
 If you add a new section (e.g. `content/essays/`):
-1. Add it to `mainSections` in `hugo.yaml`
+1. Add it to `contentSections` in `hugo.yaml`
 2. Add a cache rule in `static/_headers` (`/essays/*/*.avif` etc.)
 3. Add it to the home page columns in `layouts/list.html` if desired
 

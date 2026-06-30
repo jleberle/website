@@ -5,7 +5,7 @@
   {{- partial "breadcrumbs.html" . }}
   <h1>
     {{ .Title }}
-    {{- if and (or (eq .Kind `term`) (eq .Kind `section`)) (.Param "ShowRssButtonInSectionTermList") }}
+    {{- if and (or (eq .Kind `term`) (eq .Kind `section`)) (.Param "showSectionRssLink") }}
     {{- with .OutputFormats.Get "rss" }}
     <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -41,7 +41,7 @@
 {{- $paginator = .Paginate $pages }}
 {{- end }}
 
-{{- if and .IsHome site.Params.homeInfoParams }}
+{{- if and .IsHome site.Params.homeIntro }}
 {{- partial "home_info.html" . }}
 {{- end }}
 
@@ -109,7 +109,7 @@
     {{- if $paginator.HasPrev }}
     <a class="prev" href="{{ $paginator.Prev.URL | relURL }}">
       «&nbsp;{{ i18n "prev_page" }}&nbsp;
-      {{- if (.Param "ShowPageNums") }}
+      {{- if (.Param "showPageNumbers") }}
       {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
       {{- end }}
     </a>
@@ -117,7 +117,7 @@
     {{- if $paginator.HasNext }}
     <a class="next" href="{{ $paginator.Next.URL | relURL }}">
       {{- i18n "next_page" }}&nbsp;
-      {{- if (.Param "ShowPageNums") }}
+      {{- if (.Param "showPageNumbers") }}
       {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
       {{- end }}&nbsp;»
     </a>

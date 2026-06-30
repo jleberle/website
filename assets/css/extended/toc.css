@@ -3,7 +3,7 @@
    the site's vocabulary: an --entry surface with a visible --rule
    border, a serif title in the heading color, and muted links
    that pick up the accent on hover. Rendered only when a post
-   sets `ShowToc: true` in front matter.
+   sets `showToc: true` in front matter.
    ------------------------------------------------------------ */
 details.toc {
     background: var(--entry);

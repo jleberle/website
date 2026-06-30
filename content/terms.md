@@ -1,6 +1,6 @@
 ---
 title: Terms of Use
-hidemetadata: true
+hideMeta: true
 ---
 
 All original content on this site is offered under a [Creative Commons BY-NC-SA license](https://creativecommons.org/licenses/by-nc-sa/4.0/). Any use of the original content must be appropriately attributed, for non-commercial use, and shared under the same license.

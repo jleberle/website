@@ -17,22 +17,22 @@ const defaultFuseOptions = {
 };
 
 const buildFuseOptions = () => {
-    if (!params.fuseOpts) {
+    if (!params.search) {
         return defaultFuseOptions;
     }
 
     return {
-        isCaseSensitive: params.fuseOpts.iscasesensitive ?? false,
-        includeScore: params.fuseOpts.includescore ?? false,
-        includeMatches: params.fuseOpts.includematches ?? false,
-        minMatchCharLength: params.fuseOpts.minmatchcharlength ?? 1,
-        shouldSort: params.fuseOpts.shouldsort ?? true,
-        findAllMatches: params.fuseOpts.findallmatches ?? false,
-        keys: params.fuseOpts.keys ?? defaultFuseOptions.keys,
-        location: params.fuseOpts.location ?? 0,
-        threshold: params.fuseOpts.threshold ?? defaultFuseOptions.threshold,
-        distance: params.fuseOpts.distance ?? defaultFuseOptions.distance,
-        ignoreLocation: params.fuseOpts.ignorelocation ?? defaultFuseOptions.ignoreLocation
+        isCaseSensitive: params.search.iscasesensitive ?? false,
+        includeScore: params.search.includescore ?? false,
+        includeMatches: params.search.includematches ?? false,
+        minMatchCharLength: params.search.minmatchcharlength ?? 1,
+        shouldSort: params.search.shouldsort ?? true,
+        findAllMatches: params.search.findallmatches ?? false,
+        keys: params.search.keys ?? defaultFuseOptions.keys,
+        location: params.search.location ?? 0,
+        threshold: params.search.threshold ?? defaultFuseOptions.threshold,
+        distance: params.search.distance ?? defaultFuseOptions.distance,
+        ignoreLocation: params.search.ignorelocation ?? defaultFuseOptions.ignoreLocation
     };
 };
 
@@ -118,7 +118,7 @@ const performSearch = () => {
         return;
     }
 
-    const searchOptions = params.fuseOpts?.limit ? { limit: params.fuseOpts.limit } : undefined;
+    const searchOptions = params.search?.limit ? { limit: params.search.limit } : undefined;
     const results = searchOptions ? fuse.search(query, searchOptions) : fuse.search(query);
     renderResults(results);
 };

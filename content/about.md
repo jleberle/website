@@ -1,6 +1,6 @@
 ---
 title: About
-hidemetadata: true
+hideMeta: true
 description: "About myself and the website you're visiting"
 summary: "This is who I am and how I made this little website"
 ---

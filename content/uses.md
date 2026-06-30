@@ -1,6 +1,6 @@
 ---
 title: Uses
-hidemetadata: true
+hideMeta: true
 description: "The tools and resources I use"
 summary: "The tools and resources I use"
 ---

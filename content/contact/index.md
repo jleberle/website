@@ -1,7 +1,7 @@
 ---
 title: Contact
 date: 2024-05-08
-hidemeta: true
+hideMeta: true
 description: "My contact information with office location at Oklahoma State University"
 ---
 

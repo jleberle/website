@@ -71,7 +71,7 @@
 {{- /* Search */}}
 {{- if (eq .Layout `search`) -}}
 <link crossorigin="anonymous" rel="preload" as="fetch" href="../index.json">
-{{- $fastsearch := resources.Get "js/fastsearch.js" | js.Build (dict "params" (dict "fuseOpts" site.Params.fuseOpts)) | resources.Minify }}
+{{- $fastsearch := resources.Get "js/fastsearch.js" | js.Build (dict "params" (dict "search" site.Params.search)) | resources.Minify }}
 {{- $fusejs := resources.Get "js/fuse.basic.min.js" }}
 {{- $license_js := resources.Get "js/license.js" }}
 {{- if not site.Params.assets.disableFingerprinting }}
@@ -112,7 +112,7 @@
         }
 
     </style>
-    {{- if (and (ne site.Params.defaultTheme "light") (ne site.Params.defaultTheme "dark")) }}
+    {{- if (and (ne site.Params.themeMode "light") (ne site.Params.themeMode "dark")) }}
     <style>
         @media (prefers-color-scheme: dark) {
             :root {
@@ -142,9 +142,9 @@
 </noscript>
 
 {{- /* theme-toggle is enabled */}}
-{{- if (not site.Params.disableThemeToggle) }}
+{{- if site.Params.showThemeToggle }}
 {{- /* theme is light */}}
-{{- if (eq site.Params.defaultTheme "light") }}
+{{- if (eq site.Params.themeMode "light") }}
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.querySelector("html").dataset.theme = 'dark';
@@ -152,7 +152,7 @@
 
 </script>
 {{- /* theme is dark */}}
-{{- else if (eq site.Params.defaultTheme "dark") }}
+{{- else if (eq site.Params.themeMode "dark") }}
 <script>
     if (localStorage.getItem("pref-theme") === "light") {
         document.querySelector("html").dataset.theme = 'light';
@@ -175,7 +175,7 @@
 </script>
 {{- end }}
 {{- /* theme-toggle is disabled and theme is auto */}}
-{{- else if (and (ne site.Params.defaultTheme "light") (ne site.Params.defaultTheme "dark"))}}
+{{- else if (and (ne site.Params.themeMode "light") (ne site.Params.themeMode "dark"))}}
 <script>
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.querySelector("html").dataset.theme = 'dark';

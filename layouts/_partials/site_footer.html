@@ -9,7 +9,7 @@
                    copyright line in params.footer.about stays current. */}}
             <div class="footer-about-text">{{ replace . "{year}" (now.Year | string) | markdownify }}</div>
             {{- end }}
-            {{- if (not site.Params.disableThemeToggle) }}
+            {{- if site.Params.showThemeToggle }}
             {{- /* Theme toggle. Same #theme-toggle id the footer script binds to,
                    and the .moon/.sun + label visibility is driven by [data-theme]
                    in CSS, so it works here exactly as it did in the header. */}}
@@ -49,7 +49,7 @@
         </nav>
         {{- end }}
 
-        {{- with site.Params.socialIcons }}
+        {{- with site.Params.socialLinks }}
         <div class="footer-col footer-connect">
             <h2 class="footer-heading">Connect</h2>
             {{- partial "social_icons.html" . }}
