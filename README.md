@@ -2,7 +2,7 @@
 
 Source for [jaredeberle.org](https://jaredeberle.org), the personal and academic site of Jared L. Eberle — historian of late 20th century Indigenous activism and lecturer at Oklahoma State University.
 
-Built with [Hugo](https://gohugo.io). The layouts started as a fork of the [PaperMod](https://github.com/adityatelange/hugo-PaperMod) theme; PaperMod is no longer tracked as a dependency — every template and stylesheet now lives in this repo (see [Credits](#credits)).
+Built with [Hugo](https://gohugo.io). This site began as a fork of the [PaperMod](https://github.com/adityatelange/hugo-PaperMod) theme, but it is now a fully local theme: every template and stylesheet lives in this repo (see [Credits](#credits)).
 
 **Note**: I had Claude write this to document what was created and where to look for issues in the future. Anything on [my site](https://jaredeberle.org) is written solely by me, Claude is banned from making any edits to content itself.
 
@@ -122,7 +122,7 @@ Two stages, two tools:
 
 The first three share `layouts/_partials/responsive-img.html` — the single source of truth for breakpoints and the `sizes` hint (sized to the 680px content column), so they can't drift apart. Each smaller variant is only generated when the source is wider than that breakpoint; the original is always included as the largest `srcset` candidate (so a `srcset` is still emitted for images that only exceed one breakpoint, e.g. 400–800px). Every `<img>` gets explicit `width`/`height` to prevent layout shift (paired with a global `img { height: auto }` so constrained widths keep the aspect ratio), `decoding="async"`, and lazy-loading — except the single-page cover, which loads eagerly with `fetchpriority="high"` as the likely LCP element. AVIF encoding uses Hugo's default quality (no `imaging` override in `hugo.yaml`).
 
-> **Gotcha:** Hugo *extended* can resize AVIF, but PaperMod's original templates didn't process it out of the box, so both were rewritten:
+> **Gotcha:** Hugo *extended* can resize AVIF, but the original inherited templates didn't process it out of the box, so both were rewritten:
 > - `cover.html` — its hardcoded `$processableFormats` list omitted `avif`; this version appends it.
 > - `figure.html` — the stock shortcode emitted a plain `<img>` with no resizing; this version resolves `src` as a page resource and uses the `responsive-img` partial (falling back to a plain `<img>` for external/static sources, and keeping the `#center` centering fragment).
 
@@ -218,7 +218,7 @@ If you add a new section (e.g. `content/essays/`):
 
 - [PaperMod](https://github.com/adityatelange/hugo-PaperMod) — the Hugo theme this site's layouts and core CSS/JS originated from (MIT licensed); no longer tracked as a dependency, see [Theme history](#theme-history).
 - [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — the inspiration for the color palette and where dark mode's cyan is pulled from.
-- [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) by Adobe ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted serif used for body and heading type (`static/fonts/`, declared in `assets/css/extended/fonts.css`). Replaced Newsreader for its `onum` (oldstyle figures) support.
+- [Fraunces](https://fonts.google.com/specimen/Fraunces) by Undercase Type ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted display serif used for headings and wordmark (`static/fonts/`, declared in `assets/css/extended/fonts.css`). Body and metadata typography now use system stacks for lighter weight and platform-native rendering.
 
 ## License
 

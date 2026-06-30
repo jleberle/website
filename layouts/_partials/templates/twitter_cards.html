@@ -1,5 +1,5 @@
-{{- /* Overrides PaperMod's twitter_cards.html only to add twitter:image:alt
-       (same alt source as og:image:alt in opengraph.html). */ -}}
+{{- /* Add twitter:image:alt, using the same source as og:image:alt in
+       opengraph.html. */ -}}
 {{- $imgAlt := (.Params.cover.alt | default .Description | default site.Params.description | default .Title) | plainify | htmlUnescape -}}
 {{- if .Params.cover.image -}}
 <meta name="twitter:card" content="summary_large_image">

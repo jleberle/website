@@ -1,9 +1,7 @@
 /* ------------------------------------------------------------
    Post footer (single pages): tags + prev/next navigation.
-   PaperMod renders both as filled, bordered boxes
-   (themes/PaperMod/assets/css/common/post-single.css), which sit
-   heavy under an article. Restyle them as quiet academic
-   apparatus instead — a keyword line and plain-text post-nav.
+   Styled as quiet academic apparatus rather than heavy boxes —
+   a keyword line and plain-text post-nav.
    ------------------------------------------------------------ */
 
 /* End matter: modified date, suggestion link and topics share one
@@ -21,7 +19,7 @@
 
 /* --- Tags as a journal-style keyword line --- */
 .post-tags {
-    gap: 0;                       /* override PaperMod's 10px pill gap */
+    gap: 0;
     align-items: baseline;
     margin-top: 0.35rem;
     font-size: 0.82rem;
@@ -64,7 +62,7 @@
 
 .post-tags a:hover {
     color: var(--accent);
-    background: none;             /* override PaperMod's hover fill */
+    background: none;
     text-decoration: underline;
     text-underline-offset: 0.2rem;
 }
@@ -80,14 +78,14 @@
 }
 
 .paginav a {
-    padding: 0;                   /* drop the 0.8rem box padding */
+    padding: 0;
     border-radius: 0;
     background: none;
     color: var(--primary);
 }
 
 .paginav a:hover {
-    background: none;             /* override the fill hover */
+    background: none;
 }
 
 /* Brighten the title (and the small label) to the accent on hover. */

@@ -46,13 +46,14 @@
 }
 
 /* ------------------------------------------------------------
-   Dark theme — a moonless night at sea. Falls back to PaperMod's
-   default neutral-gray dark (assets/css/base/00-theme-vars.css) for
-   the surface colors, since a true near-black reads better than a
-   tinted navy for long-form reading. Only the divider and link
-   accents shift to the coastal theme: a lighthouse-amber quote rule
-   (the one warm note, same role --driftwood plays in light mode) and
-   a bioluminescent teal for links.
+   Dark theme — a moonless night at sea. Keeps the neutral dark
+   surface colors from the vendored base layer
+   (assets/css/base/00-theme-vars.css), since a true near-black
+   reads better than a tinted navy for long-form reading. Only the
+   divider and link accents shift to the coastal theme: a
+   lighthouse-amber quote rule (the one warm note, same role
+   --driftwood plays in light mode) and a bioluminescent teal for
+   links.
    ------------------------------------------------------------ */
 :root[data-theme="dark"] {
     --rule:       color-mix(in sRGB, var(--border), var(--secondary) 40%);

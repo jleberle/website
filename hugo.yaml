@@ -123,7 +123,7 @@ outputs:
 # Markdown and syntax highlighting
 # ------------------------------------------------------------
 markup:
-  # PaperMod FAQ: using Hugo's built-in Chroma highlighter.
+  # Use Hugo's built-in Chroma highlighter.
   # Keep noClasses true unless switching to class-based Chroma CSS.
   highlight:
     noClasses: true
@@ -184,7 +184,7 @@ privacy:
     privacyEnhanced: true
 
 # ------------------------------------------------------------
-# PaperMod and site parameters
+# Site parameters
 # ------------------------------------------------------------
 params:
   # Site metadata used by head templates, feeds, schema, and manifest output.
@@ -202,7 +202,7 @@ params:
     - reviews
     - quotes
 
-  # PaperMod display behavior.
+  # Site display behavior.
   defaultTheme: auto
   disableThemeToggle: false
   disableScrollToTop: true

@@ -57,8 +57,8 @@
 {{- $core := (resources.Match "css/base/*.css") | resources.Concat "assets/css/core.css" | resources.Minify }}
 {{- $extended := (resources.Match "css/extended/*.css") | resources.Concat "assets/css/extended.css" | resources.Minify }}
 
-{{- /* bundle all required css */}}
-{{- /* Add extended css after theme style */ -}}
+{{- /* Bundle all required CSS, with local extensions layered after the
+       vendored base bundle. */ -}}
 {{- $stylesheet := (slice $license_css $core $extended) | resources.Concat "assets/css/stylesheet.css"  }}
 
 {{- if not site.Params.assets.disableFingerprinting }}

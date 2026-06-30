@@ -1,9 +1,8 @@
 /* ------------------------------------------------------------
-   Site footer. Overrides PaperMod's single-line centered footer
-   (themes/PaperMod/assets/css/common/footer.css, .footer) with a
-   full-bleed panel: a distinct background, a top rule, and a
-   four-column area (identity + blurb / navigation / social /
-   subscribe). Markup is in layouts/_partials/site_footer.html.
+   Site footer. A full-bleed panel with a distinct background, a
+   top rule, and a four-column area (identity + blurb /
+   navigation / social / subscribe). Markup is in
+   layouts/_partials/site_footer.html.
    ------------------------------------------------------------ */
 
 .site-footer {
@@ -130,8 +129,7 @@
 }
 
 /* Show the icon + label that name the theme you'd switch TO: moon + "Dark
-   theme" in light mode, sun + "Light theme" in dark mode. Mirrors PaperMod's
-   existing [data-theme] .moon/.sun visibility rules. */
+   theme" in light mode, sun + "Light theme" in dark mode. */
 [data-theme="dark"] .theme-toggle-label--dark,
 [data-theme="light"] .theme-toggle-label--light {
     display: none;

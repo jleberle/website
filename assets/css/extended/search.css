@@ -1,9 +1,8 @@
 /* ------------------------------------------------------------
-   Search page (/search/). Restyles PaperMod's search input and
-   the Fuse.js results list to match the site: a soft-filled input
-   with an accent focus ring, and borderless ruled result rows
-   (mirroring the list pages, see list.css) rather than filled
-   cards.
+   Search page (/search/). Styles the search input and Fuse.js
+   results list to match the site: a soft-filled input with an
+   accent focus ring, and borderless ruled result rows
+   (mirroring the list pages, see list.css).
    ------------------------------------------------------------ */
 .searchbox {
     margin-top: 0.75rem;

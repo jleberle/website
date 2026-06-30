@@ -34,7 +34,7 @@
     flex-shrink: 0;
 }
 
-/* Override PaperMod's first-pill padding reset so every pill is uniform */
+/* Keep every pill's padding uniform, including the first one. */
 .home-info .social-icons a:first-of-type {
     padding-inline-start: 8px;
 }
