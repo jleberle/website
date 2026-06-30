@@ -17,15 +17,16 @@ If you're curious what takes up my time, here's my [media diet](/sources) and th
 
 This site is built with [Hugo](https://gohugo.io) and served through [Codeberg](https://codeberg.org/jleberle/website) and [Statichost.eu](https://statichost.eu). The base theme for the site is [PaperMod](https://github.com/adityatelange/hugo-PaperMod/) which I have customized with the help of Claude. Claude has only touched back-end files on the site, everything you see publicly is written and edited by me, a [real human](/humans.txt). Typos are my own but for errors, please blame my cat.
 
-I've worked to make this site as environmentally friendly as possible meaning the home page uses only [0.089g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor.[^1] In terms of my [biggest page](/articles/past-and-future-of-indian-rodeo-in-las-vegas/), it only uses 0.183g and downloads at under 600KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data (10 times the amount). This is the result of a number of very opinionated decisions:
+I've worked to make this site as environmentally friendly as possible meaning the homepage uses only [0.013g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor.[^1] In terms of my [biggest page](/articles/past-and-future-of-indian-rodeo-in-las-vegas/), it only uses 0.045g and downloads at just under 145KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data (20 times the amount). This is the result of a number of very opinionated decisions:
 
 [^1]: It used to be 0.008g but I added a self-hosted font to make the site better for readability.
 
 - A static blog like Hugo is more efficient than software like Wordpress and to
   further enhance that, all resources are minified when built.
+- The site uses one self-hosted and subsetted font (Fraunces) for the headers while all
+  remaining fonts are system fonts. This removes an extra outside url fetch and it removes unneeded weight from the font download. 
 - Images are AVIF format, lazy loaded, and responsive which reduces file sizes and only loads
   them when needed.
-- All PDFs on the site are optimized for web delivery.
 - The website uses long cache times, so users are not re-downloading content
   except the html itself.
 
