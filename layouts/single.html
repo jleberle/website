@@ -90,9 +90,6 @@
     {{- if (.Param "showPostNavLinks") }}
     {{- partial "post_nav_links.html" . }}
     {{- end }}
-    {{- if (and site.Params.showShareButtons (ne .Params.disableShare true)) }}
-    {{- partial "share_icons.html" . -}}
-    {{- end }}
   </footer>
 </article>
 

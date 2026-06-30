@@ -1,6 +1,6 @@
 import * as params from '@params';
 
-const resList = document.getElementById('searchResults');
+const resList = document.getElementById('search-results');
 const sInput = document.getElementById('searchInput');
 const searchBox = document.getElementById('searchbox');
 

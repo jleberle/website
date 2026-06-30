@@ -25,12 +25,12 @@
     background: var(--theme);
 }
 
-.searchResults {
+.search-results {
     gap: 0;
     margin: 1rem 0 0;
 }
 
-.searchResults li {
+.search-results li {
     justify-content: flex-start;
     gap: 0.55rem;
     padding: 0.8rem 0.75rem;
@@ -42,19 +42,19 @@
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.searchResults li:last-child {
+.search-results li:last-child {
     border-bottom: 1px solid var(--border);
 }
 
-.searchResults li:hover,
-.searchResults li:focus-within,
-.searchResults .focus {
+.search-results li:hover,
+.search-results li:focus-within,
+.search-results .focus {
     transform: none;
     background: color-mix(in sRGB, var(--entry), transparent 72%);
     border-color: var(--rule);
 }
 
-.searchResults li svg {
+.search-results li svg {
     width: 18px;
     height: 18px;
     margin-left: auto;

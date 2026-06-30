@@ -7,7 +7,7 @@
     border-radius: var(--radius);
 }
 
-.searchResults li {
+.search-results li {
     list-style: none;
     border-radius: var(--radius);
     padding: 10px 15px;
@@ -21,7 +21,7 @@
     border: 1px solid var(--border);
 }
 
-.searchResults {
+.search-results {
     margin: var(--content-gap) 0;
     width: 100%;
     display: flex;
@@ -29,13 +29,13 @@
     gap: 10px;
 }
 
-.searchResults li:hover,
-.searchResults li:focus-within {
+.search-results li:hover,
+.search-results li:focus-within {
     transform: translateY(-2px);
     border-color: var(--tertiary);
 }
 
-.searchResults li .entry-link:focus {
+.search-results li .entry-link:focus {
     outline: 2px solid var(--secondary);
     outline-offset: -2px;
 }
