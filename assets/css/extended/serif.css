@@ -52,10 +52,15 @@ b {
 }
 
 /* Prevent widows (a lone word on a paragraph's last line) in supporting
-   browsers. Progressive enhancement — ignored where unsupported. */
+   browsers, and let long words break at the column edge instead of
+   leaving a large gap before wrapping — the standard pairing for
+   unjustified prose. Both are progressive enhancements, ignored where
+   unsupported. lang="en" (set on <html> by Hugo) is what lets browsers
+   pick correct English hyphenation points. */
 .post-content p,
 .post-content li {
     text-wrap: pretty;
+    hyphens: auto;
 }
 
 /* Hang opening quotation marks into the margin so the left edge stays
