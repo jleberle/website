@@ -1,65 +1,41 @@
 /* ============================================================
-   Solarized palette — Ethan Schoonover
-   https://ethanschoonover.com/solarized/
-   The 16 canonical colors, defined once and referenced below.
+   Foggy New England Sea — a coastal palette built around the idea
+   of an overcast Maine/Massachusetts shoreline: pale sea-fog over
+   pale stone, deep storm-slate ink, a weathered driftwood accent
+   for the one warm note, and a deep tidal teal for links. Dark mode
+   shifts to a moonless night at sea: a lighthouse-amber quote rule
+   and a bioluminescent teal for links glowing against the dark.
+   Replaces the earlier earth-tone and neutral-gray palettes this
+   branch carried before — both live on in git history if needed.
    ============================================================ */
 :root {
-    --base03:  #002b36;
-    --base02:  #073642;
-    --base01:  #586e75;
-    --base00:  #657b83;
-    --base0:   #839496;
-    --base1:   #93a1a1;
-    --base2:   #eee8d5;
-    --base3:   #fdf6e3;
-    --yellow:  #b58900;
-    --orange:  #cb4b16;
-    --red:     #dc322f;
-    --magenta: #d33682;
-    --violet:  #6c71c5;
-    --blue:    #268bd2;
-    --cyan:    #2aa198;
-    --green:   #859900;
-}
+    --fog-mist:      #eef1f2;   /* page background — sea fog        */
+    --fog-granite:   #dde3e5;   /* cards/footer — wet granite        */
+    --fog-slate:     #1d2b32;   /* headings, strong — storm slate    */
+    --fog-deepwater: #3f4f57;   /* body text — slate blue-gray       */
+    --fog-driftgray: #54636a;   /* meta/muted text                   */
+    --fog-haze:      #a9b6bb;   /* hr, rules, hovers — misty gray    */
+    --fog-pale-haze: #c3ced2;   /* borders — pale mist               */
+    --driftwood:     #9c8a6e;   /* quote rule — weathered driftwood  */
+    --tide:          #296672;   /* links — deep tidal teal           */
+    --tide-deep:     #1a444d;   /* link hover — darker tide          */
+    --theme:         var(--fog-mist);
+    --entry:         var(--fog-granite);
+    --primary:       var(--fog-slate);
+    --content:       var(--fog-deepwater);
+    --secondary:     var(--fog-driftgray);
+    --tertiary:      var(--fog-granite);
+    --code-bg:       var(--fog-granite);
+    --code-block-bg: var(--fog-slate);
+    --border:        var(--fog-pale-haze);
+    --rule:          var(--fog-haze);
+    --quote-rule:    var(--driftwood);
 
-/* ------------------------------------------------------------
-   Prairie Light (default) — neutral grays (theme-gray-inter branch
-   experiment: very light gray body, a slightly darker gray for the
-   footer/cards, Solarized cyan links). The earth-tone variant this
-   replaced lives in git history (branched off main) if this doesn't
-   stick. The Solarized constants stay above as a reference/heritage
-   palette; these are the site tone.
-   ------------------------------------------------------------ */
-/* stylelint-disable-next-line no-duplicate-selectors -- intentional: separate block from the heritage palette above, kept apart for the documentation comments */
-:root {
-    --prairie-paper:  #f5f5f5;
-    --prairie-panel:  #e7e7e7;
-    --prairie-ink:    #253431;
-    --prairie-text:   #4f5f57;
-    --prairie-muted:  #5b665d;
-    --prairie-rule:   #a6a6a6;
-    --prairie-border: #c9c9c9;
-    --prairie-quote:  #8c8c8c;
-    --theme:         var(--prairie-paper);   /* page background        */
-    --entry:         var(--prairie-panel);   /* cards / highlighted bg  */
-    --primary:       var(--prairie-ink);     /* headings, strong        */
-    --content:       var(--prairie-text);    /* body text               */
-    --secondary:     var(--prairie-muted);   /* meta / muted text       */
-    --tertiary:      var(--prairie-panel);   /* subtle fills, scrollbar */
-    --code-bg:       var(--prairie-panel);   /* inline code             */
-    --code-block-bg: var(--base03);          /* code blocks (dark)      */
-    --border:        var(--prairie-border);
-    --rule:          var(--prairie-rule);    /* hr, rules, hovers       */
-    --quote-rule:    var(--prairie-quote);
-
-    /* Solarized cyan, darkened for AA contrast against the light-gray
-       surfaces above (raw --cyan is only ~2.9:1 here, well under the 4.5:1
-       text minimum) — 30% black mix lands ~4.7-5.3:1 depending on whether
-       it's read against --theme or the darker --entry. Hover darkens
-       further (50% black, ~8:1+) rather than lightening, the opposite
-       direction from dark mode below, since this is a light surface. */
-    --link:          color-mix(in sRGB, var(--cyan), black 30%);
-    --accent:        color-mix(in sRGB, var(--cyan), black 50%);
+    /* Tidal teal, checked for AA against both surfaces (5.71:1 on
+       --theme, 5.0:1 on --entry). Hover darkens further toward the
+       slate ink rather than lightening — this is a light surface. */
+    --link:          var(--tide);
+    --accent:        var(--tide-deep);
 
     /* Typographic token (theme-independent — dark doesn't override it): a
        system sans-serif stack for metadata "furniture" (dates, breadcrumbs,
@@ -70,24 +46,22 @@
 }
 
 /* ------------------------------------------------------------
-   Dark theme — deliberately NOT Solarized. The Solarized dark
-   palette read too warm and low-contrast for long-form reading,
-   so we fall back to PaperMod's default neutral-gray dark
-   (defined in themes/PaperMod/assets/css/core/theme-vars.css) by
-   simply not overriding --theme/--entry/--primary/etc. here.
-   Only the custom link + divider accents are set, with links in
-   Solarized cyan.
+   Dark theme — a moonless night at sea. Falls back to PaperMod's
+   default neutral-gray dark (assets/css/base/00-theme-vars.css) for
+   the surface colors, since a true near-black reads better than a
+   tinted navy for long-form reading. Only the divider and link
+   accents shift to the coastal theme: a lighthouse-amber quote rule
+   (the one warm note, same role --driftwood plays in light mode) and
+   a bioluminescent teal for links.
    ------------------------------------------------------------ */
 :root[data-theme="dark"] {
-    /* Divider tone derived from PaperMod's dark vars: a step up from --border
-       so hr/blockquote/header/footer rules stay visible but subtle. */
     --rule:       color-mix(in sRGB, var(--border), var(--secondary) 40%);
-    --quote-rule: color-mix(in sRGB, var(--yellow), white 18%);
+    --quote-rule: #d8ad4d;
 
-    /* Prose links in Solarized cyan, lifted slightly for AA on both the page
-       (~5.9:1) and card (~4.8:1) backgrounds; brighter cyan on hover. */
-    --link:       color-mix(in sRGB, var(--cyan), white 10%);
-    --accent:     color-mix(in sRGB, var(--cyan), white 30%);
+    /* Bioluminescent teal, checked for AA against both dark surfaces
+       (9.0:1 on --theme, 7.3:1 on --entry); brighter still on hover. */
+    --link:       #5fd0c8;
+    --accent:     #86e0da;
 }
 
 /* ------------------------------------------------------------
