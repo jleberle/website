@@ -88,13 +88,13 @@
 <link rel="icon" type="image/png" sizes="16x16" href="{{ site.Params.assets.favicon16x16 | default "favicon-16x16.png" | relURL }}">
 <link rel="icon" type="image/png" sizes="32x32" href="{{ site.Params.assets.favicon32x32 | default "favicon-32x32.png" | relURL }}">
 <link rel="apple-touch-icon" href="{{ site.Params.assets.apple_touch_icon | default "apple-touch-icon.png" | relURL }}">
-<link rel="mask-icon" href="{{ site.Params.assets.safari_pinned_tab | default "safari-pinned-tab.svg" | relURL }}">
+<link rel="mask-icon" href="{{ site.Params.assets.safari_pinned_tab | default "safari-pinned-tab.svg" | relURL }}" color="{{ site.Params.assets.safari_pinned_tab_color | default "#1d2b32" }}">
 {{- /* Two color-scheme-matched tags rather than one static value, so the
        browser chrome (address bar, etc.) matches the page background in
        both themes instead of always showing the dark value. */}}
-<meta name="theme-color" content="{{ site.Params.assets.theme_color_light | default "#f6edd8" }}" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="{{ site.Params.assets.theme_color_light | default "#eef1f2" }}" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="{{ site.Params.assets.theme_color_dark | default "#1d1e20" }}" media="(prefers-color-scheme: dark)">
-<meta name="msapplication-TileColor" content="{{ site.Params.assets.msapplication_TileColor | default "#2e2e33" }}">
+<meta name="msapplication-TileColor" content="{{ site.Params.assets.msapplication_TileColor | default "#1d2b32" }}">
 
 {{- /* RSS */}}
 {{ range .AlternativeOutputFormats -}}
