@@ -12,9 +12,10 @@ body {
 }
 
 /* Tighten the reading measure. The theme's 720px column runs ~80
-   characters per line at 18px Georgia; 680px brings it toward the
-   comfortable 60–75ch range serif body reads best in. Affects the
-   single/list main column (the home page uses --nav-width). */
+   characters per line in system-sans body text; 680px brings it
+   toward the comfortable 60–75ch range prose reads best in,
+   regardless of which font renders it. Affects the single/list main
+   column (the home page uses --nav-width). */
 :root {
     --main-width: 680px;
 }
@@ -76,8 +77,7 @@ b {
 
 /* Cleaner resting underlines for prose links: a thin, slightly dropped
    line. The theme sets the offset; this pins the thickness for a
-   consistent weight (carried over from the serif tuning — not re-verified
-   against Public Sans's specific descender shapes). */
+   consistent weight regardless of which system font renders the link. */
 .post-content a {
     text-decoration-thickness: 1px;
 }

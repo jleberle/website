@@ -2,8 +2,8 @@
    Tables. The theme styles cells with the faint --border; this
    restyles them in the site's vocabulary: collapsed --rule lines,
    an --entry header band, subtle zebra striping, and tabular
-   figures so numeric columns line up (Georgia otherwise uses
-   proportional oldstyle numerals). Chroma runs with noClasses and
+   figures so numeric columns line up (the system-sans body stack
+   otherwise uses proportional figures). Chroma runs with noClasses and
    no line numbers, so code never renders as a table — these rules
    only ever hit real content tables.
    ------------------------------------------------------------ */
