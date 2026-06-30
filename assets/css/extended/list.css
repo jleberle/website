@@ -35,8 +35,8 @@ body.list:not(.home) .post-entry:focus-within {
 }
 
 body.list:not(.home) .entry-header h2 {
-    font-size: 1.14rem;
-    line-height: 1.32;
+    font-size: 1.4rem;
+    line-height: 1.25;
 }
 
 body.list:not(.home) .entry-content {
@@ -72,6 +72,6 @@ body.list:not(.home) .entry-link {
     }
 
     body.list:not(.home) .entry-header h2 {
-        font-size: 1.04rem;
+        font-size: 1.2rem;
     }
 }

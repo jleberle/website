@@ -73,6 +73,18 @@
     outline-offset: -2px;
 }
 
+/* base/11-archive.css sets .archive-entry-title (a class selector) to
+   font-weight: 400 with no explicit font-size, so it both falls back to
+   the browser's tiny default h3 sizing and outranks serif.css's
+   font-weight: 600 heading rule (h1–h6 is a lower-specificity element
+   selector). Restoring both here so archive titles read as real headings
+   rather than slightly-bold body text. */
+.archive-entry-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
 @media (width <= 520px) {
     .archive-filters {
         gap: 0.35rem;
