@@ -12,7 +12,7 @@
        floating in the page color. */
     background: var(--entry);
     border-top: 1px solid var(--rule);
-    color: var(--secondary);
+    color: color-mix(in srgb, var(--content) 65%, var(--secondary));
     font-family: var(--meta-font);
     font-size: 0.85rem;
     line-height: 1.6;
@@ -69,7 +69,7 @@
     font-variant-caps: all-small-caps;
     letter-spacing: 0.01em;
     text-transform: none;
-    color: var(--secondary);
+    color: var(--content);
 }
 
 .footer-name a {
@@ -91,7 +91,7 @@
    fine print that brightens on hover. Scoped so they don't pick up the red
    prose-link color (.md-content a). */
 .footer-about-text a {
-    color: var(--secondary);
+    color: inherit;
     text-decoration: underline;
     text-underline-offset: 0.2rem;
     transition: color 0.15s ease;
@@ -113,7 +113,7 @@
     font: inherit;
     font-family: var(--meta-font);
     font-size: 0.78rem;
-    color: var(--secondary);
+    color: inherit;
     background: transparent;
     border: 1px solid var(--border);
     border-radius: 999px;
@@ -151,7 +151,7 @@
    don't pick up the red prose-link color (.md-content a). --- */
 .footer-nav a,
 .footer-feed {
-    color: var(--secondary);
+    color: inherit;
     text-decoration: none;
     transition: color 0.15s ease;
 }
@@ -224,7 +224,7 @@
 }
 
 .footer-legal a {
-    color: var(--secondary);
+    color: inherit;
     text-decoration: none;
     transition: color 0.15s ease;
 }
