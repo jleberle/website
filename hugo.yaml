@@ -215,7 +215,7 @@ params:
   showBreadcrumbs: true
   showCodeCopyButtons: false
   showWordCount: true
-  showSectionRssLink: true
+  showRssLink: true
   rssFullContent: true # emit <content:encoded> full article body in RSS
   useBuiltInToc: true
   showToc: false
