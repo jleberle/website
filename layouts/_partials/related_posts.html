@@ -5,7 +5,7 @@
 {{- $related := $candidates.Related . | first 3 }}
 {{- with $related }}
 <div class="post-context related-posts" aria-label="Related posts">
-  <span class="post-context-kicker">Related</span>
+  <span class="post-context-kicker">Related reading</span>
   <ul class="related-posts-list">
     {{- range . }}
     <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>

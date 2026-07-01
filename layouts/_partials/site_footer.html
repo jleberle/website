@@ -39,7 +39,7 @@
 
         {{- with site.Menus.main }}
         <nav class="footer-col footer-nav" aria-label="Footer">
-            <h2 class="footer-heading">Explore</h2>
+            <h2 class="footer-heading">Site</h2>
             <ul>
                 {{- range . }}
                 {{- $is_external := (findRE "://" .URL) }}
@@ -51,7 +51,7 @@
 
         {{- with site.Params.socialLinks }}
         <div class="footer-col footer-connect">
-            <h2 class="footer-heading">Connect</h2>
+            <h2 class="footer-heading">Elsewhere</h2>
             {{- partial "social_icons.html" . }}
         </div>
         {{- end }}
@@ -60,7 +60,7 @@
         {{- $jsonfeed := site.Home.OutputFormats.Get "jsonfeed" }}
         {{- if or $rss $jsonfeed }}
         <div class="footer-col footer-subscribe">
-            <h2 class="footer-heading">Subscribe</h2>
+            <h2 class="footer-heading">Feeds</h2>
             <div class="footer-feeds">
                 {{- with $rss }}
                 <a class="footer-feed" href="{{ .RelPermalink }}" title="RSS feed">

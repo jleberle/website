@@ -39,6 +39,9 @@ body.home .home-info {
     flex: 1;
 }
 
+.home-info .entry-footer {
+    margin-top: 0.85rem;
+}
 
 @media (width <= 600px) {
     body.home .home-info {
@@ -101,6 +104,25 @@ body.home .home-info {
     color: var(--primary);
 }
 
+/* Let writing-led sections carry slightly more visual authority than the
+   supporting sections below. The shift is typographic, not structural. */
+.home-section--articles .home-section-title,
+.home-section--reviews .home-section-title {
+    font-size: 1.16rem;
+    border-bottom-color: var(--rule);
+}
+
+.home-section--quotes .home-section-title,
+.home-section--courses .home-section-title {
+    font-size: 0.98rem;
+    margin-bottom: 0.7rem;
+}
+
+.home-section--quotes .home-section-title a,
+.home-section--courses .home-section-title a {
+    color: var(--secondary);
+}
+
 /* Post list entries */
 .home-list-entry {
     display: flex;
@@ -128,6 +150,16 @@ body.home .home-info {
     overflow-wrap: anywhere;
 }
 
+.home-section--quotes .home-list-entry,
+.home-section--courses .home-list-entry {
+    font-size: 0.86rem;
+}
+
+.home-section--quotes .home-list-entry a,
+.home-section--courses .home-list-entry a {
+    color: var(--content);
+}
+
 .home-section-all {
     display: block;
     font-size: 0.76rem;
@@ -142,6 +174,13 @@ body.home .home-info {
     line-height: 1.35;
     white-space: nowrap;
     flex-shrink: 0;
+}
+
+.home-section--quotes .home-list-date,
+.home-section--courses .home-list-date,
+.home-section--quotes .home-section-all,
+.home-section--courses .home-section-all {
+    font-size: 0.73rem;
 }
 
 /* Hover feedback for the home section-list links (the intro links are

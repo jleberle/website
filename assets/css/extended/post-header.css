@@ -4,18 +4,23 @@
    ------------------------------------------------------------ */
 .post-title {
     font-size: 32px;
+    margin-bottom: 0.2rem;
 }
 
 .post-meta-header {
-    margin-top: 0.2rem;
-    margin-bottom: 1.15rem;
+    margin-top: 0.05rem;
+    margin-bottom: 0.8rem;
     color: var(--secondary);
 }
 
 .post-description {
-    margin-top: 0;
+    margin-top: 0.1rem;
     margin-bottom: 0;
+    max-width: 52ch;
+    font-size: 0.98rem;
+    line-height: 1.55;
     font-style: italic;
-    padding-bottom: 0.7rem;
+    color: var(--content);
+    padding-bottom: 0.6rem;
     border-bottom: 1px solid var(--border);
 }

@@ -38,3 +38,22 @@
 .home-info .social-icons a:first-of-type {
     padding-inline-start: 8px;
 }
+
+/* On the home intro these should read as quiet context, not as a row of
+   primary calls to action. Make them a touch smaller and lighter than the
+   same pills elsewhere on the site. */
+.home-info .social-icons {
+    gap: 0.35rem;
+}
+
+.home-info .social-icons a {
+    font-size: 0.7rem;
+    color: var(--secondary);
+    border-color: color-mix(in srgb, var(--border), transparent 15%);
+    padding: 2px 7px;
+}
+
+.home-info .social-icons a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}

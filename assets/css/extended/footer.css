@@ -59,16 +59,17 @@
     justify-self: end;
 }
 
-/* Column headings — and the identity column's name (params.footer.about) —
-   share one small uppercase sans label so all four columns read consistently. */
+/* Column headings — and the identity column's name — stay restrained and
+   colophon-like rather than feeling like dashboard section headers. */
 .footer-heading,
 .footer-name {
     margin: 0 0 0.9rem;
-    font-size: 0.76rem;
+    font-size: 0.75rem;
     font-weight: 600;
     font-family: var(--meta-font);
-    letter-spacing: 0;
-    text-transform: uppercase;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--secondary);
 }
 
@@ -78,7 +79,8 @@
 }
 
 .footer-about-text {
-    max-width: 34ch;
+    max-width: 36ch;
+    font-size: 0.84rem;
 }
 
 .footer-about-text p {
@@ -154,6 +156,10 @@
     transition: color 0.15s ease;
 }
 
+.footer-nav a {
+    font-size: 0.92rem;
+}
+
 .footer-nav a:hover,
 .footer-feed:hover {
     color: var(--accent);
@@ -173,6 +179,7 @@
     border-radius: 0;
     padding: 0;
     gap: 0.4rem;
+    font-size: 0.82rem;
     color: var(--secondary);
     transition: color 0.15s ease;
 }
@@ -193,6 +200,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
+    font-size: 0.82rem;
 }
 
 .footer-feed svg {
@@ -209,7 +217,7 @@
     border-top: 1px solid var(--rule);
     display: flex;
     gap: 1.25rem;
-    font-size: 0.8rem;
+    font-size: 0.76rem;
 }
 
 .footer-legal a {

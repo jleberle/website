@@ -45,6 +45,11 @@
     color: var(--secondary);
 }
 
+.breadcrumbs {
+    font-size: 0.74rem;
+    line-height: 1.35;
+}
+
 .breadcrumbs a,
 .post-meta-footer a {
     color: inherit;
@@ -57,4 +62,8 @@
 .post-meta-footer a:focus-visible {
     color: var(--accent);
     text-underline-offset: 0.24rem;
+}
+
+.breadcrumbs svg {
+    opacity: 0.72;
 }

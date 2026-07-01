@@ -42,3 +42,10 @@
     color: var(--secondary);
     font-size: 14px;
 }
+
+.archive-count {
+    font-size: 0.76rem;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.015em;
+    opacity: 0.78;
+}

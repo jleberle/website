@@ -60,6 +60,25 @@ body.list:not(.home) .entry-footer {
     line-height: 1.45;
 }
 
+body.list:not(.home) .page-header h1 > a[aria-label="RSS"] {
+    color: var(--secondary);
+    margin-inline-start: 0.25rem;
+    vertical-align: -0.08em;
+    transition: color 0.15s ease, opacity 0.15s ease;
+    opacity: 0.72;
+}
+
+body.list:not(.home) .page-header h1 > a[aria-label="RSS"] svg {
+    height: 0.94em;
+    width: 0.94em;
+}
+
+body.list:not(.home) .page-header h1 > a[aria-label="RSS"]:hover,
+body.list:not(.home) .page-header h1 > a[aria-label="RSS"]:focus-visible {
+    color: var(--accent);
+    opacity: 1;
+}
+
 body.list:not(.home) .entry-link {
     border-radius: 0;
 }
