@@ -1,17 +1,41 @@
 /* ------------------------------------------------------------
    Section & term list pages — every body.list page except the
-   home page. Quiet ruled rows: borderless, separated by hairlines,
-   with a faint hover wash to match the low-chrome academic styling
-   used elsewhere. The home page has its own two-column list
-   (home.css), so it is excluded here via :not(.home).
+   home page. In the experiment branch they read more like issue
+   entries in a journal or archive catalog: framed abstracts rather
+   than simple ruled rows. The home page keeps its own layout.
    ------------------------------------------------------------ */
+body.list:not(.home) .page-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+body.list:not(.home) .page-header h1 {
+    font-size: clamp(2.3rem, 4.5vw, 3.1rem);
+    line-height: 1.02;
+}
+
+body.list:not(.home) .page-header .post-description {
+    max-width: 42ch;
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
 body.list:not(.home) .post-entry {
-    padding: 1.05rem 0 1.05rem 0.9rem;
+    display: grid;
+    grid-template-areas:
+        "meta"
+        "title"
+        "summary"
+        "cover";
+    gap: 0;
+    padding: 1.05rem 0;
     margin-bottom: 0;
     background: transparent;
     border: 0;
     border-top: 1px solid var(--border);
     border-radius: 0;
+    box-shadow: none;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -29,23 +53,37 @@ body.list:not(.home) .post-entry:last-of-type {
 body.list:not(.home) .post-entry:hover,
 body.list:not(.home) .post-entry:focus-within {
     transform: none;
-    background: color-mix(in sRGB, var(--entry), transparent 72%);
+    background: color-mix(in srgb, var(--entry), transparent 78%);
     border-color: var(--rule);
 }
 
+body.list:not(.home) .entry-footer {
+    grid-area: meta;
+    margin-bottom: 0.45rem;
+}
+
+body.list:not(.home) .entry-header {
+    grid-area: title;
+}
+
 body.list:not(.home) .entry-header h2 {
-    font-size: 1.4rem;
+    font-size: 1.48rem;
     line-height: 1.25;
+    margin-bottom: 0.12rem;
 }
 
 body.list:not(.home) .entry-content {
-    margin: 0.35rem 0 0.45rem;
-    font-size: 0.9rem;
+    grid-area: summary;
+    margin: 0.24rem 0 0.4rem;
+    max-width: 60ch;
+    font-size: 0.94rem;
+    line-height: 1.65;
 }
 
 body.list:not(.home) .entry-cover {
+    grid-area: cover;
     max-width: min(100%, 520px);
-    margin: 0.75rem 0 0.45rem;
+    margin: 0.35rem 0 0.2rem;
     text-align: left;
 }
 
@@ -56,7 +94,7 @@ body.list:not(.home) .entry-cover img {
 }
 
 body.list:not(.home) .entry-footer {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     line-height: 1.45;
 }
 
@@ -85,11 +123,10 @@ body.list:not(.home) .entry-link {
 
 @media (width <= 520px) {
     body.list:not(.home) .post-entry {
-        padding-top: 0.9rem;
-        padding-bottom: 0.9rem;
+        padding: 0.95rem 0;
     }
 
     body.list:not(.home) .entry-header h2 {
-        font-size: 1.2rem;
+        font-size: 1.28rem;
     }
 }

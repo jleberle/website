@@ -4,16 +4,17 @@
    formatting context of its own, so the review text wraps around the float. */
 .post-single .entry-cover {
     float: right;
-    width: 220px;
+    width: 235px;
     max-width: 40%;
-    margin: 0.25rem 0 1rem 1.5rem;
+    margin: 0.1rem 0 1.05rem 1.55rem;
 }
 
 .post-single .entry-cover img {
-    padding: 4px;
-    background: var(--entry);
+    padding: 5px;
+    background: color-mix(in srgb, var(--entry), white 26%);
     border: 1px solid var(--border);
-    border-radius: calc(var(--radius) + 2px);
+    border-radius: calc(var(--radius) + 1px);
+    box-shadow: 0 10px 22px rgb(29 41 47 / 0.06);
 }
 
 .post-single .entry-cover figcaption {

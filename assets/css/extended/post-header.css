@@ -1,26 +1,82 @@
 /* ------------------------------------------------------------
-   Post/page header. Small presentational adjustments around the
-   title and description above the article body.
+   Post/page header. On single pages, make the top matter feel more
+   like a title page: strong title, deck on the left, apparatus on
+   the right, and a clearer visual pause before the body begins.
    ------------------------------------------------------------ */
+.post-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 13.5rem;
+    grid-template-areas:
+        "breadcrumbs breadcrumbs"
+        "title title"
+        "description meta"
+        "series series";
+    column-gap: 2rem;
+    row-gap: 0.2rem;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.post-header .breadcrumbs {
+    grid-area: breadcrumbs;
+}
+
 .post-title {
-    font-size: 32px;
-    margin-bottom: 0.2rem;
+    grid-area: title;
+    font-size: clamp(2.45rem, 4.8vw, 3.5rem);
+    line-height: 1.02;
+    margin-bottom: 0.35rem;
 }
 
 .post-meta-header {
-    margin-top: 0.05rem;
-    margin-bottom: 0.8rem;
+    grid-area: meta;
+    margin-top: 0.1rem;
+    margin-bottom: 0;
+    padding-left: 1rem;
+    border-left: 1px solid var(--border);
     color: var(--secondary);
 }
 
+.post-meta-header .post-meta-line {
+    display: block;
+}
+
+.post-meta-header .post-meta-line + .post-meta-line {
+    margin-top: 0.18rem;
+}
+
 .post-description {
-    margin-top: 0.1rem;
+    grid-area: description;
+    margin-top: 0.15rem;
     margin-bottom: 0;
-    max-width: 52ch;
-    font-size: 0.98rem;
-    line-height: 1.55;
+    max-width: 58ch;
+    font-size: 1.02rem;
+    line-height: 1.68;
     font-style: italic;
     color: var(--content);
-    padding-bottom: 0.6rem;
-    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.series-nav {
+    grid-area: series;
+}
+
+@media (width <= 720px) {
+    .post-header {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "breadcrumbs"
+            "title"
+            "meta"
+            "description"
+            "series";
+        row-gap: 0.35rem;
+    }
+
+    .post-meta-header {
+        padding-left: 0;
+        border-left: 0;
+    }
 }

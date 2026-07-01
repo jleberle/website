@@ -7,23 +7,23 @@
 /* End matter: modified date, suggestion link and topics share one
    compact apparatus block before post navigation. */
 .post-apparatus {
-    margin-top: 1.65rem;
-    padding-top: 0.7rem;
+    margin-top: 1.8rem;
+    padding-top: 0.85rem;
     border-top: 1px solid var(--border);
     color: var(--secondary);
 }
 
 .post-meta-footer {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
 }
 
 /* --- Tags as a journal-style keyword line --- */
 .post-tags {
     gap: 0;
     align-items: baseline;
-    margin-top: 0.28rem;
-    font-size: 0.82rem;
+    margin-top: 0.35rem;
+    font-size: 0.84rem;
     color: var(--secondary);
 }
 
@@ -70,8 +70,8 @@
 
 /* --- Prev/next as plain text links under a hairline --- */
 .paginav {
-    margin-top: 1.2rem;
-    padding-top: 0.8rem;
+    margin-top: 1.45rem;
+    padding-top: 1rem;
     border: none;
     border-top: 1px solid var(--border);
     border-radius: 0;
@@ -92,7 +92,7 @@
     border-radius: 0;
     background: none;
     color: var(--content);
-    gap: 0.18rem;
+    gap: 0.24rem;
 }
 
 .paginav a:hover {
@@ -100,8 +100,8 @@
 }
 
 .paginav span:not(.title) {
-    font-size: 0.88rem;
-    line-height: 1.45;
+    font-size: 0.92rem;
+    line-height: 1.5;
 }
 
 /* Brighten the title (and the small label) to the accent on hover. */

@@ -7,6 +7,10 @@
 {{- $quotes    := where site.RegularPages "Section" "quotes"    | first 5 }}
 {{- $reviews  := where site.RegularPages "Section" "reviews"  | first 5 }}
 {{- $courses  := where site.RegularPages "Section" "courses"  | first 5 }}
+{{- $articleTotal := len (where site.RegularPages "Section" "articles") }}
+{{- $quoteTotal := len (where site.RegularPages "Section" "quotes") }}
+{{- $reviewTotal := len (where site.RegularPages "Section" "reviews") }}
+{{- $courseTotal := len (where site.RegularPages "Section" "courses") }}
 
 {{- /* The four sections are placed into a single 2x2 grid via grid-template-areas
        (home.css), so the two top-row sections (articles/reviews) share a row
@@ -16,7 +20,13 @@
 <div class="home-columns h-feed">
     {{- if $articles }}
     <section class="home-section home-section--articles">
-        <h2 class="home-section-title"><a href="{{ $articlesPage.RelPermalink }}">{{ $articlesPage.Title }}</a></h2>
+        <header class="home-section-header">
+            <div>
+                <h2 class="home-section-title"><a href="{{ $articlesPage.RelPermalink }}">{{ $articlesPage.Title }}</a></h2>
+                {{- with $articlesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
+            </div>
+            <p class="home-section-meta">{{ $articleTotal }} total</p>
+        </header>
         {{- range $articles }}
         <article class="home-list-entry h-entry">
             <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
@@ -28,7 +38,13 @@
     {{- end }}
     {{- if $reviews }}
     <section class="home-section home-section--reviews">
-        <h2 class="home-section-title"><a href="{{ $reviewsPage.RelPermalink }}">{{ $reviewsPage.Title }}</a></h2>
+        <header class="home-section-header">
+            <div>
+                <h2 class="home-section-title"><a href="{{ $reviewsPage.RelPermalink }}">{{ $reviewsPage.Title }}</a></h2>
+                {{- with $reviewsPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
+            </div>
+            <p class="home-section-meta">{{ $reviewTotal }} total</p>
+        </header>
         {{- range $reviews }}
         <article class="home-list-entry h-entry">
             <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
@@ -40,7 +56,13 @@
     {{- end }}
     {{- if $quotes }}
     <section class="home-section home-section--quotes">
-        <h2 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Quotes</a></h2>
+        <header class="home-section-header">
+            <div>
+                <h2 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Quotes</a></h2>
+                {{- with $quotesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
+            </div>
+            <p class="home-section-meta">{{ $quoteTotal }} total</p>
+        </header>
         {{- range $quotes }}
         <article class="home-list-entry h-entry">
             <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
@@ -52,7 +74,13 @@
     {{- end }}
     {{- if $courses }}
     <section class="home-section home-section--courses">
-        <h2 class="home-section-title"><a href="{{ $coursesPage.RelPermalink }}">{{ $coursesPage.Title }}</a></h2>
+        <header class="home-section-header">
+            <div>
+                <h2 class="home-section-title"><a href="{{ $coursesPage.RelPermalink }}">{{ $coursesPage.Title }}</a></h2>
+                {{- with $coursesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
+            </div>
+            <p class="home-section-meta">{{ $courseTotal }} total</p>
+        </header>
         {{- range $courses }}
         <article class="home-list-entry h-entry">
             <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>

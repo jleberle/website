@@ -1,12 +1,11 @@
 /* ------------------------------------------------------------
-   Site footer. A full-bleed panel with a distinct background, a
-   top rule, and a four-column area (identity + blurb /
-   navigation / social / subscribe). Markup is in
-   layouts/_partials/site_footer.html.
+   Site footer. More like a colophon page than a utility tray:
+   quieter type, a broader panel, and slightly stronger internal
+   structure.
    ------------------------------------------------------------ */
 
 .site-footer {
-    margin-top: 3rem;
+    margin-top: 4rem;
 
     /* Sits on the --entry tone (a step off the page background) with a top
        rule, so the footer reads as a deliberate panel rather than text
@@ -27,14 +26,14 @@
     padding-inline: var(--gap);
     display: grid;
     grid-template-columns:
-        minmax(18rem, 1.7fr)
-        minmax(5rem, 0.85fr)
-        minmax(7rem, 0.95fr)
-        minmax(7rem, 0.95fr);
+        minmax(20rem, 2fr)
+        minmax(6rem, 0.8fr)
+        minmax(7rem, 0.9fr)
+        minmax(7rem, 0.9fr);
     grid-template-areas: "about nav connect subscribe";
-    gap: 2rem clamp(1.5rem, 3.5vw, 3rem);
-    padding-top: 2.75rem;
-    padding-bottom: 2.75rem;
+    gap: 1.9rem clamp(1.5rem, 3vw, 2.8rem);
+    padding-top: 2.5rem;
+    padding-bottom: 2.35rem;
 }
 
 .footer-about {
@@ -64,7 +63,7 @@
 .footer-heading,
 .footer-name {
     margin: 0 0 0.9rem;
-    font-size: 0.75rem;
+    font-size: 0.74rem;
     font-weight: 600;
     font-family: var(--meta-font);
     font-variant-caps: all-small-caps;
@@ -79,8 +78,9 @@
 }
 
 .footer-about-text {
-    max-width: 36ch;
-    font-size: 0.84rem;
+    max-width: 38ch;
+    font-size: 0.83rem;
+    line-height: 1.68;
 }
 
 .footer-about-text p {
@@ -108,11 +108,11 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    margin-top: 1.4rem;
+    margin-top: 1.3rem;
     padding: 0.32rem 0.7rem;
     font: inherit;
     font-family: var(--meta-font);
-    font-size: 0.74rem;
+    font-size: 0.78rem;
     color: var(--secondary);
     background: transparent;
     border: 1px solid var(--border);
@@ -144,7 +144,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.42rem;
 }
 
 /* --- Links (nav + feeds): quiet by default, accent on hover. Scoped so they
@@ -157,7 +157,7 @@
 }
 
 .footer-nav a {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
 }
 
 .footer-nav a:hover,
@@ -171,7 +171,7 @@
 .footer-connect .social-icons {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: 0.42rem;
 }
 
 .footer-connect .social-icons a {
@@ -179,28 +179,31 @@
     border-radius: 0;
     padding: 0;
     gap: 0.4rem;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: var(--secondary);
+    background: transparent;
+    box-shadow: none;
     transition: color 0.15s ease;
 }
 
 .footer-connect .social-icons a:hover {
     color: var(--accent);
     border-color: transparent;
+    background: transparent;
 }
 
 /* --- Subscribe column: feed links stacked, icon + label. --- */
 .footer-feeds {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.45rem;
 }
 
 .footer-feed {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
 }
 
 .footer-feed svg {
@@ -213,11 +216,11 @@
 .footer-legal {
     max-width: var(--nav-width);
     margin-inline: auto;
-    padding: 1.1rem var(--gap) 1.7rem;
+    padding: 0.95rem var(--gap) 1.45rem;
     border-top: 1px solid var(--rule);
     display: flex;
     gap: 1.25rem;
-    font-size: 0.76rem;
+    font-size: 0.74rem;
 }
 
 .footer-legal a {

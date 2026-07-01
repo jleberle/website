@@ -1,22 +1,27 @@
 /* ============================================================
-   Surf and Slate — a cold maritime palette drawn from a storm-sea
-   painting: foam-white surf, blue-gray mist, dark slate water, and
-   only a trace of weathered timber warmth. The site should feel
-   mineral, spare, and a little dramatic without becoming glossy.
+   Northeaster — a colder editorial palette drawn from Homer's
+   storm paintings: fog-gray paper, slate ink, and deep blue water
+   as the accent note. The site should feel maritime, scholarly,
+   and a little severe in a good way.
    Dark mode stays neutral and restrained; only the accent tones nod
    back toward the maritime palette.
    ============================================================ */
 :root {
-    --fog-mist:      #e4ecef;   /* page background — cold sea mist   */
-    --fog-granite:   #d4dfe3;   /* cards/footer — surf-washed stone  */
-    --fog-slate:     #18242c;   /* headings, strong — storm slate    */
-    --fog-deepwater: #3a4952;   /* body text — deep blue-gray        */
-    --fog-driftgray: #54646b;   /* meta/muted text                   */
-    --fog-haze:      #a4b4bb;   /* hr, rules, hovers — spray gray    */
-    --fog-pale-haze: #c0cdd2;   /* borders — pale foam shadow        */
-    --driftwood:     #836659;   /* quote rule — weathered timber     */
-    --tide:          #2b5d67;   /* links — muted surf teal           */
-    --tide-deep:     #203f48;   /* link hover — dark water           */
+    --gap:           28px;
+    --nav-width:     1100px;
+    --main-width:    760px;
+    --radius:        10px;
+
+    --fog-mist:      #e7ecef;   /* page background — cold fog        */
+    --fog-granite:   #d9e0e5;   /* panels — slate mist               */
+    --fog-slate:     #1f2c35;   /* headings — inked slate            */
+    --fog-deepwater: #3e4e59;   /* body text — storm water           */
+    --fog-driftgray: #60717b;   /* meta/muted text                   */
+    --fog-haze:      #96a6af;   /* rules — sea haze                  */
+    --fog-pale-haze: #c3cdd3;   /* borders — pale surf shadow        */
+    --driftwood:     #355765;   /* blockquote/source rule — deep sea */
+    --tide:          #24576a;   /* links — deep blue water           */
+    --tide-deep:     #193d4a;   /* link hover — darker undertow      */
     --theme:         var(--fog-mist);
     --entry:         var(--fog-granite);
     --primary:       var(--fog-slate);
@@ -29,7 +34,7 @@
     --rule:          var(--fog-haze);
     --quote-rule:    var(--driftwood);
 
-    /* Muted surf teal, kept dark enough for AA on both light surfaces.
+    /* Deep-water blue, kept dark enough for AA on both light surfaces.
        Hover deepens toward storm-water rather than brightening. */
     --link:          var(--tide);
     --accent:        var(--tide-deep);
@@ -67,5 +72,10 @@
    ------------------------------------------------------------ */
 body,
 .list {
-    background: var(--theme);
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--fog-granite), white 28%) 0,
+            var(--theme) 13rem
+        );
 }
