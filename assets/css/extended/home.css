@@ -85,29 +85,28 @@ body.home .home-info {
    line even when a top-row title wraps — the shorter top section just gets a
    little trailing space. Robust if a section is empty: its area stays blank
    and the others hold their place. */
-.home-columns {
+.home-frontpage {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-        "articles reviews"
-        "quotes   courses";
-    gap: 1.3rem 1.8rem;
-    margin-top: 0;
+    gap: 1.7rem;
 }
 
-.home-section--articles { grid-area: articles; }
-.home-section--reviews  { grid-area: reviews; }
-.home-section--quotes   { grid-area: quotes; }
-.home-section--courses  { grid-area: courses; }
+.home-primary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem 2.4rem;
+}
 
-@media (width <= 768px) {
-    .home-columns {
+.home-secondary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem 2.4rem;
+}
+
+@media (width <= 900px) {
+    .home-primary,
+    .home-secondary {
         grid-template-columns: 1fr;
-        grid-template-areas:
-            "articles"
-            "reviews"
-            "quotes"
-            "courses";
+        gap: 1.35rem;
     }
 }
 
@@ -172,6 +171,39 @@ body.home .home-info {
 }
 
 /* Post list entries */
+.home-feature-entry {
+    padding: 0.1rem 0 0.75rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.1rem;
+}
+
+.home-feature-title {
+    margin: 0 0 0.18rem;
+    font-family: Fraunces, 'Fraunces Fallback', Georgia, serif;
+    font-size: clamp(1.45rem, 2vw, 1.85rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+}
+
+.home-feature-title a {
+    color: var(--primary);
+}
+
+.home-feature-summary {
+    margin: 0 0 0.28rem;
+    max-width: 56ch;
+    color: var(--content);
+    font-size: 0.96rem;
+    line-height: 1.62;
+    text-wrap: pretty;
+}
+
+.home-feature-date {
+    color: var(--secondary);
+    font-size: 0.8rem;
+    line-height: 1.35;
+}
+
 .home-list-entry {
     display: flex;
     justify-content: space-between;
@@ -236,12 +268,14 @@ body.home .home-info {
    color so it reads on every link type, including the section links that
    already sit at --primary. */
 .home-section-title a,
+.home-feature-title a,
 .home-list-entry a,
 .home-section-all {
     transition: color 0.15s ease;
 }
 
 .home-section-title a:hover,
+.home-feature-title a:hover,
 .home-list-entry a:hover,
 .home-section-all:hover {
     color: var(--accent);
@@ -258,6 +292,14 @@ body.home .home-info {
     .home-list-entry {
         display: block;
         padding: 0.45rem 0;
+    }
+
+    .home-feature-title {
+        font-size: 1.34rem;
+    }
+
+    .home-feature-summary {
+        font-size: 0.93rem;
     }
 
     .home-section-header {

@@ -17,77 +17,102 @@
        height and the bottom-row sections (quotes/courses) always start on the
        same line regardless of title wrapping. DOM order is row-major to match
        visual reading order. */ -}}
-<div class="home-columns h-feed">
-    {{- if $articles }}
-    <section class="home-section home-section--articles">
-        <header class="home-section-header">
-            <div>
-                <h2 class="home-section-title"><a href="{{ $articlesPage.RelPermalink }}">{{ $articlesPage.Title }}</a></h2>
-                {{- with $articlesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
-            </div>
-            <p class="home-section-meta">{{ $articleTotal }} total</p>
-        </header>
-        {{- range $articles }}
-        <article class="home-list-entry h-entry">
-            <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-            <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
-        </article>
+<div class="home-frontpage h-feed">
+    <div class="home-primary">
+        {{- if $articles }}
+        {{- $lead := index $articles 0 }}
+        <section class="home-section home-section--articles home-section--feature">
+            <header class="home-section-header">
+                <div>
+                    <h2 class="home-section-title"><a href="{{ $articlesPage.RelPermalink }}">{{ $articlesPage.Title }}</a></h2>
+                    {{- with $articlesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
+                </div>
+                <p class="home-section-meta">{{ $articleTotal }} total</p>
+            </header>
+            <article class="home-feature-entry h-entry">
+                <h3 class="home-feature-title"><a class="u-url p-name" href="{{ $lead.RelPermalink }}">{{ $lead.Title }}</a></h3>
+                {{- $summary := partial "page_summary.html" $lead }}
+                {{- if $summary }}
+                <p class="home-feature-summary p-summary">{{ $summary | plainify | htmlUnescape }}</p>
+                {{- end }}
+                <time datetime="{{ $lead.Date.Format "2006-01-02" }}" class="home-feature-date dt-published">{{ $lead.Date | time.Format $dateFormat }}</time>
+            </article>
+            {{- range after 1 $articles }}
+            <article class="home-list-entry h-entry">
+                <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
+            </article>
+            {{- end }}
+            <a class="home-section-all" href="{{ $articlesPage.RelPermalink }}">All {{ $articlesPage.Title | lower }} &rarr;</a>
+        </section>
         {{- end }}
-        <a class="home-section-all" href="{{ $articlesPage.RelPermalink }}">All {{ $articlesPage.Title | lower }} &rarr;</a>
-    </section>
-    {{- end }}
-    {{- if $reviews }}
-    <section class="home-section home-section--reviews">
-        <header class="home-section-header">
-            <div>
-                <h2 class="home-section-title"><a href="{{ $reviewsPage.RelPermalink }}">{{ $reviewsPage.Title }}</a></h2>
-                {{- with $reviewsPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
-            </div>
-            <p class="home-section-meta">{{ $reviewTotal }} total</p>
-        </header>
-        {{- range $reviews }}
-        <article class="home-list-entry h-entry">
-            <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-            <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
-        </article>
+
+        {{- if $reviews }}
+        {{- $lead := index $reviews 0 }}
+        <section class="home-section home-section--reviews home-section--feature">
+            <header class="home-section-header">
+                <div>
+                    <h2 class="home-section-title"><a href="{{ $reviewsPage.RelPermalink }}">{{ $reviewsPage.Title }}</a></h2>
+                    {{- with $reviewsPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
+                </div>
+                <p class="home-section-meta">{{ $reviewTotal }} total</p>
+            </header>
+            <article class="home-feature-entry h-entry">
+                <h3 class="home-feature-title"><a class="u-url p-name" href="{{ $lead.RelPermalink }}">{{ $lead.Title }}</a></h3>
+                {{- $summary := partial "page_summary.html" $lead }}
+                {{- if $summary }}
+                <p class="home-feature-summary p-summary">{{ $summary | plainify | htmlUnescape }}</p>
+                {{- end }}
+                <time datetime="{{ $lead.Date.Format "2006-01-02" }}" class="home-feature-date dt-published">{{ $lead.Date | time.Format $dateFormat }}</time>
+            </article>
+            {{- range after 1 $reviews }}
+            <article class="home-list-entry h-entry">
+                <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
+            </article>
+            {{- end }}
+            <a class="home-section-all" href="{{ $reviewsPage.RelPermalink }}">All {{ $reviewsPage.Title | lower }} &rarr;</a>
+        </section>
         {{- end }}
-        <a class="home-section-all" href="{{ $reviewsPage.RelPermalink }}">All {{ $reviewsPage.Title | lower }} &rarr;</a>
-    </section>
-    {{- end }}
-    {{- if $quotes }}
-    <section class="home-section home-section--quotes">
-        <header class="home-section-header">
-            <div>
-                <h2 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Quotes</a></h2>
-                {{- with $quotesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
-            </div>
-            <p class="home-section-meta">{{ $quoteTotal }} total</p>
-        </header>
-        {{- range $quotes }}
-        <article class="home-list-entry h-entry">
-            <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-            <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
-        </article>
+    </div>
+
+    <aside class="home-secondary" aria-label="Additional sections">
+        {{- if $quotes }}
+        <section class="home-section home-section--quotes">
+            <header class="home-section-header">
+                <div>
+                    <h2 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Quotes</a></h2>
+                    {{- with $quotesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
+                </div>
+                <p class="home-section-meta">{{ $quoteTotal }} total</p>
+            </header>
+            {{- range $quotes }}
+            <article class="home-list-entry h-entry">
+                <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
+            </article>
+            {{- end }}
+            <a class="home-section-all" href="{{ $quotesPage.RelPermalink }}">All quotes &rarr;</a>
+        </section>
         {{- end }}
-        <a class="home-section-all" href="{{ $quotesPage.RelPermalink }}">All quotes &rarr;</a>
-    </section>
-    {{- end }}
-    {{- if $courses }}
-    <section class="home-section home-section--courses">
-        <header class="home-section-header">
-            <div>
-                <h2 class="home-section-title"><a href="{{ $coursesPage.RelPermalink }}">{{ $coursesPage.Title }}</a></h2>
-                {{- with $coursesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
-            </div>
-            <p class="home-section-meta">{{ $courseTotal }} total</p>
-        </header>
-        {{- range $courses }}
-        <article class="home-list-entry h-entry">
-            <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-            <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
-        </article>
+
+        {{- if $courses }}
+        <section class="home-section home-section--courses">
+            <header class="home-section-header">
+                <div>
+                    <h2 class="home-section-title"><a href="{{ $coursesPage.RelPermalink }}">{{ $coursesPage.Title }}</a></h2>
+                    {{- with $coursesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
+                </div>
+                <p class="home-section-meta">{{ $courseTotal }} total</p>
+            </header>
+            {{- range $courses }}
+            <article class="home-list-entry h-entry">
+                <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
+            </article>
+            {{- end }}
+            <a class="home-section-all" href="{{ $coursesPage.RelPermalink }}">All {{ $coursesPage.Title | lower }} &rarr;</a>
+        </section>
         {{- end }}
-        <a class="home-section-all" href="{{ $coursesPage.RelPermalink }}">All {{ $coursesPage.Title | lower }} &rarr;</a>
-    </section>
-    {{- end }}
+    </aside>
 </div>

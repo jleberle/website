@@ -1,14 +1,12 @@
 /* ------------------------------------------------------------
-   Body type. System-ui font stack — no web font download for body
-   text, so there is no FOUT or layout shift for paragraphs. Users
-   get San Francisco on Apple, Segoe UI on Windows, Roboto on
-   Android. Headings use Fraunces (fonts.css) for editorial
-   contrast. Code keeps its monospace stack (see mono.css).
+   Body type. A scholarly serif stack for long-form reading, paired
+   with Fraunces only where display emphasis helps. The goal is a
+   quiet academic page rather than a product UI.
    ------------------------------------------------------------ */
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-                 Roboto, "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.7;
+    font-family: Charter, "Iowan Old Style", "Palatino Linotype",
+                 "Book Antiqua", "URW Palladio L", Georgia, serif;
+    line-height: 1.72;
 }
 
 /* Tighten the reading measure. The theme's 720px column runs ~80
@@ -17,7 +15,7 @@ body {
    regardless of which font renders it. Affects the single/list main
    column (the home page uses --nav-width). */
 :root {
-    --main-width: 680px;
+    --main-width: 700px;
 }
 
 /* Headings (prose + page title). Fraunces, pinned at its display optical
@@ -25,8 +23,14 @@ body {
    serif gives at heading sizes. font-weight: 600 here matches the real
    weight shipped — no synthetic bold. letter-spacing: -0.01em tightens
    tracking slightly for large display type. */
-h1, h2, h3, h4, h5, h6,
-.post-title {
+h1,
+.post-title,
+.page-header h1,
+.home-info .entry-header h1,
+.home-feature-title,
+.home-section-title,
+.entry-header h2,
+.logo a {
     font-family: Fraunces, 'Fraunces Fallback', Georgia, serif;
     text-rendering: optimizeLegibility;
     font-weight: 600;
@@ -39,6 +43,17 @@ h1, h2, h3, h4, h5, h6,
 strong,
 b {
     font-weight: 600;
+}
+
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+    font-family: inherit;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-wrap: pretty;
 }
 
 /* Section dividers in prose: a full-width hairline under headings so
