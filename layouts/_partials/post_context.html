@@ -25,9 +25,9 @@
       {{- end -}}
     {{- end -}}
     {{- if or $reviewPublisher $reviewYear }}
-    <span>
+    <span class="post-context-record">
       {{- if or $reviewTitle $reviewAuthor }} {{ end -}}
-      {{- with $reviewPublisher }}({{ . | plainify }}{{ with $reviewYear }}, {{ . | plainify }}{{ end }}){{ else }}({{ $reviewYear | plainify }}){{ end -}}
+      {{- with $reviewPublisher }}(<span class="post-context-publisher">{{ . | plainify }}</span>{{ with $reviewYear }}, <span class="post-context-year">{{ . | plainify }}</span>{{ end }}){{ else }}(<span class="post-context-year">{{ $reviewYear | plainify }}</span>){{ end -}}
     </span>
     {{- end }}
   </p>
@@ -45,7 +45,7 @@
       <cite>{{ . | markdownify }}</cite>
       {{- end -}}
     {{- end -}}
-    {{- with $sourceYear }}<span> ({{ . | plainify }})</span>{{ end -}}
+    {{- with $sourceYear }}<span class="post-context-record"> (<span class="post-context-year">{{ . | plainify }}</span>)</span>{{ end -}}
   </p>
 </div>
 {{- end }}
