@@ -102,6 +102,7 @@ be inspected without reproducing it locally.
 | `youtube` | `{{</* youtube VIDEO_ID */>}}` | Click-to-load YouTube embed. Thumbnail is self-hosted at build time via `resources.GetRemote`. Video only loads on click. |
 | `bluesky` | `{{</* bluesky "https://bsky.app/..." */>}}` | Click-to-load Bluesky embed. Embed script only loads on click. |
 | `carousel` | `{{</* carousel "a.avif" "b.avif" */>}}` | Image carousel from page bundle files. Supports keyboard navigation and dot indicators. Each slide's `alt` falls back to the humanized filename. All slides lazy-load; for a carousel that is the topmost media on the page use the named form `{{</* carousel images="a.avif, b.avif" eager=true */>}}` so the first slide loads eagerly with `fetchpriority="high"`. Pass real alt text via a parallel, **semicolon-separated** `alts` list (semicolons so alt text may contain commas): `{{</* carousel images="a.avif, b.avif" alts="A bull rider mid-buck; Barrel racing at speed" */>}}` — only the named form can carry `alts`. |
+| `figure` | `{{</* figure src="image.avif" alt="Description" caption="Caption text" */>}}` | Responsive figure from a page bundle resource or static asset. Supports the stock Hugo/PaperMod-style `title`, `caption`, `attr`, `attrlink`, `link`, `target`, `rel`, `class`, and `align="center"` options; raster bundle assets get the responsive image pipeline and lightbox automatically. |
 
 ## Images
 
