@@ -113,6 +113,12 @@ outputs:
     - RSS
     - jsonfeed
     - manifest
+  section:
+    - HTML
+  taxonomy:
+    - HTML
+  term:
+    - HTML
 
 # ------------------------------------------------------------
 # Markdown and syntax highlighting
