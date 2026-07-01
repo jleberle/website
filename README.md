@@ -220,6 +220,7 @@ If you add a new section (e.g. `content/essays/`):
 - [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — the inspiration for the color palette and where dark mode's cyan is pulled from.
 - [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) by Frank Grießhammer / Adobe ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted body serif used for prose and metadata (`static/fonts/`, declared in `assets/css/extended/fonts.css`).
 - [Fraunces](https://fonts.google.com/specimen/Fraunces) by Undercase Type ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted display serif used for headings and wordmark (`static/fonts/`, declared in `assets/css/extended/fonts.css`).
+- [IBM Plex Mono](https://fonts.google.com/specimen/IBM+Plex+Mono) by IBM ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted support monospace face used for code-like elements (`static/fonts/`, declared in `assets/css/extended/fonts.css` and applied in `assets/css/extended/mono.css`).
 
 ## License
 
