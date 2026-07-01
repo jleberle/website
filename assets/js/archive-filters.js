@@ -14,7 +14,17 @@
     tools.hidden = false;
     var activeFilter = "all";
 
-    function setUrlFilter(filter) {
+    function normalizeSearchText(value) {
+        return value
+            .toLocaleLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[\u2018\u2019]/g, "'")
+            .replace(/[^a-z0-9']+/g, " ")
+            .trim();
+    }
+
+    function setUrlState(filter, query) {
         if (!window.history || !window.URL) return;
         var url = new URL(window.location.href);
         if (filter === "all") {
@@ -22,19 +32,30 @@
         } else {
             url.searchParams.set("type", filter);
         }
+        if (query) {
+            url.searchParams.set("q", query);
+        } else {
+            url.searchParams.delete("q");
+        }
         window.history.replaceState(null, "", url);
     }
 
     function applyFilter(filter, updateUrl) {
         activeFilter = filter;
-        var query = searchInput.value.trim().toLocaleLowerCase();
+        var rawQuery = searchInput.value.trim();
+        var queryTerms = normalizeSearchText(rawQuery).split(" ").filter(Boolean);
         var visibleCount = 0;
+        var scopeCount = 0;
 
         entries.forEach(function (entry) {
             var matchesType = filter === "all" || entry.dataset.archiveSection === filter;
-            var matchesQuery = !query || entry.dataset.archiveSearchText.indexOf(query) !== -1;
+            var searchText = normalizeSearchText(entry.dataset.archiveSearchText);
+            var matchesQuery = queryTerms.every(function (term) {
+                return searchText.indexOf(term) !== -1;
+            });
             var isMatch = matchesType && matchesQuery;
             entry.classList.toggle("is-hidden", !isMatch);
+            if (matchesType) scopeCount += 1;
             if (isMatch) visibleCount += 1;
         });
 
@@ -44,11 +65,19 @@
             button.setAttribute("aria-pressed", String(isActive));
         });
 
-        status.textContent = visibleCount === entries.length
-            ? entries.length + " posts"
-            : visibleCount + " of " + entries.length + " posts";
+        var activeButton = buttons.find(function (button) {
+            return button.dataset.archiveFilterButton === filter;
+        });
+        var filterLabel = activeButton ? activeButton.dataset.archiveFilterLabel : "posts";
+        if (rawQuery) {
+            status.textContent = visibleCount + " of " + scopeCount + " " + filterLabel + " matching “" + rawQuery + "”";
+        } else if (filter === "all") {
+            status.textContent = entries.length + " posts";
+        } else {
+            status.textContent = scopeCount + " " + filterLabel;
+        }
         empty.hidden = visibleCount !== 0;
-        if (updateUrl) setUrlFilter(filter);
+        if (updateUrl) setUrlState(filter, rawQuery);
     }
 
     buttons.forEach(function (button) {
@@ -58,7 +87,16 @@
     });
 
     searchInput.addEventListener("input", function () {
-        applyFilter(activeFilter, false);
+        applyFilter(activeFilter, true);
+    });
+
+    document.addEventListener("keydown", function (event) {
+        var target = event.target;
+        var isTyping = target.matches("input, textarea, select") || target.isContentEditable;
+        if (event.key === "/" && !event.metaKey && !event.ctrlKey && !event.altKey && !isTyping) {
+            event.preventDefault();
+            searchInput.focus();
+        }
     });
 
     reset.addEventListener("click", function () {
@@ -69,6 +107,7 @@
 
     var params = new URLSearchParams(window.location.search);
     var requestedFilter = params.get("type") || "all";
+    searchInput.value = params.get("q") || "";
     var hasRequestedFilter = buttons.some(function (button) {
         return button.dataset.archiveFilterButton === requestedFilter;
     });

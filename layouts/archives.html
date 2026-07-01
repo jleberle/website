@@ -44,7 +44,7 @@
 <div class="archive-tools" data-archive-tools hidden>
 {{- if gt (len $sections) 1 }}
 <nav class="archive-filters" aria-label="Filter posts by type" data-archive-filters>
-  <button class="archive-filter is-active" type="button" data-archive-filter-button="all" aria-pressed="true">
+  <button class="archive-filter is-active" type="button" data-archive-filter-button="all" data-archive-filter-label="posts" aria-pressed="true">
     All
     <span>{{ len $pages }}</span>
   </button>
@@ -55,7 +55,7 @@
   {{- with site.GetPage (printf "/%s" $section) }}
   {{- $label = .Title }}
   {{- end }}
-  <button class="archive-filter" type="button" data-archive-filter-button="{{ $section }}" aria-pressed="false">
+  <button class="archive-filter" type="button" data-archive-filter-button="{{ $section }}" data-archive-filter-label="{{ $label | lower }}" aria-pressed="false">
     {{ $label }}
     <span>{{ len $sectionPages }}</span>
   </button>
@@ -70,7 +70,7 @@
       <circle cx="11" cy="11" r="7"></circle>
       <path d="m20 20-4-4"></path>
     </svg>
-    <input id="archive-search-input" type="search" inputmode="search" autocomplete="off" placeholder="Search posts…" data-archive-search-input>
+    <input id="archive-search-input" type="search" inputmode="search" autocomplete="off" placeholder="Search posts…" aria-keyshortcuts="/" data-archive-search-input>
   </div>
 </div>
 </div>
