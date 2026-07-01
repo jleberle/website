@@ -111,7 +111,6 @@ outputs:
   home:
     - HTML
     - RSS
-    - JSON # search index
     - jsonfeed
     - manifest
 
@@ -273,14 +272,3 @@ params:
     url: "https://codeberg.org/jleberle/website/src/branch/main/content"
     text: "Suggest Changes"
     appendFilePath: true
-
-  # Fuse.js options used by the search index.
-  search:
-    isCaseSensitive: false
-    shouldSort: true
-    location: 0
-    distance: 1000
-    threshold: 0.4
-    minMatchCharLength: 0
-    limit: 10
-    keys: ["title", "permalink", "summary", "content"]

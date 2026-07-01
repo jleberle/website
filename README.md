@@ -167,8 +167,7 @@ Run `scripts/sync-hugo-version.sh` to update the Hugo versions in `statichost.ym
 
 This site no longer tracks PaperMod as a dependency — there is no `themes/`
 submodule and no upstream to diff against. The layouts and core CSS/JS under
-`layouts/`, `assets/css/base/`, `assets/css/license.css`, and
-`assets/js/{fastsearch,fuse.basic.min,license}.js` originated in PaperMod and
+`layouts/`, `assets/css/base/`, and `assets/css/license.css` originated in PaperMod and
 were vendored directly into this repo; `assets/css/extended/` and the heavily
 modified layouts (`single.html`, `list.html`, `cover.html`, `figure.html`,
 etc.) are local rewrites on top of that base. Dead PaperMod-only code (unused

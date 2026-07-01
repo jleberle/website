@@ -22,7 +22,7 @@
 
 {{- if .IsHome }}
 <body class="list home" id="top">
-{{- else if (or (ne .Kind `page` ) (eq .Layout `archives`) (eq .Layout `search`)) }}
+{{- else if (or (ne .Kind `page` ) (eq .Layout `archives`)) }}
 <body class="list" id="top">
 {{- else }}
 <body id="top">

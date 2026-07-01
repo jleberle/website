@@ -80,7 +80,11 @@
   <div class="archive-posts">
     {{- range $pages.ByPublishDate.Reverse }}
     {{- if and (eq .Kind "page") (ne .PublishDate.Year 1) }}
-    <article class="archive-entry" data-archive-entry data-archive-section="{{ .Section }}" data-archive-search-text="{{ printf "%s %s" .Title .Section | plainify | lower }}">
+    {{- $summary := partial "page_summary.html" . | plainify | htmlUnescape }}
+    {{- $categories := delimit (.Params.categories | default (slice)) " " }}
+    {{- $tags := delimit (.Params.tags | default (slice)) " " }}
+    {{- $searchText := printf "%s %s %s %s %s %s" .Title .Section $summary $categories $tags (.PublishDate.Format "January 2 2006") }}
+    <article class="archive-entry" data-archive-entry data-archive-section="{{ .Section }}" data-archive-search-text="{{ $searchText | lower }}">
       <time class="archive-date" datetime="{{ .PublishDate.Format "2006-01-02" }}">{{ .PublishDate.Format "Jan 2, 2006" }}</time>
       <div class="archive-entry-body">
         <h2 class="archive-entry-title entry-hint-parent">

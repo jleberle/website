@@ -29,12 +29,10 @@
 }
 
 @media (prefers-reduced-motion) {
-    /* terms; post-single; post-entry; post-entry; search; search */
+    /* terms; post-single; post-entry */
     .terms-tags a:active,
     .post-entry:active,
-    .top-link,
-    .search-results .focus,
-    .search-results li:active {
+    .top-link {
         transform: none;
     }
 }
