@@ -13,22 +13,22 @@
     font-family: var(--meta-font);
     font-size: 0.78rem;
     line-height: 1.35;
-    color: var(--secondary);
-    border: 1px solid color-mix(in srgb, var(--border), var(--rule) 22%);
+    color: var(--content);
+    border: 1px solid color-mix(in sRGB, var(--border), var(--rule) 22%);
     border-radius: 999px;
     padding: 4px 10px;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 0.38rem;
-    background: color-mix(in srgb, var(--theme), white 18%);
+    background: color-mix(in sRGB, var(--theme), white 18%);
     transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .social-icons a:hover {
     color: var(--accent);
     border-color: var(--accent);
-    background: color-mix(in srgb, var(--entry), white 28%);
+    background: color-mix(in sRGB, var(--entry), white 28%);
 }
 
 .social-icons a svg {
@@ -51,10 +51,10 @@
 
 .home-info .social-icons a {
     font-size: 0.74rem;
-    color: var(--secondary);
-    border-color: color-mix(in srgb, var(--border), transparent 8%);
+    color: var(--content);
+    border-color: color-mix(in sRGB, var(--border), transparent 8%);
     padding: 4px 9px;
-    background: color-mix(in srgb, var(--theme), white 22%);
+    background: color-mix(in sRGB, var(--theme), white 22%);
 }
 
 .home-info .social-icons a:hover {

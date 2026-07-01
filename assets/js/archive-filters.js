@@ -1,15 +1,18 @@
 (function () {
     var archive = document.querySelector("[data-archive]");
-    var filters = document.querySelector("[data-archive-filters]");
-    if (!archive || !filters) return;
+    var tools = document.querySelector("[data-archive-tools]");
+    if (!archive || !tools) return;
 
-    var buttons = Array.prototype.slice.call(filters.querySelectorAll("[data-archive-filter-button]"));
+    var buttons = Array.prototype.slice.call(tools.querySelectorAll("[data-archive-filter-button]"));
     var entries = Array.prototype.slice.call(archive.querySelectorAll("[data-archive-entry]"));
-    var months = Array.prototype.slice.call(archive.querySelectorAll("[data-archive-month]"));
-    var years = Array.prototype.slice.call(archive.querySelectorAll("[data-archive-year]"));
-    if (!buttons.length || !entries.length) return;
+    var searchInput = tools.querySelector("[data-archive-search-input]");
+    var status = archive.querySelector("[data-archive-status]");
+    var empty = archive.querySelector("[data-archive-empty]");
+    var reset = archive.querySelector("[data-archive-reset]");
+    if (!entries.length || !searchInput) return;
 
-    filters.hidden = false;
+    tools.hidden = false;
+    var activeFilter = "all";
 
     function setUrlFilter(filter) {
         if (!window.history || !window.URL) return;
@@ -22,22 +25,17 @@
         window.history.replaceState(null, "", url);
     }
 
-    function updateGroups() {
-        months.forEach(function (month) {
-            var hasVisibleEntry = month.querySelector("[data-archive-entry]:not(.is-hidden)");
-            month.classList.toggle("is-hidden", !hasVisibleEntry);
-        });
-
-        years.forEach(function (year) {
-            var hasVisibleMonth = year.querySelector("[data-archive-month]:not(.is-hidden)");
-            year.classList.toggle("is-hidden", !hasVisibleMonth);
-        });
-    }
-
     function applyFilter(filter, updateUrl) {
+        activeFilter = filter;
+        var query = searchInput.value.trim().toLocaleLowerCase();
+        var visibleCount = 0;
+
         entries.forEach(function (entry) {
-            var isMatch = filter === "all" || entry.dataset.archiveSection === filter;
+            var matchesType = filter === "all" || entry.dataset.archiveSection === filter;
+            var matchesQuery = !query || entry.dataset.archiveSearchText.indexOf(query) !== -1;
+            var isMatch = matchesType && matchesQuery;
             entry.classList.toggle("is-hidden", !isMatch);
+            if (isMatch) visibleCount += 1;
         });
 
         buttons.forEach(function (button) {
@@ -46,7 +44,10 @@
             button.setAttribute("aria-pressed", String(isActive));
         });
 
-        updateGroups();
+        status.textContent = visibleCount === entries.length
+            ? entries.length + " posts"
+            : visibleCount + " of " + entries.length + " posts";
+        empty.hidden = visibleCount !== 0;
         if (updateUrl) setUrlFilter(filter);
     }
 
@@ -54,6 +55,16 @@
         button.addEventListener("click", function () {
             applyFilter(button.dataset.archiveFilterButton, true);
         });
+    });
+
+    searchInput.addEventListener("input", function () {
+        applyFilter(activeFilter, false);
+    });
+
+    reset.addEventListener("click", function () {
+        searchInput.value = "";
+        applyFilter("all", true);
+        searchInput.focus();
     });
 
     var params = new URLSearchParams(window.location.search);

@@ -180,7 +180,7 @@
     padding: 0;
     gap: 0.4rem;
     font-size: 0.8rem;
-    color: var(--secondary);
+    color: var(--content);
     background: transparent;
     box-shadow: none;
     transition: color 0.15s ease;

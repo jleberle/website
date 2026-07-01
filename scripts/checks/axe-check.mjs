@@ -15,7 +15,6 @@ const pages = [
   '/archives/',
   '/cv/',
   '/contact/',
-  '/search/',
 ];
 
 const mimeTypes = new Map([

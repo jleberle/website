@@ -1,15 +1,21 @@
 /* ------------------------------------------------------------
-   Archive page section filters (assets/js/archive-filters.js).
-   Pill buttons that filter the archive by section, with a count
-   per pill and an .is-hidden helper the script toggles on entries,
-   months and years. Progressive enhancement — the nav is hidden
-   until JS reveals it, so no-JS users get the full archive.
+   Archive page controls (assets/js/archive-filters.js).
+   Category pills and search filter the flat post list together.
+   Progressive enhancement — controls stay hidden until JS reveals
+   them, so no-JS users still get the full archive.
    ------------------------------------------------------------ */
+.archive-tools {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
 .archive-filters {
     display: flex;
     flex-wrap: wrap;
     gap: 0.45rem;
-    margin: 0 0 1.5rem;
 }
 
 .archive-filter {
@@ -45,10 +51,67 @@
     outline-offset: 2px;
 }
 
-.archive-entry.is-hidden,
-.archive-month.is-hidden,
-.archive-year.is-hidden {
+.archive-entry.is-hidden {
     display: none;
+}
+
+.archive-search-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.archive-search-field {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-width: 15rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--secondary);
+    background: var(--entry);
+}
+
+.archive-search-field:focus-within {
+    border-color: var(--accent);
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.archive-search-field input {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    color: var(--primary);
+    background: transparent;
+    font: inherit;
+}
+
+.archive-status {
+    min-height: 1.4em;
+    margin: 0 0 0.4rem;
+    color: var(--secondary);
+    font-family: var(--meta-font);
+    font-size: 0.75rem;
+}
+
+.archive-empty {
+    padding: 3.5rem 1rem;
+    text-align: center;
+    color: var(--secondary);
+}
+
+.archive-empty button {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--primary);
+    background: var(--entry);
 }
 
 /* Each archive row is a click target via the absolutely-positioned
@@ -86,6 +149,11 @@
 }
 
 @media (width <= 520px) {
+    .archive-tools {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
     .archive-filters {
         gap: 0.35rem;
         margin-bottom: 1.2rem;
@@ -93,5 +161,15 @@
 
     .archive-filter {
         padding-inline: 0.55rem;
+    }
+
+    .archive-search-field {
+        min-width: 0;
+    }
+
+    .archive-entry {
+        grid-template-columns: 1fr;
+        gap: 0.3rem;
+        padding-inline: 0.35rem;
     }
 }
