@@ -37,6 +37,10 @@
 {{- if not (or (.Get "alt") (.Get "caption")) -}}
     {{- warnf "figure missing alt and caption: %s (%s)" .Page.RelPermalink $src -}}
 {{- end -}}
+{{- $title := .Get "title" -}}
+{{- $caption := .Get "caption" -}}
+{{- $attr := .Get "attr" -}}
+{{- $attrlink := .Get "attrlink" -}}
 <figure{{ if or (.Get "class") $align }} class="{{ if $align }}align-center {{ end }}{{- with .Get "class" }}{{ . }}{{ end }}"{{ end -}}>
     {{- if .Get "link" -}}
         <a href="{{ .Get "link" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }}>
@@ -49,18 +53,26 @@
          {{- with $imgH }} height="{{ . }}"{{ end -}}
     />
     {{- if .Get "link" }}</a>{{ end -}}
-    {{- if or (or (.Get "title") (.Get "caption")) (.Get "attr") -}}
+    {{- if or (or $title $caption) $attr -}}
         <figcaption>
-            {{ with (.Get "title") -}}
-                {{ . }}
+            {{- with $title -}}
+                <span class="fig-title">{{ . }}</span>
             {{- end -}}
-            {{- if or (.Get "caption") (.Get "attr") -}}<p>
-                {{- .Get "caption" | markdownify -}}
-                {{- with .Get "attrlink" }}
-                    <a href="{{ . }}">
+            {{- if or $caption $attr -}}<p>
+                {{- with $caption -}}
+                <span class="fig-caption">{{ . | markdownify }}</span>
                 {{- end -}}
-                {{- .Get "attr" | markdownify -}}
-                {{- if .Get "attrlink" }}</a>{{ end }}</p>
+                {{- if and $caption $attr -}}
+                <span class="fig-separator" aria-hidden="true"> - </span>
+                {{- end -}}
+                {{- with $attr -}}
+                <span class="fig-attribution">
+                    {{- with $attrlink }}<a href="{{ . }}">{{ end -}}
+                    {{- . | markdownify -}}
+                    {{- with $attrlink }}</a>{{ end -}}
+                </span>
+                {{- end -}}
+            </p>
             {{- end }}
         </figcaption>
     {{- end }}

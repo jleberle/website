@@ -26,17 +26,36 @@
     margin-bottom: 0;
 }
 
-.post-content figcaption {
+.md-content figcaption {
     margin-top: 0.5rem;
     font-family: var(--meta-font);
     font-size: 0.82rem;
     line-height: 1.45;
+    font-style: italic;
     color: var(--secondary);
     text-align: center;
 }
 
-.post-content figcaption p {
+.md-content figcaption p {
     margin: 0.15rem 0 0;
+}
+
+.md-content figcaption .fig-title,
+.md-content figcaption .fig-caption,
+.md-content figcaption .fig-attribution {
+    font-style: italic;
+}
+
+.md-content figcaption .fig-separator {
+    font-style: normal;
+}
+
+.md-content figcaption a {
+    color: inherit;
+}
+
+.md-content figcaption a:hover {
+    color: var(--accent);
 }
 
 .md-content a:not(.anchor) {

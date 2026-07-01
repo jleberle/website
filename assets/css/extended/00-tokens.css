@@ -1,24 +1,22 @@
 /* ============================================================
-   Foggy New England Sea — a coastal palette built around the idea
-   of an overcast Maine/Massachusetts shoreline: pale sea-fog over
-   pale stone, deep storm-slate ink, a weathered driftwood accent
-   for the one warm note, and a deep tidal teal for links. Dark mode
-   shifts to a moonless night at sea: a lighthouse-amber quote rule
-   and a bioluminescent teal for links glowing against the dark.
-   Replaces the earlier earth-tone and neutral-gray palettes this
-   branch carried before — both live on in git history if needed.
+   Surf and Slate — a cold maritime palette drawn from a storm-sea
+   painting: foam-white surf, blue-gray mist, dark slate water, and
+   only a trace of weathered timber warmth. The site should feel
+   mineral, spare, and a little dramatic without becoming glossy.
+   Dark mode stays neutral and restrained; only the accent tones nod
+   back toward the maritime palette.
    ============================================================ */
 :root {
-    --fog-mist:      #eef1f2;   /* page background — sea fog        */
-    --fog-granite:   #dde3e5;   /* cards/footer — wet granite        */
-    --fog-slate:     #1d2b32;   /* headings, strong — storm slate    */
-    --fog-deepwater: #3f4f57;   /* body text — slate blue-gray       */
-    --fog-driftgray: #54636a;   /* meta/muted text                   */
-    --fog-haze:      #a9b6bb;   /* hr, rules, hovers — misty gray    */
-    --fog-pale-haze: #c3ced2;   /* borders — pale mist               */
-    --driftwood:     #9c8a6e;   /* quote rule — weathered driftwood  */
-    --tide:          #296672;   /* links — deep tidal teal           */
-    --tide-deep:     #1a444d;   /* link hover — darker tide          */
+    --fog-mist:      #e4ecef;   /* page background — cold sea mist   */
+    --fog-granite:   #d4dfe3;   /* cards/footer — surf-washed stone  */
+    --fog-slate:     #18242c;   /* headings, strong — storm slate    */
+    --fog-deepwater: #3a4952;   /* body text — deep blue-gray        */
+    --fog-driftgray: #56666d;   /* meta/muted text                   */
+    --fog-haze:      #a4b4bb;   /* hr, rules, hovers — spray gray    */
+    --fog-pale-haze: #c0cdd2;   /* borders — pale foam shadow        */
+    --driftwood:     #836659;   /* quote rule — weathered timber     */
+    --tide:          #2b5d67;   /* links — muted surf teal           */
+    --tide-deep:     #203f48;   /* link hover — dark water           */
     --theme:         var(--fog-mist);
     --entry:         var(--fog-granite);
     --primary:       var(--fog-slate);
@@ -31,9 +29,8 @@
     --rule:          var(--fog-haze);
     --quote-rule:    var(--driftwood);
 
-    /* Tidal teal, checked for AA against both surfaces (5.71:1 on
-       --theme, 5.0:1 on --entry). Hover darkens further toward the
-       slate ink rather than lightening — this is a light surface. */
+    /* Muted surf teal, kept dark enough for AA on both light surfaces.
+       Hover deepens toward storm-water rather than brightening. */
     --link:          var(--tide);
     --accent:        var(--tide-deep);
 
