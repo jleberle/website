@@ -218,7 +218,8 @@ If you add a new section (e.g. `content/essays/`):
 
 - [PaperMod](https://github.com/adityatelange/hugo-PaperMod) — the Hugo theme this site's layouts and core CSS/JS originated from (MIT licensed); no longer tracked as a dependency, see [Theme history](#theme-history).
 - [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — the inspiration for the color palette and where dark mode's cyan is pulled from.
-- [Fraunces](https://fonts.google.com/specimen/Fraunces) by Undercase Type ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted display serif used for headings and wordmark (`static/fonts/`, declared in `assets/css/extended/fonts.css`). Body and metadata typography now use system stacks for lighter weight and platform-native rendering.
+- [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) by Frank Grießhammer / Adobe ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted body serif used for prose and metadata (`static/fonts/`, declared in `assets/css/extended/fonts.css`).
+- [Fraunces](https://fonts.google.com/specimen/Fraunces) by Undercase Type ([SIL Open Font License](https://openfontlicense.org/)) — the self-hosted display serif used for headings and wordmark (`static/fonts/`, declared in `assets/css/extended/fonts.css`).
 
 ## License
 

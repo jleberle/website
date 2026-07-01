@@ -1,35 +1,66 @@
 /* ------------------------------------------------------------
-   Fraunces — self-hosted heading serif (Undercase Type, via Google
-   Fonts), used for headings, .post-title, and .logo only; body text
-   uses the system-ui stack (see serif.css). Replaces Source Serif 4
-   now that the font's only job is display-size headlines rather than
-   long-form body reading — Source Serif's onum support (the original
-   reason it was chosen) is irrelevant for headers, which rarely show
-   digits. Fraunces is a variable font upstream (opsz/wght/SOFT/WONK
-   axes); this is a single static instance pinned at opsz=144 (the
-   "display" optical size — more stroke contrast and character than
-   the text-optical cut), wght=600 (a real semibold, matching the
-   font-weight: 600 already requested by headings — no synthetic bold
-   needed), SOFT=0, WONK=1 (the wonky/characterful detailing that's
-   on by default in Fraunces's own named instances).
+   Source Serif 4 — self-hosted body serif (Adobe, via Google Fonts),
+   subsetted to the latin range and kept intentionally small: regular,
+   italic, and semibold only. That gives the site a consistent scholarly
+   reading face without going back to the heavier four-face body-font
+   setup this repo used earlier.
 
-   No italic face: headings never contain inline italics on this site
-   (checked across all content), and .post-description — the one place
-   styled italic — uses the system-sans body stack, not the heading
-   face. Shipping an italic Fraunces would be dead weight, same mistake
-   already made once with Source Serif 4's unused 400i face.
+   The regular face is preloaded in extend_head.html because it appears
+   on every page; italic and semibold load on demand. Source Serif's
+   oldstyle-figure support is one reason to prefer it here over a system
+   serif stack: years and dates can sit more naturally inside prose.
+   ------------------------------------------------------------ */
 
-   Subset to the latin unicode-range (matches the other faces this site
-   has shipped), minimal layout features (ccmp, kern, liga, locl — no
-   onum/pnum/case/ss01, none of which headings need), --no-hinting,
-   woff2. font-display: fallback (not swap) — headings are few and
-   prominent, so a late swap reads as a jarring "snap" in a way that
-   doesn't apply to body text (which has none here anyway). The short
-   ~100ms block then ~3s swap window means the font still wins the
-   race almost always (it's preloaded and only 16.7KB), but on a
-   genuinely slow connection the page commits to the metric-matched
-   fallback for that view instead of visibly changing a heading out
-   from under the reader mid-read.
+@font-face {
+    font-family: 'Source Serif 4';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/sourceserif4-400-latin.woff2") format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Source Serif 4';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/sourceserif4-400i-latin.woff2") format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Source Serif 4';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("/fonts/sourceserif4-600-latin.woff2") format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Metrics-matched proxy for the font swap. This lets the browser paint a
+   locally available fallback first without paragraphs rewrapping when the
+   webfont lands. The ratios come from the prior Source Serif setup that
+   was already tuned in this repo. */
+@font-face {
+    font-family: 'Source Serif 4 Fallback';
+    src: local('Georgia'), local('Cambria'), local('Times New Roman'), local('Times');
+    size-adjust: 104.06%;
+    ascent-override: 99.57%;
+    descent-override: 32.2%;
+    line-gap-override: 0%;
+}
+
+/* ------------------------------------------------------------
+   Fraunces — self-hosted display serif (Undercase Type, via Google
+   Fonts), used for headings, .post-title, and .logo only. It is a
+   single static display instance pinned at opsz=144, wght=600, SOFT=0,
+   WONK=1, which gives the site its editorial/masthead voice without
+   making the body carry that much personality.
+
+   No italic face: headings rarely need it here, and carrying one would
+   be dead weight. font-display: fallback (not swap) because a delayed
+   heading snap is more distracting than a delayed body-text swap.
    ------------------------------------------------------------ */
 
 @font-face {
