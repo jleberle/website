@@ -39,7 +39,21 @@
 {{- $read := sort (where $entries "status" "ne" "current") "sort_read_key" "desc" -}}
 
 <header class="page-header reading-header">
-  <h1>{{ .Title }}</h1>
+  <h1>
+    {{ .Title }}
+    {{- if (.Param "showRssLink") }}
+    {{- with .OutputFormats.Get "RSS" }}
+    <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+    {{- end }}
+    {{- end }}
+  </h1>
   {{- with .Description }}
   <div class="post-description">
     {{ . }}
@@ -68,7 +82,7 @@
         {{- end }}
       {{- end }}
     {{- end }}
-    <details class="reading-book reading-book--current">
+    <details class="reading-book reading-book--current" id="{{ .slug }}">
       <summary class="reading-book-summary">
         <div class="reading-book-main">
           <h3 class="reading-book-title">{{ .title }}</h3>
@@ -158,7 +172,7 @@
         {{- end }}
       {{- end }}
     {{- end }}
-    <details class="reading-book" data-reading-entry data-sort-read="{{ .sort_read_key }}" data-sort-published="{{ .sort_published_key }}">
+    <details class="reading-book" id="{{ .slug }}" data-reading-entry data-sort-read="{{ .sort_read_key }}" data-sort-published="{{ .sort_published_key }}">
       <summary class="reading-book-summary">
         <div class="reading-book-main">
           <h3 class="reading-book-title">{{ .title }}</h3>

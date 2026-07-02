@@ -1,0 +1,127 @@
+{{- $authorEmail := "" }}
+{{- with site.Params.author }}
+  {{- if reflect.IsMap . }}
+    {{- with .email }}
+      {{- $authorEmail = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- $authorName := "" }}
+{{- with site.Params.author }}
+  {{- if reflect.IsMap . }}
+    {{- with .name }}
+      {{- $authorName = . }}
+    {{- end }}
+  {{- else }}
+    {{- $authorName = . }}
+  {{- end }}
+{{- end }}
+
+{{- $events := slice -}}
+{{- range $key, $book := hugo.Data.reading.books }}
+  {{- if not (hasPrefix $key "_") }}
+    {{- $slug := $key -}}
+    {{- $title := $book.title | default $slug -}}
+    {{- $author := $book.author | default "" -}}
+    {{- $publisher := $book.publisher | default "" -}}
+    {{- $publishedYear := $book.published_year | default "" -}}
+    {{- $isbn := $book.isbn | default "" -}}
+    {{- $format := $book.format | default "" -}}
+    {{- $notes := $book.notes | default "" -}}
+    {{- $anchor := printf "%s#%s" $.Permalink $slug -}}
+    {{- with $book.started }}
+      {{- $events = $events | append (dict
+          "slug" $slug
+          "title" $title
+          "author" $author
+          "publisher" $publisher
+          "published_year" $publishedYear
+          "isbn" $isbn
+          "format" $format
+          "notes" $notes
+          "event_type" "started"
+          "event_date" .
+          "sort_key" (printf "%s-0-%s" . $slug)
+          "anchor" $anchor
+        ) -}}
+    {{- end }}
+    {{- with $book.finished }}
+      {{- $events = $events | append (dict
+          "slug" $slug
+          "title" $title
+          "author" $author
+          "publisher" $publisher
+          "published_year" $publishedYear
+          "isbn" $isbn
+          "format" $format
+          "notes" $notes
+          "event_type" "finished"
+          "event_date" .
+          "sort_key" (printf "%s-1-%s" . $slug)
+          "anchor" $anchor
+        ) -}}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- $events = sort $events "sort_key" "desc" -}}
+{{- $limit := site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 }}
+  {{- $events = first $limit $events -}}
+{{- end }}
+
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>{{ .Title }} | {{ site.Title }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ .Description | default (printf "Reading activity from %s" site.Title) }}</description>
+    {{- with resources.Get "icons/apple-touch-icon.png" }}
+    <image>
+      <title>{{ site.Title }}</title>
+      <url>{{ (. | resources.Fingerprint).Permalink }}</url>
+      <link>{{ $.Permalink }}</link>
+    </image>
+    {{- end }}
+    <generator>Hugo</generator>
+    <language>{{ site.Language.Lang }}</language>{{ with $authorEmail }}
+    <managingEditor>{{.}}{{ with $authorName }} ({{ . }}){{ end }}</managingEditor>{{ end }}{{ with $authorEmail }}
+    <webMaster>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</webMaster>{{ end }}{{ with site.Copyright }}
+    <copyright>{{ . | markdownify | plainify | strings.TrimPrefix "© " }}</copyright>{{ end }}
+    {{- if gt (len $events) 0 }}
+    <lastBuildDate>{{ (time.AsTime (index $events 0).event_date).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    {{- end }}
+    {{- with .OutputFormats.Get "RSS" }}
+    {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end }}
+    {{- range $events }}
+    {{- $action := cond (eq .event_type "started") "Started reading" "Finished reading" -}}
+    {{- $plainBody := printf "%s: %s" $action .title -}}
+    {{- with .author }}{{- $plainBody = printf "%s by %s" $plainBody . -}}{{- end -}}
+    {{- $plainBody = printf "%s. 📚" $plainBody -}}
+    {{- with .notes }}{{- $plainBody = printf "%s %s" $plainBody . -}}{{- end -}}
+    {{- $bookTitle := .title | htmlEscape -}}
+    {{- with .isbn }}
+      {{- $bookTitle = printf "<a href=%q>%s</a>" (printf "https://micro.blog/books/%s" .) $bookTitle -}}
+    {{- end -}}
+    {{- $htmlBody := printf "%s: %s" $action $bookTitle -}}
+    {{- with .author }}{{- $htmlBody = printf "%s by %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
+    {{- $htmlBody = printf "%s. 📚" $htmlBody -}}
+    {{- with .notes }}{{- $htmlBody = printf "%s %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
+    {{- $content := printf "<p>%s</p>" $htmlBody -}}
+    <item>
+      <title>{{ $action }}: {{ .title }}</title>
+      <link>{{ .anchor }}</link>
+      <pubDate>{{ (time.AsTime .event_date).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
+      <guid isPermaLink="false">{{ printf "%s|%s" .anchor .event_type }}</guid>
+      <description>{{ $plainBody }}</description>
+      <category>reading</category>
+      <category>books</category>
+      <category>{{ printf "%s-reading" .event_type }}</category>
+      <content:encoded>{{ (printf "<![CDATA[%s]]>" $content) | safeHTML }}</content:encoded>
+    </item>
+    {{- end }}
+  </channel>
+</rss>
