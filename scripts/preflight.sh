@@ -5,18 +5,19 @@
 # Default local gate:
 #   1. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
 #   2. content resources     — source Markdown cover blocks point at real files
-#   3. generated junk files  — fail if OS/editor metadata lands in public/
-#   4. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs
-#   5. csp-hashes.sh --check — CSP hash drift against the fresh build
-#   6. published references  — every internal src/href/srcset/feed URL in the
+#   3. source junk files     — fail if OS/editor metadata sits in Hugo inputs
+#   4. generated junk files  — fail if OS/editor metadata lands in public/
+#   5. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs
+#   6. csp-hashes.sh --check — CSP hash drift against the fresh build
+#   7. published references  — every internal src/href/srcset/feed URL in the
 #                               output must resolve to a published file; guards
 #                               the build.publishResources=false resource pattern
 #
 # Full mode adds:
-#   7. html-validate         — HTML5 validation of every page
-#   8. stylelint             — CSS lint (rules tuned in .stylelintrc.json)
-#   9. checks/a11y-lint.py   — content images without alt + heading-level skips
-#   10. lychee --offline     — internal links/files in public/
+#   8. html-validate         — HTML5 validation of every page
+#   9. stylelint             — CSS lint (rules tuned in .stylelintrc.json)
+#   10. checks/a11y-lint.py  — content images without alt + heading-level skips
+#   11. lychee --offline     — internal links/files in public/
 #
 # StaticHost deploys on push independently of GitHub Actions, so the default
 # gate stays focused on "will this build and publish correctly right now?"
@@ -72,6 +73,15 @@ if RESOURCE_OUT=$(python3 scripts/checks/content-resource-lint.py content 2>&1);
 else
   echo "$RESOURCE_OUT"
   fail "content resource issues (e.g. cover block references a missing file)"
+fi
+
+step "source junk files"
+SOURCE_JUNK_OUT=$(find assets content data layouts static -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -name 'desktop.ini' \) -print 2>/dev/null)
+if [[ -z "$SOURCE_JUNK_OUT" ]]; then
+  pass "no OS/editor metadata in Hugo source directories"
+else
+  echo "$SOURCE_JUNK_OUT"
+  fail "source tree contains OS/editor metadata (these can be copied into public/ on build)"
 fi
 
 step "generated junk files"
