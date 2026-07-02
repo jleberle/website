@@ -66,6 +66,16 @@ figures missing alt text). `--full` adds the slower CI-grade checks
 (`html-validate`, rendered-content a11y lint, and offline internal-link
 checking).
 
+### Commit hooks
+
+The global hook at `~/.dotfiles/git/hooks/pre-commit` always runs the gitleaks
+secret scan, then delegates to `scripts/pre-commit.sh` when a repository provides
+that executable script. This tracked site-specific hook prevents published
+content with `draft: true` from being committed and converts accidentally staged
+JPEG, PNG, or WebP source images into the repository's AVIF/JPEG formats. Keeping
+the site logic under `scripts/` means it is versioned with the site rather than
+hidden in `.git/hooks/`, which Git ignores when `core.hooksPath` is configured.
+
 ## Remotes and CI
 
 Codeberg is the public canonical remote. GitHub is a private testing mirror used
@@ -76,9 +86,7 @@ Configured remotes:
 
 | Remote | Purpose |
 |---|---|
-| `origin` | Codeberg fetch/push (`codeberg:jle/website.git`) |
-| `github` | Private GitHub testing mirror (`github:jleberle/website.git`) |
-| `both` | Legacy helper: fetches from Codeberg, pushes to both Codeberg and GitHub |
+| `origin` | Fetches from Codeberg; pushes to Codeberg and the private GitHub mirror |
 
 The local `origin` remote should fetch from Codeberg and carry two push URLs:
 Codeberg plus the private GitHub testing mirror. Use plain `git push` for the
@@ -91,6 +99,10 @@ the private mirror, on manual dispatch, and weekly. Every run executes
 scheduled runs also execute the full external lychee link check against the
 generated site. Dependabot version updates are configured in
 `.github/dependabot.yml` for monthly, grouped npm and GitHub Actions updates.
+Merge one of those updates with `depmerge <pr-number>`. The Fish function pulls
+canonical `main` from Codeberg, synchronizes GitHub, verifies and rebases the
+Dependabot PR, waits for its checks, fast-forwards locally, and pushes the result
+to both hosts.
 
 For scheduled-run failure notices, rely on GitHub's native Actions
 notifications on the private mirror rather than issue creation. In GitHub's
@@ -141,6 +153,7 @@ The first three share `layouts/_partials/responsive-img.html` — the single sou
 | `scripts/finishbook.sh` | Mark a currently-reading book as finished and set `read_year` / `finished` |
 | `scripts/publish-draft.sh` | Move an Obsidian draft from `drafts/` into `content/`, preserving page bundles for articles/reviews |
 | `scripts/add-images.sh` | Add images to a post bundle: `--cover` → AVIF + OG JPEG; body → AVIF only, prints figure snippets |
+| `scripts/pre-commit.sh` | Repository-specific hook delegated to by the global hook: block drafts and normalize staged images |
 | `scripts/preflight.sh` | Pre-push gate: build + warnings, CSP check, offline link check, published-reference scan (`--strict` fails on warnings) |
 | `scripts/to-avif.sh` | Convert images to AVIF + JPEG (for OG images); `--og-only` re-optimizes the OG JPEG without touching the AVIF |
 | `scripts/archive-links.sh` | Check all posts for dead links and replace with Wayback Machine snapshots |
@@ -208,7 +221,7 @@ portability issues locally without depending on the online W3C validator.
 
 ### Rendered accessibility checks
 
-GitHub Actions also runs `npm run test:axe` after preflight. The axe check serves the generated `public/` directory locally and scans representative rendered pages (home, article, review, quote, course, archive, CV, contact, and search). This catches page-level accessibility regressions that source-content linting and HTML validation do not cover.
+GitHub Actions also runs `npm run test:axe` after preflight. The axe check serves the generated `public/` directory locally and scans representative rendered pages (home, article, review, quote, course, archive, reading, CV, and contact). This catches page-level accessibility regressions that source-content linting and HTML validation do not cover.
 
 ### Dead link check
 Run `scripts/archive-links.sh --all` periodically to find and replace dead outbound links with Wayback Machine snapshots. GitHub Actions' scheduled lychee job will flag broken links in CI.

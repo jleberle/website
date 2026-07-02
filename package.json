@@ -4,7 +4,6 @@
   "private": true,
   "description": "Tooling for jaredeberle.org (Hugo site). Single source of truth for validation dependencies used by GitHub Actions and scripts/preflight.sh.",
   "scripts": {
-    "validate": "hugo --minify && html-validate \"public/**/*.html\" && stylelint \"assets/css/**/*.css\"",
     "test:axe": "node scripts/checks/axe-check.mjs public"
   },
   "devDependencies": {
