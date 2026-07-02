@@ -84,19 +84,19 @@
     {{- end }}
     <details class="reading-book reading-book--current" id="{{ .slug }}">
       <summary class="reading-book-summary">
-        <div class="reading-book-main">
-          <h3 class="reading-book-title">{{ .title }}</h3>
+        <span class="reading-book-main">
+          <span class="reading-book-title">{{ .title }}</span>
           {{- if or .author (gt .published_year 0) }}
-          <p class="reading-book-author">
+          <span class="reading-book-author">
             {{- with .author }}<span>{{ . }}</span>{{- end -}}
             {{- if and .author (gt .published_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
             {{- if gt .published_year 0 }}<span class="reading-book-published">{{ .published_year }}</span>{{- end -}}
-          </p>
+          </span>
           {{- end }}
-        </div>
-        <div class="reading-book-years">
+        </span>
+        <span class="reading-book-years">
           {{- with .started }}<span class="reading-book-pill">Started {{ time.AsTime . | time.Format ":date_long" }}</span>{{- end }}
-        </div>
+        </span>
       </summary>
       <div class="reading-book-details">
         <dl class="reading-book-record">
@@ -174,19 +174,19 @@
     {{- end }}
     <details class="reading-book" id="{{ .slug }}" data-reading-entry data-sort-read="{{ .sort_read_key }}" data-sort-published="{{ .sort_published_key }}">
       <summary class="reading-book-summary">
-        <div class="reading-book-main">
-          <h3 class="reading-book-title">{{ .title }}</h3>
+        <span class="reading-book-main">
+          <span class="reading-book-title">{{ .title }}</span>
           {{- if or .author (gt .published_year 0) }}
-          <p class="reading-book-author">
+          <span class="reading-book-author">
             {{- with .author }}<span>{{ . }}</span>{{- end -}}
             {{- if and .author (gt .published_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
             {{- if gt .published_year 0 }}<span class="reading-book-published">{{ .published_year }}</span>{{- end -}}
-          </p>
+          </span>
           {{- end }}
-        </div>
-        <div class="reading-book-years">
+        </span>
+        <span class="reading-book-years">
           {{- if gt .read_year 0 }}<span class="reading-book-year">{{ .read_year }}</span>{{- end }}
-        </div>
+        </span>
       </summary>
       <div class="reading-book-details">
         <dl class="reading-book-record">

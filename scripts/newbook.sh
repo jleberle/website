@@ -53,6 +53,10 @@ trim() {
   printf '%s' "$value"
 }
 
+current_timestamp() {
+  date +"%Y-%m-%dT%H:%M:%S%z" | sed -E 's/([0-9]{2})([0-9]{2})$/\1:\2/'
+}
+
 normalize_isbn() {
   printf '%s' "$1" | tr -cd '[:alnum:]' | tr '[:lower:]' '[:upper:]'
 }
@@ -187,11 +191,15 @@ STATUS=$(trim "$STATUS")
 READ_YEAR=""
 STARTED=""
 FINISHED=""
+STARTED_ANNOUNCED=""
+FINISHED_ANNOUNCED=""
 if [[ "$STATUS" == "current" ]]; then
   STARTED=$(read_optional "Started date YYYY-MM-DD (optional)")
+  [[ -n "$(trim "$STARTED")" ]] && STARTED_ANNOUNCED="$(current_timestamp)"
 else
   READ_YEAR=$(read_optional "Read year (optional)")
   FINISHED=$(read_optional "Finished date YYYY-MM-DD (optional)")
+  [[ -n "$(trim "$FINISHED")" ]] && FINISHED_ANNOUNCED="$(current_timestamp)"
 fi
 NOTES=$(read_optional "Notes (optional)")
 
@@ -206,7 +214,9 @@ NOTES=$(read_optional "Notes (optional)")
   field "isbn" "$ISBN"
   field "format" "$FORMAT"
   field "started" "$STARTED"
+  field "started_announced" "$STARTED_ANNOUNCED"
   field "finished" "$FINISHED"
+  field "finished_announced" "$FINISHED_ANNOUNCED"
   field "notes" "$NOTES"
 } > "$file"
 

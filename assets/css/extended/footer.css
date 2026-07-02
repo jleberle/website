@@ -12,7 +12,7 @@
        floating in the page color. */
     background: var(--entry);
     border-top: 1px solid var(--rule);
-    color: color-mix(in srgb, var(--content) 65%, var(--secondary));
+    color: color-mix(in sRGB, var(--content) 65%, var(--secondary));
     font-family: var(--meta-font);
     font-size: 0.85rem;
     line-height: 1.6;

@@ -48,6 +48,10 @@ read_optional() {
   printf '%s' "$value"
 }
 
+current_timestamp() {
+  date +"%Y-%m-%dT%H:%M:%S%z" | sed -E 's/([0-9]{2})([0-9]{2})$/\1:\2/'
+}
+
 extract_value() {
   local key="$1" file="$2" line
   line=$(sed -n "s/^${key}: //p" "$file" | head -n 1)
@@ -150,7 +154,9 @@ PUBLISHER="$(extract_value "publisher" "$BOOK_FILE")"
 ISBN="$(extract_value "isbn" "$BOOK_FILE")"
 FORMAT="$(extract_value "format" "$BOOK_FILE")"
 STARTED="$(extract_value "started" "$BOOK_FILE")"
+STARTED_ANNOUNCED="$(extract_value "started_announced" "$BOOK_FILE")"
 NOTES="$(extract_value "notes" "$BOOK_FILE")"
+FINISHED_ANNOUNCED="$(current_timestamp)"
 
 TMP_FILE="$(mktemp)"
 trap 'rm -f "$TMP_FILE"' EXIT
@@ -166,7 +172,9 @@ trap 'rm -f "$TMP_FILE"' EXIT
   field "isbn" "$ISBN"
   field "format" "$FORMAT"
   field "started" "$STARTED"
+  field "started_announced" "$STARTED_ANNOUNCED"
   field "finished" "$FINISHED"
+  field "finished_announced" "$FINISHED_ANNOUNCED"
   field "notes" "$NOTES"
 } > "$TMP_FILE"
 

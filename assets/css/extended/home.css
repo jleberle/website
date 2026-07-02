@@ -37,8 +37,8 @@ body.home .home-info {
     height: 148px;
     object-fit: cover;
     display: block;
-    border: 1px solid color-mix(in srgb, var(--border), var(--rule) 38%);
-    box-shadow: 0 8px 18px rgb(29 41 47 / 0.08);
+    border: 1px solid color-mix(in sRGB, var(--border), var(--rule) 38%);
+    box-shadow: 0 8px 18px rgb(29 41 47 / 8%);
 }
 
 .home-info-content {
@@ -127,7 +127,7 @@ body.home .home-info {
     gap: 0.9rem;
     margin-bottom: 0.8rem;
     padding-bottom: 0.45rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--border), var(--rule) 35%);
+    border-bottom: 1px solid color-mix(in sRGB, var(--border), var(--rule) 35%);
 }
 
 .home-section-title {

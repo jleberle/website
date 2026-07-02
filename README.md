@@ -228,7 +228,9 @@ publisher: "University Press"
 isbn: "9780000000000"
 format: "Hardcover"
 started: "2026-06-01"    # useful for status: current
+started_announced: "2026-07-02T14:37:00-05:00"
 finished: "2026-06-14"
+finished_announced: "2026-07-02T15:02:00-05:00"
 notes: "Optional short note shown when expanded."
 ```
 
@@ -245,9 +247,17 @@ style, e.g. `mckenziejones2015`.
 
 When you finish a current book, run `scripts/finishbook.sh [slug]`. It prompts
 for a finish date (default: today), changes `status` to `read`, derives
-`read_year` from that date, preserves the rest of the metadata, and rewrites
-the YAML in canonical key order. If you omit the slug, it lists books currently
-marked `status: "current"` and lets you choose one interactively.
+`read_year` from that date, stamps `finished_announced` with the current local
+timestamp for the reading RSS feed, preserves the rest of the metadata, and
+rewrites the YAML in canonical key order. If you omit the slug, it lists books
+currently marked `status: "current"` and lets you choose one interactively.
+
+The `started` and `finished` fields are the actual reading dates. The
+`started_announced` and `finished_announced` fields are optional feed timestamps
+used to publish those events at the time you add or finish the book on the
+site, so services like Micro.blog do not treat a newly-added entry as an old
+midnight post. If those announcement fields are missing, the feed falls back to
+the reading date.
 
 The old manual `related_posts` list still works as a fallback, but `cite_key`
 is the main pattern going forward.

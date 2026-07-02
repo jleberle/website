@@ -11,7 +11,6 @@
     --nav-width:     1100px;
     --main-width:    760px;
     --radius:        10px;
-
     --fog-mist:      #e7ecef;   /* page background — cold fog        */
     --fog-granite:   #d9e0e5;   /* panels — slate mist               */
     --fog-slate:     #1f2c35;   /* headings — inked slate            */
@@ -75,7 +74,7 @@ body,
     background:
         linear-gradient(
             180deg,
-            color-mix(in srgb, var(--fog-granite), white 28%) 0,
+            color-mix(in sRGB, var(--fog-granite), white 28%) 0,
             var(--theme) 13rem
         );
 }

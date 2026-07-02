@@ -53,13 +53,15 @@ body.list:not(.home) .post-entry:last-of-type {
 body.list:not(.home) .post-entry:hover,
 body.list:not(.home) .post-entry:focus-within {
     transform: none;
-    background: color-mix(in srgb, var(--entry), transparent 78%);
+    background: color-mix(in sRGB, var(--entry), transparent 78%);
     border-color: var(--rule);
 }
 
 body.list:not(.home) .entry-footer {
     grid-area: meta;
     margin-bottom: 0.45rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
 }
 
 body.list:not(.home) .entry-header {
@@ -91,11 +93,6 @@ body.list:not(.home) .entry-cover img {
     border: 1px solid var(--border);
     border-radius: calc(var(--radius) + 1px);
     background: var(--entry);
-}
-
-body.list:not(.home) .entry-footer {
-    font-size: 0.82rem;
-    line-height: 1.45;
 }
 
 body.list:not(.home) .page-header h1 > a[aria-label="RSS"] {

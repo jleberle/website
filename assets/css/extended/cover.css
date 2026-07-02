@@ -11,10 +11,10 @@
 
 .post-single .entry-cover img {
     padding: 5px;
-    background: color-mix(in srgb, var(--entry), white 26%);
+    background: color-mix(in sRGB, var(--entry), white 26%);
     border: 1px solid var(--border);
     border-radius: calc(var(--radius) + 1px);
-    box-shadow: 0 10px 22px rgb(29 41 47 / 0.06);
+    box-shadow: 0 10px 22px rgb(29 41 47 / 6%);
 }
 
 .post-single .entry-cover figcaption {

@@ -31,6 +31,7 @@
     {{- $notes := $book.notes | default "" -}}
     {{- $anchor := printf "%s#%s" $.Permalink $slug -}}
     {{- with $book.started }}
+      {{- $announcedAt := $book.started_announced | default . -}}
       {{- $events = $events | append (dict
           "slug" $slug
           "title" $title
@@ -42,11 +43,13 @@
           "notes" $notes
           "event_type" "started"
           "event_date" .
-          "sort_key" (printf "%s-0-%s" . $slug)
+          "announced_at" $announcedAt
+          "sort_key" (printf "%s-0-%s" $announcedAt $slug)
           "anchor" $anchor
         ) -}}
     {{- end }}
     {{- with $book.finished }}
+      {{- $announcedAt := $book.finished_announced | default . -}}
       {{- $events = $events | append (dict
           "slug" $slug
           "title" $title
@@ -58,7 +61,8 @@
           "notes" $notes
           "event_type" "finished"
           "event_date" .
-          "sort_key" (printf "%s-1-%s" . $slug)
+          "announced_at" $announcedAt
+          "sort_key" (printf "%s-1-%s" $announcedAt $slug)
           "anchor" $anchor
         ) -}}
     {{- end }}
@@ -90,7 +94,7 @@
     <webMaster>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</webMaster>{{ end }}{{ with site.Copyright }}
     <copyright>{{ . | markdownify | plainify | strings.TrimPrefix "© " }}</copyright>{{ end }}
     {{- if gt (len $events) 0 }}
-    <lastBuildDate>{{ (time.AsTime (index $events 0).event_date).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    <lastBuildDate>{{ (time.AsTime (index $events 0).announced_at).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
     {{- end }}
     {{- with .OutputFormats.Get "RSS" }}
     {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
@@ -112,7 +116,7 @@
     {{- $content := printf "<p>%s</p>" $htmlBody -}}
     <item>
       <link>{{ .anchor }}</link>
-      <pubDate>{{ (time.AsTime .event_date).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <pubDate>{{ (time.AsTime .announced_at).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
       <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s" .slug .event_type }}</guid>
       <description>{{ $plainBody }}</description>
