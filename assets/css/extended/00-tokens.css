@@ -78,3 +78,8 @@ body,
             var(--theme) 13rem
         );
 }
+
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] body.list {
+    background: var(--theme);
+}
