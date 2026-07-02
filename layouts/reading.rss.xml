@@ -111,11 +111,10 @@
     {{- with .notes }}{{- $htmlBody = printf "%s %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
     {{- $content := printf "<p>%s</p>" $htmlBody -}}
     <item>
-      <title>{{ $action }}: {{ .title }}</title>
       <link>{{ .anchor }}</link>
       <pubDate>{{ (time.AsTime .event_date).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
-      <guid isPermaLink="false">{{ printf "reading-event:%s:%s" .slug .event_type }}</guid>
+      <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s" .slug .event_type }}</guid>
       <description>{{ $plainBody }}</description>
       <category>reading</category>
       <category>books</category>

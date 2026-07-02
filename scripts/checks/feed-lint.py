@@ -124,10 +124,14 @@ def check_rss(path: Path, public_dir: Path) -> list[Problem]:
     for item in channel.findall("item"):
         title = text_of(item.find("title")) or "(untitled item)"
         item_source = f"{rel} :: {title}"
-        for field in ("link", "guid"):
-            value = text_of(item.find(field))
-            if value:
-                problems.extend(check_absolute_url(value, item_source, field))
+        link = text_of(item.find("link"))
+        if link:
+            problems.extend(check_absolute_url(link, item_source, "link"))
+
+        guid = item.find("guid")
+        guid_value = text_of(guid)
+        if guid_value and (guid is None or guid.get("isPermaLink", "").lower() != "false"):
+            problems.extend(check_absolute_url(guid_value, item_source, "guid"))
 
         description = text_of(item.find("description"))
         if description:
