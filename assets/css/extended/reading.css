@@ -1,0 +1,277 @@
+/* ------------------------------------------------------------
+   Reading ledger. A book list built from data/reading/books/*.yaml:
+   currently-reading rows above, expandable ledger entries below.
+   Sorting is progressive enhancement via assets/js/reading-shelf.js.
+   ------------------------------------------------------------ */
+
+.reading-header {
+    margin-bottom: 1.8rem;
+}
+
+.reading-current,
+.reading-ledger {
+    margin-bottom: 2.2rem;
+}
+
+.reading-section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1rem;
+    margin-bottom: 0.95rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.reading-section-heading h2 {
+    margin: 0;
+    font-size: 1.22rem;
+}
+
+.reading-section-heading p {
+    margin: 0.2rem 0 0;
+    color: var(--secondary);
+    font-size: 0.82rem;
+}
+
+.reading-current-grid,
+.reading-list {
+    display: grid;
+    gap: 0;
+}
+
+.reading-sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+}
+
+.reading-sort-label {
+    color: var(--secondary);
+    font-size: 0.76rem;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+}
+
+.reading-sort-button {
+    padding: 0.25rem 0.62rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--secondary);
+    background: transparent;
+    font-family: var(--meta-font);
+    font-size: 0.74rem;
+    line-height: 1.35;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.reading-sort-button:hover,
+.reading-sort-button:focus-visible,
+.reading-sort-button.is-active {
+    color: var(--primary);
+    border-color: var(--rule);
+    background: var(--entry);
+}
+
+.reading-sort-button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.reading-book {
+    border-top: 1px solid color-mix(in srgb, var(--border), var(--rule) 25%);
+    background: transparent;
+}
+
+.reading-current-grid .reading-book:last-child,
+.reading-list .reading-book:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--border), var(--rule) 25%);
+}
+
+.reading-book-summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: baseline;
+    list-style: none;
+    cursor: pointer;
+    padding: 0.9rem 0;
+}
+
+.reading-book-summary::-webkit-details-marker {
+    display: none;
+}
+
+.reading-book-summary::marker {
+    content: "";
+}
+
+.reading-book-main {
+    min-width: 0;
+}
+
+.reading-book-title {
+    margin: 0;
+    font-size: 1.06rem;
+    line-height: 1.25;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.reading-book-author {
+    margin: 0.18rem 0 0;
+    color: color-mix(in srgb, var(--content) 68%, var(--secondary));
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.reading-book-published {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
+                 Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
+                 'Roboto Mono', monospace;
+    font-size: 0.92em;
+}
+
+.reading-book-years {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: 0.45rem 0.7rem;
+    color: color-mix(in srgb, var(--content) 68%, var(--secondary));
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
+                 Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
+                 'Roboto Mono', monospace;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.reading-book-pill {
+    display: inline-flex;
+    padding: 0;
+}
+
+.reading-book-details {
+    margin: 0 0 0.9rem 0.9rem;
+    padding: 0.15rem 0 0 0.95rem;
+    border-left: 2px solid color-mix(in srgb, var(--quote-rule), transparent 28%);
+}
+
+.reading-book-record {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.7rem 1rem;
+    margin: 0.55rem 0 0;
+}
+
+.reading-book-record div {
+    min-width: 0;
+}
+
+.reading-book-record-item--wide {
+    grid-column: 1 / -1;
+}
+
+.reading-book-record dt {
+    margin: 0 0 0.1rem;
+    color: var(--secondary);
+    font-size: 0.68rem;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.015em;
+    text-transform: lowercase;
+}
+
+.reading-book-record dd {
+    margin: 0;
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
+                 Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
+                 'Roboto Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.reading-book-notes {
+    margin: 0.8rem 0 0;
+    color: var(--content);
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+.reading-book-links {
+    margin-top: 0.85rem;
+}
+
+.reading-book-links-label {
+    display: block;
+    margin-bottom: 0.16rem;
+    color: var(--secondary);
+    font-size: 0.68rem;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.015em;
+    text-transform: lowercase;
+}
+
+.reading-book-links ul {
+    margin: 0;
+    padding-left: 0.95rem;
+    color: var(--secondary);
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+.reading-book-access {
+    font-size: 0.78rem;
+}
+
+.reading-book-record-item--wide dd {
+    display: flex;
+    align-items: baseline;
+    gap: 0.28rem;
+    flex-wrap: nowrap;
+    overflow-wrap: normal;
+}
+
+.reading-book-access,
+.reading-book-access a {
+    white-space: nowrap;
+}
+
+.reading-book-links li + li {
+    margin-top: 0.1rem;
+}
+
+.reading-empty {
+    color: var(--secondary);
+    padding: 1rem 0 0.2rem;
+}
+
+@media (width <= 640px) {
+    .reading-section-heading {
+        display: block;
+    }
+
+    .reading-sort {
+        margin-top: 0.6rem;
+    }
+
+    .reading-book-summary {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .reading-book-years {
+        justify-content: start;
+        white-space: normal;
+    }
+
+    .reading-book-details {
+        margin-left: 0.5rem;
+        padding-left: 0.8rem;
+    }
+
+    .reading-book-record-item--wide dd {
+        flex-wrap: wrap;
+    }
+}

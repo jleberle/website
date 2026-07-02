@@ -113,6 +113,7 @@ SOURCE_TITLE=""
 SOURCE_AUTHOR=""
 SOURCE_YEAR=""
 URL=""
+CITE_KEY=""
 
 if [[ "$KIND" == "review" ]]; then
   REVIEWED_TYPE=$(read_optional "Reviewed type, e.g. Book/Film (optional)")
@@ -120,6 +121,7 @@ if [[ "$KIND" == "review" ]]; then
   REVIEWED_AUTHOR=$(read_optional "Reviewed work author/creator (optional)")
   REVIEWED_PUBLISHER=$(read_optional "Reviewed work publisher/studio (optional)")
   REVIEWED_YEAR=$(read_optional "Reviewed work year (optional)")
+  CITE_KEY=$(read_optional "Cite key, e.g. mckenziejones2015 (optional)")
   URL=$(read_optional "Reviewed work URL (optional)")
   CATEGORIES=$(read_optional "Categories, comma-separated (optional; defaults to Reviews)")
   [[ -z "$CATEGORIES" ]] && CATEGORIES="Reviews"
@@ -131,7 +133,12 @@ if [[ "$KIND" == "quote" ]]; then
   SOURCE_TITLE=$(read_optional "Source title (optional)")
   SOURCE_AUTHOR=$(read_optional "Source author (optional)")
   SOURCE_YEAR=$(read_optional "Source year (optional)")
+  CITE_KEY=$(read_optional "Cite key, e.g. mckenziejones2015 (optional)")
   URL=$(read_optional "External URL (optional)")
+fi
+
+if [[ "$KIND" == "article" ]]; then
+  CITE_KEY=$(read_optional "Cite key for a related work, e.g. mckenziejones2015 (optional)")
 fi
 
 ADD_COVER=false
@@ -196,6 +203,7 @@ EOF
       field "description" "$DESCRIPTION"
       field "summary" "$SUMMARY"
       field "series" "$SERIES"
+      field "cite_key" "$CITE_KEY"
       list_field "categories" "$CATEGORIES"
       list_field "tags" "$TAGS"
       $ADD_COVER && cover_block false
@@ -221,6 +229,7 @@ EOF
       field "reviewed_author" "$REVIEWED_AUTHOR"
       field "reviewed_publisher" "$REVIEWED_PUBLISHER"
       field "reviewed_year" "$REVIEWED_YEAR"
+      field "cite_key" "$CITE_KEY"
       field "external_url" "$URL"
       list_field "categories" "$CATEGORIES"
       list_field "tags" "$TAGS"
@@ -246,6 +255,7 @@ EOF
       field "source_title" "$SOURCE_TITLE"
       field "source_author" "$SOURCE_AUTHOR"
       field "source_year" "$SOURCE_YEAR"
+      field "cite_key" "$CITE_KEY"
       field "external_url" "$URL"
       list_field "categories" "$CATEGORIES"
       list_field "tags" "$TAGS"

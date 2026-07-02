@@ -13,6 +13,7 @@ const pages = [
   '/quotes/even-the-entertainment-was-traumatic/',
   '/courses/1493/',
   '/archives/',
+  '/reading/',
   '/cv/',
   '/contact/',
 ];

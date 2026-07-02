@@ -9,6 +9,7 @@ reviewed_title: "Hated by All the Right People: Tucker Carlson and the Unravelin
 reviewed_author: "Jason Zengerle"
 reviewed_publisher: "Crooked Media Reads"
 reviewed_year: "2026"
+cite_key: "zengerle2026"
 external_url: "https://zandoprojects.com/books/hated-by-all-the-right-people-hardcover"
 categories:
 - "Reviews"

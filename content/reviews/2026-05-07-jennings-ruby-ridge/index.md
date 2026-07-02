@@ -9,6 +9,7 @@ reviewed_title: "End of Days: Ruby Ridge, the Apocalypse, and the Unmaking of Am
 reviewed_author: "Chris Jennings"
 reviewed_publisher: "Little, Brown and Company"
 reviewed_year: "2026"
+cite_key: "jennings2026"
 external_url: "https://www.hachettebookgroup.com/titles/chris-jennings/end-of-days/9780316381949/"
 categories:
 - "Reviews"

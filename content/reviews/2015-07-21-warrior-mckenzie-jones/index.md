@@ -10,6 +10,7 @@ reviewed_title: "Clyde Warrior: Tradition, Community, and Red Power"
 reviewed_author: "Paul McKenzie-Jones"
 reviewed_publisher: "University of Oklahoma Press"
 reviewed_year: "2015"
+cite_key: "mckenziejones2015"
 external_url: "https://www.oupress.com/9780806147055/clyde-warrior/"
 categories:
 - "Reviews"

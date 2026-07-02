@@ -79,10 +79,14 @@ menu:
       name: Archive
       url: /archives/
       weight: 30
+    - identifier: reading
+      name: Reading
+      url: /reading/
+      weight: 40
     - identifier: contact
       name: Contact
       url: /contact/
-      weight: 40
+      weight: 50
 
 # ------------------------------------------------------------
 # Output formats

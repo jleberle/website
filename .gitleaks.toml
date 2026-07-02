@@ -1,0 +1,11 @@
+title = "website gitleaks config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Allow bibliographic cite_key front matter"
+regexTarget = "line"
+regexes = [
+  '''^\s*cite_key:\s*"[^"]+"\s*$'''
+]

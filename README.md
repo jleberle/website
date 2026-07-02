@@ -41,6 +41,9 @@ Published posts follow the naming convention `YYYY-MM-DD-slug/index.md` (article
 ```sh
 scripts/newpost.sh article "Post Title"           # create ignored draft (article|review|quote)
 scripts/newpost.sh article --cover "Post Title"   # skip the cover prompt and add cover metadata
+scripts/newbook.sh "Book Title"                   # create data/reading/books/<slug>.yaml
+                                                  # prompts for ISBN first and prefills from Open Library
+scripts/finishbook.sh end-of-days                 # move current -> read, stamp finished/read_year
                                                   # articles/reviews prompt for optional covers
                                                   # quotes prompt for optional external_url
 scripts/publish-draft.sh drafts/articles/2026-06-24-post-title.md
@@ -52,7 +55,7 @@ scripts/add-images.sh content/articles/<dir> img1.jpg img2.png   # body images �
 scripts/preflight.sh && git push                  # pre-push gate, then push to Codeberg + GitHub
 ```
 
-Obsidian drafts live under `drafts/articles/`, `drafts/reviews/`, and `drafts/quotes/`. The folder is intentionally ignored by Git so drafts can sync through Obsidian Sync without appearing in commits. The Obsidian templates ask for optional metadata, omit blank fields, and ask whether article/review drafts should include a cover block. `description` is the canonical public and SEO blurb; `summary` is only written when you want a different list/feed teaser. When a draft is ready, run `scripts/publish-draft.sh` with the draft path; the script moves it into the proper Hugo section, changes `draft: true` to `draft: false`, and stamps `publishDate` plus `lastmod` with the local publish time when those fields are absent so RSS and JSON feeds sort the post by when it actually went live.
+Obsidian drafts live under `drafts/articles/`, `drafts/reviews/`, and `drafts/quotes/`. The folder is intentionally ignored by Git so drafts can sync through Obsidian Sync without appearing in commits. The Obsidian templates ask for optional metadata, omit blank fields, and ask whether article/review drafts should include a cover block. They also prompt for an optional `cite_key`, matching the CLI scaffolder and the reading ledger's automatic related-post linking. `description` is the canonical public and SEO blurb; `summary` is only written when you want a different list/feed teaser. When a draft is ready, run `scripts/publish-draft.sh` with the draft path; the script moves it into the proper Hugo section, changes `draft: true` to `draft: false`, and stamps `publishDate` plus `lastmod` with the local publish time when those fields are absent so RSS and JSON feeds sort the post by when it actually went live.
 
 Reviews can carry optional bibliographic context with `reviewed_type`, `reviewed_title`, `reviewed_author`, `reviewed_publisher`, and `reviewed_year`. Quote posts can carry optional source context with `source_title`, `source_author`, and `source_year`. `external_url` links the reviewed/source title in that context line; it does not turn the post title into an outbound link. When present, these fields render beneath the post description on the single-post page.
 
@@ -134,6 +137,8 @@ The first three share `layouts/_partials/responsive-img.html` — the single sou
 | Script | Purpose |
 |---|---|
 | `scripts/newpost.sh` | Create an ignored article (`--cover` optional), review, or quote draft |
+| `scripts/newbook.sh` | Create a reading-ledger entry under `data/reading/books/`, prompting for ISBN first and prefilling from Open Library when possible |
+| `scripts/finishbook.sh` | Mark a currently-reading book as finished and set `read_year` / `finished` |
 | `scripts/publish-draft.sh` | Move an Obsidian draft from `drafts/` into `content/`, preserving page bundles for articles/reviews |
 | `scripts/add-images.sh` | Add images to a post bundle: `--cover` → AVIF + OG JPEG; body → AVIF only, prints figure snippets |
 | `scripts/preflight.sh` | Pre-push gate: build + warnings, CSP check, offline link check, published-reference scan (`--strict` fails on warnings) |
@@ -207,6 +212,45 @@ GitHub Actions also runs `npm run test:axe` after preflight. The axe check serve
 
 ### Dead link check
 Run `scripts/archive-links.sh --all` periodically to find and replace dead outbound links with Wayback Machine snapshots. GitHub Actions' scheduled lychee job will flag broken links in CI.
+
+### Reading ledger
+The `/reading/` page is built from individual YAML files in `data/reading/books/`.
+Each file represents one book and follows this schema:
+
+```yaml
+title: "Example Book Title"
+author: "Author Name"
+cite_key: "author2024"
+status: "read"           # or "current"
+published_year: 2024
+read_year: 2026
+publisher: "University Press"
+isbn: "9780000000000"
+format: "Hardcover"
+started: "2026-06-01"    # useful for status: current
+finished: "2026-06-14"
+notes: "Optional short note shown when expanded."
+```
+
+`scripts/newbook.sh` now starts with ISBN. If you provide one, it queries
+Open Library and prefills basic edition metadata (`title`, `author`,
+`publisher`, and `published_year`) before asking you to confirm or edit each
+field. If lookup fails or you leave ISBN blank, it falls back to manual entry.
+
+`status: "current"` places a book in the currently-reading section at the top.
+`cite_key` is the preferred way to connect a reading entry to site posts. Add
+the same `cite_key` to any related review/article/quote front matter and the
+reading page will link those posts automatically. The format is your Zotero
+style, e.g. `mckenziejones2015`.
+
+When you finish a current book, run `scripts/finishbook.sh [slug]`. It prompts
+for a finish date (default: today), changes `status` to `read`, derives
+`read_year` from that date, preserves the rest of the metadata, and rewrites
+the YAML in canonical key order. If you omit the slug, it lists books currently
+marked `status: "current"` and lets you choose one interactively.
+
+The old manual `related_posts` list still works as a fallback, but `cite_key`
+is the main pattern going forward.
 
 ### Adding a new content type
 If you add a new section (e.g. `content/essays/`):

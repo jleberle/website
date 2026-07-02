@@ -9,6 +9,7 @@ reviewed_title: "When Indians Became Cowboys: Native Peoples and Cattle Ranching
 reviewed_author: "Peter Iverson"
 reviewed_publisher: "University of Oklahoma Press"
 reviewed_year: "1994"
+cite_key: "iverson1994"
 external_url: "https://www.oupress.com/9780806128849/when-indians-became-cowboys/"
 categories:
 - "Reviews"
