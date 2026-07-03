@@ -180,8 +180,16 @@ body.home .home-info {
 }
 
 .home-selected-entry--lead {
+    position: relative;
     grid-row: span 2;
     padding-right: 2rem;
+}
+
+.home-selected-entry--lead::after {
+    content: "";
+    position: absolute;
+    inset-block: 0.8rem;
+    right: -1.2rem;
     border-right: 1px solid var(--border);
 }
 
@@ -341,7 +349,10 @@ body.home .home-info {
     .home-selected-entry--lead {
         grid-row: auto;
         padding-right: 0;
-        border-right: 0;
+    }
+
+    .home-selected-entry--lead::after {
+        content: none;
     }
 }
 
