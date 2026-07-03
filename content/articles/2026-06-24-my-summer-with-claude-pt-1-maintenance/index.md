@@ -58,17 +58,19 @@ To help manage it all I had Claude write a number of check options into the make
 In the past I used [markdown-pp](https://github.com/amyreese/markdown-pp) to build a web version and a PDF version of my CV at the same time. When I moved my website to Wordpress I left the system as it was but removed the option to create a web version as it was no longer needed. Markdown-pp is no longer maintained, however, and the system regularly ran into issues when I needed to construct an updated CV. 
 
 When Claude analyzed the repository, it noted that the whole system could be achieved solely through [pandoc](https://pandoc.org) and wrote the script to build the PDF, the markdown file, and update both repositories. I had Claude also ensure the PDF was optimized for web delivery, reducing the file size by roughly 70%. So now I can run the same system I had before but with tools I already use and are well-maintained.
+
 ## Syllabi
 
 My main concern with my syllabi was the fact that I was using an old LaTeX template that had a tendency to break. So I asked Claude to assess it for issues and it immediately noted that the template was good but was very old and suggested I rewrite it for modern standards. Claude resolved the issues, rewrote it to have a more modern look and helped minimize the LaTeX footnote on my computer to only download the dependencies I actually need.
 
 After setting up the base I decided to take it a step further and have Claude write a script to automate syllabus creation, which I can now do and have the syllabus populated with basic information and a class schedule that updates based on the start date I give it. 
+
 ## Website
 
-This is really where I wanted to spend my time and what started out as a desire to tweak my current theme ultimately became essentially a full rewrite of the site's theme.[^2] What I have now is a site theme around a muted style of "Oklahoma prairie sunrise" which gives the site earthly, mellow tones throughout.[^3] I was really hoping to embrace the "good enough" mentality here, but the theming really did become a far more significant focus than I expected it to be when I started.
+This is really where I wanted to spend my time and what started out as a desire to tweak my current theme ultimately became essentially a full rewrite of the site's theme.[^2] What I have now is a site theme around a muted style of "Oklahoma prairie sunrise" which gives the site earthly, mellow tones throughout.[^3] I was really hoping to embrace the "good enough" mentality here, but the theme really did become a far more significant focus than I expected it to be when I started.
 
-[^2]: The last time I had the robots compute how much of the underlying PaperMod theme I was overriding it was around 41%, which has now gone up. PaperMod still exists in my repo because it handles pipelining and other technical things but the public facing theme is basically my own now.
-[^3]: Well, on the light theme. The dark theme retains PaperMod default neutral dark theme with the only change being the use of cyan for accents.
+[^2]: The last time I had the robots compute how much of the underlying PaperMod theme I was overriding it was around 41%. **Update**: After publishing I continued to tinker and it ultimately became more sustainable to simply remove PaperMod entirely and have a fully independent theme. Which is where we are now.
+[^3]: **Update**: The original design of the site is really my design aesthetic but apparently it's also [shared by AI](https://www.newyorker.com/culture/infinite-scroll/the-ai-design-aesthetic-thats-taking-over-the-internet). So now the theme is playing into [my love of Winslow Homer's paintings](/contact#site). 
 
 In addition to the outward changes, my original main focus was on efficiency and resource usage. As a result I had Claude start with converting images to avif to shirk their size on my server. Next I had it convert all my posts to page bundles where I can drop images or files and use relative paths rather than having to put everything in the static folder. I also had Claude add improvements for caching further reducing the load times and environmental impact of this site is essentially zero.
 
