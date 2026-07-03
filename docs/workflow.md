@@ -102,7 +102,7 @@ Authority records live in `data/people/`. At minimum, add `name`; other fields a
 | `scripts/newsource.sh` | Create a reading-ledger source entry, with prompts tailored to books or articles |
 | `scripts/finishsource.sh` | Move a current reading source to read and stamp finish metadata |
 | `scripts/add-images.sh` | Add bundle images, with cover/body handling |
-| `scripts/preflight.sh` | Local pre-push verification gate |
+| `scripts/preflight.sh` | Local pre-push gate, including published-draft and source-image policy checks |
 
 Less frequently used maintenance and audit helpers are documented in [operations.md](operations.md) and [maintenance.md](maintenance.md).
 
@@ -130,6 +130,7 @@ The `figure` shortcode supports the stock Hugo/PaperMod-style options:
 - `rel`
 - `class`
 - `align="center"`
+- `margin=true` (wide-screen margin rail; returns to the normal flow on smaller screens and in print)
 
 For a museum painting, a typical pattern is:
 
@@ -144,6 +145,25 @@ For a museum painting, a typical pattern is:
 ```
 
 If `attrlink` is omitted, attribution still renders cleanly as its own italicized segment rather than collapsing awkwardly into the caption.
+
+For an image that supports a specific passage rather than interrupting it,
+add `margin=true`. On sufficiently wide screens it appears in the scholarly
+margin rail alongside the prose; elsewhere it behaves like an ordinary figure:
+
+```go-html-template
+{{</* figure
+  src="portrait.avif"
+  margin=true
+  alt="Portrait of Robert G. Ingersoll"
+  caption="Robert G. Ingersoll, circa 1865–1880."
+  attr="Wikimedia Commons"
+  attrlink="https://commons.wikimedia.org/"
+*/>}}
+```
+
+Markdown footnotes use the same rail automatically on screens at least 1280px
+wide. On smaller screens they retain the tap/click popover and conventional
+footnote list; printing and feeds always use the conventional list.
 
 ## Adding a New Content Type
 

@@ -24,6 +24,7 @@
 {{- $r := .resource -}}
 {{- $widths := .widths | default (slice 400 680 800 1200) -}}
 {{- $displayW := .display | default 680 -}}
+{{- $sizes := .sizes | default "(max-width: 768px) 100vw, 680px" -}}
 {{- $full := $r | fingerprint -}}
 {{- $parts := slice -}}
 {{- $display := $r -}}
@@ -44,6 +45,6 @@
      "full"   $full.RelPermalink
      "src"    $disp.RelPermalink
      "srcset" $srcset
-     "sizes"  "(max-width: 768px) 100vw, 680px"
+     "sizes"  $sizes
      "width"  (string $display.Width)
      "height" (string $display.Height)) -}}

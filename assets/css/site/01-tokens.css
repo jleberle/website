@@ -1,8 +1,7 @@
 /* ============================================================
-   Northeaster — a colder editorial palette drawn from Homer's
-   storm paintings: fog-gray paper, slate ink, and deep blue water
-   as the accent note. The site should feel maritime, scholarly,
-   and a little severe in a good way.
+   Northeaster — a restrained editorial palette: warmed gray paper,
+   blue-black ink, weathered slate, and deep maritime blue as the
+   accent note. Scholarly and historical without looking vintage.
    ============================================================ */
 :root {
     --gap:           28px;
@@ -12,16 +11,16 @@
     --header-height: 60px;
     --footer-height: 60px;
     --radius:        10px;
-    --fog-mist:      #e7ecef;   /* page background — cold fog        */
-    --fog-granite:   #d9e0e5;   /* panels — slate mist               */
-    --fog-slate:     #1f2c35;   /* headings — inked slate            */
-    --fog-deepwater: #3e4e59;   /* body text — storm water           */
-    --fog-driftgray: #60717b;   /* meta/muted text                   */
-    --fog-haze:      #96a6af;   /* rules — sea haze                  */
-    --fog-pale-haze: #c3cdd3;   /* borders — pale surf shadow        */
-    --driftwood:     #355765;   /* blockquote/source rule — deep sea */
-    --tide:          #24576a;   /* links — deep blue water           */
-    --tide-deep:     #193d4a;   /* link hover — darker undertow      */
+    --fog-mist:      #efefed;   /* page background — warmed gray     */
+    --fog-granite:   #dfe2e1;   /* panels — cool inset paper         */
+    --fog-slate:     #20292e;   /* headings — blue-black ink         */
+    --fog-deepwater: #384348;   /* body text — softened ink          */
+    --fog-driftgray: #667076;   /* meta/muted text                   */
+    --fog-haze:      #9da5a5;   /* rules — weathered slate           */
+    --fog-pale-haze: #c7cac6;   /* borders — quiet paper edge        */
+    --driftwood:     #5d6f76;   /* blockquote/source rule            */
+    --tide:          #24566a;   /* links — deep maritime blue        */
+    --tide-deep:     #173f50;   /* link hover — darker undertow      */
     --theme:         var(--fog-mist);
     --entry:         var(--fog-granite);
     --primary:       var(--fog-slate);

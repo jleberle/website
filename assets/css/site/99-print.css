@@ -66,6 +66,28 @@
         break-after: avoid;
     }
 
+    .margin-note {
+        display: none !important;
+    }
+
+    .post-content figure.margin-figure {
+        float: none;
+        width: auto;
+        margin: var(--content-gap) 0;
+    }
+
+    .post-content.sidenotes-active .footnotes {
+        display: block;
+        position: static;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 2.5em 0 0;
+        overflow: visible;
+        clip-path: none;
+        white-space: normal;
+    }
+
     .main {
         max-width: 100%;
     }

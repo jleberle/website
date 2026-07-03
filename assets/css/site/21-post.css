@@ -235,6 +235,87 @@ h1>a>svg {
     color: var(--accent);
 }
 
+/* Wide-screen scholarly apparatus. The normal 700px reading measure stays
+   untouched; notes and explicitly marked figures borrow otherwise empty space
+   to its right. At narrower widths these rules do not apply, so footnotes use
+   the popover/bottom-list presentation and margin figures return to the flow. */
+@media (width >= 1280px) {
+    .post-content.sidenotes-active {
+        position: relative;
+    }
+
+    .post-content figure.margin-figure {
+        float: right;
+        clear: right;
+        width: 240px;
+        margin: 0 -272px 1.25rem 2rem;
+    }
+
+    .post-content .margin-note {
+        display: block;
+        position: absolute;
+        right: -272px;
+        width: 240px;
+        color: var(--secondary);
+        font-family: var(--meta-font);
+        font-size: 0.78rem;
+        line-height: 1.45;
+    }
+
+    .post-content:has(.margin-figure)::after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+
+    .post-content .margin-note-number {
+        float: left;
+        margin-inline-end: 0.45em;
+        color: var(--primary);
+        font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
+                     Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
+                     'Roboto Mono', monospace;
+        font-size: 0.82em;
+        font-weight: 600;
+    }
+
+    .post-content .margin-note-content,
+    .post-content .margin-note-content p {
+        margin: 0;
+    }
+
+    .post-content .margin-note-content p + p {
+        margin-top: 0.55em;
+    }
+
+    .post-content .margin-note:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 0.3rem;
+    }
+
+    .post-content figure.margin-figure img {
+        width: 100%;
+        margin: 0;
+    }
+
+    .post-content figure.margin-figure > figcaption {
+        margin: 0.45rem 0 0;
+        color: var(--secondary);
+        font-family: var(--meta-font);
+        font-size: 0.76rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.4;
+        text-align: start;
+    }
+
+    /* The accessible margin notes replace this duplicate list on wide screens.
+       Narrow screens, print, feeds and no-JS use retain the original list. */
+    .post-content.sidenotes-active .footnotes {
+        display: none;
+    }
+}
+
 
 /* ------------------------------------------------------------
    Review and quote source apparatus, multi-part series navigation,
@@ -275,6 +356,7 @@ h1>a>svg {
 .post-context-kicker {
     display: block;
     margin-bottom: 0.28rem;
+    font-family: var(--meta-font);
     font-size: 0.82rem;
     font-variant-caps: all-small-caps;
     font-weight: 600;
@@ -366,6 +448,7 @@ h1>a>svg {
 
 .related-post-type {
     color: var(--secondary);
+    font-family: var(--meta-font);
     font-size: 0.68rem;
     font-variant-caps: all-small-caps;
     font-weight: 600;
@@ -405,6 +488,7 @@ h1>a>svg {
 .post-meta-footer {
     margin: 0;
     color: var(--secondary);
+    font-family: var(--meta-font);
     font-size: 0.82rem;
 }
 
@@ -424,7 +508,7 @@ h1>a>svg {
 .post-tags::before {
     content: "Topics";
     margin-inline-end: 0.55rem;
-    font-family: inherit;
+    font-family: var(--meta-font);
     font-variant-caps: all-small-caps;
     font-size: 0.82rem;
     font-weight: 600;
@@ -541,19 +625,33 @@ h1>a>svg {
 }
 
 
-/* Compact outline for long, well-sectioned articles. */
+/* Compact editorial outline for long, well-sectioned articles. */
 details.toc {
     margin-bottom: var(--content-gap);
-    background: transparent;
-    border: 0;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    border-radius: 0;
+    background: color-mix(in sRGB, var(--entry), transparent 58%);
+    border: 1px solid var(--rule);
+    border-inline-start: 3px solid var(--accent);
+    border-radius: 4px;
 }
 
 details.toc summary {
-    padding: 0.55rem 0;
-    border-radius: var(--radius);
+    padding: 0.6rem 0.85rem;
+    border-radius: 3px;
+    font-family: var(--meta-font);
+    font-size: 0.82rem;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+}
+
+details.toc summary::marker {
+    color: var(--accent);
+}
+
+details.toc[open] summary {
+    border-bottom: 1px solid color-mix(in sRGB, var(--rule), transparent 35%);
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
 }
 
 details.toc summary .title {
@@ -572,13 +670,33 @@ details.toc summary .title {
     text-underline-offset: 0.2rem;
 }
 
-/* Tighter, quieter nested list than the body default. */
+/* Explicit list padding keeps outside markers inside the clipped details
+   content box instead of leaving half a bullet beyond its left edge. */
 .toc .inner ul {
+    margin: 0;
+    padding-inline-start: 1.2rem;
+    list-style-position: outside;
     line-height: 1.5;
 }
 
 .toc .inner {
     margin: 0;
-    padding: 0 0 0.7rem 1rem;
+    padding: 0.7rem 1rem 0.85rem;
     font-size: 0.9rem;
+}
+
+.toc .inner li {
+    margin: 0.22rem 0;
+    padding-inline-start: 0.12rem;
+}
+
+.toc .inner li::marker {
+    color: var(--accent);
+    font-size: 0.78em;
+}
+
+.toc .inner li ul {
+    margin: 0.25rem 0 0;
+    padding-inline-start: 1.15rem;
+    list-style-type: circle;
 }

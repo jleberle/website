@@ -34,13 +34,15 @@ The default local gate is intentionally narrower than CI. It is meant to answer:
 
 Default `scripts/preflight.sh` checks:
 
-1. Hugo build
-2. content resource references
-3. source junk files
-4. generated junk files
-5. feed lint
-6. CSP hash drift
-7. published-reference scan
+1. no `draft: true` files in the publishable content tree
+2. no unoptimized JPEG, PNG, or WebP source images outside approved icons and JPEG companions
+3. Hugo build
+4. content resource references
+5. source junk files
+6. generated junk files
+7. feed lint
+8. CSP hash drift
+9. published-reference scan
 
 Useful modes:
 
@@ -63,6 +65,7 @@ GitHub Actions runs from `.github/workflows/site-checks.yml` on:
 
 The workflow runs:
 
+- a separate full-history Gitleaks secret scan
 - `scripts/preflight.sh --strict --full`
 - `npm run test:axe`
 

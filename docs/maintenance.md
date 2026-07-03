@@ -59,5 +59,5 @@ Dead compatibility shims and unused PaperMod pieces were deliberately removed ra
 ## Operational Notes
 
 - StaticHost deploys independently of GitHub Actions, so local preflight remains the real pre-push gate.
-- Secret scanning is enforced by the global Git pre-commit hook in the dotfiles setup rather than by a repo-local hook.
+- Secret scanning is the global Git pre-commit hook's only responsibility. The repository preflight owns publish policy, including draft and source-image checks, without modifying the Git index.
 - If macOS metadata files ever reappear, `scripts/preflight.sh` now checks both Hugo source directories and generated output for `.DS_Store` and similar junk.

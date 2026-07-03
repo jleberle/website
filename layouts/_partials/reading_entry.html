@@ -16,7 +16,16 @@
   <summary class="reading-entry-summary">
     <span class="reading-entry-main">
       <span class="reading-entry-kicker">{{ $entry.type_label }}</span>
-      <span class="reading-entry-title">{{ $entry.title }}</span>
+      <span class="reading-entry-title-line">
+        <span class="reading-entry-title">{{ $entry.title }}</span>
+        <span class="reading-entry-years">
+          {{- if eq $mode "current" -}}
+            {{- with $entry.started }}<span class="reading-entry-pill">Started {{ time.AsTime . | time.Format "1/2/2006" }}</span>{{- end -}}
+          {{- else -}}
+            {{- if gt $entry.read_year 0 }}<span class="reading-entry-year">{{ $entry.read_year }}</span>{{- end -}}
+          {{- end -}}
+        </span>
+      </span>
       {{- if or $entry.author (gt $entry.published_year 0) $entry.container_title }}
       <span class="reading-entry-author">
         {{- with $entry.author }}<span>{{ . }}</span>{{- end -}}
@@ -26,13 +35,6 @@
         {{- with $entry.container_title }}<span class="reading-entry-container">{{ . }}</span>{{- end -}}
       </span>
       {{- end }}
-    </span>
-    <span class="reading-entry-years">
-      {{- if eq $mode "current" -}}
-        {{- with $entry.started }}<span class="reading-entry-pill">Started {{ time.AsTime . | time.Format "1/2/2006" }}</span>{{- end -}}
-      {{- else -}}
-        {{- if gt $entry.read_year 0 }}<span class="reading-entry-year">{{ $entry.read_year }}</span>{{- end -}}
-      {{- end -}}
     </span>
   </summary>
   <div class="reading-entry-details">

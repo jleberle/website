@@ -3,13 +3,15 @@
 {{- $hasReviewContext := or .Params.reviewed_title .Params.reviewed_author .Params.reviewed_publisher .Params.reviewed_year .Params.reviewed_type }}
 {{- $hasSourceContext := or .Params.source_title .Params.source_author .Params.source_year }}
 {{- $recordContext := partial "record_context.html" . }}
-{{- $tocHeadings := findRE "<h[2-3][^>]*>" .Content -}}
+{{- $pageContent := .Content -}}
+{{- $tocHeadings := findRE "<h[2-3][^>]*>" $pageContent -}}
 {{- $showToc := and (eq .Section "articles") (ge .WordCount 1200) (ge (len $tocHeadings) 3) -}}
+{{- $hasMarginRail := or (strings.Contains $pageContent "class=\"footnotes\"") (strings.Contains $pageContent "margin-figure") -}}
 {{- if isset .Params "showtoc" -}}
   {{- $showToc = .Params.showtoc -}}
 {{- end -}}
 
-<article class="post-single h-entry">
+<article class="post-single h-entry{{ if $hasMarginRail }} has-margin-rail{{ end }}">
   <a class="u-url" href="{{ .RelPermalink }}" hidden></a>
   <header class="post-header">
     {{- with index $recordContext "entry" }}
@@ -60,8 +62,8 @@
   {{- if .Content }}
   <div class="post-content md-content e-content">
     {{- if not (.Param "disableAnchoredHeadings") }}
-    {{- partial "anchored_headings.html" .Content -}}
-    {{- else }}{{ .Content }}{{ end }}
+    {{- partial "anchored_headings.html" $pageContent -}}
+    {{- else }}{{ $pageContent }}{{ end }}
   </div>
   {{- end }}
 

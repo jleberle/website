@@ -175,6 +175,7 @@ body.list:not(.home) .page-header {
 .page-kicker {
     margin: 0 0 0.3rem;
     color: var(--secondary);
+    font-family: var(--meta-font);
     font-size: 0.8rem;
     font-variant-caps: all-small-caps;
     font-weight: 600;

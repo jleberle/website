@@ -3,21 +3,23 @@
 # CI runs `--full` for the slower structural and accessibility checks.
 #
 # Default local gate:
-#   1. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
-#   2. content resources     — source Markdown cover blocks point at real files
-#   3. source junk files     — fail if OS/editor metadata sits in Hugo inputs
-#   4. generated junk files  — fail if OS/editor metadata lands in public/
-#   5. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs
-#   6. csp-hashes.sh --check — CSP hash drift against the fresh build
-#   7. published references  — every internal src/href/srcset/feed URL in the
+#   1. published drafts      — content/ must not contain draft: true
+#   2. image policy          — raster sources must be AVIF or allowed companions/icons
+#   3. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
+#   4. content resources     — source Markdown cover blocks point at real files
+#   5. source junk files     — fail if OS/editor metadata sits in Hugo inputs
+#   6. generated junk files  — fail if OS/editor metadata lands in public/
+#   7. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs
+#   8. csp-hashes.sh --check — CSP hash drift against the fresh build
+#   9. published references  — every internal src/href/srcset/feed URL in the
 #                               output must resolve to a published file; guards
 #                               the build.publishResources=false resource pattern
 #
 # Full mode adds:
-#   8. html-validate         — HTML5 validation of every page
-#   9. stylelint             — CSS lint (rules tuned in .stylelintrc.json)
-#   10. checks/a11y-lint.py  — content images without alt + heading-level skips
-#   11. lychee --offline     — internal links/files in public/
+#   10. html-validate        — HTML5 validation of every page
+#   11. stylelint            — CSS lint (rules tuned in .stylelintrc.json)
+#   12. checks/a11y-lint.py  — content images without alt + heading-level skips
+#   13. lychee --offline     — internal links/files in public/
 #
 # StaticHost deploys on push independently of GitHub Actions, so the default
 # gate stays focused on "will this build and publish correctly right now?"
@@ -30,7 +32,7 @@
 set -uo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd "$REPO_ROOT"
+cd "$REPO_ROOT" || exit 1
 
 STRICT=false
 FULL=false
@@ -48,6 +50,22 @@ FAILURES=0
 step() { printf '\n\033[1m== %s\033[0m\n' "$1"; }
 pass() { printf '\033[32m✓ %s\033[0m\n' "$1"; }
 fail() { printf '\033[31m✗ %s\033[0m\n' "$1"; FAILURES=$((FAILURES + 1)); }
+
+step "published drafts"
+if DRAFT_OUT=$(python3 scripts/checks/draft-lint.py content 2>&1); then
+  pass "$DRAFT_OUT"
+else
+  echo "$DRAFT_OUT"
+  fail "draft content is present in the publishable content tree"
+fi
+
+step "source image policy"
+if IMAGE_OUT=$(python3 scripts/checks/image-policy-lint.py assets content static 2>&1); then
+  pass "$IMAGE_OUT"
+else
+  echo "$IMAGE_OUT"
+  fail "unoptimized raster sources (use the image helper before publishing)"
+fi
 
 step "hugo build"
 BUILD_OUT=$(hugo --minify 2>&1)
@@ -130,8 +148,7 @@ if $FULL; then
     HV=()
   fi
   if [[ ${#HV[@]} -gt 0 ]]; then
-    HV_OUT=$("${HV[@]}" "public/**/*.html" 2>&1)
-    if [[ $? -eq 0 ]]; then
+    if HV_OUT=$("${HV[@]}" "public/**/*.html" 2>&1); then
       pass "html-validate clean"
     else
       tail -20 <<<"$HV_OUT"
@@ -153,8 +170,7 @@ if $FULL; then
     SL=()
   fi
   if [[ ${#SL[@]} -gt 0 ]]; then
-    SL_OUT=$("${SL[@]}" "assets/css/**/*.css" 2>&1)
-    if [[ $? -eq 0 ]]; then
+    if SL_OUT=$("${SL[@]}" "assets/css/**/*.css" 2>&1); then
       pass "stylelint clean"
     else
       tail -20 <<<"$SL_OUT"
@@ -174,8 +190,7 @@ if $FULL; then
 
   step "internal links (lychee --offline)"
   if command -v lychee >/dev/null; then
-    LYCHEE_OUT=$(lychee --offline --root-dir "$REPO_ROOT/public" --no-progress public/ 2>&1)
-    if [[ $? -eq 0 ]]; then
+    if LYCHEE_OUT=$(lychee --offline --root-dir "$REPO_ROOT/public" --no-progress public/ 2>&1); then
       pass "internal links resolve"
     else
       tail -15 <<<"$LYCHEE_OUT"

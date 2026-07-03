@@ -5,6 +5,7 @@
        CSS centering rule and all of the theme's align/link/caption features. */ -}}
 {{- $src := .Get "src" -}}
 {{- $align := eq (.Get "align") "center" -}}
+{{- $margin := .Get "margin" | default false -}}
 {{- $img := "" -}}
 {{- with $src }}{{ $img = or ($.Page.Resources.GetMatch .) (resources.Get .) }}{{ end -}}
 {{- $srcset := "" -}}
@@ -15,7 +16,11 @@
 {{- $finalSrc := $src -}}
 {{- $processable := slice "jpg" "jpeg" "png" "tif" "bmp" "gif" "webp" "avif" -}}
 {{- if and $img (in $processable $img.MediaType.SubType) -}}
-    {{- $r := partial "responsive-img.html" (dict "resource" $img) -}}
+    {{- $imageOptions := dict "resource" $img -}}
+    {{- if $margin -}}
+        {{- $imageOptions = merge $imageOptions (dict "widths" (slice 240 480 720) "display" 240 "sizes" "(min-width: 1280px) 240px, (max-width: 768px) 100vw, 680px") -}}
+    {{- end -}}
+    {{- $r := partial "responsive-img.html" $imageOptions -}}
     {{- $finalSrc = $r.src -}}
     {{- $srcset = $r.srcset -}}
     {{- $sizes = $r.sizes -}}
@@ -41,7 +46,11 @@
 {{- $caption := .Get "caption" -}}
 {{- $attr := .Get "attr" -}}
 {{- $attrlink := .Get "attrlink" -}}
-<figure{{ if or (.Get "class") $align }} class="{{ if $align }}align-center {{ end }}{{- with .Get "class" }}{{ . }}{{ end }}"{{ end -}}>
+{{- $classes := slice -}}
+{{- if $align }}{{ $classes = $classes | append "align-center" }}{{ end -}}
+{{- if $margin }}{{ $classes = $classes | append "margin-figure" }}{{ end -}}
+{{- with .Get "class" }}{{ $classes = $classes | append . }}{{ end -}}
+<figure{{ with $classes }} class="{{ delimit . " " }}"{{ end -}}>
     {{- if .Get "link" -}}
         <a href="{{ .Get "link" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }}>
     {{- end }}

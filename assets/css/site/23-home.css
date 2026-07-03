@@ -60,7 +60,7 @@ body.home .home-info {
 
 .home-frontpage {
     display: grid;
-    gap: clamp(2.2rem, 5vw, 3.4rem);
+    gap: clamp(1.8rem, 4vw, 2.7rem);
 }
 
 .home-teaching-band,
@@ -70,10 +70,21 @@ body.home .home-info {
     gap: 1rem;
 }
 
-.home-writing,
-.home-context-band {
-    padding-top: 1rem;
+.home-writing {
+    padding-top: 1.15rem;
     border-top: 1px solid var(--rule);
+}
+
+.home-teaching-band,
+.home-context-band {
+    padding: clamp(1rem, 2.5vw, 1.4rem);
+    background: color-mix(in sRGB, var(--entry), var(--theme) 42%);
+    border: 1px solid color-mix(in sRGB, var(--border), var(--rule) 24%);
+    border-radius: 4px;
+}
+
+.home-context-band {
+    border-inline-start: 3px solid var(--accent);
 }
 
 .home-band-header {
@@ -279,6 +290,7 @@ body.home .home-info {
 .home-context-kicker {
     margin: 0 0 0.14rem;
     color: var(--secondary);
+    font-family: var(--meta-font);
     font-size: 0.74rem;
     font-variant-caps: all-small-caps;
     font-weight: 600;
@@ -384,6 +396,11 @@ body.home .home-info {
 
     .home-band-header {
         display: block;
+    }
+
+    .home-teaching-band,
+    .home-context-band {
+        padding: 0.9rem;
     }
 
     .home-band-link {

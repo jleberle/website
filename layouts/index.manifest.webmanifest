@@ -10,8 +10,8 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#e7ecef",
-  "theme_color": "#e7ecef",
+  "background_color": {{ (site.Params.assets.background_color | default "#efefed") | jsonify }},
+  "theme_color": {{ (site.Params.assets.theme_color | default "#efefed") | jsonify }},
   "icons": [
     { "src": "/icons/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
     { "src": "/icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },

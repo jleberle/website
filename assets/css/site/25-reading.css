@@ -98,16 +98,18 @@
     background: transparent;
 }
 
+.reading-current-grid .reading-entry:first-child,
+.reading-list .reading-entry:first-child {
+    border-top: 0;
+}
+
 .reading-current-grid .reading-entry:last-child,
 .reading-list .reading-entry:last-child {
     border-bottom: 1px solid color-mix(in sRGB, var(--border), var(--rule) 25%);
 }
 
 .reading-entry-summary {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 1rem;
-    align-items: baseline;
+    display: block;
     list-style: none;
     cursor: pointer;
     padding: 0.9rem 0;
@@ -143,6 +145,13 @@
     line-height: 1.25;
     font-style: italic;
     font-weight: 400;
+}
+
+.reading-entry-title-line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 1rem;
 }
 
 .reading-entry-author {
@@ -283,13 +292,7 @@
         display: block;
     }
 
-    .reading-entry-summary {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-    }
-
     .reading-entry-years {
-        justify-content: start;
         white-space: normal;
     }
 

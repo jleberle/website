@@ -1,13 +1,12 @@
-// Footnote popovers. Clicking a footnote reference opens the note in place,
-// read from the existing .footnotes list at the foot of the article, so there
-// is no duplicated content and no template change. Progressive enhancement:
-// without JS (or if a note isn't found) the reference still jumps to the foot
-// of the page as normal. Loaded via the deferred bundle, so the DOM is ready.
+// Progressive footnotes. Wide screens receive accessible margin notes;
+// narrower screens open the same source notes in a popover. Without JS (or if
+// a note is not found), references still jump to the canonical list normally.
 (function () {
   var content = document.querySelector('.post-content');
   if (!content) return;
   var refs = content.querySelectorAll('a.footnote-ref');
   if (!refs.length) return;
+  var marginQuery = window.matchMedia('(min-width: 1280px)');
 
   var pop = document.createElement('div');
   pop.className = 'fn-popover';
@@ -25,6 +24,80 @@
     var clone = li.cloneNode(true);
     clone.querySelectorAll('.footnote-backref').forEach(function (b) { b.remove(); });
     return clone.innerHTML;
+  }
+
+  // On wide screens, copy each semantic footnote into the free outer margin.
+  // The original list remains in the document for printing, feeds and no-JS
+  // use, but is hidden while these accessible copies are active so assistive
+  // technology does not announce every note twice.
+  function buildSidenotes() {
+    var madeOne = false;
+    refs.forEach(function (ref, index) {
+      var html = noteHTML(ref);
+      var marker = ref.closest('sup');
+      if (html === null || !marker || ref.marginNote) return;
+
+      var note = document.createElement('aside');
+      note.className = 'margin-note';
+      note.id = 'margin-note-' + (index + 1);
+      note.setAttribute('role', 'note');
+      note.setAttribute('aria-label', 'Footnote ' + ref.textContent);
+      note.tabIndex = -1;
+      note.referenceMarker = marker;
+      note.innerHTML = '<span class="margin-note-number" aria-hidden="true">' +
+        ref.textContent + '</span><div class="margin-note-content">' + html + '</div>';
+      content.appendChild(note);
+      ref.marginNote = note;
+      ref.setAttribute('aria-describedby', note.id);
+      ref.removeAttribute('aria-expanded');
+      ref.removeAttribute('aria-controls');
+      madeOne = true;
+    });
+    if (madeOne || content.querySelector('.margin-note')) {
+      content.classList.add('sidenotes-active');
+      positionSidenotes();
+    }
+  }
+
+  // Absolutely position notes against the unchanged prose column. This keeps
+  // them independent of a floated cover image while still stacking long or
+  // closely spaced notes without collisions.
+  function positionSidenotes() {
+    if (!content.classList.contains('sidenotes-active')) return;
+    content.style.minHeight = '';
+    var contentTop = content.getBoundingClientRect().top;
+    var nextTop = 0;
+
+    content.querySelectorAll('.margin-note').forEach(function (note) {
+      if (!note.referenceMarker) return;
+      var referenceTop = note.referenceMarker.getBoundingClientRect().top - contentTop;
+      var top = Math.max(referenceTop, nextTop);
+      note.style.top = top + 'px';
+      nextTop = top + note.offsetHeight + 16;
+    });
+
+    if (nextTop > content.offsetHeight) content.style.minHeight = nextTop + 'px';
+  }
+
+  function removeSidenotes() {
+    refs.forEach(function (ref) {
+      if (ref.marginNote) ref.marginNote.remove();
+      ref.marginNote = null;
+      ref.removeAttribute('aria-describedby');
+      ref.setAttribute('aria-expanded', 'false');
+      ref.setAttribute('aria-controls', 'fn-popover');
+    });
+    content.classList.remove('sidenotes-active');
+    content.style.minHeight = '';
+  }
+
+  function syncSidenotes() {
+    if (marginQuery.matches) {
+      close(false);
+      buildSidenotes();
+    } else {
+      removeSidenotes();
+    }
   }
 
   // Anchor below the reference, clamped to stay within the viewport width.
@@ -71,6 +144,10 @@
     if (noteHTML(ref) === null) return;   // unknown note -> leave default behavior
     e.preventDefault();
     e.stopPropagation();
+    if (content.classList.contains('sidenotes-active')) {
+      if (ref.marginNote) ref.marginNote.focus({ preventScroll: true });
+      return;
+    }
     if (current === ref) { close(false); return; } // toggle
     open(ref);
   }, true);
@@ -88,5 +165,11 @@
     if (e.key === 'Escape') close(true);
   });
 
-  window.addEventListener('resize', function () { if (current) place(current); });
+  syncSidenotes();
+  marginQuery.addEventListener('change', syncSidenotes);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(positionSidenotes);
+  window.addEventListener('resize', function () {
+    if (current) place(current);
+    positionSidenotes();
+  });
 })();
