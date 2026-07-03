@@ -1,0 +1,585 @@
+.md-content h3,
+.md-content h4,
+.md-content h5,
+.md-content h6 {
+    margin: 24px 0 16px;
+}
+
+.md-content h1 {
+    margin: 40px auto 32px;
+    font-size: 40px;
+}
+
+.md-content h2 {
+    margin: 32px auto 24px;
+    font-size: 32px;
+}
+
+.md-content h3 {
+    font-size: 24px;
+}
+
+.md-content h4 {
+    font-size: 16px;
+}
+
+.md-content h5 {
+    font-size: 14px;
+}
+
+.md-content h6 {
+    font-size: 12px;
+}
+
+.md-content del {
+    text-decoration: line-through;
+}
+
+.md-content dl:not(:last-child),
+.md-content ol:not(:last-child),
+.md-content p:not(:last-child),
+.md-content figure:not(:last-child),
+.md-content ul:not(:last-child) {
+    margin-bottom: var(--content-gap);
+}
+
+.md-content ol,
+.md-content ul {
+    padding-inline-start: 1.25rem;
+}
+
+.md-content li {
+    margin-top: 0.3rem;
+}
+
+.md-content li p {
+    margin-bottom: 0;
+}
+
+.md-content dl {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.md-content dt {
+    width: 25%;
+    font-weight: 700;
+}
+
+.md-content dd {
+    width: 75%;
+    margin-inline-start: 0;
+    padding-inline-start: 10px;
+}
+
+.md-content dd~dd,
+.md-content dt~dt {
+    margin-top: 10px;
+}
+
+.md-content table {
+    margin-bottom: var(--content-gap);
+}
+
+.md-content table th,
+.md-content table:not(.highlight table) td {
+    min-width: 80px;
+    padding: 6px 13px;
+    line-height: 1.5;
+    border: 1px solid var(--border);
+}
+
+.md-content table th {
+    text-align: start;
+}
+
+.md-content table td code:only-child {
+    margin: auto 0;
+}
+
+.md-content .highlight table {
+    border-radius: var(--radius);
+}
+
+.md-content .highlight:not(table) {
+    margin-bottom: var(--content-gap);
+    background: var(--code-block-bg) !important;
+    border-radius: var(--radius);
+    direction: ltr;
+}
+
+.md-content li>.highlight {
+    margin-inline-end: 0;
+}
+
+.md-content ul pre {
+    margin-inline-start: calc(var(--gap) * -2);
+}
+
+.md-content .highlight pre {
+    margin: 0;
+}
+
+.post-content code {
+    padding: 0.2rem 0.3rem;
+    font-size: 0.78em;
+    line-height: 1.5;
+    background: var(--code-bg);
+    border-radius: 0.2rem;
+}
+
+.md-content pre code {
+    display: grid;
+    margin: auto 0;
+    padding: 10px;
+    color: rgb(213 213 214);
+    background: var(--code-block-bg) !important;
+    border-radius: var(--radius);
+    overflow-x: auto;
+    word-break: break-all;
+}
+
+.md-content iframe {
+    max-width: 100%;
+}
+
+.md-content img {
+    border-radius: var(--radius);
+    margin: 1rem 0;
+}
+
+.md-content img[src*="#center"] {
+    margin: 1rem auto;
+}
+
+.md-content figure.align-center {
+    text-align: center;
+}
+
+.md-content figure>figcaption {
+    color: var(--primary);
+    font-size: 16px;
+    font-weight: bold;
+    margin: 8px 0 16px;
+}
+
+.md-content figure>figcaption>p {
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.md-content h1:hover .anchor,
+.md-content h2:hover .anchor,
+.md-content h3:hover .anchor,
+.md-content h4:hover .anchor,
+.md-content h5:hover .anchor,
+.md-content h6:hover .anchor {
+    display: inline-flex;
+    color: var(--secondary);
+    margin-inline-start: 0.5em;
+    font-weight: 500;
+    user-select: none;
+}
+
+.anchor:hover {
+    color: var(--content) !important;
+}
+
+mark {
+    border-radius: 2px;
+    padding: 0 2px;
+}
+
+audio {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    height: 2.5rem;
+    margin-bottom: var(--content-gap);
+}
+
+audio::-webkit-media-controls-enclosure {
+    border-radius: 0;
+}
+
+video {
+    border: 1px solid var(--code-bg);
+    border-radius: var(--radius);
+    max-width: 100%;
+}
+
+
+/* ------------------------------------------------------------
+   Metadata typography. Small-caps/lowercase treatment for
+   theme-rendered "furniture" — post dates, entry footers, tags,
+   breadcrumbs, pagination. These inherit the surrounding serif
+   body face. Header navigation and the site footer are the sans
+   exceptions that still want this small-caps look — set directly
+   in their own component files and handled separately below. The
+   archive filter pills are also sans (24-archives.css), but
+   skip the small-caps look entirely, like the social pills. */
+.post-meta,
+.entry-footer,
+.post-meta-footer,
+.breadcrumbs,
+.pagination,
+.home-section-all,
+.home-list-date,
+.post-tags,
+.post-tags::before {
+    font-family: inherit;
+    font-variant-caps: all-small-caps;
+    text-transform: lowercase;
+    letter-spacing: 0.015em;
+}
+
+.post-meta,
+.post-meta-footer {
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+/* Same small-caps/lowercase treatment as above, but kept separate from
+   font-family: inherit — these set their own font-family directly in
+   header.css/footer.css and have no meta-font ancestor to inherit from. */
+.menu,
+.site-footer,
+.site-footer .social-icons a,
+.footer-feed {
+    font-variant-caps: all-small-caps;
+    text-transform: lowercase;
+    letter-spacing: 0.015em;
+}
+
+
+/* ------------------------------------------------------------
+   Monospace stack for code-ish elements. IBM Plex Mono is the single
+   self-hosted support face; system monos stay behind it as fallbacks.
+   ------------------------------------------------------------ */
+code, pre, kbd, samp, tt {
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
+               Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
+               'Roboto Mono', monospace;
+}
+
+
+/* ------------------------------------------------------------
+   Prose color and link treatments driven by the theme variables.
+   Serif typography and prose accents live together in this component.
+   ------------------------------------------------------------ */
+.md-content hr {
+    height: 2px;
+    margin: 30px 0;
+    background: var(--rule);
+    border: 0;
+}
+
+.md-content blockquote {
+    padding-inline-start: 1rem;
+    margin: 1.4rem 0;
+    padding: 0.15rem 0 0.15rem 1rem;
+    border-inline-start: 2px solid var(--quote-rule);
+    color: var(--content);
+}
+
+.md-content blockquote p {
+    margin: 0.45rem 0;
+}
+
+.md-content blockquote p:first-child {
+    margin-top: 0;
+}
+
+.md-content blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+.md-content figcaption {
+    margin-top: 0.5rem;
+    font-family: var(--meta-font);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    font-style: italic;
+    color: var(--secondary);
+    text-align: center;
+}
+
+.md-content figcaption p {
+    margin: 0.15rem 0 0;
+}
+
+.md-content figcaption .fig-title,
+.md-content figcaption .fig-caption,
+.md-content figcaption .fig-attribution {
+    font-style: italic;
+}
+
+.md-content figcaption .fig-separator {
+    font-style: normal;
+}
+
+.md-content figcaption a {
+    color: inherit;
+}
+
+.md-content figcaption a:hover {
+    color: var(--accent);
+}
+
+.md-content a:not(.anchor) {
+    color: var(--link);
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+    transition: color 0.15s ease;
+}
+
+.md-content a:not(.anchor):hover {
+    color: var(--accent);
+    text-underline-offset: 0.25rem;
+}
+
+
+/* ------------------------------------------------------------
+   Preserve image aspect ratio on narrow viewports.
+
+   Images carry explicit width/height attributes (set by the
+   figure shortcode and render-image hook) to prevent layout
+   shift. The theme's reset only caps `max-width: 100%`, so when
+   the rendered width is constrained below the attribute width on
+   a phone, the explicit pixel height is still honoured and the
+   image stretches vertically. `height: auto` scales the height
+   in proportion, restoring the aspect ratio.
+   ------------------------------------------------------------ */
+
+
+/* ------------------------------------------------------------
+   Body type. Source Serif 4 gives the site a consistent scholarly text
+   face across platforms, while Fraunces stays confined to display work.
+   The fallback proxy (fonts.css) keeps the swap from reflowing prose.
+   ------------------------------------------------------------ */
+
+/* Headings (prose + page title). Fraunces, pinned at its display optical
+   size (fonts.css) for more character and stroke contrast than a text
+   serif gives at heading sizes. font-weight: 600 here matches the real
+   weight shipped — no synthetic bold. letter-spacing: -0.01em tightens
+   tracking slightly for large display type. */
+h1,
+.post-title,
+.page-header h1,
+.home-info .entry-header h1,
+.home-feature-title,
+.home-section-title,
+.entry-header h2,
+.logo a {
+    font-family: Fraunces, 'Fraunces Fallback', Georgia, serif;
+    text-rendering: optimizeLegibility;
+    font-weight: 600;
+    text-wrap: balance;
+    scroll-margin-top: 1rem;
+}
+
+strong,
+b {
+    font-weight: 600;
+}
+
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+    font-family: inherit;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-wrap: pretty;
+}
+
+/* Section dividers in prose: a full-width hairline under headings so
+   sections read as distinct blocks — especially on the long, heavily
+   sectioned course pages. h2 (major) and h3 (sub) both get the rule; the
+   size difference carries the hierarchy. h4–h6 stay unruled to avoid noise. */
+.post-content h2,
+.post-content h3 {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.3em;
+}
+
+/* Prevent widows (a lone word on a paragraph's last line) in supporting
+   browsers, and let long words break at the column edge instead of
+   leaving a large gap before wrapping — the standard pairing for
+   unjustified prose. Both are progressive enhancements, ignored where
+   unsupported. lang="en" (set on <html> by Hugo) is what lets browsers
+   pick correct English hyphenation points. */
+.post-content p,
+.post-content li {
+    text-wrap: pretty;
+    hyphens: auto;
+}
+
+/* Hang opening quotation marks into the margin so the left edge stays
+   optically flush when a line or paragraph begins with a quote — a refined
+   book-typography touch suited to quotation-heavy prose. Safari/iOS only
+   today; silently ignored elsewhere. Disabled on blockquotes so it doesn't
+   pull the deliberate first-line quote-mark indent into the margin. */
+.post-content {
+    margin: 30px 0;
+    color: var(--content);
+    hanging-punctuation: first;
+    font-variant-numeric: oldstyle-nums proportional-nums;
+    font-size: 1.05rem;
+    line-height: 1.76;
+}
+
+.post-content h2 {
+    margin-top: 1.8em;
+}
+
+.post-content h3 {
+    margin-top: 1.55em;
+}
+
+.post-content blockquote {
+    hanging-punctuation: none;
+}
+
+/* Cleaner resting underlines for prose links: a thin, slightly dropped
+   line. The theme sets the offset; this pins the thickness for a
+   consistent weight regardless of which system font renders the link. */
+.post-content a {
+    text-decoration-thickness: 1px;
+}
+
+/* Abbreviations (via the {{< abbr >}} shortcode). No small caps: dropped
+   because the convention only works if every instance of an acronym in a
+   document goes through the shortcode, and this site doesn't — plenty of
+   plain, unshortcoded full-caps mentions of the same terms appear in the
+   same paragraphs (the shortcode is for subsequent-mention glosses, not
+   every occurrence). A standalone small-capped term next to its own
+   regular-capped neighbors looked inconsistent rather than quieter, and a
+   plain capped acronym is unremarkable in printed historical writing
+   anyway, so there's nothing to fix here typographically.
+
+   The dotted underline is the static signal that a term is glossed;
+   cursor: pointer (not the old help cursor, which only made sense for a
+   hover-only affordance) signals it's actually actionable. The shortcode
+   gives the <abbr> tabindex="0", so click, tap, and Tab all set :focus the
+   same way — one mechanism covers desktop, touch, and keyboard, instead of
+   a hover tooltip that touch devices simply can't trigger. The tooltip
+   itself is CSS-only (content: attr(title) on ::after), so there's no
+   dismiss logic to write: focusing anything else blurs it shut for free.
+   Styled like the footnote popover in 21-post.css for visual
+   consistency — same surface, border, radius, and shadow. */
+.post-content abbr[title] {
+    position: relative;
+    text-decoration: underline dotted;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+}
+
+.post-content abbr[title]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* left: 0 instead of centering — a short term that wraps to the start of a
+   line sits at the column's left edge, and a centered tooltip would clip
+   its own opening words off the left of the viewport (confirmed in
+   testing). Anchoring left means the tooltip can still run off the right
+   edge for a term near the *end* of a line, but that's the less damaging
+   direction to clip in, and there's no JS here to detect available space
+   and flip sides like a real tooltip library would. */
+.post-content abbr[title]:focus::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 0.4em;
+    width: max-content;
+    max-width: min(85vw, 18em);
+    background: var(--entry);
+    color: var(--content);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 0.35em 0.7em;
+    font-family: var(--meta-font);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    text-align: left;
+    text-decoration: none;
+    box-shadow: 0 4px 18px rgb(0 0 0 / 18%);
+    z-index: 50;
+    pointer-events: none;
+}
+
+/* Form controls don't inherit font-family by default — pull them
+   into the body font stack so search, buttons, etc. match the site. */
+input,
+button,
+textarea,
+select {
+    font-family: inherit;
+}
+
+
+/* ------------------------------------------------------------
+   Tables. The theme styles cells with the faint --border; this
+   restyles them in the site's vocabulary: collapsed --rule lines,
+   an --entry header band, subtle zebra striping, and tabular
+   figures so numeric columns line up (the system-sans body stack
+   otherwise uses proportional figures). Chroma runs with noClasses and
+   no line numbers, so code never renders as a table — these rules
+   only ever hit real content tables.
+   ------------------------------------------------------------ */
+.post-content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.5em 0;
+    font-size: 0.95em;
+}
+
+.post-content table th,
+.post-content table td {
+    border: 1px solid var(--rule);
+    padding: 0.5em 0.75em;
+    line-height: 1.5;
+    vertical-align: top;
+}
+
+.post-content table th {
+    background: var(--entry);
+    color: var(--primary);
+    font-weight: 600;
+    text-align: start;   /* yields to a markdown column alignment if set */
+}
+
+/* Tabular (lining) figures keep numeric columns aligned. */
+.post-content table td {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Quiet zebra striping for scanning long tables. */
+.post-content table tbody tr:nth-child(even) td {
+    background: color-mix(in sRGB, var(--entry), transparent 55%);
+}
+
+.post-content table caption {
+    color: var(--secondary);
+    font-size: 0.85em;
+    text-align: start;
+    margin-bottom: 0.5em;
+}
+
+/* Markdown column alignment, applied via classes from the render-table.html
+   hook (Goldmark's default inline styles are blocked by the site CSP). */
+.post-content table th.align-left,
+.post-content table td.align-left { text-align: left; }
+
+.post-content table th.align-center,
+.post-content table td.align-center { text-align: center; }
+
+.post-content table th.align-right,
+.post-content table td.align-right { text-align: right; }

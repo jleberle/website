@@ -17,7 +17,7 @@
     {{- /* We are not using the .Param.cover.relative to decide the location of image */}}
     {{- /* If we have the image in pageBundle or globalResources we can process the image */}}
 
-    {{- /* Candidate widths. 520 matches the list column cap (cover.css/list.css
+    {{- /* Candidate widths. 520 matches the list column cap (22-list.css
            cap list covers at 520px, the 1x desktop slot); 650/660 sit right at
            the real mobile display sizes — list covers paint ~367px CSS and
            single covers ~374px CSS, which at the ~1.75 DPR of Lighthouse's
@@ -58,7 +58,7 @@
                 src="{{ $imgdl }}"
                 {{- /* Match the actual rendered slot so the browser doesn't
                        fetch a 720w candidate (or the original) for a small box.
-                       Single covers float at 220px (cover.css), unfloating to
+                       Single covers float at 220px (22-list.css), unfloating to
                        full width at <=640px; the unfloated image paints ~38px
                        narrower than the viewport (page gutters + the 4px frame
                        padding + 1px border). List covers are min(100%, 520px),

@@ -1,9 +1,0 @@
-/* ------------------------------------------------------------
-   Monospace stack for code-ish elements. IBM Plex Mono is the single
-   self-hosted support face; system monos stay behind it as fallbacks.
-   ------------------------------------------------------------ */
-code, pre, kbd, samp, tt {
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
-               Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
-               'Roboto Mono', monospace;
-}

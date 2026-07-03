@@ -3,13 +3,14 @@
    storm paintings: fog-gray paper, slate ink, and deep blue water
    as the accent note. The site should feel maritime, scholarly,
    and a little severe in a good way.
-   Dark mode stays neutral and restrained; only the accent tones nod
-   back toward the maritime palette.
    ============================================================ */
 :root {
     --gap:           28px;
+    --content-gap:   20px;
     --nav-width:     1100px;
     --main-width:    700px;
+    --header-height: 60px;
+    --footer-height: 60px;
     --radius:        10px;
     --fog-mist:      #e7ecef;   /* page background — cold fog        */
     --fog-granite:   #d9e0e5;   /* panels — slate mist               */
@@ -38,32 +39,13 @@
     --link:          var(--tide);
     --accent:        var(--tide-deep);
 
-    /* Typographic token (theme-independent — dark doesn't override it): a
-       system sans-serif stack for metadata "furniture" (dates, breadcrumbs,
+    /* System sans-serif stack for metadata "furniture" (dates, breadcrumbs,
        tag labels, footers, UI chips) set against the body font. Applied in
-       meta.css and the component files. */
+       20-content.css and the component files. */
     --meta-font:     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
                      "Helvetica Neue", Arial, sans-serif;
-}
 
-/* ------------------------------------------------------------
-   Dark theme — a moonless night at sea. Keeps the neutral dark
-   surface colors from the vendored base layer
-   (assets/css/base/00-theme-vars.css), since a true near-black
-   reads better than a tinted navy for long-form reading. Only the
-   divider and link accents shift to the coastal theme: a
-   lighthouse-amber quote rule (the one warm note, same role
-   --driftwood plays in light mode) and a bioluminescent teal for
-   links.
-   ------------------------------------------------------------ */
-:root[data-theme="dark"] {
-    --rule:       color-mix(in sRGB, var(--border), var(--secondary) 40%);
-    --quote-rule: #d8ad4d;
-
-    /* Bioluminescent teal, checked for AA against both dark surfaces
-       (9.0:1 on --theme, 7.3:1 on --entry); brighter still on hover. */
-    --link:       #5fd0c8;
-    --accent:     #86e0da;
+    color-scheme: light;
 }
 
 /* ------------------------------------------------------------
@@ -77,9 +59,4 @@ body,
             color-mix(in sRGB, var(--fog-granite), white 28%) 0,
             var(--theme) 13rem
         );
-}
-
-:root[data-theme="dark"] body,
-:root[data-theme="dark"] body.list {
-    background: var(--theme);
 }

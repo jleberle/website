@@ -11,18 +11,14 @@
 
 }
 
-/* footer */
-@media screen and (width <= 900px) {
-    .list .top-link {
-        transform: translateY(-5rem);
-    }
-}
-
 @media (prefers-reduced-motion) {
-    /* terms; post-single; post-entry */
+    html {
+        scroll-behavior: auto;
+    }
+
+    /* terms and post entries */
     .terms-tags a:active,
-    .post-entry:active,
-    .top-link {
+    .post-entry:active {
         transform: none;
     }
 }

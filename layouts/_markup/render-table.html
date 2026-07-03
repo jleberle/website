@@ -1,7 +1,7 @@
 {{- /* Render Markdown table column alignment as CSS classes instead of
        Goldmark's default inline style="text-align:…", which the site CSP
        (style-src has no 'unsafe-inline') silently blocks. See
-       assets/css/extended/tables.css for the .align-* rules. */ -}}
+       assets/css/site/20-content.css for the .align-* rules. */ -}}
 {{- $alignClass := dict "left" "align-left" "center" "align-center" "right" "align-right" -}}
 <table
   {{- range $k, $v := .Attributes }}{{ with $v }} {{ $k }}="{{ . }}"{{ end }}{{ end -}}

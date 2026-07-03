@@ -1,3 +1,124 @@
+
+/* ------------------------------------------------------------
+   Image carousel (assets/js/carousel.js, {{< carousel >}}
+   shortcode). A horizontal slide track with prev/next controls
+   and dot indicators for multi-image figures.
+   ------------------------------------------------------------ */
+.carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin: 1.5rem 0;
+}
+
+.carousel-track {
+    position: relative;
+    width: 100%;
+}
+
+.carousel-slide {
+    display: none;
+    margin: 0;
+}
+
+.carousel-slide.active {
+    display: block;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgb(0 0 0 / 50%);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 0.9rem;
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 10;
+    line-height: 1;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.carousel-btn:hover,
+.carousel-btn:focus-visible {
+    background: rgb(0 0 0 / 80%);
+}
+
+.carousel-btn:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.carousel-prev {
+    left: 0.5rem;
+}
+
+.carousel-next {
+    right: 0.5rem;
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+
+    /* No gap: the 24px dot buttons sit edge-to-edge, leaving ~16px between
+       the 8px visual dots — tight enough to read as a group. */
+    gap: 0;
+    padding: 0.6rem 0 0.2rem;
+}
+
+/* A 24x24 hit target (WCAG 2.5.8 / Lighthouse tap-target minimum) wrapping
+   an 8px visual dot drawn with ::before, so the dots stay small but tap
+   comfortably. */
+.carousel-dot {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.carousel-dot::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rule);
+    transition: background 0.2s;
+}
+
+.carousel-dot:focus-visible {
+    outline: none;
+}
+
+.carousel-dot:focus-visible::before {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.carousel-dot.active::before {
+    background: var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-btn,
+    .carousel-dot::before {
+        transition: none;
+    }
+}
+
+
 /* ------------------------------------------------------------
    Privacy-light media embeds (assets/js/embeds.js, the youtube /
    bluesky shortcodes). A clickable facade (poster + play button)
@@ -204,4 +325,53 @@
     .pdf-facade {
         transition: none;
     }
+}
+
+
+/* ------------------------------------------------------------
+   Image lightbox (assets/js/lightbox.js). Click a content image
+   to open it full-screen on a dimmed overlay; click anywhere or
+   the close button to dismiss. Progressive enhancement — without
+   JS images just render inline.
+   ------------------------------------------------------------ */
+#lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgb(0 0 0 / 85%);
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+}
+
+#lightbox-overlay.is-open {
+    display: flex;
+}
+
+#lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 2px;
+    cursor: default;
+    box-shadow: 0 4px 32px rgb(0 0 0 / 50%);
+}
+
+#lightbox-close {
+    position: fixed;
+    top: 1rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.75;
+    padding: 0.25rem 0.5rem;
+}
+
+#lightbox-close:hover {
+    opacity: 1;
 }

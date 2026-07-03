@@ -28,39 +28,27 @@
 }
 
 
-.social-icons a {
-    display: inline-flex;
-    padding: 10px;
-}
-
-.social-icons a svg {
-    height: 26px;
-    width: 26px;
-}
-
 code {
     direction: ltr;
 }
 
-div.highlight,
-pre {
-    position: relative;
-}
 
-.copy-code {
-    display: none;
+/* ------------------------------------------------------------
+   "Skip to content" link. Visually hidden off the top of the page
+   until focused (keyboard/screen-reader users), then slides into
+   view as the first tab stop. Markup is in baseof.html.
+   ------------------------------------------------------------ */
+.skip-link {
     position: absolute;
-    top: 4px;
-    right: 4px;
-    color: rgb(255 255 255 / 80%);
-    background: rgb(78 78 78 / 80%);
-    border-radius: var(--radius);
-    padding: 0 5px;
-    font-size: 14px;
-    user-select: none;
+    top: -3rem;
+    left: 0;
+    z-index: 100;
+    padding: 0.5rem 1rem;
+    background: var(--theme);
+    color: var(--primary);
+    text-decoration: underline;
 }
 
-div.highlight:hover .copy-code,
-pre:hover .copy-code {
-    display: block;
+.skip-link:focus {
+    top: 0;
 }

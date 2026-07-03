@@ -69,8 +69,6 @@
   {{- partial "post_context.html" (dict "page" . "kind" "quote") }}
   {{- end }}
 
-  {{- partial "extend_post_content.html" . }}
-
   <footer class="post-footer">
     {{- $foot := slice }}
     {{- if not (.Param "hideMeta") }}

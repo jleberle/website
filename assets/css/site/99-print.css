@@ -1,18 +1,14 @@
+
 /* ------------------------------------------------------------
    Print stylesheet. Strips interactive/on-screen-only chrome and
-   forces a light, ink-efficient palette regardless of which theme
-   was active on screen, so a printed CV or article reads as a
-   clean document rather than carrying dark-mode colors or
-   unusable controls (nav, carousel arrows, theme toggle) onto
-   paper. Loads after every other extended/ file alphabetically
-   except prose.css onward, so its overrides win on source order
-   alone in most cases; a few get !important since this file
-   loads *before* toc.css/social.css/tables.css and needs to beat
-   them regardless of order.
+   forces a light, ink-efficient palette so a printed CV or article
+   reads as a clean document without carrying unusable controls
+   (nav, carousel arrows, and similar interface elements) onto paper.
+   This component loads last by explicit manifest order so its
+   overrides consistently win without relying on filename sorting.
    ------------------------------------------------------------ */
 @media print {
-    :root,
-    :root[data-theme="dark"] {
+    :root {
         --theme: #fff;
         --entry: #fff;
         --primary: #000;
@@ -28,8 +24,8 @@
         --quote-rule: #999;
     }
 
-    /* Code block text is hardcoded light-on-dark for the always-dark
-       on-screen treatment (15-md-content.css); needs a dark color of
+    /* Code block text is hardcoded light-on-dark for the on-screen
+       treatment in 20-content.css; it needs a dark color of
        its own against the light print background set above. */
     .md-content pre code {
         color: #111;
@@ -44,8 +40,6 @@
        Series-nav is deliberately kept: "Part 2 of N"
        is meaningful printed context, not just navigation. */
     .related-posts,
-    .top-link,
-    #theme-toggle,
     .toc,
     .carousel-btn,
     .carousel-dots,

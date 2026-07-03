@@ -1,0 +1,584 @@
+.page-header,
+.post-header {
+    margin: 24px auto var(--content-gap) auto;
+}
+
+.post-meta {
+    margin-top: 5px;
+}
+
+.post-meta,
+.breadcrumbs {
+    color: var(--secondary);
+}
+
+.breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.78rem;
+    line-height: 1.35;
+}
+
+.breadcrumbs a {
+    font-size: 16px;
+}
+
+.breadcrumbs svg {
+    height: 1em;
+    opacity: 0.72;
+}
+
+.breadcrumbs a,
+.post-meta-footer a {
+    color: inherit;
+    transition: color 0.15s ease;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus-visible,
+.post-meta-footer a:hover,
+.post-meta-footer a:focus-visible {
+    color: var(--accent);
+    text-underline-offset: 0.24rem;
+}
+
+.post-meta a,
+.toc a:hover {
+    text-underline-offset: 0.3rem;
+    text-decoration: underline;
+}
+
+.post-meta a {
+    color: var(--secondary);
+    text-decoration-style: dotted;
+}
+
+details summary {
+    cursor: pointer;
+    display: list-item;
+    width: 100%;
+    margin-inline-start: 0;
+    user-select: none;
+}
+
+details .title {
+    display: inline;
+    font-weight: 500;
+    margin-inline-start: 0.2rem;
+}
+
+details {
+    interpolate-size: allow-keywords;
+}
+
+details::details-content {
+    height: 0;
+    opacity: 0;
+    overflow: clip;
+    transition: height 150ms ease,
+        opacity 150ms ease,
+        content-visibility 150ms allow-discrete;
+}
+
+details[open]::details-content {
+    height: auto;
+    opacity: 1;
+}
+
+details .inner {
+    margin: 0 2.4rem;
+    padding-bottom: 0.6rem;
+}
+
+details li ul {
+    margin-inline-start: var(--gap);
+}
+
+.post-footer {
+    margin-top: var(--content-gap);
+}
+
+.post-footer>* {
+    margin-bottom: 10px;
+}
+
+.post-tags li {
+    display: inline-block;
+}
+
+h1>a>svg {
+    display: inline;
+}
+
+
+/* ------------------------------------------------------------
+   Footnotes. Covers the inline references, the rendered footnote
+   list, back-links, target highlights, and the JS popover
+   enhancement (assets/js/footnotes.js).
+   ------------------------------------------------------------ */
+
+/* Footnote references. The browser's default sup uses vertical-align: super,
+   which can inflate line boxes. line-height: 0 + position/top lifts the
+   reference without adding stray leading. */
+.post-content sup {
+    font-size: 0.7em;
+    line-height: 0;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.6em;
+}
+
+/* Matched on .footnote-ref to outweigh prose hover rules that otherwise
+   leave a tiny superscript underline floating too far below the number. */
+.post-content sup a.footnote-ref,
+.post-content sup a.footnote-ref:hover {
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+}
+
+.post-content sup a.footnote-ref {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
+                 Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
+                 'Roboto Mono', monospace;
+    font-size: 0.95em;
+    letter-spacing: 0;
+}
+
+/* Footnote section at the foot of the article: stepped down and muted so it
+   reads as apparatus rather than body prose. */
+.post-content .footnotes {
+    font-size: 0.9em;
+    color: var(--secondary);
+    margin-top: 2.5em;
+}
+
+.post-content .footnotes hr {
+    margin: 0 0 1.2em;
+}
+
+.post-content .footnotes li {
+    margin-bottom: 0.5em;
+}
+
+/* Back-link arrow inherits the prose link color from 20-content.css.
+   Underlined so it doesn't read as a link by color alone inside the footnote text block
+   (WCAG 1.4.1 / Lighthouse "links rely on color"); accent on hover. */
+.post-content a.footnote-backref {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
+                 Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
+                 'Roboto Mono', monospace;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+    margin-inline-start: 0.3em;
+    font-size: 0.92em;
+}
+
+.post-content a.footnote-backref:hover {
+    color: var(--accent);
+}
+
+/* Breathing room above direct #fn / #fnref jumps. */
+.post-content li[id^="fn:"],
+.post-content sup[id^="fnref:"] {
+    scroll-margin-top: 2rem;
+}
+
+/* Brief tint when you jump back to a reference from a note. */
+.post-content sup[id^="fnref:"] {
+    transition: background-color 0.4s ease;
+}
+
+.post-content sup[id^="fnref:"]:target {
+    background: var(--entry);
+    border-radius: 3px;
+}
+
+/* JS popover. Progressive enhancement: without JS, references still jump to
+   the rendered .footnotes list at the foot of the article. */
+.fn-popover {
+    position: absolute;
+    z-index: 50;
+    width: min(90vw, 30em);
+    max-height: 60vh;
+    overflow-y: auto;
+    background: var(--entry);
+    color: var(--content);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 0.4em 1.1em;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    box-shadow: 0 4px 18px rgb(0 0 0 / 18%);
+    display: none;
+}
+
+.fn-popover.is-open {
+    display: block;
+}
+
+.fn-popover p {
+    margin: 0.6em 0;
+}
+
+/* Citation links inside notes — the popover lives outside .post-content,
+   so it doesn't inherit the prose link styling; restate it here. */
+.fn-popover a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.fn-popover a:hover {
+    color: var(--accent);
+}
+
+
+/* ------------------------------------------------------------
+   Review and quote source apparatus, multi-part series navigation,
+   and related-posts. Reviews now lead with a bibliographic block
+   before the prose, while quote sources sit at the end as an
+   attribution line. Series nav (layouts/_partials/series_nav.html)
+   and related posts (layouts/_partials/related_posts.html) both
+   reuse the same kicker label and link styling.
+   ------------------------------------------------------------ */
+.post-context {
+    color: var(--secondary);
+}
+
+.post-context-review {
+    /* flow-root gives the block its own formatting context so it sits beside
+       the floated single cover instead of flowing under it — the top/bottom
+       rules then span only the meta's own column and stop short of the cover
+       photo rather than running into it. Below 640px the cover unfloats, so
+       this is inert (the block is full width with no float beside it). */
+    display: flow-root;
+    margin: 1.2rem 0 1.6rem;
+    padding: 0.8rem 0 0.85rem 0.9rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    border-left: 4px solid var(--quote-rule);
+    border-right: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.post-context-source {
+    margin-top: 1.35rem;
+    padding: 0.8rem 0 0 0.9rem;
+    border-top: 1px solid var(--border);
+    border-left: 3px solid color-mix(in sRGB, var(--quote-rule), transparent 15%);
+}
+
+.post-context-kicker {
+    display: block;
+    margin-bottom: 0.28rem;
+    font-size: 0.82rem;
+    font-variant-caps: all-small-caps;
+    font-weight: 600;
+    letter-spacing: 0.018em;
+    text-transform: lowercase;
+}
+
+.post-context-entry {
+    margin: 0;
+    line-height: 1.7;
+}
+
+.post-context-record,
+.post-context-year {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
+                 Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
+                 'Roboto Mono', monospace;
+}
+
+.post-context-record {
+    font-size: 0.92em;
+}
+
+.post-context-year {
+    letter-spacing: 0;
+}
+
+.post-context-review .post-context-entry {
+    font-size: 0.97rem;
+}
+
+.post-context-source .post-context-entry {
+    font-size: 0.94rem;
+}
+
+.post-context cite {
+    color: var(--content);
+    font-style: italic;
+}
+
+.post-context a {
+    color: var(--link);
+    text-decoration-thickness: 1px;
+    transition: color 0.15s ease;
+}
+
+.post-context a:hover {
+    color: var(--accent);
+    text-underline-offset: 0.25rem;
+}
+
+.series-nav-list {
+    margin: 0;
+    padding: 0;
+    list-style: decimal inside;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.series-nav-list li.current {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.related-posts {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.related-posts-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.related-posts-entry {
+    font-size: 0.9rem;
+}
+
+.related-posts-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.45rem;
+}
+
+.related-post-type {
+    color: var(--secondary);
+    font-size: 0.68rem;
+    font-variant-caps: all-small-caps;
+    font-weight: 600;
+    letter-spacing: 0.018em;
+    text-transform: lowercase;
+    white-space: nowrap;
+}
+
+/* Vertical padding lifts each stacked link to a >=24px tap target (WCAG
+   2.5.8 / Lighthouse); inline-block so the padding takes effect while the
+   series marker stays on the same line. */
+.related-posts-list a,
+.series-nav-list a {
+    display: inline-block;
+    padding-block: 0.2rem;
+}
+
+.related-posts .post-context-kicker {
+    color: var(--secondary);
+}
+
+
+/* ------------------------------------------------------------
+   Post footer (single pages): metadata apparatus and tags.
+   Styled as quiet academic end matter rather than boxed widgets.
+   ------------------------------------------------------------ */
+
+/* End matter: modified date, suggestion link and topics share one
+   compact apparatus block. */
+.post-apparatus {
+    margin-top: 1.8rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--border);
+    color: var(--secondary);
+}
+
+.post-meta-footer {
+    margin: 0;
+    color: var(--secondary);
+    font-size: 0.82rem;
+}
+
+/* --- Tags as a journal-style keyword line --- */
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    align-items: baseline;
+    margin-top: 0.35rem;
+    font-size: 0.84rem;
+    color: var(--secondary);
+}
+
+/* Small uppercase label so the bare term list reads as deliberate
+   metadata rather than loose words. */
+.post-tags::before {
+    content: "Topics";
+    margin-inline-end: 0.55rem;
+    font-family: inherit;
+    font-variant-caps: all-small-caps;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.015em;
+    text-transform: lowercase;
+    color: var(--secondary);
+}
+
+.post-tags li:not(:last-child)::after {
+    content: ",";
+    margin-inline-end: 0.35rem;
+    color: var(--secondary);
+}
+
+/* Strip the pill: no background, border, radius, or block padding. */
+.post-tags a {
+    display: inline;
+    padding: 0;
+    line-height: inherit;
+    border: none;
+    border-radius: 0;
+    background: none;
+    font-size: inherit;
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.post-tags a:hover {
+    color: var(--accent);
+    background: none;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+
+/* ------------------------------------------------------------
+   Post/page header. On single pages, make the top matter feel more
+   like a title page: strong title, deck on the left, apparatus on
+   the right, and a clearer visual pause before the body begins.
+   ------------------------------------------------------------ */
+.post-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "kicker"
+        "title"
+        "description"
+        "meta"
+        "series";
+    gap: 0.2rem;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.post-kicker {
+    grid-area: kicker;
+    margin: 0.1rem 0 0.05rem;
+}
+
+.post-title {
+    grid-area: title;
+    font-size: clamp(2.45rem, 4.8vw, 3.5rem);
+    line-height: 1.02;
+    margin-bottom: 0.35rem;
+}
+
+.post-meta-header {
+    grid-area: meta;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.55rem;
+    margin-top: 0.35rem;
+    margin-bottom: 0;
+    color: var(--secondary);
+}
+
+.post-meta-header .post-meta-line {
+    display: inline;
+}
+
+.post-meta-header .post-meta-line + .post-meta-line {
+    margin-top: 0;
+}
+
+.post-meta-header .post-meta-line + .post-meta-line::before {
+    content: "·";
+    margin-right: 0.55rem;
+}
+
+.post-description {
+    grid-area: description;
+    margin-top: 0.15rem;
+    margin-bottom: 0;
+    max-width: 58ch;
+    font-size: 1.02rem;
+    line-height: 1.68;
+    font-style: italic;
+    color: var(--content);
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.series-nav {
+    grid-area: series;
+    margin: 1rem 0 0;
+}
+
+@media (width <= 720px) {
+    .post-kicker {
+        margin: 0;
+    }
+}
+
+
+/* Compact outline for long, well-sectioned articles. */
+details.toc {
+    margin-bottom: var(--content-gap);
+    background: transparent;
+    border: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    border-radius: 0;
+}
+
+details.toc summary {
+    padding: 0.55rem 0;
+    border-radius: var(--radius);
+}
+
+details.toc summary .title {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.toc .inner a {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+.toc .inner a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+/* Tighter, quieter nested list than the body default. */
+.toc .inner ul {
+    line-height: 1.5;
+}
+
+.toc .inner {
+    margin: 0;
+    padding: 0 0 0.7rem 1rem;
+    font-size: 0.9rem;
+}

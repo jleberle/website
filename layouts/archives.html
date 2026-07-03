@@ -30,10 +30,6 @@
 
 {{- $pages := where site.RegularPages "Type" "in" site.Params.contentSections }}
 
-{{- if site.Params.archiveShowAllPages }}
-{{- $pages = site.RegularPages }}
-{{- end }}
-
 {{- $sections := slice }}
 {{- range site.Params.contentSections }}
 {{- $sectionPages := where $pages "Section" . }}

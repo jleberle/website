@@ -1,3 +1,4 @@
+
 /* Editorial home page: identity, teaching, selected writing, then desk notes. */
 body.home .main {
     max-width: calc(var(--nav-width) + var(--gap) * 2);
@@ -45,6 +46,10 @@ body.home .home-info {
 }
 
 .home-info .entry-content {
+    --content-gap: 0.5rem;
+
+    -webkit-line-clamp: unset;
+    margin: 0;
     font-size: 1rem;
     line-height: 1.72;
 }

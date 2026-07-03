@@ -106,17 +106,11 @@
     {{- if $paginator.HasPrev }}
     <a class="prev" href="{{ $paginator.Prev.URL | relURL }}">
       «&nbsp;Earlier entries&nbsp;
-      {{- if (.Param "showPageNumbers") }}
-      {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
-      {{- end }}
     </a>
     {{- end }}
     {{- if $paginator.HasNext }}
     <a class="next" href="{{ $paginator.Next.URL | relURL }}">
-      Later entries&nbsp;
-      {{- if (.Param "showPageNumbers") }}
-      {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
-      {{- end }}&nbsp;»
+      Later entries&nbsp;»
     </a>
     {{- end }}
   </nav>

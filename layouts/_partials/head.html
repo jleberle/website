@@ -50,16 +50,35 @@
 
 {{- /* Styles */}}
 
-{{- /* license.css stays out of the bundle below so resources.Minify can't strip its attribution comment */}}
-{{- $license_css := (resources.Get "css/license.css") }}
-
-{{- /* numeric filename prefixes in css/base/ encode concatenation order */}}
-{{- $core := (resources.Match "css/base/*.css") | resources.Concat "assets/css/core.css" | resources.Minify }}
-{{- $extended := (resources.Match "css/extended/*.css") | resources.Concat "assets/css/extended.css" | resources.Minify }}
-
-{{- /* Bundle all required CSS, with local extensions layered after the
-       vendored base bundle. */ -}}
-{{- $stylesheet := (slice $license_css $core $extended) | resources.Concat "assets/css/stylesheet.css"  }}
+{{- /* Explicit component order prevents a filename or directory move from
+       silently changing the cascade. Keep the license outside Minify so its
+       attribution comment remains in the delivered stylesheet. */}}
+{{- $licenseCSS := resources.Get "css/site/00-license.css" }}
+{{- $componentPaths := slice
+    "css/site/01-tokens.css"
+    "css/site/02-reset.css"
+    "css/site/03-fonts.css"
+    "css/site/10-layout.css"
+    "css/site/11-header.css"
+    "css/site/12-footer.css"
+    "css/site/20-content.css"
+    "css/site/21-post.css"
+    "css/site/22-list.css"
+    "css/site/23-home.css"
+    "css/site/24-archives.css"
+    "css/site/25-reading.css"
+    "css/site/26-media.css"
+    "css/site/27-social.css"
+    "css/site/28-pages.css"
+    "css/site/90-responsive.css"
+    "css/site/99-print.css"
+}}
+{{- $components := slice }}
+{{- range $componentPaths }}
+    {{- $components = $components | append (resources.Get .) }}
+{{- end }}
+{{- $siteCSS := $components | resources.Concat "assets/css/site.css" | resources.Minify }}
+{{- $stylesheet := (slice $licenseCSS $siteCSS) | resources.Concat "assets/css/stylesheet.css" }}
 
 {{- if not site.Params.assets.disableFingerprinting }}
 {{- $stylesheet := $stylesheet | fingerprint }}
@@ -74,11 +93,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="{{ site.Params.assets.favicon32x32 | default "favicon-32x32.png" | relURL }}">
 <link rel="apple-touch-icon" href="{{ site.Params.assets.apple_touch_icon | default "apple-touch-icon.png" | relURL }}">
 <link rel="mask-icon" href="{{ site.Params.assets.safari_pinned_tab | default "safari-pinned-tab.svg" | relURL }}" color="{{ site.Params.assets.safari_pinned_tab_color | default "#1f2c35" }}">
-{{- /* Two color-scheme-matched tags rather than one static value, so the
-       browser chrome (address bar, etc.) matches the page background in
-       both themes instead of always showing the dark value. */}}
-<meta name="theme-color" content="{{ site.Params.assets.theme_color_light | default "#e7ecef" }}" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="{{ site.Params.assets.theme_color_dark | default "#1d1e20" }}" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="{{ site.Params.assets.theme_color | default "#e7ecef" }}">
 <meta name="msapplication-TileColor" content="{{ site.Params.assets.msapplication_TileColor | default "#1f2c35" }}">
 
 {{- /* RSS */}}
@@ -88,88 +103,6 @@
 {{- range .AllTranslations -}}
 <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
 {{ end -}}
-
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    {{- if (and (ne site.Params.themeMode "light") (ne site.Params.themeMode "dark")) }}
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-                color-scheme: dark;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .toc {
-                background: var(--entry);
-            }
-        }
-
-    </style>
-    {{- end }}
-</noscript>
-
-{{- /* theme-toggle is enabled */}}
-{{- if site.Params.showThemeToggle }}
-{{- /* theme is light */}}
-{{- if (eq site.Params.themeMode "light") }}
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    }
-
-</script>
-{{- /* theme is dark */}}
-{{- else if (eq site.Params.themeMode "dark") }}
-<script>
-    if (localStorage.getItem("pref-theme") === "light") {
-        document.querySelector("html").dataset.theme = 'light';
-    }
-
-</script>
-{{- else }}
-{{- /* theme is auto */}}
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
-    }
-
-</script>
-{{- end }}
-{{- /* theme-toggle is disabled and theme is auto */}}
-{{- else if (and (ne site.Params.themeMode "light") (ne site.Params.themeMode "dark"))}}
-<script>
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
-    }
-
-</script>
-{{- end }}
 
 {{- partial "extend_head.html" . -}}
 

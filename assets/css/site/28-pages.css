@@ -1,0 +1,109 @@
+.terms-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-top: var(--content-gap);
+}
+
+.terms-tags li {
+    display: inline-block;
+    font-weight: 500;
+}
+
+.terms-tags a {
+    display: block;
+    padding: 4px 10px;
+    background: var(--tertiary);
+    border-radius: var(--radius);
+    transition: transform 0.1s;
+}
+
+
+/* ------------------------------------------------------------
+   404 page. Centers a large numeral, a short message and a row of
+   recovery links in the viewport. Markup is in layouts/404.html.
+   ------------------------------------------------------------ */
+.not-found {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+    font-size: 160px;
+    font-weight: 700;
+}
+
+.not-found-inner {
+    text-align: center;
+}
+
+.not-found-inner h1 {
+    font-size: 120px;
+    font-weight: 600;
+    line-height: 1;
+    margin: 0 0 0.25rem;
+}
+
+.not-found-inner p {
+    font-size: 1.1rem;
+    color: var(--secondary);
+    margin: 0 0 1.5rem;
+}
+
+.not-found-nav {
+    font-size: 1rem;
+    font-weight: 400;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.not-found-nav a {
+    color: var(--primary);
+    border-bottom: 1px solid var(--primary);
+}
+
+
+/* ------------------------------------------------------------
+   CV page (content/cv/, generated from ~/git/cv). The web contact
+   header is emitted as explicit .cv-letterhead markup by the CV
+   build, while the PDF keeps its own Markdown table source.
+   ------------------------------------------------------------ */
+
+/* Center the PDF link above the letterhead block. */
+.post-content > p:first-child:has(a[href$=".pdf"]) {
+    margin: 0 0 1.25rem;
+    text-align: center;
+    font-family: var(--meta-font);
+    font-size: 0.9rem;
+}
+
+.cv-letterhead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1rem;
+    width: 100%;
+    margin: 0 0 2rem;
+}
+
+.cv-letterhead p {
+    margin: 0.1em 0;
+}
+
+.cv-letterhead-contact {
+    text-align: right;
+}
+
+@media (width <= 520px) {
+    .cv-letterhead {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+    }
+
+    .cv-letterhead-contact {
+        text-align: left;
+    }
+}

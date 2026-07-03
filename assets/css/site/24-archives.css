@@ -1,3 +1,34 @@
+.archive-posts {
+    width: 100%;
+    border-top: 1px solid var(--border);
+}
+
+.archive-entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: baseline;
+    padding: 1rem 0.7rem;
+    border-bottom: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: background-color 0.15s ease;
+}
+
+.archive-entry-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.archive-date,
+.archive-meta {
+    color: var(--secondary);
+    font-size: 0.82rem;
+}
+
+
 /* ------------------------------------------------------------
    Archive page controls (assets/js/archive-filters.js).
    Category pills and search filter the flat post list together.
@@ -115,17 +146,12 @@
 }
 
 /* Each archive row is a click target via the absolutely-positioned
-   .entry-link overlay (base/16-post-entry.css), but the row itself had no
+   .entry-link overlay in 22-list.css, but the row itself needs
    hover/focus feedback — nothing here signaled it was a link until the
    cursor changed. Same faint background wash as the section/list rows
-   (list.css) for visual consistency. :focus-within covers keyboard tabbing
+   for visual consistency. :focus-within covers keyboard tabbing
    to the overlay anchor; the explicit :focus-visible outline on the anchor
    itself gives a visible ring rather than relying on the wash alone. */
-.archive-entry {
-    border-radius: var(--radius);
-    transition: background-color 0.15s ease;
-}
-
 .archive-entry:hover,
 .archive-entry:focus-within {
     background: color-mix(in sRGB, var(--entry), transparent 72%);
@@ -134,23 +160,6 @@
 .archive-entry .entry-link:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: -2px;
-}
-
-/* base/11-archive.css sets .archive-entry-title (a class selector) to
-   font-weight: 400 with no explicit font-size, so it both falls back to
-   the browser's tiny default h3 sizing and outranks serif.css's
-   font-weight: 600 heading rule (h1–h6 is a lower-specificity element
-   selector). Restoring both here so archive titles read as real headings
-   rather than slightly-bold body text. */
-.archive-entry-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1.3;
-}
-
-.archive-date,
-.archive-meta {
-    font-size: 0.82rem;
 }
 
 @media (width <= 520px) {

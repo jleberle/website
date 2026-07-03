@@ -208,24 +208,15 @@ params:
     - quotes
 
   # Site display behavior.
-  themeMode: auto
-  showThemeToggle: true
-  showScrollToTop: false
   hideMeta: false
   hideSummary: false
 
   showReadingTime: true
   showBreadcrumbs: true
-  showCodeCopyButtons: false
   showWordCount: true
   showRssLink: true
   rssFullContent: true # emit <content:encoded> full article body in RSS
   useBuiltInToc: true
-  showToc: false
-  tocOpen: false
-  showPageNumbers: false
-  archiveShowAllPages: false
-
   assets:
     favicon: "favicon.ico"
     favicon16x16: "/icons/favicon-16x16.png"
@@ -261,9 +252,9 @@ params:
     # Rendered as Markdown in layouts/_partials/site_footer.html.
     # The literal {year} token is replaced with the current build year.
     about: |-
-      © 2011-{year} Jared L. Eberle
+      © 2011-{year} · [Creative Commons](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-      [Creative Commons](https://creativecommons.org/licenses/by-nc-sa/4.0/) · [Human crafted](/humans.txt) · [Privacy First](/privacy)
+      [Human crafted](/humans.txt) · [Privacy First](/privacy)
 
   cover:
     hidden: true # hidden by default, but still available to structured data
