@@ -27,10 +27,23 @@
         {{- $featuredCourse := index . 0 -}}
         {{- with $featuredCourse.Params.cover.image -}}
         {{- with $featuredCourse.Resources.GetMatch . -}}
+        {{- $image := . -}}
+        {{- $candidates := slice -}}
+        {{- range $width := slice 400 680 800 -}}
+            {{- if ge $image.Width $width -}}
+                {{- $resized := $image.Resize (printf "%dx avif" $width) -}}
+                {{- $candidates = $candidates | append (printf "%s %dw" $resized.RelPermalink $width) -}}
+            {{- end -}}
+        {{- end -}}
+        {{- $candidates = $candidates | append (printf "%s %dw" $image.RelPermalink $image.Width) -}}
+        {{- $fallback := $image -}}
+        {{- if ge $image.Width 680 -}}{{- $fallback = $image.Resize "680x avif" -}}{{- end -}}
         <a class="home-teaching-visual" href="{{ $featuredCourse.RelPermalink }}">
-            <img src="{{ .RelPermalink }}"
+            <img src="{{ $fallback.RelPermalink }}"
+                srcset="{{ delimit $candidates ", " }}"
+                sizes="(max-width: 768px) calc(100vw - 28px), (max-width: 1080px) calc(100vw - 56px), 1024px"
                 alt="{{ $featuredCourse.Params.cover.alt | default $featuredCourse.Title }}"
-                width="{{ .Width }}" height="{{ .Height }}" loading="lazy" decoding="async">
+                width="{{ $image.Width }}" height="{{ $image.Height }}" loading="lazy" decoding="async">
             <span>{{ $featuredCourse.Title }}</span>
         </a>
         {{- end }}

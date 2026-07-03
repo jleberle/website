@@ -9,6 +9,11 @@
        the font stack loads on demand via weight/style in fonts.css. */}}
 <link rel="preload" href="{{ "fonts/sourceserif4-400-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin="anonymous">
 <link rel="preload" href="{{ "fonts/fraunces-600-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin="anonymous">
+{{- /* Single-page descriptions are italic and visible above the fold. Preload
+       that face there so it downloads alongside CSS instead of after it. */}}
+{{- if and .IsPage .Description }}
+<link rel="preload" href="{{ "fonts/sourceserif4-400i-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin="anonymous">
+{{- end }}
 {{- $js := slice }}
 {{- range slice "js/embeds.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" "js/archive-filters.js" }}
 {{- with resources.Get . }}{{ $js = $js | append . }}{{ end }}
