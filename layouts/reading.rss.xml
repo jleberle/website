@@ -19,54 +19,66 @@
 {{- end }}
 
 {{- $events := slice -}}
-{{- range $key, $book := hugo.Data.reading.books }}
-  {{- if not (hasPrefix $key "_") }}
-    {{- $slug := $key -}}
-    {{- $title := $book.title | default $slug -}}
-    {{- $author := $book.author | default "" -}}
-    {{- $publisher := $book.publisher | default "" -}}
-    {{- $publishedYear := $book.published_year | default "" -}}
-    {{- $isbn := $book.isbn | default "" -}}
-    {{- $format := $book.format | default "" -}}
-    {{- $notes := $book.notes | default "" -}}
-    {{- $anchor := printf "%s#%s" $.Permalink $slug -}}
-    {{- with $book.started }}
-      {{- $announcedAt := $book.started_announced | default . -}}
+{{- range $entry := partial "reading_entries.html" . }}
+    {{- $title := $entry.title | default $entry.slug -}}
+    {{- $author := $entry.author | default "" -}}
+    {{- $publisher := $entry.publisher | default "" -}}
+    {{- $publishedYear := $entry.published_year | default "" -}}
+    {{- $isbn := $entry.isbn | default "" -}}
+    {{- $format := $entry.format | default "" -}}
+    {{- $notes := $entry.notes | default "" -}}
+    {{- $containerTitle := $entry.container_title | default "" -}}
+    {{- $doi := $entry.doi | default "" -}}
+    {{- $url := $entry.url | default "" -}}
+    {{- $anchor := printf "%s#%s" $.Permalink $entry.anchor_id -}}
+    {{- with $entry.started }}
+      {{- $announcedAt := $entry.started_announced | default . -}}
       {{- $events = $events | append (dict
-          "slug" $slug
+          "slug" $entry.slug
+          "anchor_id" $entry.anchor_id
+          "type" $entry.type
+          "type_label" $entry.type_label
           "title" $title
           "author" $author
           "publisher" $publisher
+          "container_title" $containerTitle
           "published_year" $publishedYear
           "isbn" $isbn
+          "doi" $doi
+          "url" $url
           "format" $format
           "notes" $notes
           "event_type" "started"
           "event_date" .
           "announced_at" $announcedAt
-          "sort_key" (printf "%s-0-%s" $announcedAt $slug)
+          "sort_key" (printf "%s-0-%s-%s" $announcedAt $entry.type $entry.slug)
           "anchor" $anchor
         ) -}}
     {{- end }}
-    {{- with $book.finished }}
-      {{- $announcedAt := $book.finished_announced | default . -}}
+    {{- with $entry.finished }}
+      {{- $announcedAt := $entry.finished_announced | default . -}}
       {{- $events = $events | append (dict
-          "slug" $slug
+          "slug" $entry.slug
+          "anchor_id" $entry.anchor_id
+          "type" $entry.type
+          "type_label" $entry.type_label
           "title" $title
           "author" $author
           "publisher" $publisher
+          "container_title" $containerTitle
           "published_year" $publishedYear
           "isbn" $isbn
+          "doi" $doi
+          "url" $url
           "format" $format
           "notes" $notes
           "event_type" "finished"
           "event_date" .
           "announced_at" $announcedAt
-          "sort_key" (printf "%s-1-%s" $announcedAt $slug)
+          "sort_key" (printf "%s-1-%s-%s" $announcedAt $entry.type $entry.slug)
           "anchor" $anchor
         ) -}}
     {{- end }}
-  {{- end }}
 {{- end }}
 
 {{- $events = sort $events "sort_key" "desc" -}}
@@ -103,14 +115,20 @@
     {{- $action := cond (eq .event_type "started") "Started reading" "Finished reading" -}}
     {{- $plainBody := printf "%s: %s" $action .title -}}
     {{- with .author }}{{- $plainBody = printf "%s by %s" $plainBody . -}}{{- end -}}
+    {{- with .container_title }}{{- $plainBody = printf "%s in %s" $plainBody . -}}{{- end -}}
     {{- $plainBody = printf "%s. 📚" $plainBody -}}
     {{- with .notes }}{{- $plainBody = printf "%s %s" $plainBody . -}}{{- end -}}
-    {{- $bookTitle := .title | htmlEscape -}}
-    {{- with .isbn }}
-      {{- $bookTitle = printf "<a href=%q>%s</a>" (printf "https://micro.blog/books/%s" .) $bookTitle -}}
+    {{- $linkedTitle := .title | htmlEscape -}}
+    {{- if and (eq .type "book") .isbn }}
+      {{- $linkedTitle = printf "<a href=%q>%s</a>" (printf "https://micro.blog/books/%s" .isbn) $linkedTitle -}}
+    {{- else if .url }}
+      {{- $linkedTitle = printf "<a href=%q>%s</a>" .url $linkedTitle -}}
+    {{- else if .doi }}
+      {{- $linkedTitle = printf "<a href=%q>%s</a>" (printf "https://doi.org/%s" .doi) $linkedTitle -}}
     {{- end -}}
-    {{- $htmlBody := printf "%s: %s" $action $bookTitle -}}
+    {{- $htmlBody := printf "%s: %s" $action $linkedTitle -}}
     {{- with .author }}{{- $htmlBody = printf "%s by %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
+    {{- with .container_title }}{{- $htmlBody = printf "%s in %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
     {{- $htmlBody = printf "%s. 📚" $htmlBody -}}
     {{- with .notes }}{{- $htmlBody = printf "%s %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
     {{- $content := printf "<p>%s</p>" $htmlBody -}}
@@ -118,10 +136,11 @@
       <link>{{ .anchor }}</link>
       <pubDate>{{ (time.AsTime .announced_at).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
-      <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s" .slug .event_type }}</guid>
+      <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s:%s" .type .slug .event_type }}</guid>
       <description>{{ $plainBody }}</description>
       <category>reading</category>
-      <category>books</category>
+      <category>sources</category>
+      <category>{{ .type }}</category>
       <category>{{ printf "%s-reading" .event_type }}</category>
       <content:encoded>{{ (printf "<![CDATA[%s]]>" $content) | safeHTML }}</content:encoded>
     </item>

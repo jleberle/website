@@ -7,7 +7,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) 13.5rem;
     grid-template-areas:
-        "breadcrumbs breadcrumbs"
+        "kicker kicker"
         "title title"
         "description meta"
         "series series";
@@ -17,8 +17,9 @@
     border-bottom: 1px solid var(--rule);
 }
 
-.post-header .breadcrumbs {
-    grid-area: breadcrumbs;
+.post-kicker {
+    grid-area: kicker;
+    margin: 0.1rem 0 0.05rem;
 }
 
 .post-title {
@@ -66,7 +67,7 @@
     .post-header {
         grid-template-columns: 1fr;
         grid-template-areas:
-            "breadcrumbs"
+            "kicker"
             "title"
             "meta"
             "description"
@@ -77,5 +78,9 @@
     .post-meta-header {
         padding-left: 0;
         border-left: 0;
+    }
+
+    .post-kicker {
+        margin: 0;
     }
 }

@@ -215,7 +215,6 @@ params:
   hideSummary: false
 
   showReadingTime: true
-  showPostNavLinks: true
   showBreadcrumbs: true
   showCodeCopyButtons: false
   showWordCount: true

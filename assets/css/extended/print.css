@@ -40,9 +40,8 @@
     .skip-link,
     .archive-filters,
     .pagination,
-    .paginav,
-    /* Related posts are cross-page navigation links, useless on paper —
-       hidden like .paginav. Series-nav is deliberately kept: "Part 2 of N"
+    /* Related posts are cross-page navigation links, useless on paper.
+       Series-nav is deliberately kept: "Part 2 of N"
        is meaningful printed context, not just navigation. */
     .related-posts,
     .top-link,

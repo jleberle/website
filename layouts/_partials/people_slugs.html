@@ -1,0 +1,17 @@
+{{- $slugs := slice -}}
+{{- with .Params.people -}}
+  {{- if reflect.IsSlice . -}}
+    {{- range . -}}
+      {{- $value := trim (printf "%v" .) " " | lower -}}
+      {{- if ne $value "" -}}
+        {{- $slugs = $slugs | append $value -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $value := trim (printf "%v" .) " " | lower -}}
+    {{- if ne $value "" -}}
+      {{- $slugs = $slugs | append $value -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return ($slugs | uniq) -}}

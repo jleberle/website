@@ -21,6 +21,8 @@ const reviewedYear = (await tp.system.prompt("Reviewed work year (optional)")) |
 const citeKey = (await tp.system.prompt("Cite key, e.g. mckenziejones2015 (optional)")) || "";
 const externalUrl = (await tp.system.prompt("Reviewed work URL (optional)")) || "";
 const tags = (await tp.system.prompt("Tags, comma-separated (optional)")) || "";
+const courses = (await tp.system.prompt("Course links, comma-separated course slugs such as 1493,3793 (optional)")) || "";
+const people = (await tp.system.prompt("People links, comma-separated slugs such as theodore-roosevelt,clyde-warrior (optional)")) || "";
 const categoriesInput = (await tp.system.prompt("Categories, comma-separated (optional; defaults to Reviews)")) || "";
 const categories = categoriesInput.trim() ? categoriesInput : "Reviews";
 const wantsCover = /^y(es)?$/i.test(((await tp.system.prompt("Add cover metadata? yes/no")) || "").trim());
@@ -52,6 +54,8 @@ tR += field("reviewed_publisher", reviewedPublisher);
 tR += field("reviewed_year", reviewedYear);
 tR += field("cite_key", citeKey);
 tR += field("external_url", externalUrl);
+tR += listField("courses", courses);
+tR += listField("people", people);
 tR += listField("categories", categories);
 tR += listField("tags", tags);
 if (wantsCover) {

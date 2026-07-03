@@ -1,8 +1,13 @@
 {{- define "main" }}
 
+{{- $recordContext := partial "record_context.html" . -}}
+
 {{- if not .IsHome | and .Title }}
 <header class="page-header">
   {{- partial "breadcrumbs.html" . }}
+  {{- with index $recordContext "group" }}
+  <p class="page-kicker">{{ . }}</p>
+  {{- end }}
   <h1>
     {{ .Title }}
   </h1>
@@ -63,6 +68,10 @@
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden "isFirst" (eq $index $firstCoverIdx)) }}
   <header class="entry-header">
+    {{- $pageContext := partial "record_context.html" . }}
+    {{- with index $pageContext "entry" }}
+    <p class="entry-kicker">{{ . }}</p>
+    {{- end }}
     <h2 class="entry-hint-parent p-name">
       {{- .Title }}
       {{- if .Draft }}
@@ -87,7 +96,7 @@
     {{- partial "post_meta.html" . -}}
   </footer>
   {{- end }}
-  <a class="entry-link u-url" aria-label="post link to {{ .Title | plainify }}" href="{{ .RelPermalink }}"></a>
+  <a class="entry-link u-url" aria-label="Open {{ with index $pageContext "entry" }}{{ . | lower }}{{ else }}entry{{ end }}: {{ .Title | plainify }}" href="{{ .RelPermalink }}"></a>
 </article>
 {{- end }}
 
@@ -96,7 +105,7 @@
   <nav class="pagination" aria-label="Pagination">
     {{- if $paginator.HasPrev }}
     <a class="prev" href="{{ $paginator.Prev.URL | relURL }}">
-      «&nbsp;{{ i18n "prev_page" }}&nbsp;
+      «&nbsp;Earlier entries&nbsp;
       {{- if (.Param "showPageNumbers") }}
       {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
       {{- end }}
@@ -104,7 +113,7 @@
     {{- end }}
     {{- if $paginator.HasNext }}
     <a class="next" href="{{ $paginator.Next.URL | relURL }}">
-      {{- i18n "next_page" }}&nbsp;
+      Later entries&nbsp;
       {{- if (.Param "showPageNumbers") }}
       {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
       {{- end }}&nbsp;»

@@ -1,0 +1,46 @@
+{{- $page := . -}}
+{{- $coursePages := where site.RegularPages "Section" "courses" -}}
+
+{{- if eq $page.Section "courses" -}}
+  {{- $courseSlug := printf "%v" ($page.Params.slug | default $page.File.ContentBaseName) -}}
+  {{- $materials := slice -}}
+  {{- range $candidate := where site.RegularPages "Section" "in" site.Params.contentSections -}}
+    {{- $linkedCourses := partial "course_slugs.html" $candidate -}}
+    {{- if in $linkedCourses $courseSlug -}}
+      {{- $materials = $materials | append $candidate -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $materials = sort $materials "Date" "desc" -}}
+  {{- with $materials -}}
+  <div class="post-context related-posts" aria-label="Course materials from the site">
+    <span class="post-context-kicker">Related materials</span>
+    <ul class="related-posts-list">
+      {{- range . }}
+      {{- $context := partial "record_context.html" . -}}
+      <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{- end }}
+    </ul>
+  </div>
+  {{- end -}}
+{{- else -}}
+  {{- $courseSlugs := partial "course_slugs.html" $page -}}
+  {{- $linkedCourses := slice -}}
+  {{- if gt (len $courseSlugs) 0 -}}
+    {{- range $course := $coursePages -}}
+      {{- $slug := printf "%v" ($course.Params.slug | default $course.File.ContentBaseName) -}}
+      {{- if in $courseSlugs $slug -}}
+        {{- $linkedCourses = $linkedCourses | append $course -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $linkedCourses -}}
+  <div class="post-context related-posts" aria-label="Teaching connections">
+    <span class="post-context-kicker">Teaching connection</span>
+    <ul class="related-posts-list">
+      {{- range . }}
+      <li><span class="related-post-type">Course</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{- end }}
+    </ul>
+  </div>
+  {{- end -}}
+{{- end -}}

@@ -3,22 +3,28 @@
 {{- $quotesPage    := site.GetPage "quotes" }}
 {{- $reviewsPage  := site.GetPage "reviews" }}
 {{- $coursesPage  := site.GetPage "courses" }}
+{{- $readingPage  := site.GetPage "reading" }}
 {{- $articles := where site.RegularPages "Section" "articles" | first 5 }}
 {{- $quotes    := where site.RegularPages "Section" "quotes"    | first 5 }}
 {{- $reviews  := where site.RegularPages "Section" "reviews"  | first 5 }}
 {{- $courses  := where site.RegularPages "Section" "courses"  | first 5 }}
+{{- $readingEntries := partial "reading_entries.html" . }}
+{{- $currentReading := where $readingEntries "status" "current" }}
+{{- $recentReading := first 3 (sort (where $readingEntries "status" "ne" "current") "sort_read_key" "desc") }}
 {{- $articleTotal := len (where site.RegularPages "Section" "articles") }}
 {{- $quoteTotal := len (where site.RegularPages "Section" "quotes") }}
 {{- $reviewTotal := len (where site.RegularPages "Section" "reviews") }}
 {{- $courseTotal := len (where site.RegularPages "Section" "courses") }}
-
-{{- /* The four sections are placed into a single 2x2 grid via grid-template-areas
-       (home.css), so the two top-row sections (articles/reviews) share a row
-       height and the bottom-row sections (quotes/courses) always start on the
-       same line regardless of title wrapping. DOM order is row-major to match
-       visual reading order. */ -}}
+{{- $readingTotal := len $readingEntries }}
 <div class="home-frontpage h-feed">
-    <div class="home-primary">
+    <section class="home-writing" aria-label="Recent writing">
+        <header class="home-band-header">
+            <div>
+                <p class="page-kicker">Writing</p>
+                <h2 class="home-band-title">Recent writing</h2>
+            </div>
+        </header>
+        <div class="home-primary">
         {{- if $articles }}
         {{- $lead := index $articles 0 }}
         <section class="home-section home-section--articles home-section--feature">
@@ -74,14 +80,60 @@
             <a class="home-section-all" href="{{ $reviewsPage.RelPermalink }}">All {{ $reviewsPage.Title | lower }} &rarr;</a>
         </section>
         {{- end }}
-    </div>
+        </div>
+    </section>
 
-    <aside class="home-secondary" aria-label="Additional sections">
+    <section class="home-context-band" aria-label="Scholarly context">
+        <header class="home-band-header">
+            <div>
+                <p class="page-kicker">Context</p>
+                <h2 class="home-band-title">Notebook, reading, and teaching</h2>
+            </div>
+        </header>
+        <div class="home-secondary">
+        {{- if or $currentReading $recentReading }}
+        <section class="home-section home-section--reading">
+            <header class="home-section-header">
+                <div>
+                    <h2 class="home-section-title"><a href="{{ $readingPage.RelPermalink }}">Reading</a></h2>
+                    <p class="home-section-description">Sources in progress and recent additions to the ledger.</p>
+                </div>
+                <p class="home-section-meta">{{ $readingTotal }} total</p>
+            </header>
+            {{- if $currentReading }}
+            {{- range first 2 (sort $currentReading "title") }}
+            <article class="home-context-entry home-context-entry--reading">
+                <p class="home-context-kicker">Current</p>
+                <h3 class="home-list-title"><a href="{{ printf "%s#%s" $readingPage.RelPermalink .anchor_id }}">{{ .title }}</a></h3>
+                <p class="home-context-meta">
+                    {{- with .author }}<span>{{ . }}</span>{{- end -}}
+                    {{- if and .author (gt .published_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
+                    {{- if gt .published_year 0 }}<span>{{ .published_year }}</span>{{- end -}}
+                </p>
+            </article>
+            {{- end }}
+            {{- else }}
+            {{- range first 2 $recentReading }}
+            <article class="home-context-entry home-context-entry--reading">
+                <p class="home-context-kicker">Recently read</p>
+                <h3 class="home-list-title"><a href="{{ printf "%s#%s" $readingPage.RelPermalink .anchor_id }}">{{ .title }}</a></h3>
+                <p class="home-context-meta">
+                    {{- with .author }}<span>{{ . }}</span>{{- end -}}
+                    {{- if and .author (gt .read_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
+                    {{- if gt .read_year 0 }}<span>{{ .read_year }}</span>{{- end -}}
+                </p>
+            </article>
+            {{- end }}
+            {{- end }}
+            <a class="home-section-all" href="{{ $readingPage.RelPermalink }}">Open the reading ledger &rarr;</a>
+        </section>
+        {{- end }}
+
         {{- if $quotes }}
         <section class="home-section home-section--quotes">
             <header class="home-section-header">
                 <div>
-                    <h2 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Quotes</a></h2>
+                    <h2 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Notebook</a></h2>
                     {{- with $quotesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
                 </div>
                 <p class="home-section-meta">{{ $quoteTotal }} total</p>
@@ -100,8 +152,8 @@
         <section class="home-section home-section--courses">
             <header class="home-section-header">
                 <div>
-                    <h2 class="home-section-title"><a href="{{ $coursesPage.RelPermalink }}">{{ $coursesPage.Title }}</a></h2>
-                    {{- with $coursesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
+                    <h2 class="home-section-title"><a href="{{ $coursesPage.RelPermalink }}">Teaching</a></h2>
+                    <p class="home-section-description">Representative course pages and materials.</p>
                 </div>
                 <p class="home-section-meta">{{ $courseTotal }} total</p>
             </header>
@@ -114,5 +166,6 @@
             <a class="home-section-all" href="{{ $coursesPage.RelPermalink }}">All {{ $coursesPage.Title | lower }} &rarr;</a>
         </section>
         {{- end }}
-    </aside>
+        </div>
+    </section>
 </div>

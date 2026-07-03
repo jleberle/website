@@ -2,11 +2,14 @@
 
 {{- $hasReviewContext := or .Params.reviewed_title .Params.reviewed_author .Params.reviewed_publisher .Params.reviewed_year .Params.reviewed_type }}
 {{- $hasSourceContext := or .Params.source_title .Params.source_author .Params.source_year }}
+{{- $recordContext := partial "record_context.html" . }}
 
 <article class="post-single h-entry">
   <a class="u-url" href="{{ .RelPermalink }}" hidden></a>
   <header class="post-header">
-    {{ partial "breadcrumbs.html" . }}
+    {{- with index $recordContext "entry" }}
+    <p class="page-kicker post-kicker">{{ . }}</p>
+    {{- end }}
     <h1 class="post-title entry-hint-parent p-name">
       {{ .Title }}
       {{- if .Draft }}
@@ -89,13 +92,12 @@
       <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
       {{- end }}
     </ul>
-      {{- end }}
+    {{- end }}
     </div>
     {{- end }}
+    {{- partial "people_connections.html" . }}
+    {{- partial "teaching_connections.html" . }}
     {{- partial "related_posts.html" . }}
-    {{- if (.Param "showPostNavLinks") }}
-    {{- partial "post_nav_links.html" . }}
-    {{- end }}
   </footer>
 </article>
 

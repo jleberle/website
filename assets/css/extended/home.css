@@ -87,7 +87,33 @@ body.home .home-info {
    and the others hold their place. */
 .home-frontpage {
     display: grid;
-    gap: 1.7rem;
+    gap: 2rem;
+}
+
+.home-writing,
+.home-context-band {
+    display: grid;
+    gap: 1rem;
+}
+
+.home-context-band {
+    margin-top: 0.35rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--rule);
+}
+
+.home-band-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 0.9rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid color-mix(in sRGB, var(--border), var(--rule) 35%);
+}
+
+.home-band-title {
+    margin: 0;
+    font-size: 1.18rem;
 }
 
 .home-primary {
@@ -98,7 +124,7 @@ body.home .home-info {
 
 .home-secondary {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.4rem 2.4rem;
 }
 
@@ -160,14 +186,42 @@ body.home .home-info {
     font-size: 1.22rem;
 }
 
+.home-section--reading .home-section-title,
 .home-section--quotes .home-section-title,
 .home-section--courses .home-section-title {
     font-size: 1.03rem;
 }
 
+.home-section--reading .home-section-title a,
 .home-section--quotes .home-section-title a,
 .home-section--courses .home-section-title a {
     color: var(--secondary);
+}
+
+.home-context-entry {
+    padding: 0.42rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.home-context-kicker {
+    margin: 0 0 0.12rem;
+    color: var(--secondary);
+    font-size: 0.68rem;
+    font-variant-caps: all-small-caps;
+    font-weight: 600;
+    letter-spacing: 0.018em;
+    text-transform: lowercase;
+}
+
+.home-context-entry .home-list-title {
+    font-size: 0.88rem;
+}
+
+.home-context-meta {
+    margin: 0.14rem 0 0;
+    color: var(--secondary);
+    font-size: 0.8rem;
+    line-height: 1.45;
 }
 
 /* Post list entries */
@@ -231,10 +285,12 @@ body.home .home-info {
 }
 
 .home-section--quotes .home-list-entry,
-.home-section--courses .home-list-entry {
+.home-section--courses .home-list-entry,
+.home-section--reading .home-list-entry {
     font-size: 0.88rem;
 }
 
+.home-section--reading .home-list-entry a,
 .home-section--quotes .home-list-entry a,
 .home-section--courses .home-list-entry a {
     color: var(--content);
@@ -258,8 +314,10 @@ body.home .home-info {
 
 .home-section--quotes .home-list-date,
 .home-section--courses .home-list-date,
+.home-section--reading .home-list-date,
 .home-section--quotes .home-section-all,
-.home-section--courses .home-section-all {
+.home-section--courses .home-section-all,
+.home-section--reading .home-section-all {
     font-size: 0.77rem;
 }
 

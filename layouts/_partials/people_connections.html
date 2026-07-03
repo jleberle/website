@@ -1,0 +1,55 @@
+{{- $page := . -}}
+{{- $personSlugs := partial "people_slugs.html" $page -}}
+{{- if gt (len $personSlugs) 0 -}}
+  {{- $people := slice -}}
+  {{- range $slug := $personSlugs -}}
+    {{- $record := index site.Data.people $slug -}}
+    {{- $name := humanize (replace $slug "-" " ") -}}
+    {{- if and $record $record.name -}}
+      {{- $name = $record.name -}}
+    {{- end -}}
+    {{- $people = $people | append (dict
+        "slug" $slug
+        "name" $name
+      ) -}}
+  {{- end -}}
+
+  {{- $candidateSections := site.Params.contentSections | append "courses" | uniq -}}
+  {{- $relatedMaterials := slice -}}
+  {{- range $candidate := where site.RegularPages "Section" "in" $candidateSections -}}
+    {{- if ne $candidate.RelPermalink $page.RelPermalink -}}
+      {{- $candidatePeople := partial "people_slugs.html" $candidate -}}
+      {{- $overlap := false -}}
+      {{- range $slug := $personSlugs -}}
+        {{- if in $candidatePeople $slug -}}
+          {{- $overlap = true -}}
+        {{- end -}}
+      {{- end -}}
+      {{- if $overlap -}}
+        {{- $relatedMaterials = $relatedMaterials | append $candidate -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $relatedMaterials = sort $relatedMaterials "Date" "desc" -}}
+
+  <div class="post-context related-posts" aria-label="People connected to this page">
+    <span class="post-context-kicker">People</span>
+    <ul class="related-posts-list">
+      {{- range $people }}
+      <li><span class="related-post-type">Figure</span><span class="related-posts-entry">{{ .name }}</span></li>
+      {{- end }}
+    </ul>
+  </div>
+
+  {{- with $relatedMaterials }}
+  <div class="post-context related-posts" aria-label="Related materials by shared people">
+    <span class="post-context-kicker">Elsewhere on these figures</span>
+    <ul class="related-posts-list">
+      {{- range . }}
+      {{- $context := partial "record_context.html" . -}}
+      <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{- end }}
+    </ul>
+  </div>
+  {{- end -}}
+{{- end -}}

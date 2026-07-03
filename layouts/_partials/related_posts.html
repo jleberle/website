@@ -1,14 +1,126 @@
-{{- /* Up to 3 other articles/reviews/quotes sharing the most tags with this
-       page (related: config in hugo.yaml restricts matching to tags only).
-       No-op if nothing shares a tag with this page. */ -}}
-{{- $candidates := where site.RegularPages "Type" "in" site.Params.contentSections }}
-{{- $related := $candidates.Related . | first 3 }}
-{{- with $related }}
-<div class="post-context related-posts" aria-label="Related posts">
-  <span class="post-context-kicker">Related reading</span>
+{{- $page := . -}}
+{{- $candidates := where site.RegularPages "Type" "in" site.Params.contentSections -}}
+{{- $currentKeys := partial "cite_keys.html" $page -}}
+{{- $currentTitle := or ($page.Params.reviewed_title | default "") ($page.Params.source_title | default "") -}}
+{{- $currentAuthor := or ($page.Params.reviewed_author | default "") ($page.Params.source_author | default "") -}}
+{{- $currentSourceID := "" -}}
+{{- if $currentTitle -}}
+  {{- $normTitle := $currentTitle | plainify | lower | replaceRE "[^a-z0-9]+" " " | replaceRE "^\\s+|\\s+$" "" -}}
+  {{- $normAuthor := $currentAuthor | plainify | lower | replaceRE "[^a-z0-9]+" " " | replaceRE "^\\s+|\\s+$" "" -}}
+  {{- $currentSourceID = printf "%s|%s" $normTitle $normAuthor -}}
+{{- end -}}
+
+{{- $notebookMatches := slice -}}
+{{- $sourceMatches := slice -}}
+{{- range $candidate := $candidates -}}
+  {{- if ne $candidate.RelPermalink $page.RelPermalink -}}
+    {{- $candidateKeys := partial "cite_keys.html" $candidate -}}
+    {{- $candidateTitle := or ($candidate.Params.reviewed_title | default "") ($candidate.Params.source_title | default "") -}}
+    {{- $candidateAuthor := or ($candidate.Params.reviewed_author | default "") ($candidate.Params.source_author | default "") -}}
+    {{- $candidateSourceID := "" -}}
+    {{- if $candidateTitle -}}
+      {{- $normTitle := $candidateTitle | plainify | lower | replaceRE "[^a-z0-9]+" " " | replaceRE "^\\s+|\\s+$" "" -}}
+      {{- $normAuthor := $candidateAuthor | plainify | lower | replaceRE "[^a-z0-9]+" " " | replaceRE "^\\s+|\\s+$" "" -}}
+      {{- $candidateSourceID = printf "%s|%s" $normTitle $normAuthor -}}
+    {{- end -}}
+    {{- $sameCite := false -}}
+    {{- if and (gt (len $currentKeys) 0) (gt (len $candidateKeys) 0) -}}
+      {{- range $key := $currentKeys -}}
+        {{- if in $candidateKeys $key -}}
+          {{- $sameCite = true -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $sameSource := and (not $sameCite) $currentSourceID $candidateSourceID (eq $candidateSourceID $currentSourceID) -}}
+    {{- if or $sameCite $sameSource -}}
+      {{- if eq $candidate.Section "quotes" -}}
+        {{- $notebookMatches = $notebookMatches | append $candidate -}}
+      {{- else -}}
+        {{- $sourceMatches = $sourceMatches | append $candidate -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $readingPage := site.GetPage "reading" -}}
+{{- $readingMatches := slice -}}
+{{- if and (gt (len $currentKeys) 0) $readingPage -}}
+  {{- range partial "reading_entries.html" . -}}
+    {{- $sourceKey := .cite_key | default "" -}}
+    {{- if and $sourceKey (in $currentKeys $sourceKey) -}}
+      {{- $readingMatches = $readingMatches | append (dict
+          "anchor_id" .anchor_id
+          "title" .title
+          "author" .author
+          "type_label" .type_label
+        ) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $relatedByTag := slice -}}
+{{- range $candidate := ($candidates.Related $page) -}}
+  {{- if and (ne $candidate.RelPermalink $page.RelPermalink) (lt (len $relatedByTag) 3) -}}
+    {{- $skip := false -}}
+    {{- range $match := $notebookMatches -}}
+      {{- if eq $match.RelPermalink $candidate.RelPermalink -}}{{- $skip = true -}}{{- end -}}
+    {{- end -}}
+    {{- if not $skip -}}
+      {{- range $match := $sourceMatches -}}
+        {{- if eq $match.RelPermalink $candidate.RelPermalink -}}{{- $skip = true -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if not $skip -}}
+      {{- $relatedByTag = $relatedByTag | append $candidate -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with $readingMatches }}
+<div class="post-context related-posts" aria-label="Reading ledger connection">
+  <span class="post-context-kicker">In the reading ledger</span>
   <ul class="related-posts-list">
     {{- range . }}
-    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    <li>
+      <span class="related-post-type">{{ .type_label }}</span>
+      <a href="{{ printf "%s#%s" $readingPage.RelPermalink .anchor_id }}">{{ .title }}</a>{{ with .author }}, <span>{{ . }}</span>{{ end }}
+    </li>
+    {{- end }}
+  </ul>
+</div>
+{{- end }}
+
+{{- with $notebookMatches }}
+<div class="post-context related-posts" aria-label="Notebook connections">
+  <span class="post-context-kicker">From the notebook</span>
+  <ul class="related-posts-list">
+    {{- range . }}
+    {{- $context := partial "record_context.html" . -}}
+    <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- end }}
+  </ul>
+</div>
+{{- end }}
+
+{{- with $sourceMatches }}
+<div class="post-context related-posts" aria-label="Related source writing">
+  <span class="post-context-kicker">Elsewhere on this source</span>
+  <ul class="related-posts-list">
+    {{- range . }}
+    {{- $context := partial "record_context.html" . -}}
+    <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- end }}
+  </ul>
+</div>
+{{- end }}
+
+{{- with $relatedByTag }}
+<div class="post-context related-posts" aria-label="Related writing">
+  <span class="post-context-kicker">Related writing</span>
+  <ul class="related-posts-list">
+    {{- range . }}
+    {{- $context := partial "record_context.html" . -}}
+    <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
     {{- end }}
   </ul>
 </div>

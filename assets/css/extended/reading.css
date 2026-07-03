@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-   Reading ledger. A book list built from data/reading/books/*.yaml:
+   Reading ledger. Source entries built from data/reading/<type>/*.yaml:
    currently-reading rows above, expandable ledger entries below.
    Sorting is progressive enhancement via assets/js/reading-shelf.js.
    ------------------------------------------------------------ */
@@ -40,57 +40,69 @@
     gap: 0;
 }
 
-.reading-sort {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    flex-wrap: wrap;
+.reading-year-group + .reading-year-group,
+.reading-empty--inline + .reading-year-group {
+    margin-top: 1.35rem;
 }
 
-.reading-sort-label {
-    color: var(--secondary);
-    font-size: 0.76rem;
+.reading-year-heading,
+.reading-year-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.reading-year-heading {
+    margin-bottom: 0.25rem;
+}
+
+.reading-year-heading h3,
+.reading-year-title {
+    margin: 0;
+    font-size: 0.98rem;
     font-variant-caps: all-small-caps;
     letter-spacing: 0.02em;
     text-transform: lowercase;
 }
 
-.reading-sort-button {
-    padding: 0.25rem 0.62rem;
-    border: 1px solid var(--border);
-    border-radius: 999px;
+.reading-year-heading p,
+.reading-year-count {
+    margin: 0;
     color: var(--secondary);
-    background: transparent;
-    font-family: var(--meta-font);
-    font-size: 0.74rem;
-    line-height: 1.35;
-    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+    font-size: 0.76rem;
 }
 
-.reading-sort-button:hover,
-.reading-sort-button:focus-visible,
-.reading-sort-button.is-active {
-    color: var(--primary);
-    border-color: var(--rule);
-    background: var(--entry);
+.reading-year-summary {
+    list-style: none;
+    cursor: pointer;
 }
 
-.reading-sort-button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+.reading-year-summary::-webkit-details-marker {
+    display: none;
 }
 
-.reading-book {
+.reading-year-summary::marker {
+    content: "";
+}
+
+.reading-year-group > .reading-list {
+    margin-top: 0.25rem;
+}
+
+.reading-entry {
     border-top: 1px solid color-mix(in sRGB, var(--border), var(--rule) 25%);
     background: transparent;
 }
 
-.reading-current-grid .reading-book:last-child,
-.reading-list .reading-book:last-child {
+.reading-current-grid .reading-entry:last-child,
+.reading-list .reading-entry:last-child {
     border-bottom: 1px solid color-mix(in sRGB, var(--border), var(--rule) 25%);
 }
 
-.reading-book-summary {
+.reading-entry-summary {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 1rem;
@@ -100,20 +112,30 @@
     padding: 0.9rem 0;
 }
 
-.reading-book-summary::-webkit-details-marker {
+.reading-entry-summary::-webkit-details-marker {
     display: none;
 }
 
-.reading-book-summary::marker {
+.reading-entry-summary::marker {
     content: "";
 }
 
-.reading-book-main {
+.reading-entry-main {
     display: block;
     min-width: 0;
 }
 
-.reading-book-title {
+.reading-entry-kicker {
+    display: block;
+    margin-bottom: 0.18rem;
+    color: var(--secondary);
+    font-size: 0.68rem;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.015em;
+    text-transform: lowercase;
+}
+
+.reading-entry-title {
     display: block;
     margin: 0;
     font-size: 1.06rem;
@@ -122,7 +144,7 @@
     font-weight: 400;
 }
 
-.reading-book-author {
+.reading-entry-author {
     display: block;
     margin: 0.18rem 0 0;
     color: color-mix(in sRGB, var(--content) 68%, var(--secondary));
@@ -130,14 +152,18 @@
     line-height: 1.45;
 }
 
-.reading-book-published {
+.reading-entry-container {
+    font-style: italic;
+}
+
+.reading-entry-published {
     font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
                  Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
                  'Roboto Mono', monospace;
     font-size: 0.92em;
 }
 
-.reading-book-years {
+.reading-entry-years {
     display: flex;
     flex-wrap: wrap;
     justify-content: end;
@@ -150,33 +176,33 @@
     white-space: nowrap;
 }
 
-.reading-book-pill {
+.reading-entry-pill {
     display: inline-flex;
     padding: 0;
 }
 
-.reading-book-details {
+.reading-entry-details {
     margin: 0 0 0.9rem 0.9rem;
     padding: 0.15rem 0 0 0.95rem;
     border-left: 2px solid color-mix(in sRGB, var(--quote-rule), transparent 28%);
 }
 
-.reading-book-record {
+.reading-entry-record {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
     gap: 0.7rem 1rem;
     margin: 0.55rem 0 0;
 }
 
-.reading-book-record div {
+.reading-entry-record div {
     min-width: 0;
 }
 
-.reading-book-record-item--wide {
+.reading-entry-record-item--wide {
     grid-column: 1 / -1;
 }
 
-.reading-book-record dt {
+.reading-entry-record dt {
     margin: 0 0 0.1rem;
     color: var(--secondary);
     font-size: 0.68rem;
@@ -185,7 +211,7 @@
     text-transform: lowercase;
 }
 
-.reading-book-record dd {
+.reading-entry-record dd {
     margin: 0;
     font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
                  Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
@@ -195,18 +221,18 @@
     overflow-wrap: anywhere;
 }
 
-.reading-book-notes {
+.reading-entry-notes {
     margin: 0.8rem 0 0;
     color: var(--content);
     font-size: 0.95rem;
     line-height: 1.65;
 }
 
-.reading-book-links {
+.reading-entry-links {
     margin-top: 0.85rem;
 }
 
-.reading-book-links-label {
+.reading-entry-links-label {
     display: block;
     margin-bottom: 0.16rem;
     color: var(--secondary);
@@ -216,19 +242,20 @@
     text-transform: lowercase;
 }
 
-.reading-book-links ul {
+.reading-entry-links ul {
     margin: 0;
-    padding-left: 0.95rem;
+    padding-left: 0;
     color: var(--secondary);
     font-size: 0.88rem;
     line-height: 1.55;
+    list-style: none;
 }
 
-.reading-book-access {
+.reading-entry-access {
     font-size: 0.78rem;
 }
 
-.reading-book-record-item--wide dd {
+.reading-entry-record-item--wide dd {
     display: flex;
     align-items: baseline;
     gap: 0.28rem;
@@ -236,12 +263,12 @@
     overflow-wrap: normal;
 }
 
-.reading-book-access,
-.reading-book-access a {
+.reading-entry-access,
+.reading-entry-access a {
     white-space: nowrap;
 }
 
-.reading-book-links li + li {
+.reading-entry-links li + li {
     margin-top: 0.1rem;
 }
 
@@ -259,22 +286,22 @@
         margin-top: 0.6rem;
     }
 
-    .reading-book-summary {
+    .reading-entry-summary {
         grid-template-columns: 1fr;
         gap: 0.5rem;
     }
 
-    .reading-book-years {
+    .reading-entry-years {
         justify-content: start;
         white-space: normal;
     }
 
-    .reading-book-details {
+    .reading-entry-details {
         margin-left: 0.5rem;
         padding-left: 0.8rem;
     }
 
-    .reading-book-record-item--wide dd {
+    .reading-entry-record-item--wide dd {
         flex-wrap: wrap;
     }
 }

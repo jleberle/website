@@ -103,6 +103,8 @@ DESCRIPTION=$(read_optional "Description (optional)")
 SUMMARY=$(read_optional "Summary override (optional)")
 SERIES=$(read_optional 'Series name, for multi-part posts (optional; same name on every part, e.g. "My Summer With Claude")')
 TAGS=$(read_optional "Tags, comma-separated (optional)")
+COURSES=$(read_optional "Course links, comma-separated course slugs such as 1493,3793 (optional)")
+PEOPLE=$(read_optional "People links, comma-separated slugs such as theodore-roosevelt,clyde-warrior (optional)")
 
 REVIEWED_TYPE=""
 REVIEWED_TITLE=""
@@ -114,6 +116,7 @@ SOURCE_AUTHOR=""
 SOURCE_YEAR=""
 URL=""
 CITE_KEY=""
+EXTRA_CITE_KEYS=""
 
 if [[ "$KIND" == "review" ]]; then
   REVIEWED_TYPE=$(read_optional "Reviewed type, e.g. Book/Film (optional)")
@@ -138,7 +141,8 @@ if [[ "$KIND" == "quote" ]]; then
 fi
 
 if [[ "$KIND" == "article" ]]; then
-  CITE_KEY=$(read_optional "Cite key for a related work, e.g. mckenziejones2015 (optional)")
+  CITE_KEY=$(read_optional "Primary cite key for a related work, e.g. mckenziejones2015 (optional)")
+  EXTRA_CITE_KEYS=$(read_optional "Additional cite keys, comma-separated (optional)")
 fi
 
 ADD_COVER=false
@@ -204,6 +208,9 @@ EOF
       field "summary" "$SUMMARY"
       field "series" "$SERIES"
       field "cite_key" "$CITE_KEY"
+      list_field "cite_keys" "$EXTRA_CITE_KEYS"
+      list_field "courses" "$COURSES"
+      list_field "people" "$PEOPLE"
       list_field "categories" "$CATEGORIES"
       list_field "tags" "$TAGS"
       $ADD_COVER && cover_block false
@@ -231,6 +238,8 @@ EOF
       field "reviewed_year" "$REVIEWED_YEAR"
       field "cite_key" "$CITE_KEY"
       field "external_url" "$URL"
+      list_field "courses" "$COURSES"
+      list_field "people" "$PEOPLE"
       list_field "categories" "$CATEGORIES"
       list_field "tags" "$TAGS"
       $ADD_COVER && cover_block true
@@ -257,6 +266,8 @@ EOF
       field "source_year" "$SOURCE_YEAR"
       field "cite_key" "$CITE_KEY"
       field "external_url" "$URL"
+      list_field "courses" "$COURSES"
+      list_field "people" "$PEOPLE"
       list_field "categories" "$CATEGORIES"
       list_field "tags" "$TAGS"
       printf -- '---\n\n'

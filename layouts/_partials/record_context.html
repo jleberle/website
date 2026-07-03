@@ -1,0 +1,45 @@
+{{- $group := "" -}}
+{{- $entry := "" -}}
+{{- $collection := "" -}}
+{{- $section := .Section | default .Type -}}
+
+{{- if eq .Layout "archives" -}}
+  {{- $group = "Index" -}}
+  {{- $collection = "Archive" -}}
+{{- else if eq .Kind "taxonomy" -}}
+  {{- $group = "Index" -}}
+  {{- $collection = "Topics" -}}
+{{- else if eq .Kind "term" -}}
+  {{- $group = "Topic" -}}
+  {{- $collection = "Topic file" -}}
+{{- else if eq $section "articles" -}}
+  {{- $group = "Writing" -}}
+  {{- $entry = "Article" -}}
+  {{- $collection = "Articles" -}}
+{{- else if eq $section "reviews" -}}
+  {{- $group = "Writing" -}}
+  {{- $entry = "Review" -}}
+  {{- $collection = "Reviews" -}}
+{{- else if eq $section "quotes" -}}
+  {{- $group = "Notebook" -}}
+  {{- $entry = "Extract" -}}
+  {{- $collection = "Quotes" -}}
+{{- else if eq $section "courses" -}}
+  {{- $group = "Teaching" -}}
+  {{- $entry = "Course" -}}
+  {{- $collection = "Courses" -}}
+{{- else if eq $section "reading" -}}
+  {{- $group = "Notebook" -}}
+  {{- $collection = "Reading" -}}
+{{- else if eq $section "cv" -}}
+  {{- $group = "Reference" -}}
+  {{- $collection = "Curriculum vitae" -}}
+{{- else if eq $section "about" -}}
+  {{- $group = "Reference" -}}
+  {{- $collection = "About" -}}
+{{- else if eq $section "contact" -}}
+  {{- $group = "Reference" -}}
+  {{- $collection = "Contact" -}}
+{{- end -}}
+
+{{- return (dict "group" $group "entry" $entry "collection" $collection) -}}

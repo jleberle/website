@@ -1,11 +1,10 @@
 /* ------------------------------------------------------------
-   Post footer (single pages): tags + prev/next navigation.
-   Styled as quiet academic apparatus rather than heavy boxes —
-   a keyword line and plain-text post-nav.
+   Post footer (single pages): metadata apparatus and tags.
+   Styled as quiet academic end matter rather than boxed widgets.
    ------------------------------------------------------------ */
 
 /* End matter: modified date, suggestion link and topics share one
-   compact apparatus block before post navigation. */
+   compact apparatus block. */
 .post-apparatus {
     margin-top: 1.8rem;
     padding-top: 0.85rem;
@@ -66,46 +65,4 @@
     background: none;
     text-decoration: underline;
     text-underline-offset: 0.2rem;
-}
-
-/* --- Prev/next as plain text links under a hairline --- */
-.paginav {
-    margin-top: 1.45rem;
-    padding-top: 1rem;
-    border: none;
-    border-top: 1px solid var(--border);
-    border-radius: 0;
-    background: none;
-    gap: 1.25rem;
-}
-
-.paginav .title {
-    font-size: 0.72rem;
-    font-variant-caps: all-small-caps;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--secondary);
-}
-
-.paginav a {
-    padding: 0;
-    border-radius: 0;
-    background: none;
-    color: var(--content);
-    gap: 0.24rem;
-}
-
-.paginav a:hover {
-    background: none;
-}
-
-.paginav span:not(.title) {
-    font-size: 0.92rem;
-    line-height: 1.5;
-}
-
-/* Brighten the title (and the small label) to the accent on hover. */
-.paginav a:hover .title,
-.paginav a:hover span:not(.title) {
-    color: var(--accent);
 }

@@ -119,6 +119,27 @@
     line-height: 1.6;
 }
 
+.related-posts-entry {
+    font-size: 0.9rem;
+}
+
+.related-posts-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.45rem;
+}
+
+.related-post-type {
+    color: var(--secondary);
+    font-size: 0.68rem;
+    font-variant-caps: all-small-caps;
+    font-weight: 600;
+    letter-spacing: 0.018em;
+    text-transform: lowercase;
+    white-space: nowrap;
+}
+
 /* Vertical padding lifts each stacked link to a >=24px tap target (WCAG
    2.5.8 / Lighthouse); inline-block so the padding takes effect while the
    series marker stays on the same line. */

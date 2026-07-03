@@ -1,7 +1,12 @@
 {{- define "main" }}
 
+{{- $recordContext := partial "record_context.html" . -}}
+
 {{- if .Title }}
 <header class="page-header">
+    {{- with index $recordContext "group" }}
+    <p class="page-kicker">{{ . }}</p>
+    {{- end }}
     <h1>{{ .Title }}</h1>
     {{- if .Description }}
     <div class="post-description">

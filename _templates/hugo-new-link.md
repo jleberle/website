@@ -18,6 +18,8 @@ const sourceAuthor = (await tp.system.prompt("Source author (optional)")) || "";
 const sourceYear = (await tp.system.prompt("Source year (optional)")) || "";
 const citeKey = (await tp.system.prompt("Cite key, e.g. mckenziejones2015 (optional)")) || "";
 const tags = (await tp.system.prompt("Tags, comma-separated (optional)")) || "";
+const courses = (await tp.system.prompt("Course links, comma-separated course slugs such as 1493,3793 (optional)")) || "";
+const people = (await tp.system.prompt("People links, comma-separated slugs such as theodore-roosevelt,clyde-warrior (optional)")) || "";
 const categories = (await tp.system.prompt("Categories, comma-separated (optional)")) || "";
 const externalUrl = (await tp.system.prompt("External URL (optional)")) || "";
 
@@ -44,6 +46,8 @@ tR += field("source_author", sourceAuthor);
 tR += field("source_year", sourceYear);
 tR += field("cite_key", citeKey);
 tR += field("external_url", externalUrl);
+tR += listField("courses", courses);
+tR += listField("people", people);
 tR += listField("categories", categories);
 tR += listField("tags", tags);
 tR += "---\n\n";

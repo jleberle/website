@@ -1,42 +1,11 @@
 {{- define "main" }}
 
-{{- $entries := slice -}}
-{{- range $key, $book := hugo.Data.reading.books }}
-  {{- if not (hasPrefix $key "_") }}
-    {{- $slug := $key -}}
-    {{- $status := lower ($book.status | default "read") -}}
-    {{- $publishedYear := int ($book.published_year | default 0) -}}
-    {{- $readYear := int ($book.read_year | default 0) -}}
-    {{- $sortRead := cond (gt $readYear 0) $readYear 0 -}}
-    {{- $sortPublished := cond (gt $publishedYear 0) $publishedYear 0 -}}
-    {{- $finishedSort := $book.finished | default "0000-00-00" -}}
-    {{- $sortReadKey := printf "%04d-%s-%s" $sortRead $finishedSort $slug -}}
-    {{- $sortPublishedKey := printf "%04d-%s-%s" $sortPublished $finishedSort $slug -}}
-    {{- $entries = $entries | append (dict
-        "slug" $slug
-        "title" ($book.title | default $slug)
-        "author" ($book.author | default "")
-        "cite_key" ($book.cite_key | default "")
-        "status" $status
-        "published_year" $publishedYear
-        "read_year" $readYear
-        "publisher" ($book.publisher | default "")
-        "isbn" ($book.isbn | default "")
-        "format" ($book.format | default "")
-        "started" ($book.started | default "")
-        "finished" ($book.finished | default "")
-        "notes" ($book.notes | default "")
-        "related_posts" ($book.related_posts | default (slice))
-        "sort_read" $sortRead
-        "sort_read_key" $sortReadKey
-        "sort_published" $sortPublished
-        "sort_published_key" $sortPublishedKey
-      ) -}}
-  {{- end }}
-{{- end }}
+{{- $entries := partial "reading_entries.html" . -}}
 
 {{- $current := where $entries "status" "current" -}}
 {{- $read := sort (where $entries "status" "ne" "current") "sort_read_key" "desc" -}}
+{{- $currentYear := now.Year -}}
+{{- $displayedCurrentYear := false -}}
 
 <header class="page-header reading-header">
   <h1>
@@ -68,73 +37,7 @@
   </div>
   {{- if $current }}
   <div class="reading-current-grid">
-    {{- range sort $current "title" }}
-    {{- $relatedPages := slice -}}
-    {{- with .cite_key }}
-      {{- $relatedPages = where site.RegularPages "Params.cite_key" . -}}
-    {{- end }}
-    {{- $isbnLookup := "" -}}
-    {{- with .isbn }}{{- $isbnLookup = replaceRE "[^0-9Xx]" "" . -}}{{- end }}
-    {{- if and (eq (len $relatedPages) 0) (gt (len .related_posts) 0) }}
-      {{- range .related_posts }}
-        {{- with site.GetPage . }}
-          {{- $relatedPages = $relatedPages | append . -}}
-        {{- end }}
-      {{- end }}
-    {{- end }}
-    <details class="reading-book reading-book--current" id="{{ .slug }}">
-      <summary class="reading-book-summary">
-        <span class="reading-book-main">
-          <span class="reading-book-title">{{ .title }}</span>
-          {{- if or .author (gt .published_year 0) }}
-          <span class="reading-book-author">
-            {{- with .author }}<span>{{ . }}</span>{{- end -}}
-            {{- if and .author (gt .published_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
-            {{- if gt .published_year 0 }}<span class="reading-book-published">{{ .published_year }}</span>{{- end -}}
-          </span>
-          {{- end }}
-        </span>
-        <span class="reading-book-years">
-          {{- with .started }}<span class="reading-book-pill">Started {{ time.AsTime . | time.Format ":date_long" }}</span>{{- end }}
-        </span>
-      </summary>
-      <div class="reading-book-details">
-        <dl class="reading-book-record">
-          {{- with .published_year }}<div><dt>Published</dt><dd>{{ . }}</dd></div>{{- end }}
-          {{- with .publisher }}<div><dt>Press</dt><dd>{{ . }}</dd></div>{{- end }}
-          {{- with .format }}<div><dt>Format</dt><dd>{{ . }}</dd></div>{{- end }}
-          {{- with .started }}<div><dt>Started</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{- end }}
-          {{- with .isbn }}
-          <div class="reading-book-record-item reading-book-record-item--wide">
-            <dt>ISBN</dt>
-            <dd>
-              <span>{{ . }}</span>
-              {{- with $isbnLookup }}
-              <span class="reading-book-access" aria-hidden="true"> · </span>
-              <span class="reading-book-access">
-                <a href="https://openlibrary.org/isbn/{{ . }}" rel="external noopener" target="_blank">Open Library</a>
-                <span aria-hidden="true"> · </span>
-                <a href="https://search.worldcat.org/isbn/{{ . }}" rel="external noopener" target="_blank">WorldCat</a>
-              </span>
-              {{- end }}
-            </dd>
-          </div>
-          {{- end }}
-        </dl>
-        {{- with .notes }}<p class="reading-book-notes">{{ . }}</p>{{- end }}
-        {{- with $relatedPages }}
-        <div class="reading-book-links">
-          <span class="reading-book-links-label">Related posts</span>
-          <ul>
-            {{- range . }}
-              <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-            {{- end }}
-          </ul>
-        </div>
-        {{- end }}
-      </div>
-    </details>
-    {{- end }}
+    {{- range sort $current "title" }}{{ partial "reading_entry.html" (dict "entry" . "mode" "current") }}{{- end }}
   </div>
   {{- else }}
   <div class="reading-empty">
@@ -143,92 +46,63 @@
   {{- end }}
 </section>
 
-<section class="reading-ledger" aria-labelledby="reading-ledger-title" data-reading-ledger>
+<section class="reading-ledger" aria-labelledby="reading-ledger-title">
   <div class="reading-section-heading">
     <div>
       <h2 id="reading-ledger-title">Reading ledger</h2>
-      <p>{{ len $read }} books logged</p>
-    </div>
-    <div class="reading-sort" data-reading-sort>
-      <span class="reading-sort-label">Sort by</span>
-      <button class="reading-sort-button is-active" type="button" data-reading-sort-button="read" aria-pressed="true">Year read</button>
-      <button class="reading-sort-button" type="button" data-reading-sort-button="published" aria-pressed="false">Publication year</button>
+      <p>{{ len $read }} sources logged</p>
     </div>
   </div>
 
   {{- if $read }}
-  <div class="reading-list" data-reading-list>
-    {{- range $read }}
-    {{- $relatedPages := slice -}}
-    {{- with .cite_key }}
-      {{- $relatedPages = where site.RegularPages "Params.cite_key" . -}}
-    {{- end }}
-    {{- $isbnLookup := "" -}}
-    {{- with .isbn }}{{- $isbnLookup = replaceRE "[^0-9Xx]" "" . -}}{{- end }}
-    {{- if and (eq (len $relatedPages) 0) (gt (len .related_posts) 0) }}
-      {{- range .related_posts }}
-        {{- with site.GetPage . }}
-          {{- $relatedPages = $relatedPages | append . -}}
-        {{- end }}
+  {{- $yeared := where $read "read_year" "gt" 0 -}}
+  {{- $undated := where $read "read_year" "eq" 0 -}}
+  {{- range $year := seq $currentYear -1 1900 }}
+    {{- $yearEntries := where $yeared "read_year" $year -}}
+    {{- if $yearEntries }}
+      {{- if eq $year $currentYear }}
+      {{- $displayedCurrentYear = true -}}
+      <section class="reading-year-group" aria-labelledby="reading-year-{{ $year }}">
+        <div class="reading-year-heading">
+          <h3 id="reading-year-{{ $year }}">{{ $year }}</h3>
+          <p>{{ len $yearEntries }} {{ cond (eq (len $yearEntries) 1) "source" "sources" }}</p>
+        </div>
+        <div class="reading-list">
+          {{- range $yearEntries }}{{ partial "reading_entry.html" (dict "entry" . "mode" "read") }}{{- end }}
+        </div>
+      </section>
+      {{- else }}
+      <details class="reading-year-group">
+        <summary class="reading-year-summary">
+          <span class="reading-year-title">{{ $year }}</span>
+          <span class="reading-year-count">{{ len $yearEntries }} {{ cond (eq (len $yearEntries) 1) "source" "sources" }}</span>
+        </summary>
+        <div class="reading-list">
+          {{- range $yearEntries }}{{ partial "reading_entry.html" (dict "entry" . "mode" "read") }}{{- end }}
+        </div>
+      </details>
       {{- end }}
     {{- end }}
-    <details class="reading-book" id="{{ .slug }}" data-reading-entry data-sort-read="{{ .sort_read_key }}" data-sort-published="{{ .sort_published_key }}">
-      <summary class="reading-book-summary">
-        <span class="reading-book-main">
-          <span class="reading-book-title">{{ .title }}</span>
-          {{- if or .author (gt .published_year 0) }}
-          <span class="reading-book-author">
-            {{- with .author }}<span>{{ . }}</span>{{- end -}}
-            {{- if and .author (gt .published_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
-            {{- if gt .published_year 0 }}<span class="reading-book-published">{{ .published_year }}</span>{{- end -}}
-          </span>
-          {{- end }}
-        </span>
-        <span class="reading-book-years">
-          {{- if gt .read_year 0 }}<span class="reading-book-year">{{ .read_year }}</span>{{- end }}
-        </span>
-      </summary>
-      <div class="reading-book-details">
-        <dl class="reading-book-record">
-          {{- with .published_year }}<div><dt>Published</dt><dd>{{ . }}</dd></div>{{- end }}
-          {{- with .publisher }}<div><dt>Press</dt><dd>{{ . }}</dd></div>{{- end }}
-          {{- with .format }}<div><dt>Format</dt><dd>{{ . }}</dd></div>{{- end }}
-          {{- with .finished }}<div><dt>Finished</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{- end }}
-          {{- with .isbn }}
-          <div class="reading-book-record-item reading-book-record-item--wide">
-            <dt>ISBN</dt>
-            <dd>
-              <span>{{ . }}</span>
-              {{- with $isbnLookup }}
-              <span class="reading-book-access" aria-hidden="true"> · </span>
-              <span class="reading-book-access">
-                <a href="https://openlibrary.org/isbn/{{ . }}" rel="external noopener" target="_blank">Open Library</a>
-                <span aria-hidden="true"> · </span>
-                <a href="https://search.worldcat.org/isbn/{{ . }}" rel="external noopener" target="_blank">WorldCat</a>
-              </span>
-              {{- end }}
-            </dd>
-          </div>
-          {{- end }}
-        </dl>
-        {{- with .notes }}<p class="reading-book-notes">{{ . }}</p>{{- end }}
-        {{- with $relatedPages }}
-        <div class="reading-book-links">
-          <span class="reading-book-links-label">Related posts</span>
-          <ul>
-            {{- range . }}
-              <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-            {{- end }}
-          </ul>
-        </div>
-        {{- end }}
-      </div>
-    </details>
-    {{- end }}
+  {{- end }}
+  {{- if not $displayedCurrentYear }}
+  <div class="reading-empty reading-empty--inline">
+    <p>No finished sources logged yet for {{ $currentYear }}.</p>
   </div>
+  {{- end }}
+  {{- if $undated }}
+  <details class="reading-year-group">
+    <summary class="reading-year-summary">
+      <span class="reading-year-title">Undated</span>
+      <span class="reading-year-count">{{ len $undated }} {{ cond (eq (len $undated) 1) "source" "sources" }}</span>
+    </summary>
+    <div class="reading-list">
+      {{- range $undated }}{{ partial "reading_entry.html" (dict "entry" . "mode" "read") }}{{- end }}
+    </div>
+  </details>
+  {{- end }}
   {{- else }}
   <div class="reading-empty">
-    <p>No books logged yet. Add individual YAML files under <code>data/reading/books/</code>.</p>
+    <p>No sources logged yet. Add individual YAML files under <code>data/reading/books/</code> or <code>data/reading/articles/</code>.</p>
   </div>
   {{- end }}
 </section>
