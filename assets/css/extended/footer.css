@@ -1,75 +1,33 @@
-/* ------------------------------------------------------------
-   Site footer. More like a colophon page than a utility tray:
-   quieter type, a broader panel, and slightly stronger internal
-   structure.
-   ------------------------------------------------------------ */
-
+/* Compact footer: identity, contact/social links, and RSS/privacy. */
 .site-footer {
     margin-top: 4rem;
-
-    /* Sits on the --entry tone (a step off the page background) with a top
-       rule, so the footer reads as a deliberate panel rather than text
-       floating in the page color. */
+    color: color-mix(in sRGB, var(--content) 68%, var(--secondary));
     background: var(--entry);
     border-top: 1px solid var(--rule);
-    color: color-mix(in sRGB, var(--content) 65%, var(--secondary));
     font-family: var(--meta-font);
     font-size: 0.85rem;
-    line-height: 1.6;
+    line-height: 1.55;
 }
 
 .footer-inner {
-    /* Shares the wider navigation measure on desktop so the footer feels
-       like a full site panel rather than a compact content footnote. */
+    display: grid;
+    grid-template-columns: minmax(18rem, 1.8fr) minmax(12rem, 1fr) minmax(7rem, 0.6fr);
+    gap: 2rem clamp(2rem, 5vw, 4rem);
     max-width: var(--nav-width);
     margin-inline: auto;
-    padding-inline: var(--gap);
-    display: grid;
-    grid-template-columns:
-        minmax(20rem, 2fr)
-        minmax(6rem, 0.8fr)
-        minmax(7rem, 0.9fr)
-        minmax(7rem, 0.9fr);
-    grid-template-areas: "about nav connect subscribe";
-    gap: 1.9rem clamp(1.5rem, 3vw, 2.8rem);
-    padding-top: 2.5rem;
-    padding-bottom: 2.35rem;
+    padding: 2.1rem var(--gap);
 }
 
-.footer-about {
-    grid-area: about;
-}
-
-.footer-nav {
-    grid-area: nav;
-}
-
-.footer-connect {
-    grid-area: connect;
-}
-
-.footer-subscribe {
-    grid-area: subscribe;
-}
-
-.footer-nav,
-.footer-connect,
-.footer-subscribe {
-    justify-self: end;
-}
-
-/* Column headings — and the identity column's name — stay restrained and
-   colophon-like rather than feeling like dashboard section headers. */
-.footer-heading,
-.footer-name {
-    margin: 0 0 0.9rem;
-    font-size: 0.74rem;
-    font-weight: 600;
-    font-family: var(--meta-font);
-    font-variant-caps: all-small-caps;
-    letter-spacing: 0.01em;
-    text-transform: none;
+.footer-name,
+.footer-heading {
+    margin: 0 0 0.65rem;
     color: var(--content);
+    font-family: var(--meta-font);
+    font-size: 0.78rem;
+    font-variant-caps: all-small-caps;
+    font-weight: 600;
+    letter-spacing: 0.015em;
+    text-transform: lowercase;
 }
 
 .footer-name a {
@@ -78,46 +36,59 @@
 }
 
 .footer-about-text {
-    max-width: 38ch;
-    font-size: 0.83rem;
-    line-height: 1.68;
+    max-width: 50ch;
+    font-size: 0.82rem;
 }
 
 .footer-about-text p {
     margin: 0;
 }
 
-/* Links inside the paragraph (license, humans.txt, credits, etc.): underlined
-   fine print that brightens on hover. Scoped so they don't pick up the red
-   prose-link color (.md-content a). */
-.footer-about-text a {
+.footer-about-text p + p {
+    margin-top: 0.2rem;
+}
+
+.footer-about-text a,
+.footer-contact-link,
+.footer-feed {
     color: inherit;
-    text-decoration: underline;
-    text-underline-offset: 0.2rem;
     transition: color 0.15s ease;
 }
 
-.footer-about-text a:hover {
+.footer-about-text a {
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+.footer-contact-link,
+.footer-feed {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    gap: 0.4rem;
+    margin-bottom: 0.45rem;
+    text-decoration: none;
+}
+
+.footer-about-text a:hover,
+.footer-contact-link:hover,
+.footer-feed:hover {
     color: var(--accent);
 }
 
-/* Theme toggle (moved here from the header). A small bordered chip: subtle at
-   rest, accent border + text on hover. The icon and label swap with the theme
-   via [data-theme] rules below. */
 .footer-theme-toggle {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    margin-top: 1.3rem;
-    padding: 0.32rem 0.7rem;
-    font: inherit;
-    font-family: var(--meta-font);
-    font-size: 0.78rem;
+    margin-top: 0.95rem;
+    padding: 0.3rem 0.65rem;
     color: inherit;
     background: transparent;
     border: 1px solid var(--border);
     border-radius: 999px;
     cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
     transition: color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -126,168 +97,66 @@
     border-color: var(--accent);
 }
 
-.footer-theme-toggle svg {
+.footer-theme-toggle svg,
+.footer-feed svg {
     flex-shrink: 0;
 }
 
-/* Show the icon + label that name the theme you'd switch TO: moon + "Dark
-   theme" in light mode, sun + "Light theme" in dark mode. */
 [data-theme="dark"] .theme-toggle-label--dark,
 [data-theme="light"] .theme-toggle-label--light {
     display: none;
 }
 
-/* --- Navigation column --- */
-.footer-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.42rem;
-}
-
-/* --- Links (nav + feeds): quiet by default, accent on hover. Scoped so they
-   don't pick up the red prose-link color (.md-content a). --- */
-.footer-nav a,
-.footer-feed {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.15s ease;
-}
-
-.footer-nav a {
-    font-size: 0.88rem;
-}
-
-.footer-nav a:hover,
-.footer-feed:hover {
-    color: var(--accent);
-}
-
-/* --- Connect column: stack the social links as a tidy list, and strip the
-   pill styling (border/padding from social.css) so they render like the other
-   footer links — plain glyph + label, accent on hover. --- */
 .footer-connect .social-icons {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.42rem;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.75rem;
+    margin-top: 0.4rem;
 }
 
 .footer-connect .social-icons a {
-    border: none;
-    border-radius: 0;
+    gap: 0.35rem;
     padding: 0;
-    gap: 0.4rem;
-    font-size: 0.8rem;
     color: var(--content);
     background: transparent;
+    border: 0;
+    border-radius: 0;
     box-shadow: none;
+    font-size: 0.8rem;
     transition: color 0.15s ease;
 }
 
 .footer-connect .social-icons a:hover {
     color: var(--accent);
-    border-color: transparent;
     background: transparent;
-}
-
-/* --- Subscribe column: feed links stacked, icon + label. --- */
-.footer-feeds {
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
+    border-color: transparent;
 }
 
 .footer-feed {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
 }
 
-.footer-feed svg {
-    flex-shrink: 0;
-}
-
-/* --- Legal sub-row (Privacy / Terms) beneath the columns. Sits outside the
-   grid, set off by a hairline so it reads as a deliberate strip rather than a
-   stray fifth column. --- */
-.footer-legal {
-    max-width: var(--nav-width);
-    margin-inline: auto;
-    padding: 0.95rem var(--gap) 1.45rem;
-    border-top: 1px solid var(--rule);
-    display: flex;
-    gap: 1.25rem;
-    font-size: 0.74rem;
-}
-
-.footer-legal a {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.15s ease;
-}
-
-.footer-legal a:hover {
-    color: var(--accent);
-}
-
-/* Once four columns feel pinched, move to an intentional 2x2 layout:
-   Copyright/About | Explore, then Connect | Subscribe. */
-@media (width <= 860px) {
+@media (width <= 760px) {
     .footer-inner {
-        max-width: var(--main-width);
-        grid-template-columns: minmax(0, 1fr) max-content;
-        grid-template-areas:
-            "about nav"
-            "connect subscribe";
-        gap: 2rem clamp(2rem, 10vw, 5rem);
+        grid-template-columns: 1fr 1fr;
     }
 
-    .footer-nav,
-    .footer-subscribe {
-        justify-self: end;
-    }
-
-    .footer-connect {
-        justify-self: start;
+    .footer-identity {
+        grid-column: 1 / -1;
     }
 }
 
-/* Stack to a single column on narrow viewports. */
-@media (width <= 540px) {
+@media (width <= 520px) {
     .site-footer {
-        margin-top: 2rem;
+        margin-top: 2.5rem;
     }
 
     .footer-inner {
-        max-width: var(--main-width);
         grid-template-columns: 1fr;
-        grid-template-areas:
-            "about"
-            "nav"
-            "connect"
-            "subscribe";
-        justify-items: center;
-        gap: 1.35rem;
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-        text-align: center;
+        gap: 1.4rem;
+        padding-block: 1.8rem;
     }
 
-    .footer-nav,
-    .footer-connect,
-    .footer-subscribe {
-        justify-self: center;
-    }
-
-    .footer-connect .social-icons {
-        align-items: center;
-    }
-
-    /* Match the centered single-column stack. */
-    .footer-legal {
-        justify-content: center;
+    .footer-identity {
+        grid-column: auto;
     }
 }

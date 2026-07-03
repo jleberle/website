@@ -32,17 +32,17 @@
   {{- end -}}
   {{- $relatedMaterials = sort $relatedMaterials "Date" "desc" -}}
 
-  <div class="post-context related-posts" aria-label="People connected to this page">
+  <section class="post-context related-posts" aria-label="People connected to this page">
     <span class="post-context-kicker">People</span>
     <ul class="related-posts-list">
       {{- range $people }}
       <li><span class="related-post-type">Figure</span><span class="related-posts-entry">{{ .name }}</span></li>
       {{- end }}
     </ul>
-  </div>
+  </section>
 
   {{- with $relatedMaterials }}
-  <div class="post-context related-posts" aria-label="Related materials by shared people">
+  <section class="post-context related-posts" aria-label="Related materials by shared people">
     <span class="post-context-kicker">Elsewhere on these figures</span>
     <ul class="related-posts-list">
       {{- range . }}
@@ -50,6 +50,6 @@
       <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
       {{- end }}
     </ul>
-  </div>
+  </section>
   {{- end -}}
 {{- end -}}

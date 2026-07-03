@@ -1,5 +1,5 @@
 ---
-title: "Quotes"
-description: "Quotes from books that stuck with me."
-summary: "Quotes from books that stuck with me."
+title: "Notebook"
+description: "Passages from books that stuck with me."
+summary: "Passages from books that stuck with me."
 ---

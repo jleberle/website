@@ -26,7 +26,7 @@ I do not have scheduled student hours during intersession periods or over the su
 
 ## Location
 
-By default meetings are in [my office](/contact). I am also available for virtual meetings on Zoom, {{< email "jared.eberle@okstate.edu" "email me" >}} to schedule a time and get the Zoom meeting information.
+By default meetings are in [my office](/about/#contact). I am also available for virtual meetings on Zoom, {{< email "jared.eberle@okstate.edu" "email me" >}} to schedule a time and get the Zoom meeting information.
 
 ---
 

@@ -9,22 +9,12 @@
         min-height: 260px;
     }
 
-    /* footer */
-    .footer {
-        padding: calc((var(--footer-height) - var(--gap) - 10px) / 2) var(--gap);
-    }
 }
 
 /* footer */
 @media screen and (width <= 900px) {
     .list .top-link {
         transform: translateY(-5rem);
-    }
-}
-
-@media screen and (width <= 340px) {
-    .share-buttons {
-        justify-content: unset;
     }
 }
 

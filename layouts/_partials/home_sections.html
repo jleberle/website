@@ -1,171 +1,122 @@
-{{- $dateFormat := site.Params.dateFormat | default ":date_long" }}
-{{- $articlesPage := site.GetPage "articles" }}
-{{- $quotesPage    := site.GetPage "quotes" }}
-{{- $reviewsPage  := site.GetPage "reviews" }}
-{{- $coursesPage  := site.GetPage "courses" }}
-{{- $readingPage  := site.GetPage "reading" }}
-{{- $articles := where site.RegularPages "Section" "articles" | first 5 }}
-{{- $quotes    := where site.RegularPages "Section" "quotes"    | first 5 }}
-{{- $reviews  := where site.RegularPages "Section" "reviews"  | first 5 }}
-{{- $courses  := where site.RegularPages "Section" "courses"  | first 5 }}
-{{- $readingEntries := partial "reading_entries.html" . }}
-{{- $currentReading := where $readingEntries "status" "current" }}
-{{- $recentReading := first 3 (sort (where $readingEntries "status" "ne" "current") "sort_read_key" "desc") }}
-{{- $articleTotal := len (where site.RegularPages "Section" "articles") }}
-{{- $quoteTotal := len (where site.RegularPages "Section" "quotes") }}
-{{- $reviewTotal := len (where site.RegularPages "Section" "reviews") }}
-{{- $courseTotal := len (where site.RegularPages "Section" "courses") }}
-{{- $readingTotal := len $readingEntries }}
+{{- $dateFormat := site.Params.dateFormat | default ":date_long" -}}
+{{- $writingPage := site.GetPage "archives" -}}
+{{- $quotesPage := site.GetPage "quotes" -}}
+{{- $coursesPage := site.GetPage "courses" -}}
+{{- $readingPage := site.GetPage "reading" -}}
+{{- $writing := where site.RegularPages "Section" "in" (slice "articles" "reviews") -}}
+{{- $writing = first 3 $writing.ByPublishDate.Reverse -}}
+{{- $notebook := first 1 ((where site.RegularPages "Section" "quotes").ByPublishDate.Reverse) -}}
+{{- $courses := first 4 ((where site.RegularPages "Section" "courses").ByTitle) -}}
+{{- $featuredCourses := where (where site.RegularPages "Section" "courses") "Params.home_feature" true -}}
+{{- $readingEntries := partial "reading_entries.html" . -}}
+{{- $currentReading := first 1 (sort (where $readingEntries "status" "current") "title") -}}
+{{- $recentReading := first 1 (sort (where $readingEntries "status" "ne" "current") "sort_read_key" "desc") -}}
+
 <div class="home-frontpage h-feed">
-    <section class="home-writing" aria-label="Recent writing">
+    {{- if $courses }}
+    <section class="home-teaching-band" aria-labelledby="home-teaching-title">
+        <header class="home-band-header">
+            <div>
+                <p class="page-kicker">Current work</p>
+                <h2 id="home-teaching-title" class="home-band-title"><a href="{{ $coursesPage.RelPermalink }}">Teaching</a></h2>
+                <p class="home-band-description">Representative course pages and materials.</p>
+            </div>
+            <a class="home-band-link" href="{{ $coursesPage.RelPermalink }}">Explore teaching &rarr;</a>
+        </header>
+        {{- with $featuredCourses }}
+        {{- $featuredCourse := index . 0 -}}
+        {{- with $featuredCourse.Params.cover.image -}}
+        {{- with $featuredCourse.Resources.GetMatch . -}}
+        <a class="home-teaching-visual" href="{{ $featuredCourse.RelPermalink }}">
+            <img src="{{ .RelPermalink }}"
+                alt="{{ $featuredCourse.Params.cover.alt | default $featuredCourse.Title }}"
+                width="{{ .Width }}" height="{{ .Height }}" loading="lazy" decoding="async">
+            <span>{{ $featuredCourse.Title }}</span>
+        </a>
+        {{- end }}
+        {{- end }}
+        {{- end }}
+        <div class="home-course-grid">
+            {{- range $courses }}
+            <article class="home-course-entry">
+                <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+            </article>
+            {{- end }}
+        </div>
+    </section>
+    {{- end }}
+
+    {{- if $writing }}
+    <section class="home-writing" aria-labelledby="home-writing-title">
         <header class="home-band-header">
             <div>
                 <p class="page-kicker">Writing</p>
-                <h2 class="home-band-title">Recent writing</h2>
+                <h2 id="home-writing-title" class="home-band-title">Selected writing</h2>
             </div>
+            <a class="home-band-link" href="{{ $writingPage.RelPermalink }}">Browse all writing &rarr;</a>
         </header>
-        <div class="home-primary">
-        {{- if $articles }}
-        {{- $lead := index $articles 0 }}
-        <section class="home-section home-section--articles home-section--feature">
-            <header class="home-section-header">
-                <div>
-                    <h2 class="home-section-title"><a href="{{ $articlesPage.RelPermalink }}">{{ $articlesPage.Title }}</a></h2>
-                    {{- with $articlesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
-                </div>
-                <p class="home-section-meta">{{ $articleTotal }} total</p>
-            </header>
-            <article class="home-feature-entry h-entry">
-                <h3 class="home-feature-title"><a class="u-url p-name" href="{{ $lead.RelPermalink }}">{{ $lead.Title }}</a></h3>
-                {{- $summary := partial "page_summary.html" $lead }}
+        <div class="home-selected-writing">
+            {{- range $index, $page := $writing }}
+            {{- $context := partial "record_context.html" $page }}
+            <article class="home-selected-entry h-entry{{ if eq $index 0 }} home-selected-entry--lead{{ end }}">
+                <p class="home-context-kicker">{{ index $context "entry" }}</p>
+                <h3 class="home-feature-title"><a class="u-url p-name" href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h3>
+                {{- $summary := partial "page_summary.html" $page }}
                 {{- if $summary }}
                 <p class="home-feature-summary p-summary">{{ $summary | plainify | htmlUnescape }}</p>
                 {{- end }}
-                <time datetime="{{ $lead.Date.Format "2006-01-02" }}" class="home-feature-date dt-published">{{ $lead.Date | time.Format $dateFormat }}</time>
-            </article>
-            {{- range after 1 $articles }}
-            <article class="home-list-entry h-entry">
-                <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
+                <time datetime="{{ $page.Date.Format "2006-01-02" }}" class="home-feature-date dt-published">{{ $page.Date | time.Format $dateFormat }}</time>
             </article>
             {{- end }}
-            <a class="home-section-all" href="{{ $articlesPage.RelPermalink }}">All {{ $articlesPage.Title | lower }} &rarr;</a>
-        </section>
-        {{- end }}
-
-        {{- if $reviews }}
-        {{- $lead := index $reviews 0 }}
-        <section class="home-section home-section--reviews home-section--feature">
-            <header class="home-section-header">
-                <div>
-                    <h2 class="home-section-title"><a href="{{ $reviewsPage.RelPermalink }}">{{ $reviewsPage.Title }}</a></h2>
-                    {{- with $reviewsPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
-                </div>
-                <p class="home-section-meta">{{ $reviewTotal }} total</p>
-            </header>
-            <article class="home-feature-entry h-entry">
-                <h3 class="home-feature-title"><a class="u-url p-name" href="{{ $lead.RelPermalink }}">{{ $lead.Title }}</a></h3>
-                {{- $summary := partial "page_summary.html" $lead }}
-                {{- if $summary }}
-                <p class="home-feature-summary p-summary">{{ $summary | plainify | htmlUnescape }}</p>
-                {{- end }}
-                <time datetime="{{ $lead.Date.Format "2006-01-02" }}" class="home-feature-date dt-published">{{ $lead.Date | time.Format $dateFormat }}</time>
-            </article>
-            {{- range after 1 $reviews }}
-            <article class="home-list-entry h-entry">
-                <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
-            </article>
-            {{- end }}
-            <a class="home-section-all" href="{{ $reviewsPage.RelPermalink }}">All {{ $reviewsPage.Title | lower }} &rarr;</a>
-        </section>
-        {{- end }}
         </div>
     </section>
+    {{- end }}
 
-    <section class="home-context-band" aria-label="Scholarly context">
+    <section class="home-context-band" aria-labelledby="home-context-title">
         <header class="home-band-header">
             <div>
-                <p class="page-kicker">Context</p>
-                <h2 class="home-band-title">Notebook, reading, and teaching</h2>
+                <p class="page-kicker">At the desk</p>
+                <h2 id="home-context-title" class="home-band-title">Notebook and reading</h2>
             </div>
         </header>
-        <div class="home-secondary">
-        {{- if or $currentReading $recentReading }}
-        <section class="home-section home-section--reading">
-            <header class="home-section-header">
-                <div>
-                    <h2 class="home-section-title"><a href="{{ $readingPage.RelPermalink }}">Reading</a></h2>
-                    <p class="home-section-description">Sources in progress and recent additions to the ledger.</p>
-                </div>
-                <p class="home-section-meta">{{ $readingTotal }} total</p>
-            </header>
-            {{- if $currentReading }}
-            {{- range first 2 (sort $currentReading "title") }}
-            <article class="home-context-entry home-context-entry--reading">
-                <p class="home-context-kicker">Current</p>
-                <h3 class="home-list-title"><a href="{{ printf "%s#%s" $readingPage.RelPermalink .anchor_id }}">{{ .title }}</a></h3>
-                <p class="home-context-meta">
-                    {{- with .author }}<span>{{ . }}</span>{{- end -}}
-                    {{- if and .author (gt .published_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
-                    {{- if gt .published_year 0 }}<span>{{ .published_year }}</span>{{- end -}}
-                </p>
-            </article>
+        <div class="home-secondary home-secondary--compact">
+            {{- with index $notebook 0 }}
+            <section class="home-section home-section--quotes">
+                <header class="home-section-header">
+                    <div>
+                        <h3 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Notebook</a></h3>
+                        <p class="home-section-description">Passages from sources worth keeping close.</p>
+                    </div>
+                </header>
+                <article class="home-context-entry h-entry">
+                    <h4 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h4>
+                    <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
+                </article>
+                <a class="home-section-all" href="{{ $quotesPage.RelPermalink }}">Open the notebook &rarr;</a>
+            </section>
             {{- end }}
-            {{- else }}
-            {{- range first 2 $recentReading }}
-            <article class="home-context-entry home-context-entry--reading">
-                <p class="home-context-kicker">Recently read</p>
-                <h3 class="home-list-title"><a href="{{ printf "%s#%s" $readingPage.RelPermalink .anchor_id }}">{{ .title }}</a></h3>
-                <p class="home-context-meta">
-                    {{- with .author }}<span>{{ . }}</span>{{- end -}}
-                    {{- if and .author (gt .read_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
-                    {{- if gt .read_year 0 }}<span>{{ .read_year }}</span>{{- end -}}
-                </p>
-            </article>
-            {{- end }}
-            {{- end }}
-            <a class="home-section-all" href="{{ $readingPage.RelPermalink }}">Open the reading ledger &rarr;</a>
-        </section>
-        {{- end }}
 
-        {{- if $quotes }}
-        <section class="home-section home-section--quotes">
-            <header class="home-section-header">
-                <div>
-                    <h2 class="home-section-title"><a href="{{ $quotesPage.RelPermalink }}">Notebook</a></h2>
-                    {{- with $quotesPage.Description }}<p class="home-section-description">{{ . }}</p>{{- end }}
-                </div>
-                <p class="home-section-meta">{{ $quoteTotal }} total</p>
-            </header>
-            {{- range $quotes }}
-            <article class="home-list-entry h-entry">
-                <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
-            </article>
+            {{- $reading := $currentReading | default $recentReading -}}
+            {{- with index $reading 0 }}
+            <section class="home-section home-section--reading">
+                <header class="home-section-header">
+                    <div>
+                        <h3 class="home-section-title"><a href="{{ $readingPage.RelPermalink }}">Reading</a></h3>
+                        <p class="home-section-description">The source currently on my desk.</p>
+                    </div>
+                </header>
+                <article class="home-context-entry home-context-entry--reading">
+                    <p class="home-context-kicker">{{ if eq .status "current" }}Current{{ else }}Recently read{{ end }}</p>
+                    <h4 class="home-list-title"><a href="{{ printf "%s#%s" $readingPage.RelPermalink .anchor_id }}">{{ .title }}</a></h4>
+                    <p class="home-context-meta">
+                        {{- with .author }}<span>{{ . }}</span>{{- end -}}
+                        {{- if and .author (gt .published_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
+                        {{- if gt .published_year 0 }}<span>{{ .published_year }}</span>{{- end -}}
+                    </p>
+                </article>
+                <a class="home-section-all" href="{{ $readingPage.RelPermalink }}">Open the reading ledger &rarr;</a>
+            </section>
             {{- end }}
-            <a class="home-section-all" href="{{ $quotesPage.RelPermalink }}">All quotes &rarr;</a>
-        </section>
-        {{- end }}
-
-        {{- if $courses }}
-        <section class="home-section home-section--courses">
-            <header class="home-section-header">
-                <div>
-                    <h2 class="home-section-title"><a href="{{ $coursesPage.RelPermalink }}">Teaching</a></h2>
-                    <p class="home-section-description">Representative course pages and materials.</p>
-                </div>
-                <p class="home-section-meta">{{ $courseTotal }} total</p>
-            </header>
-            {{- range $courses }}
-            <article class="home-list-entry h-entry">
-                <h3 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ .Date | time.Format $dateFormat }}</time>
-            </article>
-            {{- end }}
-            <a class="home-section-all" href="{{ $coursesPage.RelPermalink }}">All {{ $coursesPage.Title | lower }} &rarr;</a>
-        </section>
-        {{- end }}
         </div>
     </section>
 </div>

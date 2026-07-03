@@ -38,10 +38,6 @@
     border-radius: 6px;
 }
 
-.theme-toggle {
-    padding: 0 0.4rem;
-}
-
 [data-theme="dark"] .moon {
     display: none;
 }

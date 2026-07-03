@@ -13,7 +13,7 @@ body.list:not(.home) .page-header {
 .page-kicker {
     margin: 0 0 0.3rem;
     color: var(--secondary);
-    font-size: 0.76rem;
+    font-size: 0.8rem;
     font-variant-caps: all-small-caps;
     font-weight: 600;
     letter-spacing: 0.02em;
@@ -82,7 +82,7 @@ body.list:not(.home) .entry-header {
 .entry-kicker {
     margin: 0 0 0.18rem;
     color: var(--secondary);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-variant-caps: all-small-caps;
     font-weight: 600;
     letter-spacing: 0.02em;

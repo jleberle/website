@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------
    Reading ledger. Source entries built from data/reading/<type>/*.yaml:
    currently-reading rows above, expandable ledger entries below.
-   Sorting is progressive enhancement via assets/js/reading-shelf.js.
+   Older years collapse progressively through native details elements.
    ------------------------------------------------------------ */
 
 .reading-header {
@@ -280,10 +280,6 @@
 @media (width <= 640px) {
     .reading-section-heading {
         display: block;
-    }
-
-    .reading-sort {
-        margin-top: 0.6rem;
     }
 
     .reading-entry-summary {

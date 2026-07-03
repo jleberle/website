@@ -11,8 +11,10 @@
         {{- if $img }}
         {{- /* Hugo (extended) resizes AVIF natively; emit 1x + 2x variants so high-DPR screens stay crisp
                while DPR-1 screens download the smaller file. */}}
-        {{- $img1x := $img.Resize (printf "%dx%d avif" $w $h) | fingerprint }}
-        {{- $img2x := $img.Resize (printf "%dx%d avif" (mul $w 2) (mul $h 2)) | fingerprint }}
+        {{- /* Portraits need a little more quality than the large responsive-image
+               default because facial detail is especially visible at this size. */}}
+        {{- $img1x := $img.Resize (printf "%dx%d avif q75" $w $h) | fingerprint }}
+        {{- $img2x := $img.Resize (printf "%dx%d avif q75" (mul $w 2) (mul $h 2)) | fingerprint }}
         <img class="u-photo" src="{{ $img1x.RelPermalink }}"
              srcset="{{ $img1x.RelPermalink }} 1x, {{ $img2x.RelPermalink }} 2x"
              alt="{{ .imageTitle | default "Profile image" }}" width="{{ $w }}" height="{{ $h }}">

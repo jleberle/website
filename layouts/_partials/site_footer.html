@@ -1,18 +1,12 @@
 {{- if not (.Param "hideFooter") }}
 <footer class="site-footer">
     <div class="footer-inner">
-
-        <div class="footer-col footer-about">
+        <div class="footer-identity">
             <p class="footer-name"><a href="{{ "" | relLangURL }}">{{ site.Title }}</a></p>
             {{- with site.Params.footer.about }}
-            {{- /* Replace the literal {year} token with the build-year, so a
-                   copyright line in params.footer.about stays current. */}}
             <div class="footer-about-text">{{ replace . "{year}" (now.Year | string) | markdownify }}</div>
             {{- end }}
             {{- if site.Params.showThemeToggle }}
-            {{- /* Theme toggle. Same #theme-toggle id the footer script binds to,
-                   and the .moon/.sun + label visibility is driven by [data-theme]
-                   in CSS, so it works here exactly as it did in the header. */}}
             <button id="theme-toggle" type="button" class="footer-theme-toggle" accesskey="t"
                 title="Toggle light and dark theme (Alt + T)" aria-label="Toggle light and dark theme">
                 <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
@@ -37,63 +31,28 @@
             {{- end }}
         </div>
 
-        {{- with site.Menus.main }}
-        <nav class="footer-col footer-nav" aria-label="Footer">
-            <h2 class="footer-heading">Site</h2>
-            <ul>
-                {{- range . }}
-                {{- $is_external := (findRE "://" .URL) }}
-                <li><a href="{{ cond $is_external .URL (.URL | relLangURL) }}">{{ .Name }}</a></li>
-                {{- end }}
-            </ul>
-        </nav>
-        {{- end }}
-
-        {{- with site.Params.socialLinks }}
-        <div class="footer-col footer-connect">
-            <h2 class="footer-heading">Elsewhere</h2>
+        <div class="footer-connect">
+            <h2 class="footer-heading">Contact</h2>
+            <a class="footer-contact-link" href="{{ "about/#contact" | relLangURL }}">Contact information</a>
+            {{- with site.Params.socialLinks }}
             {{- partial "social_icons.html" . }}
+            {{- end }}
+        </div>
+
+        {{- with site.Home.OutputFormats.Get "rss" }}
+        <div class="footer-follow">
+            <h2 class="footer-heading">Follow</h2>
+            <a class="footer-feed" href="{{ .RelPermalink }}" title="RSS feed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 11a9 9 0 0 1 9 9"></path>
+                    <path d="M4 4a16 16 0 0 1 16 16"></path>
+                    <circle cx="5" cy="19" r="1"></circle>
+                </svg>
+                <span>RSS feed</span>
+            </a>
         </div>
         {{- end }}
-
-        {{- $rss := site.Home.OutputFormats.Get "rss" }}
-        {{- $jsonfeed := site.Home.OutputFormats.Get "jsonfeed" }}
-        {{- if or $rss $jsonfeed }}
-        <div class="footer-col footer-subscribe">
-            <h2 class="footer-heading">Feeds</h2>
-            <div class="footer-feeds">
-                {{- with $rss }}
-                <a class="footer-feed" href="{{ .RelPermalink }}" title="RSS feed">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M4 11a9 9 0 0 1 9 9"></path>
-                        <path d="M4 4a16 16 0 0 1 16 16"></path>
-                        <circle cx="5" cy="19" r="1"></circle>
-                    </svg>
-                    <span>RSS feed</span>
-                </a>
-                {{- end }}
-                {{- with $jsonfeed }}
-                <a class="footer-feed" href="{{ .RelPermalink }}" title="JSON feed">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M8 3c-2 0-3 1-3 3v3c0 1.5-.7 2.5-2 3 1.3.5 2 1.5 2 3v3c0 2 1 3 3 3"></path>
-                        <path d="M16 3c2 0 3 1 3 3v3c0 1.5.7 2.5 2 3-1.3.5-2 1.5-2 3v3c0 2-1 3-3 3"></path>
-                    </svg>
-                    <span>JSON feed</span>
-                </a>
-                {{- end }}
-            </div>
-        </div>
-        {{- end }}
-
-    </div>
-
-    {{- /* Legal sub-row beneath the columns (kept out of the main nav/menu, so
-           it stays out of the header). */}}
-    <div class="footer-legal">
-        <a href="{{ "privacy/" | relLangURL }}">Privacy</a>
-        <a href="{{ "terms/" | relLangURL }}">Terms of Use</a>
     </div>
 </footer>
 {{- end }}

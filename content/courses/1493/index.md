@@ -1,9 +1,11 @@
 ---
 title: "United States History Since 1865"
 date: 2025-04-17
+home_feature: true
 summary: A survey of the history of the United States from the end of the Civil War until the present day.
 cover:
   image: "cover.avif"
+  alt: "Three-panel photograph of a Civil Works Administration demonstration in New York City"
   hiddenInList: false
   hiddenInSingle: false
   relative: true # To use relative path for cover image, used in hugo Page-bundles

@@ -9,7 +9,7 @@
 :root {
     --gap:           28px;
     --nav-width:     1100px;
-    --main-width:    760px;
+    --main-width:    700px;
     --radius:        10px;
     --fog-mist:      #e7ecef;   /* page background — cold fog        */
     --fog-granite:   #d9e0e5;   /* panels — slate mist               */

@@ -5,13 +5,14 @@
    ------------------------------------------------------------ */
 .post-header {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 13.5rem;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-        "kicker kicker"
-        "title title"
-        "description meta"
-        "series series";
-    gap: 0.2rem 2rem;
+        "kicker"
+        "title"
+        "description"
+        "meta"
+        "series";
+    gap: 0.2rem;
     margin-bottom: 1.6rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--rule);
@@ -31,19 +32,25 @@
 
 .post-meta-header {
     grid-area: meta;
-    margin-top: 0.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.55rem;
+    margin-top: 0.35rem;
     margin-bottom: 0;
-    padding-left: 1rem;
-    border-left: 1px solid var(--border);
     color: var(--secondary);
 }
 
 .post-meta-header .post-meta-line {
-    display: block;
+    display: inline;
 }
 
 .post-meta-header .post-meta-line + .post-meta-line {
-    margin-top: 0.18rem;
+    margin-top: 0;
+}
+
+.post-meta-header .post-meta-line + .post-meta-line::before {
+    content: "·";
+    margin-right: 0.55rem;
 }
 
 .post-description {
@@ -64,22 +71,6 @@
 }
 
 @media (width <= 720px) {
-    .post-header {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "kicker"
-            "title"
-            "meta"
-            "description"
-            "series";
-        row-gap: 0.35rem;
-    }
-
-    .post-meta-header {
-        padding-left: 0;
-        border-left: 0;
-    }
-
     .post-kicker {
         margin: 0;
     }

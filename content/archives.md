@@ -1,7 +1,7 @@
 ---
-title: "Archive"
+title: "Writing"
 layout: "archives"
 # url: "/archives"
-summary: "Browse and search every post"
-description: "Browse and search every post"
+summary: "Articles, reviews, and notebook entries"
+description: "Browse articles, reviews, and notebook entries, or search the full collection."
 ---

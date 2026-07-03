@@ -9,15 +9,6 @@ body {
     line-height: 1.7;
 }
 
-/* Tighten the reading measure. The theme's 720px column runs ~80
-   characters per line in the default theme body; 700px brings it
-   toward the comfortable 60–75ch range prose reads best in,
-   regardless of which font renders it. Affects the single/list main
-   column (the home page uses --nav-width). */
-:root {
-    --main-width: 700px;
-}
-
 /* Headings (prose + page title). Fraunces, pinned at its display optical
    size (fonts.css) for more character and stroke contrast than a text
    serif gives at heading sizes. font-weight: 600 here matches the real
@@ -34,8 +25,6 @@ h1,
     font-family: Fraunces, 'Fraunces Fallback', Georgia, serif;
     text-rendering: optimizeLegibility;
     font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: -0.01em;
     text-wrap: balance;
     scroll-margin-top: 1rem;
 }
@@ -86,6 +75,16 @@ b {
 .post-content {
     hanging-punctuation: first;
     font-variant-numeric: oldstyle-nums proportional-nums;
+    font-size: 1.05rem;
+    line-height: 1.76;
+}
+
+.post-content h2 {
+    margin-top: 1.8em;
+}
+
+.post-content h3 {
+    margin-top: 1.55em;
 }
 
 .post-content blockquote {

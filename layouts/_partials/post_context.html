@@ -12,7 +12,7 @@
 {{- $externalURL := $p.external_url -}}
 
 {{- if and (eq $kind "review") (or $reviewTitle $reviewAuthor $reviewPublisher $reviewYear $reviewType) }}
-<div class="post-context post-context-review" aria-label="Reviewed work">
+<section class="post-context post-context-review" aria-label="Reviewed work">
   <span class="post-context-kicker">{{ with $reviewType }}Reviewed {{ . | lower | plainify }}{{ else }}Reviewed work{{ end }}</span>
   <p class="post-context-entry">
     {{- with $reviewAuthor }}<span>{{ . | plainify }}</span>{{ end -}}
@@ -31,9 +31,9 @@
     </span>
     {{- end }}
   </p>
-</div>
+</section>
 {{- else if and (eq $kind "quote") (or $sourceTitle $sourceAuthor $sourceYear) }}
-<div class="post-context post-context-source" aria-label="Source information">
+<section class="post-context post-context-source" aria-label="Source information">
   <span class="post-context-kicker">Source</span>
   <p class="post-context-entry">
     {{- with $sourceAuthor }}<span>{{ . | plainify }}</span>{{ end -}}
@@ -47,5 +47,5 @@
     {{- end -}}
     {{- with $sourceYear }}<span class="post-context-record"> (<span class="post-context-year">{{ . | plainify }}</span>)</span>{{ end -}}
   </p>
-</div>
+</section>
 {{- end }}

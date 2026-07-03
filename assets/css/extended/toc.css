@@ -1,13 +1,18 @@
-/* ------------------------------------------------------------
-   Table of contents. Refines the theme's details.toc to sit in
-   the site's vocabulary: an --entry surface with a visible --rule
-   border, a serif title in the heading color, and muted links
-   that pick up the accent on hover. Rendered only when a post
-   sets `showToc: true` in front matter.
-   ------------------------------------------------------------ */
+/* Compact outline for long, well-sectioned articles. */
 details.toc {
-    background: var(--entry);
-    border: 1px solid var(--rule);
+    background: transparent;
+    border: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    border-radius: 0;
+}
+
+[data-theme="dark"] details.toc {
+    background: transparent;
+}
+
+details.toc summary {
+    padding: 0.55rem 0;
 }
 
 details.toc summary .title {
@@ -29,4 +34,10 @@ details.toc summary .title {
 /* Tighter, quieter nested list than the body default. */
 .toc .inner ul {
     line-height: 1.5;
+}
+
+.toc .inner {
+    margin: 0;
+    padding: 0 0 0.7rem 1rem;
+    font-size: 0.9rem;
 }

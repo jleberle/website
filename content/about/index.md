@@ -9,15 +9,36 @@ summary: "This is who I am and how I made this little website"
 
 Welcome to my tiny little corner of the internet. My name is Jared Eberle and I'm currently a lecturer at Oklahoma State University where I teach primarily first year US history surveys and Oklahoma History. Otherwise my research focus has traditionally been on Indigenous activism in the latter half of the 20th century with a particular focus on the American Indian Movement following the occupation of Wounded Knee, South Dakota in 1973. More about all of that can be found on [my CV](/cv). 
 
-As for here, this little corner is largely meant for myself, to track the [things I've read](/reviews), the [quotes from books](/quotes) I like, or some [longer pieces of historical randomness](/articles). While I maintain a presence on social media, I have largely removed myself from it and my mental health has generally gotten better and I don't feel like I'm missing all that much. If you need to contact me for any reason, {{< email "jared@jaredeberle.org" "email" >}}  ([PGP Key](/key.asc)) is probably the best way to get in touch, but I will see your message if you send it through the Fediverse (Bluesky/Mastodon) because it'll show up on my [Micro.blog](https://eberle.blog) and you can follow me at [jared@eberle.blog](https://micro.blog/eberle). 
+As for here, this little corner is largely meant for myself, to track the [things I've read](/reviews) or [notebook entries](/quotes) collecting material from sources I find important. But you will also find [longer pieces of historical randomness](/articles) building on the shorter material found here.
 
 If you're curious what takes up my time, here's my [media diet](/sources) and the [things I use](/uses). 
 
-## The Site
+## Contact
+
+**For Students**: please consult the [student hours](/studenthours) page for additional information on utilizing student hours to discuss issues in the course you're enrolled in.
+
+**For anyone not currently enrolled**: If you want to discuss anything here, please utilize {{< email "jared@jaredeberle.org" "my email" >}}. ([PGP Key](/key.asc)) or contact me on social media linked in the footer.
+
+### Office Mailing address
+
+154 Social Sciences and Humanities\
+Department of History\
+Oklahoma State University\
+Stillwater, OK 74078
+
+### Office location
+
+My office is located on the south wing of Social Sciences and Humanities. The easiest door to use is the main level door closest to University Ave.
+
+![Screenshot of a map of Jared Eberle's office at Oklahoma State University](location.avif "Map of my office location at Oklahoma State University")
+
+[View interactive map](https://www.openstreetmap.org/?mlat=36.119911&mlon=-97.072347#map=18/36.119911/-97.072349)
+
+## Colophon
 
 {{< figure
 src="northeaster-winslow-homer.avif"
-alt="Winslow Homer's The Fog Warning showing a fisherman in a small boat looking toward an approaching bank of fog"
+alt="Winslow Homer's The Northeaster showing waves crashing on a rocky shore"
 caption="Winslow Homer, Northeaster"
 attr="Metropolitan Museum of Art, New York, NY"
 attrlink="http://www.metmuseum.org/collection/the-collection-online/search/11130"

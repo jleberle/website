@@ -21,9 +21,9 @@
   {{- $entry = "Review" -}}
   {{- $collection = "Reviews" -}}
 {{- else if eq $section "quotes" -}}
-  {{- $group = "Notebook" -}}
-  {{- $entry = "Extract" -}}
-  {{- $collection = "Quotes" -}}
+  {{- $group = "Collection" -}}
+  {{- $entry = "Notebook" -}}
+  {{- $collection = "Notebook" -}}
 {{- else if eq $section "courses" -}}
   {{- $group = "Teaching" -}}
   {{- $entry = "Course" -}}
@@ -37,9 +37,6 @@
 {{- else if eq $section "about" -}}
   {{- $group = "Reference" -}}
   {{- $collection = "About" -}}
-{{- else if eq $section "contact" -}}
-  {{- $group = "Reference" -}}
-  {{- $collection = "Contact" -}}
 {{- end -}}
 
 {{- return (dict "group" $group "entry" $entry "collection" $collection) -}}

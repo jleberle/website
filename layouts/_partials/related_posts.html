@@ -77,7 +77,7 @@
 {{- end -}}
 
 {{- with $readingMatches }}
-<div class="post-context related-posts" aria-label="Reading ledger connection">
+<section class="post-context related-posts" aria-label="Reading ledger connection">
   <span class="post-context-kicker">In the reading ledger</span>
   <ul class="related-posts-list">
     {{- range . }}
@@ -87,11 +87,11 @@
     </li>
     {{- end }}
   </ul>
-</div>
+</section>
 {{- end }}
 
 {{- with $notebookMatches }}
-<div class="post-context related-posts" aria-label="Notebook connections">
+<section class="post-context related-posts" aria-label="Notebook connections">
   <span class="post-context-kicker">From the notebook</span>
   <ul class="related-posts-list">
     {{- range . }}
@@ -99,11 +99,11 @@
     <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
     {{- end }}
   </ul>
-</div>
+</section>
 {{- end }}
 
 {{- with $sourceMatches }}
-<div class="post-context related-posts" aria-label="Related source writing">
+<section class="post-context related-posts" aria-label="Related source writing">
   <span class="post-context-kicker">Elsewhere on this source</span>
   <ul class="related-posts-list">
     {{- range . }}
@@ -111,11 +111,11 @@
     <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
     {{- end }}
   </ul>
-</div>
+</section>
 {{- end }}
 
 {{- with $relatedByTag }}
-<div class="post-context related-posts" aria-label="Related writing">
+<section class="post-context related-posts" aria-label="Related writing">
   <span class="post-context-kicker">Related writing</span>
   <ul class="related-posts-list">
     {{- range . }}
@@ -123,5 +123,5 @@
     <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
     {{- end }}
   </ul>
-</div>
+</section>
 {{- end }}

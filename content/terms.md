@@ -15,4 +15,4 @@ Please don't attack the site, hosting provider or anything else connected to the
 
 This site is operated in Oklahoma, US.
 
-If you need to discuss anything above you can find my [contact information here](/contact)
+If you need to discuss anything above you can find my [contact information here](/about/#contact)

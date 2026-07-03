@@ -8,7 +8,7 @@
 
     <div class="inner">
         {{- if (.Param "useBuiltInToc") }}
-        {{- .TableOfContents -}}
+        {{- replace .TableOfContents "<nav id=\"TableOfContents\">" "<nav id=\"TableOfContents\" aria-label=\"In this article\">" | safeHTML -}}
         {{- else }}
         {{- $largest := 6 -}}
         {{- range $headers -}}

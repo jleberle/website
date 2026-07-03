@@ -117,3 +117,10 @@
         padding-top: 0.2rem;
     }
 }
+
+@media (width <= 360px) {
+    .menu {
+        max-width: 17rem;
+        row-gap: 0.4rem;
+    }
+}

@@ -44,7 +44,7 @@
         {{/* i.e it is present in page bundle */}}
         {{- if (and (in $processableFormats $cover.MediaType.SubType) ($responsiveImages) (eq $prod true)) }}
             <img class="u-featured" loading="{{$loading}}" decoding="async"{{ if $priority }} fetchpriority="high"{{ end }}
-                srcset='{{- range $size := $sizes -}}
+                srcset="{{- range $size := $sizes -}}
                             {{- if (ge $cover.Width $size) }}
                                 {{- printf "%s %s" (($cover.Resize (printf "%sx avif" $size)).RelPermalink) (printf "%sw," $size) }}
                             {{- end }}
@@ -54,7 +54,7 @@
                                original ships once (not raw + fingerprinted) and the content
                                hash makes the immutable cache header in _headers correct on
                                in-place cover replacement. Mirrors responsive-img.html. */ -}}
-                        {{- printf "%s %dw" $imgdl ($cover.Width) }}'
+                        {{- printf "%s %dw" $imgdl ($cover.Width) }}"
                 src="{{ $imgdl }}"
                 {{- /* Match the actual rendered slot so the browser doesn't
                        fetch a 720w candidate (or the original) for a small box.

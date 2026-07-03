@@ -71,21 +71,21 @@ menu:
       name: About
       url: /about/
       weight: 10
-    - identifier: cv
-      name: CV
-      url: /cv/
-      weight: 20
-    - identifier: archive
-      name: Archive
+    - identifier: writing
+      name: Writing
       url: /archives/
+      weight: 20
+    - identifier: teaching
+      name: Teaching
+      url: /courses/
       weight: 30
     - identifier: reading
       name: Reading
       url: /reading/
       weight: 40
-    - identifier: contact
-      name: Contact
-      url: /contact/
+    - identifier: cv
+      name: CV
+      url: /cv/
       weight: 50
 
 # ------------------------------------------------------------
@@ -238,9 +238,9 @@ params:
   homeIntro:
     title: "Historian of Modern Indigenous Activism"
     content: Welcome, I'm [Jared Eberle](/about), a historian primarily focused on Indigenous activism in the late 20th century and the connections it had to global events. I'm currently a lecturer at [Oklahoma State University](https://experts.okstate.edu/jared.eberle) where my primary teaching focus is US History since 1865 and Oklahoma History.
-    imageUrl: "/images/profile.avif"
-    imageWidth: 120
-    imageHeight: 120
+    imageUrl: "/images/profile-2026.avif"
+    imageWidth: 148
+    imageHeight: 148
     imageTitle: "Profile picture of Jared Eberle"
 
   socialLinks:
@@ -258,10 +258,12 @@ params:
     fediverse_creator: "@jared@eberle.blog"
 
   footer:
-    # Rendered as Markdown in the left column of layouts/_partials/site_footer.html.
+    # Rendered as Markdown in layouts/_partials/site_footer.html.
     # The literal {year} token is replaced with the current build year.
-    about: >-
-      © 2011-{year} Jared L. Eberle. All content here is copyrighted under [creative commons](https://creativecommons.org/licenses/by-nc-sa/4.0/) and is [only human crafted](/humans.txt). Built with [Hugo](https://gohugo.io/) in Oklahoma.
+    about: |-
+      © 2011-{year} Jared L. Eberle
+
+      [Creative Commons](https://creativecommons.org/licenses/by-nc-sa/4.0/) · [Human crafted](/humans.txt) · [Privacy First](/privacy)
 
   cover:
     hidden: true # hidden by default, but still available to structured data
@@ -270,7 +272,7 @@ params:
 
   schema:
     publisherType: Person
-    image: "images/profile.avif" # Person image in JSON-LD
+    image: "images/profile-2026.avif" # Person image in JSON-LD
     sameAs:
       - "https://orcid.org/0000-0002-0867-6561"
       - "https://experts.okstate.edu/jared.eberle"
