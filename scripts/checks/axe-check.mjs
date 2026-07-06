@@ -15,7 +15,7 @@ const pages = [
   '/archives/',
   '/reading/',
   '/cv/',
-  '/contact/',
+  '/about/',
 ];
 
 const mimeTypes = new Map([
@@ -46,6 +46,20 @@ function resolveRequest(urlPath) {
   return null;
 }
 
+const missingPages = [];
+for (const pagePath of pages) {
+  if (!resolveRequest(pagePath)) missingPages.push(pagePath);
+}
+
+if (missingPages.length > 0) {
+  console.error('Axe target pages are missing from public/:');
+  for (const pagePath of missingPages) {
+    console.error(`  ${pagePath}`);
+  }
+  console.error('Build the site successfully before running axe, e.g. hugo --minify or scripts/preflight.sh --full.');
+  process.exit(1);
+}
+
 const server = createServer((req, res) => {
   const file = resolveRequest(req.url || '/');
   if (!file) {
@@ -69,7 +83,12 @@ const page = await context.newPage();
 try {
   for (const pagePath of pages) {
     const url = `${baseURL}${pagePath}`;
-    await page.goto(url, { waitUntil: 'networkidle' });
+    const response = await page.goto(url, { waitUntil: 'networkidle' });
+    if (!response || !response.ok()) {
+      failures += 1;
+      console.error(`\naxe target failed to load: ${pagePath} (${response?.status() ?? 'no response'})`);
+      continue;
+    }
     const result = await new AxeBuilder({ page }).analyze();
     if (result.violations.length === 0) {
       console.log(`axe clean: ${pagePath}`);

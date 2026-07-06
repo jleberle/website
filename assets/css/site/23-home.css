@@ -108,14 +108,14 @@ body.home .home-info {
 .home-band-description {
     max-width: 42ch;
     margin: 0.16rem 0 0;
-    color: var(--secondary);
+    color: var(--content);
     font-size: 0.88rem;
     line-height: 1.5;
 }
 
 .home-band-link {
     flex-shrink: 0;
-    color: var(--secondary);
+    color: var(--content);
     font-size: 0.84rem;
     font-variant-caps: all-small-caps;
     letter-spacing: 0.015em;
@@ -236,7 +236,7 @@ body.home .home-info {
 
 .home-feature-date,
 .home-list-date {
-    color: var(--secondary);
+    color: var(--content);
     font-size: 0.82rem;
     font-variant-caps: all-small-caps;
     letter-spacing: 0.015em;
@@ -271,13 +271,13 @@ body.home .home-info {
 }
 
 .home-section-title a {
-    color: var(--secondary);
+    color: var(--content);
 }
 
 .home-section-description {
     max-width: 36ch;
     margin: 0.12rem 0 0;
-    color: var(--secondary);
+    color: var(--content);
     font-size: 0.82rem;
     line-height: 1.45;
 }
@@ -289,7 +289,7 @@ body.home .home-info {
 
 .home-context-kicker {
     margin: 0 0 0.14rem;
-    color: var(--secondary);
+    color: var(--content);
     font-family: var(--meta-font);
     font-size: 0.74rem;
     font-variant-caps: all-small-caps;
@@ -316,7 +316,7 @@ body.home .home-info {
 
 .home-context-meta {
     margin: 0.18rem 0 0;
-    color: var(--secondary);
+    color: var(--content);
     font-size: 0.82rem;
     line-height: 1.45;
 }
@@ -324,7 +324,7 @@ body.home .home-info {
 .home-section-all {
     display: block;
     margin-top: 0.55rem;
-    color: var(--secondary);
+    color: var(--content);
     font-size: 0.8rem;
     font-variant-caps: all-small-caps;
     letter-spacing: 0.015em;
