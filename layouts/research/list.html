@@ -1,0 +1,22 @@
+{{- define "main" }}
+
+<header class="page-header research-header">
+  <p class="page-kicker">Explore</p>
+  <h1>{{ .Title }}</h1>
+  {{- with .Description }}<div class="post-description">{{ . }}</div>{{ end }}
+</header>
+
+{{- with .Content }}<div class="research-intro md-content">{{ . }}</div>{{ end }}
+
+<div class="research-path-list">
+  {{- range .RegularPages.ByWeight }}
+  <article class="research-path-card">
+    <p class="page-kicker">Guided path</p>
+    <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    {{- with .Description }}<p>{{ . }}</p>{{ end }}
+    <span>{{ len (.Params.items | default (slice)) }} stops</span>
+  </article>
+  {{- end }}
+</div>
+
+{{- end }}

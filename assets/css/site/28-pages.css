@@ -20,6 +20,124 @@
 
 
 /* ------------------------------------------------------------
+   Research paths. Editorially ordered routes through existing pages and
+   reading-ledger sources; the numbered sequence carries the hierarchy without
+   introducing card-heavy navigation or another taxonomy.
+   ------------------------------------------------------------ */
+.research-intro,
+.research-path-intro {
+    max-width: 62ch;
+    margin-bottom: 1.6rem;
+    color: var(--content);
+}
+
+.research-path-list {
+    display: grid;
+    gap: 1.2rem;
+}
+
+.research-path-card {
+    padding: 1rem 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--border);
+}
+
+.research-path-card h2 {
+    margin: 0.12rem 0 0.35rem;
+    font-size: 1.35rem;
+}
+
+.research-path-card h2 a,
+.research-path-header .page-kicker a,
+.research-path-stop h2 a {
+    color: var(--primary);
+}
+
+.research-path-card > p:not(.page-kicker) {
+    max-width: 62ch;
+    margin: 0;
+    color: var(--content);
+    line-height: 1.55;
+}
+
+.research-path-card > span {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--secondary);
+    font-family: var(--meta-font);
+    font-size: 0.76rem;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+}
+
+.research-path-sequence {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: research-stop;
+}
+
+.research-path-stop {
+    position: relative;
+    padding: 1.1rem 0 1.2rem 3rem;
+    border-top: 1px solid var(--rule);
+    counter-increment: research-stop;
+}
+
+.research-path-stop:last-child {
+    border-bottom: 1px solid var(--rule);
+}
+
+.research-path-stop::before {
+    content: counter(research-stop, decimal-leading-zero);
+    position: absolute;
+    top: 1.15rem;
+    left: 0;
+    color: var(--secondary);
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono',
+                 Menlo, Consolas, 'Liberation Mono', 'Cascadia Code',
+                 'Roboto Mono', monospace;
+    font-size: 0.78rem;
+}
+
+.research-path-type,
+.research-path-meta {
+    margin: 0;
+    color: var(--secondary);
+    font-family: var(--meta-font);
+    font-size: 0.76rem;
+}
+
+.research-path-type {
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+}
+
+.research-path-stop h2 {
+    margin: 0.12rem 0 0.35rem;
+    font-size: 1.25rem;
+    line-height: 1.25;
+}
+
+.research-path-note {
+    max-width: 60ch;
+    margin: 0 0 0.45rem;
+    color: var(--content);
+    line-height: 1.58;
+}
+
+.research-path-card h2 a:hover,
+.research-path-header .page-kicker a:hover,
+.research-path-stop h2 a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.24rem;
+}
+
+
+/* ------------------------------------------------------------
    404 page. Centers a large numeral, a short message and a row of
    recovery links in the viewport. Markup is in layouts/404.html.
    ------------------------------------------------------------ */

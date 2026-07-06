@@ -1,0 +1,5 @@
+{{- $latest := dict -}}
+{{- with .Params.revisions -}}
+  {{- $latest = index (last 1 .) 0 -}}
+{{- end -}}
+{{- return $latest -}}

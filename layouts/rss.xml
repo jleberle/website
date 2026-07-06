@@ -28,7 +28,7 @@
 {{- $pages = $pages | first $limit }}
 {{- end }}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>{{ site.Title }}</title>
     <link>{{ .Permalink }}</link>
@@ -52,15 +52,31 @@
     {{- with .OutputFormats.Get "RSS" }}
     {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
     {{- end }}
+    {{- with site.Params.websubHub }}
+    {{ printf "<atom:link href=%q rel=\"hub\" />" . | safeHTML }}
+    {{- end }}
     {{- range $pages }}
     {{- $page := . }}
+    {{- $cover := "" }}
+    {{- with $page.Params.cover.image }}
+      {{- with $page.Resources.GetMatch . }}{{ $cover = (. | resources.Fingerprint).Permalink }}{{ else }}{{ $cover = print $page.Permalink . }}{{ end }}
+    {{- end }}
     <item>
       <title>{{ .Title }}</title>
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
-      <guid isPermaLink="false">{{ .Permalink }}</guid>
+      {{- with partial "author.html" . }}<dc:creator>{{ . | plainify }}</dc:creator>{{ end }}
+      <guid isPermaLink="true">{{ .Permalink }}</guid>
       <description>{{ partial "page_summary.html" . | html }}</description>
+      {{- $categories := union (.Params.categories | default (slice)) (.Params.tags | default (slice)) }}
+      {{- range $categories }}<category>{{ . }}</category>{{ end }}
+      {{- with $cover }}
+      <media:content url="{{ . }}" medium="image">
+        <media:title type="plain">{{ $page.Title }}</media:title>
+        <media:description type="plain">{{ $page.Params.cover.alt | default $page.Title }}</media:description>
+      </media:content>
+      {{- end }}
       {{- if and site.Params.rssFullContent .Content }}
       {{- /* Absolutize root-relative URLs and drop feed-irrelevant responsive/
              lightbox attributes so images resolve in feed readers. Fragment-only
@@ -70,14 +86,11 @@
             | replaceRE `href="#([^"]*)"` (printf `href="%s#$1"` .Permalink)
             | replaceRE `(src|href)="(/[^"]*)"` (printf `$1="%s$2"` $base) }}
       {{- /* Lead with the frontmatter cover image (PaperMod renders it outside
-             .Content, so it's otherwise absent), unless the body embeds it. */ -}}
+             .Content, so it's otherwise absent), unless the body already embeds
+             either the original cover filename or Hugo's `cover_hu_*` variant. */ -}}
       {{- with $page.Params.cover.image }}
-      {{- $cover := "" }}
-      {{- /* Fingerprint so the feed shares the one content-hashed cover file with
-             the page/schema rather than publishing a second raw copy. */ -}}
-      {{- with $page.Resources.GetMatch . }}{{ $cover = (. | resources.Fingerprint).Permalink }}{{ else }}{{ $cover = print $page.Permalink . }}{{ end }}
       {{- $stem := strings.TrimSuffix (path.Ext .) (path.Base .) }}
-      {{- if not (strings.Contains $c (printf "/%s." $stem)) }}
+      {{- if not (or (strings.Contains $c (printf "/%s." $stem)) (strings.Contains $c (printf "/%s_" $stem))) }}
       {{- $alt := $page.Params.cover.alt | default $page.Title }}
       {{- $c = printf "<img src=%q alt=%q>\n%s" $cover $alt $c }}
       {{- end }}

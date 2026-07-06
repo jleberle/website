@@ -21,6 +21,10 @@ buildExpired: false
 pagination:
   pagerSize: 10
 
+services:
+  rss:
+    limit: 20
+
 minify:
   disableXML: true
   minifyOutput: true
@@ -216,6 +220,7 @@ params:
   showWordCount: true
   showRssLink: true
   rssFullContent: true # emit <content:encoded> full article body in RSS
+  websubHub: "https://pubsubhubbub.appspot.com/"
   useBuiltInToc: true
   assets:
     favicon: "favicon.ico"

@@ -107,8 +107,10 @@
   "image": {{ .Permalink }},
     {{- end }}
   {{- end -}}
+  {{- $dateModified := .PublishDate -}}
+  {{- with partial "latest_revision.html" . }}{{ $dateModified = time.AsTime .date }}{{ end -}}
   "datePublished": {{ .PublishDate }},
-  "dateModified": {{ .Lastmod }},
+  "dateModified": {{ $dateModified }},
   {{- with (.Params.author | default site.Params.author) }}
   "author":
     {{- if (or (eq (printf "%T" .) "[]string") (eq (printf "%T" .) "[]interface {}")) -}}

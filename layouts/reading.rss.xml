@@ -88,7 +88,7 @@
 {{- end }}
 
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>{{ .Title }} | {{ site.Title }}</title>
     <link>{{ .Permalink }}</link>
@@ -110,6 +110,9 @@
     {{- end }}
     {{- with .OutputFormats.Get "RSS" }}
     {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end }}
+    {{- with site.Params.websubHub }}
+    {{ printf "<atom:link href=%q rel=\"hub\" />" . | safeHTML }}
     {{- end }}
     {{- range $events }}
     {{- $action := cond (eq .event_type "started") "Started reading" "Finished reading" -}}
@@ -136,6 +139,7 @@
       <link>{{ .anchor }}</link>
       <pubDate>{{ (time.AsTime .announced_at).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
+      {{- with $authorName }}<dc:creator>{{ . }}</dc:creator>{{ end }}
       <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s:%s" .type .slug .event_type }}</guid>
       <description>{{ $plainBody }}</description>
       <category>reading</category>

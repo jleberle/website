@@ -14,12 +14,14 @@
 #   9. published references  — every internal src/href/srcset/feed URL in the
 #                               output must resolve to a published file; guards
 #                               the build.publishResources=false resource pattern
+#   10. page-size-lint.py    — oversized HTML pages relative to this site's norms
+#   11. image-display-lint.py — image candidates too small for their rendered slot
 #
 # Full mode adds:
-#   10. html-validate        — HTML5 validation of every page
-#   11. stylelint            — CSS lint (rules tuned in .stylelintrc.json)
-#   12. checks/a11y-lint.py  — content images without alt + heading-level skips
-#   13. lychee --offline     — internal links/files in public/
+#   12. html-validate        — HTML5 validation of every page
+#   13. stylelint            — CSS lint (rules tuned in .stylelintrc.json)
+#   14. checks/a11y-lint.py  — content images without alt + heading-level skips
+#   15. lychee --offline     — internal links/files in public/
 #
 # StaticHost deploys on push independently of GitHub Actions, so the default
 # gate stays focused on "will this build and publish correctly right now?"
@@ -133,6 +135,22 @@ if SCAN_OUT=$(python3 scripts/checks/published-reference-lint.py public 2>&1); t
 else
   echo "$SCAN_OUT" | head -20
   fail "dangling references (a template likely builds a URL by string instead of invoking the resource)"
+fi
+
+step "page size lint"
+if PAGE_OUT=$(python3 scripts/checks/page-size-lint.py public 2>&1); then
+  pass "$PAGE_OUT"
+else
+  echo "$PAGE_OUT"
+  fail "oversized HTML pages"
+fi
+
+step "image display lint"
+if DISPLAY_OUT=$(python3 scripts/checks/image-display-lint.py public 2>&1); then
+  pass "$DISPLAY_OUT"
+else
+  echo "$DISPLAY_OUT"
+  fail "images likely to render soft or blurry on site"
 fi
 
 if $FULL; then

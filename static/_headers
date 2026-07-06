@@ -64,6 +64,15 @@
 /*.xml
     Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
+/index.xml
+    Cache-Control: public, max-age=0, must-revalidate
+
+/reading/index.xml
+    Cache-Control: public, max-age=0, must-revalidate
+
+/feed.json
+    Cache-Control: public, max-age=0, must-revalidate
+
 /robots.txt
     Cache-Control: public, max-age=604800, stale-while-revalidate=86400
 

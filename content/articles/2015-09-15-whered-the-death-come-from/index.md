@@ -2,6 +2,9 @@
 title: "Where'd the Death Come From?"
 slug: "whered-the-death-come-from"
 date: 2015-09-15
+revisions:
+- date: 2026-06-07
+  summary: "Updated the obsolete Alexa reference, repaired citations, and added present-day context."
 author: "Jared L. Eberle"
 description: "Trying to combat misinformation on Wikipedia."
 summary: "Trying to understand why Wikipedia reports a federal officer's death at the Wounded Knee occupation"

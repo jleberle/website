@@ -26,6 +26,9 @@
     {{ .Description }}
   </div>
   {{- end }}
+  {{- with site.GetPage "/research" }}
+  <p class="archive-research-link"><a href="{{ .RelPermalink }}">Explore guided research paths &rarr;</a></p>
+  {{- end }}
 </header>
 
 {{- $pages := where site.RegularPages "Type" "in" site.Params.contentSections }}

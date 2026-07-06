@@ -375,3 +375,15 @@
 #lightbox-close:hover {
     opacity: 1;
 }
+
+/* Named focal points let cropped cover images preserve their important region
+   without CSP-blocked inline styles or page-specific CSS. */
+img[data-focal-point="top-left"] { object-position: left top; }
+img[data-focal-point="top"] { object-position: center top; }
+img[data-focal-point="top-right"] { object-position: right top; }
+img[data-focal-point="left"] { object-position: left center; }
+img[data-focal-point="center"] { object-position: center; }
+img[data-focal-point="right"] { object-position: right center; }
+img[data-focal-point="bottom-left"] { object-position: left bottom; }
+img[data-focal-point="bottom"] { object-position: center bottom; }
+img[data-focal-point="bottom-right"] { object-position: right bottom; }

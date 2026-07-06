@@ -43,6 +43,8 @@ Default `scripts/preflight.sh` checks:
 7. feed lint
 8. CSP hash drift
 9. published-reference scan
+10. page-size lint
+11. image display lint
 
 Useful modes:
 
@@ -54,6 +56,12 @@ scripts/preflight.sh --full
 
 - `--strict` fails on Hugo warnings
 - `--full` adds the slower CI-grade checks
+
+The two new size-oriented checks are intentionally site-specific:
+
+- page size lint warns once a normal HTML page exceeds `96 KiB` raw and fails at `128 KiB`
+- `reading/index.html` gets a relaxed ceiling because it is intentionally denser
+- image display lint checks generated responsive image candidates against the real slots the theme asks the browser to fill, so it can flag likely soft/blurry images before publish
 
 ## GitHub Actions
 
@@ -98,3 +106,30 @@ Scheduled CI also runs broader link checking.
 - HTML and CSS linting run as part of the full CI suite
 
 These are intentionally CI-backed as well as locally runnable.
+
+## Feed Notifications
+
+The main and reading RSS feeds advertise the public Google WebSub hub through
+`atom:link rel="hub"`, alongside their canonical `rel="self"` links. The JSON
+Feed advertises the same endpoint through its JSON Feed 1.1 `hubs` array. After
+a successful push validation on GitHub, `scripts/notify-websub.py` waits until
+StaticHost serves the exact newly built feeds and then sends one publish ping
+for all three topics. It then sends Micro.blog's form-encoded `/ping` request
+for each feed, allowing Micro.blog to refresh registered sources immediately.
+
+Notification is best-effort and cannot block deployment: the workflow step
+uses `continue-on-error` because the site and feeds remain fully functional
+when either external service is temporarily unavailable. The two RSS URLs use
+`max-age=0, must-revalidate` so the hub cannot retrieve an hour-old cached
+copy after being notified.
+
+To inspect discovery without contacting the hub:
+
+```sh
+hugo --minify
+scripts/notify-websub.py --dry-run public/index.xml public/reading/index.xml public/feed.json
+```
+
+The hub URL is configured as `params.websubHub` in `hugo.yaml`. Keep the
+notification script's supported publish form in mind if changing providers;
+the current hub accepts repeated `hub.url` fields.

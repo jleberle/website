@@ -42,6 +42,36 @@ That script:
 
 `description` is the canonical public-facing and SEO blurb. `summary` is only for cases where the list/feed teaser should differ.
 
+For a substantive revision to published writing, add a chronological
+`revisions` list. Do not use it for formatting, image conversion, metadata
+cleanup, or repaired site plumbing:
+
+```yaml
+revisions:
+  - date: 2026-06-07
+    summary: "Updated an obsolete reference and added present-day context."
+```
+
+The latest entry supplies the visible “Originally published / Revised”
+provenance line and the modification date in feeds and structured metadata.
+Git-derived `lastmod` remains technical build metadata and is not presented as
+evidence that the writing itself changed.
+
+When a cover is cropped in a compact presentation, `focalPoint` keeps its
+important subject in view. The default is `center`; supported positions are
+`top-left`, `top`, `top-right`, `left`, `center`, `right`, `bottom-left`,
+`bottom`, and `bottom-right`:
+
+```yaml
+cover:
+  image: "cover.avif"
+  alt: "Portrait of an activist speaking at a podium"
+  focalPoint: "top"
+```
+
+An unsupported value fails the Hugo build instead of silently producing an
+incorrect crop. The setting has no effect where the full image is shown.
+
 Optional review metadata:
 
 - `reviewed_type`
@@ -92,6 +122,28 @@ people:
 ```
 
 Authority records live in `data/people/`. At minimum, add `name`; other fields are optional. This keeps person names consistent and allows the footer apparatus to surface `People` and `Elsewhere on these figures` blocks without exposing backend-only keys.
+
+## Research Paths
+
+Research paths live in `content/research/` and provide short, intentionally
+ordered routes through existing work. A path may reference a site page by its
+published URL path or a reading-ledger source by `cite_key`:
+
+```yaml
+items:
+  - page: "articles/example-article"
+    note: "Why this is the useful place to begin."
+  - page: "courses/1493"
+    note: "The broader teaching context."
+  - reading: "example2026"
+    note: "A source for continuing beyond the site."
+```
+
+Every item requires a short editorial `note`; the sequence should explain a
+route rather than merely duplicate a tag page. Missing pages, unknown reading
+keys, duplicate reading keys, or malformed items fail the Hugo build. Research
+paths are deliberately excluded from the main feed and writing archive; the
+archive links to their own landing page.
 
 ## Scripts
 

@@ -74,8 +74,10 @@
   <footer class="post-footer">
     {{- $foot := slice }}
     {{- if not (.Param "hideMeta") }}
-    {{- if and (not .Lastmod.IsZero) (not (eq (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02"))) }}
-      {{- $foot = $foot | append (printf "<span title=\"%s\">Updated %s</span>" .Lastmod (.Lastmod | time.Format (default ":date_long" site.Params.dateFormat))) }}
+    {{- with partial "latest_revision.html" . }}
+      {{- $revised := time.AsTime .date }}
+      {{- $foot = $foot | append (printf "<span>Originally published %s</span>" ($.Date | time.Format (default ":date_long" site.Params.dateFormat))) }}
+      {{- $foot = $foot | append (printf "<span title=\"%s\">Revised %s</span>" (.summary | default "Substantively revised") ($revised | time.Format (default ":date_long" site.Params.dateFormat))) }}
     {{- end }}
     {{- if and (.Param "suggestChanges.url") (not (.Param "suggestChanges.disabled")) }}
       {{- $editURL := .Param "suggestChanges.url" }}

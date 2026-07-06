@@ -87,6 +87,11 @@ jobs:
           mkdir -p .ci-artifacts
           bash -o pipefail -c 'npm run test:axe 2>&1 | tee .ci-artifacts/axe.log'
 
+      - name: Notify feed services after deployment
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: python3 scripts/notify-websub.py --wait 300 public/index.xml public/reading/index.xml public/feed.json
+
       - name: Run external link check
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |

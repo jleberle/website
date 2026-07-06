@@ -3,7 +3,7 @@
 {{- end -}}
 
 <!DOCTYPE html>
-{{- if and (not .IsHome) (in (slice "section" "term" "taxonomy") .Kind) }}
+{{- if and (not .IsHome) (ne .Section "research") (in (slice "section" "term" "taxonomy") .Kind) }}
 {{- $pages := union .RegularPages .Sections }}
 {{- .Store.Set "listPaginator" (.Paginate $pages) }}
 {{- end }}

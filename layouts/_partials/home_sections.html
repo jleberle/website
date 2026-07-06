@@ -42,6 +42,7 @@
             <img src="{{ $fallback.RelPermalink }}"
                 srcset="{{ delimit $candidates ", " }}"
                 sizes="(max-width: 768px) calc(100vw - 28px), (max-width: 1080px) calc(100vw - 56px), 1024px"
+                data-focal-point="{{ $featuredCourse.Params.cover.focalPoint | default "center" | lower }}"
                 alt="{{ $featuredCourse.Params.cover.alt | default $featuredCourse.Title }}"
                 width="{{ $image.Width }}" height="{{ $image.Height }}" loading="eager" decoding="async" fetchpriority="high">
             <span>{{ $featuredCourse.Title }}</span>

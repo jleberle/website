@@ -23,6 +23,8 @@ LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1"}
 RSS_NS = {
     "atom": "http://www.w3.org/2005/Atom",
     "content": "http://purl.org/rss/1.0/modules/content/",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "media": "http://search.yahoo.com/mrss/",
 }
 
 
@@ -112,9 +114,16 @@ def check_rss(path: Path, public_dir: Path) -> list[Problem]:
     for field in ("link",):
         problems.extend(check_absolute_url(text_of(channel.find(field)), rel, f"channel {field}"))
 
-    atom_link = channel.find("atom:link", RSS_NS)
-    if atom_link is not None:
-        problems.extend(check_absolute_url(atom_link.get("href", ""), rel, "atom:link href"))
+    atom_links = channel.findall("atom:link", RSS_NS)
+    self_links = [link for link in atom_links if link.get("rel") == "self"]
+    hub_links = [link for link in atom_links if link.get("rel") == "hub"]
+    if len(self_links) != 1:
+        problems.append(Problem(rel, f"expected exactly one atom:link rel=self, found {len(self_links)}"))
+    if not hub_links:
+        problems.append(Problem(rel, "WebSub atom:link rel=hub is missing"))
+    for atom_link in atom_links:
+        relation = atom_link.get("rel", "(missing rel)")
+        problems.extend(check_absolute_url(atom_link.get("href", ""), rel, f"atom:link rel={relation} href"))
 
     image = channel.find("image")
     if image is not None:
@@ -132,6 +141,16 @@ def check_rss(path: Path, public_dir: Path) -> list[Problem]:
         guid_value = text_of(guid)
         if guid_value and (guid is None or guid.get("isPermaLink", "").lower() != "false"):
             problems.extend(check_absolute_url(guid_value, item_source, "guid"))
+        if guid_value == link and guid is not None and guid.get("isPermaLink", "").lower() == "false":
+            problems.append(Problem(item_source, "URL-valued guid is incorrectly marked isPermaLink=false"))
+
+        creator = text_of(item.find("dc:creator", RSS_NS))
+        if not creator:
+            problems.append(Problem(item_source, "dc:creator is missing"))
+
+        media = item.find("media:content", RSS_NS)
+        if media is not None:
+            problems.extend(check_absolute_url(media.get("url", ""), item_source, "media:content url"))
 
         description = text_of(item.find("description"))
         if description:
@@ -152,6 +171,13 @@ def check_json_feed(path: Path, public_dir: Path) -> list[Problem]:
         return [Problem(rel, f"malformed JSON: {exc}")]
 
     problems: list[Problem] = []
+    if not feed.get("language"):
+        problems.append(Problem(rel, "language is missing"))
+    websub_hubs = [hub for hub in feed.get("hubs", []) if hub.get("type") == "WebSub"]
+    if not websub_hubs:
+        problems.append(Problem(rel, "WebSub hub is missing"))
+    for hub in websub_hubs:
+        problems.extend(check_absolute_url(str(hub.get("url", "")), rel, "WebSub hub url"))
     for field in ("home_page_url", "feed_url", "icon", "favicon"):
         value = feed.get(field)
         if value:

@@ -187,3 +187,19 @@
         padding-inline: 0.35rem;
     }
 }
+
+.archive-research-link {
+    margin: 0.7rem 0 0;
+    font-family: var(--meta-font);
+    font-size: 0.82rem;
+}
+
+.archive-research-link a {
+    color: var(--secondary);
+    text-decoration: underline;
+    text-underline-offset: 0.22rem;
+}
+
+.archive-research-link a:hover {
+    color: var(--accent);
+}
