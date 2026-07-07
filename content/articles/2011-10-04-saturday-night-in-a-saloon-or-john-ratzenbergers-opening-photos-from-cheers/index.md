@@ -6,11 +6,9 @@ author: "Jared L. Eberle"
 description: "Where everybody knows your name in Minnesota"
 summary: "Finding Cheers' opening photos in the archives"
 categories:
-- "General History"
+- "American History"
 tags:
 - "1930s"
-- "Minnesota"
-- "Photography"
 cover:
   image: "cover.avif"
   alt: "Still of Cheers Opening with John Ratzenberger's credit"

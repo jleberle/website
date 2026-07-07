@@ -9,10 +9,6 @@ cover:
   hiddenInSingle: false
   caption: "Sun Dance Scene, Art Institute of Chicago"
   relative: true # To use relative path for cover image, used in hugo Page-bundles
-categories:
-- Indigenous History
-tags:
-- Native American History
 slug: 3793
 description: "Introduction to the history of Native American peoples from encounters with European colonists to the present."
 summary: "Introduction to the history of Native American peoples from encounters with European colonists to the present, with an emphasis on tribal nationhood and sovereignty, war and diplomacy, treaty rights and federal policies, indigeneity in modern contexts, and a leadership in Indian Country."

@@ -9,7 +9,6 @@ categories:
 - "Indigenous History"
 tags:
 - "1990s"
-- "Connecticut"
 - "Tribal Recognition"
 cover:
   image: "cover.avif"

@@ -7,11 +7,10 @@ author: "Jared L. Eberle"
 description: "A haunted Louisiana plantation?"
 summary: "Story of a haunted Louisiana Plantation"
 categories:
-- "General History"
+- "American History"
 tags:
 - "19th Century"
 - "Folklore"
-- "Louisiana"
 cover:
   image: "cover.avif"
   alt: "Screenshot of New York Times article on the Johnson Gosset Plantation"

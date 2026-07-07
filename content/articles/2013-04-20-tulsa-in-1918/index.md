@@ -5,11 +5,9 @@ date: 2013-04-20
 description: "1918 map of Tulsa, Oklahoma"
 summary: "1918 map of Tulsa, Oklahoma"
 categories:
-- "General History"
+- "American History"
 tags:
-- "1910s"
 - "Oklahoma"
-- "Urban History"
 cover:
   image: "cover.avif"
   alt: "1918 Aerial Map of Tulsa, Oklahoma"

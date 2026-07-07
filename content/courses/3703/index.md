@@ -9,11 +9,6 @@ cover:
   hiddenInList: false
   hiddenInSingle: false
   relative: true # To use relative path for cover image, used in hugo Page-bundles
-categories:
-- General History
-tags:
-- Oklahoma
-- Oklahoma History
 slug: 3703
 description: "The history of the region now known as Oklahoma from the earliest Indigenous arrivals through the recent past"
 ---

@@ -9,7 +9,6 @@ categories:
 tags:
 - "1970s"
 - "American Indian Movement"
-- "Massachusetts"
 cover:
   image: "cover.avif"
   alt: "Russell Means in front of the statue of Massasoit"

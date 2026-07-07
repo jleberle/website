@@ -12,11 +12,10 @@ reviewed_year: "2026"
 cite_key: "jennings2026"
 external_url: "https://www.hachettebookgroup.com/titles/chris-jennings/end-of-days/9780316381949/"
 categories:
-- "Reviews"
+- "American History"
 tags:
 - "1990s"
 - "Federal Law Enforcement"
-- "Idaho"
 cover:
   image: "cover.avif"
   alt: "Front cover of End of Days: Ruby Ridge, the Apocalypse, and the Unmaking of America"

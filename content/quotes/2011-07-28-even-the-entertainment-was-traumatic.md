@@ -10,10 +10,9 @@ source_author: "Timothy Egan"
 source_year: "2006"
 external_url: "https://archive.org/details/worsthardtimeunt0000timo/page/38/mode/2up"
 categories:
-- "General History"
+- "American History"
 tags:
 - "1930s"
-- "Dust Bowl"
 - "Oklahoma"
 ---
 

@@ -9,8 +9,7 @@ categories:
 - "Indigenous History"
 tags:
 - "1960s"
-- "Folk Music"
-- "Protest Music"
+- "Music"
 cover:
   image: "cover.avif"
   alt: "Peter LaFarge"

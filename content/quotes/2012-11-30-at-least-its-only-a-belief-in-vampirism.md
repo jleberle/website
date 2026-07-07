@@ -10,7 +10,7 @@ source_author: "George R. Stetson"
 source_year: "1896"
 external_url: "https://www.jstor.org/stable/658266"
 categories:
-- "General History"
+- "American History"
 tags:
 - "19th Century"
 - "Folklore"

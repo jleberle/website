@@ -9,7 +9,6 @@ categories:
 - "Indigenous History"
 tags:
 - "1970s"
-- "Archives"
 - "Music"
 cover:
   image: "cover.avif"

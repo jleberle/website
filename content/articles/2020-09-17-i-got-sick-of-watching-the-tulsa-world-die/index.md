@@ -6,9 +6,8 @@ author: "Jared L. Eberle"
 description: "Why I cancelled the Tulsa World"
 summary: "Why I cancelled the Tulsa World"
 categories:
-- "General History"
+- "Culture and Media"
 tags:
-- "2020s"
 - "Journalism"
 - "Oklahoma"
 ---

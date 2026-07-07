@@ -7,10 +7,9 @@ draft: false
 description: The first in a series of posts about using Claude this summer
 series: "My Summer With Claude"
 categories:
-  - Articles
+- "Personal"
 tags:
-  - Personal
-  - AI
+- "AI"
 ---
 The goal for this summer is to tackle the smaller goals I have had had on my to-do lists for in many cases years. These are things that are not going to cause a ton of issues if I do not do them, so they have usually ended up remaining at the bottom of the to-dos but now is the time to finally tackle them. How many of them will get done? Not entirely sure, summers always start with the same youthful vibrancy that people have when they start out with New Year's resolutions on January 1st. Meanwhile summers usually end with the simple fact that not nearly as much happened as you would have hoped. 
 

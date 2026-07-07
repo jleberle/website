@@ -10,11 +10,6 @@ cover:
   hiddenInSingle: false
   caption: ""
   relative: true # To use relative path for cover image, used in hugo Page-bundles
-categories:
-- General History
-tags:
-- American History
-- Survey Course
 slug: 1103
 description: "This course provides a general introduction to major themes and events in the history of North America and the United States beginning with earliest Indigenous arrivals and continuing through the present day"
 ---

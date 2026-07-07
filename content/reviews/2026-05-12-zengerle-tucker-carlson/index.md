@@ -12,10 +12,8 @@ reviewed_year: "2026"
 cite_key: "zengerle2026"
 external_url: "https://zandoprojects.com/books/hated-by-all-the-right-people-hardcover"
 categories:
-- "Reviews"
+- "Culture and Media"
 tags:
-- "2000s"
-- "Conservative Media"
 - "Journalism"
 cover:
   image: "cover.avif"

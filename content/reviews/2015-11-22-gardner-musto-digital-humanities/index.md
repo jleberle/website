@@ -13,10 +13,9 @@ reviewed_year: "2015"
 cite_key: "gardiner2015"
 external_url: "https://www.cambridge.org/core/books/digital-humanities/E31D46FD97BF94B81B461F7234D29BE4"
 categories:
-- "Reviews"
+- "Culture and Media"
 tags:
-- "Digital Humanities"
-- "Methodology"
+- "Historiography"
 cover:
   image: "cover.avif"
   alt: "Front cover of Digital Humanities"

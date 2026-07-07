@@ -8,8 +8,6 @@ summary: "A report on the trip to the Indian National Finals Rodeo in 2015"
 categories:
 - "Indigenous History"
 tags:
-- "2010s"
-- "Nevada"
 - "Rodeo"
 cover:
   image: "cover.avif"

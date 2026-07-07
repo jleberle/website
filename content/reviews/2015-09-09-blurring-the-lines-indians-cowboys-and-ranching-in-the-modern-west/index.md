@@ -12,11 +12,9 @@ reviewed_year: "1994"
 cite_key: "iverson1994"
 external_url: "https://www.oupress.com/9780806128849/when-indians-became-cowboys/"
 categories:
-- "Reviews"
+- "Indigenous History"
 tags:
 - "19th Century"
-- "American West"
-- "Cattle Ranching"
 cover:
   image: "cover.avif"
   alt: "Front cover of When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West"
