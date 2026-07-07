@@ -22,18 +22,17 @@ citations, and research library, and Obsidian Sync carries them between machines
 without unpublished work ever entering Git. Override the location with
 `WEBSITE_DRAFTS_DIR` if the vault lives elsewhere.
 
-Use the CLI scaffolder or, in Obsidian, the Templater templates installed at
-`Meta/templates/Website/` (bound to the drafting hotkeys — post/review on the
-hyperkey with `P`/`R`, link/quote on `Ctrl+Cmd+L`):
+Use the CLI scaffolder or, in Obsidian, the Templater templates at
+`~/Notes/Meta/templates/Website/` (bound to the drafting hotkeys — post/review on
+the hyperkey with `P`/`R`, link/quote on `Ctrl+Cmd+L`). Those templates live only
+in the vault — this repo has no `.obsidian/` setup and no template copies, so
+edit them directly there:
 
 ```sh
 scripts/newpost.sh article "Post Title"
 scripts/newpost.sh review "Review Title"
 scripts/newpost.sh quote "Quote Title"
 ```
-
-The canonical copies of those templates live in the repo at `_templates/`; after
-editing one there, copy it into the vault's `Meta/templates/Website/` folder.
 
 When a draft is ready (the path is relative to the drafts root, or an absolute
 path):

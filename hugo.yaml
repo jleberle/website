@@ -169,7 +169,7 @@ imaging:
   quality: 50
 
 # ------------------------------------------------------------
-# Module mounts and ignored authoring files
+# Module mounts
 # ------------------------------------------------------------
 module:
   mounts:
@@ -179,9 +179,6 @@ module:
     # can share the same source image.
     - source: static/icons
       target: assets/icons
-
-ignoreFiles:
-  - _templates/
 
 # ------------------------------------------------------------
 # Privacy

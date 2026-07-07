@@ -25,15 +25,17 @@ The site is available at `http://localhost:1313`.
 |---|---|
 | `content/` | Published site content |
 | `data/reading/` | Reading ledger YAML entries grouped by source type |
-| `_templates/` | Obsidian Templater draft templates (installed into the `~/Notes` vault) |
 | `layouts/` | Hugo templates and shortcodes |
 | `assets/` | CSS and JavaScript |
 | `scripts/` | Authoring, build, and maintenance helpers |
 | `docs/` | Operational and workflow documentation |
 
-Drafts live in the Obsidian vault at `~/Notes/04 Blog/Drafts/` (override with
-`WEBSITE_DRAFTS_DIR`), outside the repo, until `scripts/publish-draft.sh` moves
-them into `content/`.
+Obsidian only runs against the `~/Notes` vault, synced via Obsidian Sync — this
+repo has no `.obsidian/` setup of its own. Drafts live at `~/Notes/04 Blog/Drafts/`
+(override with `WEBSITE_DRAFTS_DIR`), outside the repo, until
+`scripts/publish-draft.sh` moves them into `content/`. The Templater draft
+templates live solely at `~/Notes/Meta/templates/Website/`; there is no repo
+copy, so edit them there directly.
 
 ## Daily Commands
 
