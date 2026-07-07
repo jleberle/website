@@ -1,8 +1,6 @@
 .DS_Store
 .hugo_build.lock
-drafts/
 resources/
 public/
-.obsidian/
 .vale/
 node_modules/

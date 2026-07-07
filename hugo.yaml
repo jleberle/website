@@ -181,7 +181,6 @@ module:
       target: assets/icons
 
 ignoreFiles:
-  - .obsidian/
   - _templates/
 
 # ------------------------------------------------------------
