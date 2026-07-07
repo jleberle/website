@@ -7,6 +7,7 @@
 #   2. image policy          — raster sources must be AVIF or allowed companions/icons
 #   3. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
 #   4. content resources     — source Markdown cover blocks point at real files
+#   4b. reading cross-ref    — advisory: cite keys without an Obsidian reading note
 #   5. source junk files     — fail if OS/editor metadata sits in Hugo inputs
 #   6. generated junk files  — fail if OS/editor metadata lands in public/
 #   7. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs
@@ -94,6 +95,11 @@ else
   echo "$RESOURCE_OUT"
   fail "content resource issues (e.g. cover block references a missing file)"
 fi
+
+step "reading cross-reference (advisory)"
+# Advisory only: reports site cite keys that lack a matching Obsidian reading
+# note. Never fails the gate (the vault is absent in CI), so no FAILURES bump.
+python3 scripts/checks/citekey-lint.py content data/reading 2>&1 | sed 's/^/  /'
 
 step "source junk files"
 SOURCE_JUNK_OUT=$(find assets content data layouts static -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -name 'desktop.ini' \) -print 2>/dev/null)

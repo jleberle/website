@@ -20,11 +20,11 @@ const reviewedPublisher = (await tp.system.prompt("Reviewed work publisher/studi
 const reviewedYear = (await tp.system.prompt("Reviewed work year (optional)")) || "";
 const citeKey = (await tp.system.prompt("Cite key, e.g. mckenziejones2015 (optional)")) || "";
 const externalUrl = (await tp.system.prompt("Reviewed work URL (optional)")) || "";
-const tags = (await tp.system.prompt("Tags, comma-separated (optional)")) || "";
+const tags = (await tp.system.prompt("Tags, comma-separated (optional; reuse existing tags — period like 1970s, then topics; new tag only if a second post will share it)")) || "";
 const courses = (await tp.system.prompt("Course links, comma-separated course slugs such as 1493,3793 (optional)")) || "";
 const people = (await tp.system.prompt("People links, comma-separated slugs such as theodore-roosevelt,clyde-warrior (optional)")) || "";
-const categoriesInput = (await tp.system.prompt("Categories, comma-separated (optional; defaults to Reviews)")) || "";
-const categories = categoriesInput.trim() ? categoriesInput : "Reviews";
+const categoriesInput = (await tp.system.prompt("Category: Indigenous History, American History, Culture and Media, or Personal (subject of the book, not 'Reviews')")) || "";
+const categories = categoriesInput;
 const wantsCover = /^y(es)?$/i.test(((await tp.system.prompt("Add cover metadata? yes/no")) || "").trim());
 const coverAlt = wantsCover ? ((await tp.system.prompt("Cover alt text (optional)")) || "") : "";
 const coverCaption = wantsCover ? ((await tp.system.prompt("Cover caption (optional)")) || "") : "";
@@ -37,7 +37,7 @@ const listField = (key, value) => {
   return `${key}:\n${items.map((item) => `- ${q(item)}`).join("\n")}\n`;
 };
 
-await tp.file.move(`drafts/reviews/${date}-${slug}`);
+await tp.file.move(`04 Blog/Drafts/reviews/${date}-${slug}`);
 
 tR += "---\n";
 tR += `title: ${q(title)}\n`;

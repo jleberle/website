@@ -15,10 +15,10 @@ const summary = (await tp.system.prompt("Summary override (optional)")) || "";
 const series = (await tp.system.prompt('Series name, for multi-part posts (optional; same name on every part, e.g. "My Summer With Claude")')) || "";
 const citeKey = (await tp.system.prompt("Primary cite key for a related work, e.g. mckenziejones2015 (optional)")) || "";
 const extraCiteKeys = (await tp.system.prompt("Additional cite keys, comma-separated (optional)")) || "";
-const tags = (await tp.system.prompt("Tags, comma-separated (optional)")) || "";
+const tags = (await tp.system.prompt("Tags, comma-separated (optional; reuse existing tags — period like 1970s, then topics; new tag only if a second post will share it)")) || "";
 const courses = (await tp.system.prompt("Course links, comma-separated course slugs such as 1493,3793 (optional)")) || "";
 const people = (await tp.system.prompt("People links, comma-separated slugs such as theodore-roosevelt,clyde-warrior (optional)")) || "";
-const categories = (await tp.system.prompt("Categories, comma-separated (optional)")) || "";
+const categories = (await tp.system.prompt("Category: Indigenous History, American History, Culture and Media, or Personal")) || "";
 const wantsCover = /^y(es)?$/i.test(((await tp.system.prompt("Add cover metadata? yes/no")) || "").trim());
 const coverAlt = wantsCover ? ((await tp.system.prompt("Cover alt text (optional)")) || "") : "";
 const coverCaption = wantsCover ? ((await tp.system.prompt("Cover caption (optional)")) || "") : "";
@@ -31,7 +31,7 @@ const listField = (key, value) => {
   return `${key}:\n${items.map((item) => `- ${q(item)}`).join("\n")}\n`;
 };
 
-await tp.file.move(`drafts/articles/${date}-${slug}`);
+await tp.file.move(`04 Blog/Drafts/articles/${date}-${slug}`);
 
 tR += "---\n";
 tR += `title: ${q(title)}\n`;

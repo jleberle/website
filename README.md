@@ -24,12 +24,16 @@ The site is available at `http://localhost:1313`.
 | Path | Purpose |
 |---|---|
 | `content/` | Published site content |
-| `drafts/` | Obsidian-synced draft workspace, ignored by Git |
 | `data/reading/` | Reading ledger YAML entries grouped by source type |
+| `_templates/` | Obsidian Templater draft templates (installed into the `~/Notes` vault) |
 | `layouts/` | Hugo templates and shortcodes |
 | `assets/` | CSS and JavaScript |
 | `scripts/` | Authoring, build, and maintenance helpers |
 | `docs/` | Operational and workflow documentation |
+
+Drafts live in the Obsidian vault at `~/Notes/04 Blog/Drafts/` (override with
+`WEBSITE_DRAFTS_DIR`), outside the repo, until `scripts/publish-draft.sh` moves
+them into `content/`.
 
 ## Daily Commands
 
@@ -38,8 +42,10 @@ scripts/newpost.sh article "Post Title"
 scripts/newpost.sh article --cover "Post Title"
 scripts/newsource.sh book "Book Title"
 scripts/newsource.sh article "Article Title"
+scripts/sync-reading.sh mckenziejones2015        # ledger entry from a vault note + Zotero
 scripts/finishsource.sh books/book-slug
-scripts/publish-draft.sh drafts/articles/2026-06-24-post-title.md
+scripts/publish-draft.sh articles/2026-06-24-post-title.md
+scripts/publish-draft.sh --cite reviews/2026-06-24-review-slug.md   # append Works Cited
 scripts/add-images.sh content/articles/<dir> --cover photo.jpg
 scripts/preflight.sh && git push
 ```

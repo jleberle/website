@@ -9,15 +9,22 @@
 | `content/quotes/` | Quote posts, flat files |
 | `content/cv/` | CV page |
 | `content/courses/` | Course pages |
-| `drafts/` | Obsidian-only drafts, ignored by Git |
+| `~/Notes/04 Blog/Drafts/` | Obsidian vault drafts (outside the repo) |
 
 Published posts follow `YYYY-MM-DD-slug/` page-bundle naming for articles and reviews, and dated flat files for quotes. Draft front matter is stamped in the site's local timezone (`America/Chicago`) so feeds sort correctly.
 
 ## Draft and Publish Flow
 
-Obsidian drafts live under `drafts/articles/`, `drafts/reviews/`, and `drafts/quotes/`. They are intentionally outside the published content tree so Obsidian Sync can carry them between machines without putting unpublished work in Git.
+Obsidian drafts live in the main `~/Notes` vault under `04 Blog/Drafts/articles/`,
+`04 Blog/Drafts/reviews/`, and `04 Blog/Drafts/quotes/`. Keeping them in the vault
+rather than the repo means drafting happens alongside the reading notes, Zotero
+citations, and research library, and Obsidian Sync carries them between machines
+without unpublished work ever entering Git. Override the location with
+`WEBSITE_DRAFTS_DIR` if the vault lives elsewhere.
 
-Use the CLI scaffolder or the Obsidian templates in `_templates/`:
+Use the CLI scaffolder or, in Obsidian, the Templater templates installed at
+`Meta/templates/Website/` (bound to the drafting hotkeys — post/review on the
+hyperkey with `P`/`R`, link/quote on `Ctrl+Cmd+L`):
 
 ```sh
 scripts/newpost.sh article "Post Title"
@@ -25,10 +32,14 @@ scripts/newpost.sh review "Review Title"
 scripts/newpost.sh quote "Quote Title"
 ```
 
-When a draft is ready:
+The canonical copies of those templates live in the repo at `_templates/`; after
+editing one there, copy it into the vault's `Meta/templates/Website/` folder.
+
+When a draft is ready (the path is relative to the drafts root, or an absolute
+path):
 
 ```sh
-scripts/publish-draft.sh drafts/articles/2026-06-24-post-title.md
+scripts/publish-draft.sh articles/2026-06-24-post-title.md
 ```
 
 That script:
@@ -37,6 +48,27 @@ That script:
 - leaves quotes as flat files
 - flips `draft: true` to `draft: false`
 - stamps `publishDate` and `lastmod` when missing
+- merges any citation keys used in the body into `cite_keys` (see Citations below)
+
+## Citations
+
+For scholarly posts, cite works with pandoc-style keys in the draft body —
+`[@mckenziejones2015]` inline, or a non-rendering `<!-- cite: @allen2012 @cobb2015 -->`
+comment to declare sources without printing a marker. On publish, those keys are
+merged into `cite_keys` front matter automatically, wiring the post into the
+reading page's cross-linking without retyping keys.
+
+Add `--cite` to also append a rendered Chicago "Works Cited" list (articles and
+reviews only):
+
+```sh
+scripts/publish-draft.sh --cite reviews/2026-06-24-review-slug.md
+```
+
+Rendering uses `scripts/cite-refs.sh`, which reads the Zotero-exported CSL-JSON
+library and CSL style. Paths default to the local Obsidian/Zotero setup and can be
+overridden with `WEBSITE_BIBLIOGRAPHY` and `WEBSITE_CSL`. If pandoc or the
+bibliography is unavailable, publishing still succeeds and simply skips the list.
 
 ## Metadata Conventions
 
@@ -149,9 +181,11 @@ archive links to their own landing page.
 
 | Script | Purpose |
 |---|---|
-| `scripts/newpost.sh` | Create an ignored article, review, or quote draft |
-| `scripts/publish-draft.sh` | Move an Obsidian draft into `content/` |
+| `scripts/newpost.sh` | Create an article, review, or quote draft in the vault |
+| `scripts/publish-draft.sh` | Move an Obsidian draft into `content/`; merge `cite_keys`; optional `--cite` Works Cited |
 | `scripts/newsource.sh` | Create a reading-ledger source entry, with prompts tailored to books or articles |
+| `scripts/sync-reading.sh` | Scaffold a reading-ledger entry from a vault reading note + the Zotero library |
+| `scripts/cite-refs.sh` | Extract citation keys / render a Works Cited list for a draft (used by publish-draft) |
 | `scripts/finishsource.sh` | Move a current reading source to read and stamp finish metadata |
 | `scripts/add-images.sh` | Add bundle images, with cover/body handling |
 | `scripts/preflight.sh` | Local pre-push gate, including published-draft and source-image policy checks |

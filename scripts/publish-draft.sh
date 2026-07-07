@@ -1,27 +1,47 @@
 #!/usr/bin/env bash
 # Publish an Obsidian draft into the Hugo content tree.
 #
-# Draft layout:
-#   drafts/articles/YYYY-MM-DD-slug.md  -> content/articles/YYYY-MM-DD-slug/index.md
-#   drafts/reviews/YYYY-MM-DD-slug.md   -> content/reviews/YYYY-MM-DD-slug/index.md
-#   drafts/quotes/YYYY-MM-DD-slug.md    -> content/quotes/YYYY-MM-DD-slug.md
+# Drafts live in the Obsidian vault (~/Notes/04 Blog/Drafts by default), outside
+# the repo. Override with WEBSITE_DRAFTS_DIR. Draft layout:
+#   <drafts>/articles/YYYY-MM-DD-slug.md -> content/articles/YYYY-MM-DD-slug/index.md
+#   <drafts>/reviews/YYYY-MM-DD-slug.md  -> content/reviews/YYYY-MM-DD-slug/index.md
+#   <drafts>/quotes/YYYY-MM-DD-slug.md   -> content/quotes/YYYY-MM-DD-slug.md
+#
+# On publish, citation keys used in the body (pandoc [@key] citations or a
+# <!-- cite: @key --> comment) are merged into cite_keys front matter. With
+# --cite, a Chicago "Works Cited" list is appended to articles and reviews.
 
 set -euo pipefail
 
 usage() {
   cat >&2 <<EOF
-Usage: $(basename "$0") drafts/<articles|reviews|quotes>/YYYY-MM-DD-slug.md
+Usage: $(basename "$0") [--cite] <articles|reviews|quotes>/YYYY-MM-DD-slug.md
 
-Moves an ignored Obsidian draft into the Hugo content tree and sets draft: false.
-Articles and reviews publish as Hugo page bundles; quotes publish as flat files.
+Moves an Obsidian draft (from the vault drafts folder, or an absolute path) into
+the Hugo content tree and sets draft: false. Articles and reviews publish as Hugo
+page bundles; quotes publish as flat files.
+
+  --cite   Also append a rendered "Works Cited" list (articles and reviews only).
 EOF
   exit 1
 }
 
-[[ $# -eq 1 ]] || usage
+CITE=false
+ARGS=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --cite) CITE=true; shift ;;
+    -*) echo "Unknown option: $1" >&2; usage ;;
+    *) ARGS+=("$1"); shift ;;
+  esac
+done
+[[ ${#ARGS[@]} -eq 1 ]] || usage
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 REPO_ROOT="$( cd "$SCRIPT_DIR/.." >/dev/null 2>&1 && pwd )"
+
+# Drafts live in the Obsidian vault, outside the repo. Override with WEBSITE_DRAFTS_DIR.
+DRAFTS_ROOT="${WEBSITE_DRAFTS_DIR:-$HOME/Notes/04 Blog/Drafts}"
 
 rfc3339_now() {
   local stamp offset
@@ -30,32 +50,33 @@ rfc3339_now() {
   printf '%s%s:%s' "$stamp" "${offset:0:3}" "${offset:3:2}"
 }
 
-DRAFT_INPUT="$1"
+DRAFT_INPUT="${ARGS[0]}"
 case "$DRAFT_INPUT" in
-  /*) DRAFT_PATH="$DRAFT_INPUT" ;;
-  *) DRAFT_PATH="$REPO_ROOT/$DRAFT_INPUT" ;;
+  /*)       DRAFT_PATH="$DRAFT_INPUT" ;;
+  drafts/*) DRAFT_PATH="$DRAFTS_ROOT/${DRAFT_INPUT#drafts/}" ;;  # legacy in-repo layout
+  *)        DRAFT_PATH="$DRAFTS_ROOT/$DRAFT_INPUT" ;;
 esac
 
 [[ -f "$DRAFT_PATH" ]] || { echo "Draft not found: $DRAFT_INPUT" >&2; exit 1; }
 
 case "$DRAFT_PATH" in
-  "$REPO_ROOT"/drafts/articles/*.md)
+  "$DRAFTS_ROOT"/articles/*.md)
     SECTION="articles"
     TARGET_DIR="$REPO_ROOT/content/articles/$(basename "$DRAFT_PATH" .md)"
     TARGET_PATH="$TARGET_DIR/index.md"
     ;;
-  "$REPO_ROOT"/drafts/reviews/*.md)
+  "$DRAFTS_ROOT"/reviews/*.md)
     SECTION="reviews"
     TARGET_DIR="$REPO_ROOT/content/reviews/$(basename "$DRAFT_PATH" .md)"
     TARGET_PATH="$TARGET_DIR/index.md"
     ;;
-  "$REPO_ROOT"/drafts/quotes/*.md)
+  "$DRAFTS_ROOT"/quotes/*.md)
     SECTION="quotes"
     TARGET_DIR="$REPO_ROOT/content/quotes"
     TARGET_PATH="$TARGET_DIR/$(basename "$DRAFT_PATH")"
     ;;
   *)
-    echo "Draft must live in drafts/articles, drafts/reviews, or drafts/quotes." >&2
+    echo "Draft must live under $DRAFTS_ROOT in articles/, reviews/, or quotes/." >&2
     exit 1
     ;;
 esac
@@ -126,3 +147,29 @@ rm "$DRAFT_PATH"
 echo "Published $SECTION draft:"
 echo "  $DRAFT_INPUT"
 echo "  -> ${TARGET_PATH#$REPO_ROOT/}"
+
+# Merge any citation keys used in the body into cite_keys front matter.
+DISCOVERED_KEYS="$("$SCRIPT_DIR/cite-refs.sh" --keys "$TARGET_PATH" 2>/dev/null || true)"
+if [[ -n "$DISCOVERED_KEYS" ]]; then
+  # shellcheck disable=SC2086
+  ADDED_KEYS="$(python3 "$SCRIPT_DIR/merge-cite-keys.py" "$TARGET_PATH" $DISCOVERED_KEYS)"
+  [[ -n "$ADDED_KEYS" ]] && echo "  cite_keys += $ADDED_KEYS"
+fi
+
+# With --cite, append a rendered Chicago "Works Cited" list to prose posts.
+if $CITE; then
+  case "$SECTION" in
+    articles|reviews)
+      REFS="$("$SCRIPT_DIR/cite-refs.sh" --bibliography "$TARGET_PATH" 2>/dev/null || true)"
+      if [[ -n "$REFS" ]]; then
+        printf '\n## Works Cited\n\n%s\n' "$REFS" >> "$TARGET_PATH"
+        echo "  appended Works Cited"
+      else
+        echo "  --cite: no references rendered (check pandoc and WEBSITE_BIBLIOGRAPHY)"
+      fi
+      ;;
+    *)
+      echo "  --cite ignored for $SECTION"
+      ;;
+  esac
+fi

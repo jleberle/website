@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Scaffold an ignored Obsidian-compatible draft matching the site's conventions.
-# Drafts live outside the tracked content tree until scripts/publish-draft.sh
-# moves them into Hugo content. Articles and reviews publish as page bundles;
-# quotes publish as flat files.
+# Scaffold an Obsidian-compatible draft matching the site's conventions.
+# Drafts live in the Obsidian vault (~/Notes/04 Blog/Drafts by default), outside
+# the repo, until scripts/publish-draft.sh moves them into Hugo content. Articles
+# and reviews publish as page bundles; quotes publish as flat files.
+# Override the draft location with WEBSITE_DRAFTS_DIR.
 
 set -euo pipefail
 
@@ -16,8 +17,8 @@ usage() {
 KIND="$1"; shift
 case "$KIND" in article|review|quote) ;; *) usage ;; esac
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-REPO_ROOT="$( cd "$SCRIPT_DIR/.." >/dev/null 2>&1 && pwd )"
+# Drafts live in the Obsidian vault, outside the repo. Override with WEBSITE_DRAFTS_DIR.
+DRAFTS_ROOT="${WEBSITE_DRAFTS_DIR:-$HOME/Notes/04 Blog/Drafts}"
 
 COVER=false
 TITLE=""
@@ -193,8 +194,8 @@ EOF
 
 case "$KIND" in
   article)
-    FILE=$(unique_path "$REPO_ROOT/drafts/articles/$BASE" ".md")
-    mkdir -p "$REPO_ROOT/drafts/articles"
+    FILE=$(unique_path "$DRAFTS_ROOT/articles/$BASE" ".md")
+    mkdir -p "$DRAFTS_ROOT/articles"
     {
       cat <<EOF
 ---
@@ -218,8 +219,8 @@ EOF
     } > "$FILE"
     ;;
   review)
-    FILE=$(unique_path "$REPO_ROOT/drafts/reviews/$BASE" ".md")
-    mkdir -p "$REPO_ROOT/drafts/reviews"
+    FILE=$(unique_path "$DRAFTS_ROOT/reviews/$BASE" ".md")
+    mkdir -p "$DRAFTS_ROOT/reviews"
     {
       cat <<EOF
 ---
@@ -247,8 +248,8 @@ EOF
     } > "$FILE"
     ;;
   quote)
-    FILE=$(unique_path "$REPO_ROOT/drafts/quotes/$BASE" ".md")
-    mkdir -p "$REPO_ROOT/drafts/quotes"
+    FILE=$(unique_path "$DRAFTS_ROOT/quotes/$BASE" ".md")
+    mkdir -p "$DRAFTS_ROOT/quotes"
     {
       cat <<EOF
 ---
@@ -278,7 +279,7 @@ esac
 if $ADD_COVER; then
   echo "After publishing, add the cover with: scripts/add-images.sh content/$SECTION/$BASE --cover <image>" >&2
 fi
-echo "Created ignored draft: ${FILE#$REPO_ROOT/}" >&2
-echo "Publish with: scripts/publish-draft.sh ${FILE#$REPO_ROOT/}" >&2
+echo "Created draft: ${FILE#$DRAFTS_ROOT/}" >&2
+echo "Publish with: scripts/publish-draft.sh \"$FILE\"" >&2
 EDITOR_CMD="${VISUAL:-${EDITOR:-vi}}"
 exec $EDITOR_CMD "$FILE"

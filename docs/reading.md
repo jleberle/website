@@ -69,6 +69,25 @@ scripts/newbook.sh "Book Title"
 
 `status: "current"` places a source in the currently reading section.
 
+### From an Obsidian reading note
+
+For academic sources already in the `~/Notes` vault and Zotero, scaffold the
+ledger entry from that data instead of retyping it:
+
+```sh
+scripts/sync-reading.sh mckenziejones2015
+scripts/sync-reading.sh allen2012 article   # force the source type
+```
+
+`sync-reading.sh` requires a matching reading note at
+`~/Notes/02 Notes/01 Reading Notes/<citekey>.md` (the same note the site's
+cross-linking points at) and pulls the bibliographic identity — title, author,
+year, and publisher/ISBN or journal/volume/issue/pages/DOI/URL — from the
+Zotero-exported CSL-JSON library, falling back to the note's front matter. It then
+prompts only for the reading-specific fields (status, dates, notes, format) and
+opens the entry in your editor. Override the vault and library paths with
+`WEBSITE_VAULT_DIR` and `WEBSITE_BIBLIOGRAPHY`.
+
 ## Marking a Source Finished
 
 ```sh
@@ -95,9 +114,15 @@ scripts/finishbook.sh book-slug
 
 `cite_key` is the preferred way to connect a reading entry to posts on the site. Add the same `cite_key` to reviews, quotes, or articles and the reading page links them automatically.
 
-Articles and other multi-source pages can also use an optional `cite_keys` array so one page can connect to several reading-ledger entries without exposing those keys to readers.
+Articles and other multi-source pages can also use an optional `cite_keys` array so one page can connect to several reading-ledger entries without exposing those keys to readers. `publish-draft.sh` populates `cite_keys` automatically from the citation keys used in a post's body.
 
 The older manual `related_posts` list still works as a fallback, but `cite_key` is the main pattern going forward.
+
+`scripts/preflight.sh` runs an advisory **reading cross-reference** check
+(`scripts/checks/citekey-lint.py`) that reports any `cite_key`/`cite_keys` value —
+in `content/` or `data/reading/` — without a matching vault reading note. It never
+fails the gate (the vault is absent in CI); it surfaces drift between the ledger,
+the site's cross-links, and the research library so notes and keys stay aligned.
 
 ## Feed Behavior
 
