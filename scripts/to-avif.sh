@@ -13,6 +13,10 @@
 #                                                  # (.jpg originals are kept as the jpeg fallback)
 #   scripts/to-avif.sh -q 70 photo.png             # custom avif quality (default: 50)
 #   scripts/to-avif.sh --no-jpeg photo.png         # skip jpeg output
+#   scripts/to-avif.sh --chroma 444 shot.png       # avif chroma subsampling (default: 420);
+#                                                  # 420 is smaller and fine for photos, 444
+#                                                  # avoids color bleed on screenshots/text
+#                                                  # with sharp colored edges
 #   scripts/to-avif.sh --og-only cover.jpg         # only (re)optimize the OG jpeg; never
 #                                                  # touches the avif (use for existing covers)
 #   scripts/to-avif.sh --og-width 800 photo.jpg    # custom OG jpeg max width (default: 1200)
@@ -21,6 +25,7 @@
 set -euo pipefail
 
 QUALITY=50
+CHROMA=420
 JPEG_QUALITY=85
 OG_MAX_WIDTH=1200
 REPLACE=false
@@ -32,6 +37,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --replace) REPLACE=true; shift ;;
     -q|--quality) QUALITY="$2"; shift 2 ;;
+    --chroma) CHROMA="$2"; shift 2 ;;
     --jpeg-quality) JPEG_QUALITY="$2"; shift 2 ;;
     --og-width) OG_MAX_WIDTH="$2"; shift 2 ;;
     --no-jpeg) JPEG=false; shift ;;
@@ -42,9 +48,14 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ ${#FILES[@]} -eq 0 ]]; then
-  echo "Usage: $(basename "$0") [--replace] [--og-only] [-q QUALITY] [--jpeg-quality QUALITY] [--og-width WIDTH] [--no-jpeg] <image> [...]" >&2
+  echo "Usage: $(basename "$0") [--replace] [--og-only] [-q QUALITY] [--chroma 420|422|444] [--jpeg-quality QUALITY] [--og-width WIDTH] [--no-jpeg] <image> [...]" >&2
   exit 1
 fi
+
+case "$CHROMA" in
+  420|422|444) ;;
+  *) echo "Invalid --chroma value: $CHROMA (must be 420, 422, or 444)" >&2; exit 1 ;;
+esac
 
 if $OG_ONLY && ! $JPEG; then
   echo "--og-only and --no-jpeg are mutually exclusive" >&2
@@ -80,10 +91,18 @@ for src in "${FILES[@]}"; do
   before=$(du -k "$src" | cut -f1)
 
   # Convert to avif. Orientation is baked in before -strip discards the EXIF
-  # tag; heic:speed trades encode time for slightly smaller files.
+  # tag; heic:speed trades encode time for slightly smaller files. A fully
+  # opaque alpha channel carries no information, so drop it (screenshots saved
+  # as PNG often ship one); genuine transparency is preserved since AVIF
+  # supports it and we only touch images that report as opaque.
   if ! $OG_ONLY; then
     dest_avif="${src%.*}.avif"
-    magick "$src" -auto-orient -strip -quality "$QUALITY" -define heic:speed=2 "$dest_avif"
+    alpha_args=()
+    if [[ "$(magick "$src" -format '%[opaque]' info: 2>/dev/null)" == "True" ]]; then
+      alpha_args=(-alpha off)
+    fi
+    magick "$src" -auto-orient -strip "${alpha_args[@]}" -quality "$QUALITY" \
+      -define heic:speed=2 -define heic:chroma="$CHROMA" "$dest_avif"
     after_avif=$(du -k "$dest_avif" | cut -f1)
     pct_avif=$(( (after_avif - before) * 100 / before ))
     sign=""; [[ $pct_avif -gt 0 ]] && sign="+"

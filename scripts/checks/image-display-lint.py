@@ -26,6 +26,13 @@ SRCSET_W_RE = re.compile(r"\s+(\d+)w$")
 SRCSET_X_RE = re.compile(r"\s+(\d+(?:\.\d+)?)x$")
 
 
+# A candidate at >= this fraction of its slot is close enough that any softening
+# is imperceptible, so it isn't reported. Below FAIL_RATIO the image is small
+# enough that upscaling is obvious; in between is an advisory warning.
+WARN_RATIO = 0.85
+FAIL_RATIO = 0.5
+
+
 @dataclass
 class ImgRecord:
     page: str
@@ -34,6 +41,7 @@ class ImgRecord:
     srcset: str
     width: int | None
     alt: str
+    classes: str
 
 
 class ImgParser(HTMLParser):
@@ -60,6 +68,7 @@ class ImgParser(HTMLParser):
                 srcset=data.get("srcset", ""),
                 width=width,
                 alt=data.get("alt", ""),
+                classes=data.get("class", ""),
             )
         )
 
@@ -92,10 +101,22 @@ def parse_available_width(img: ImgRecord) -> int | None:
 
 def parse_required_width(img: ImgRecord) -> int | None:
     if img.sizes in SIZE_REQUIREMENTS:
-        return SIZE_REQUIREMENTS[img.sizes]
-    if img.srcset and "x" in img.srcset and img.width:
-        return img.width * 2
-    return None
+        required = SIZE_REQUIREMENTS[img.sizes]
+    elif img.srcset and "x" in img.srcset and img.width:
+        required = img.width * 2
+    else:
+        return None
+
+    # The `sizes` hint describes the widest slot the image *could* occupy, but
+    # only covers (.entry-cover img { width: 100% }) actually stretch to fill it.
+    # In-content images are width:auto + max-width:100%, so they never paint
+    # wider than their intrinsic width — the `sizes` value overstates their real
+    # slot. Cap the requirement at the intrinsic width for those, so a source
+    # displayed at (or below) its native size isn't reported as too small.
+    is_cover = "u-featured" in img.classes.split()
+    if not is_cover and img.width:
+        required = min(required, img.width)
+    return required
 
 
 def main() -> int:
@@ -120,16 +141,16 @@ def main() -> int:
             if required is None or available is None:
                 continue
             checked += 1
-            if available >= required:
+            ratio = available / required if required else 1
+            if ratio >= WARN_RATIO:
                 continue
 
-            ratio = available / required if required else 1
             line = (
                 img.src,
                 available,
                 required,
             )
-            if ratio < 0.5:
+            if ratio < FAIL_RATIO:
                 failures[line].append(img.page)
             else:
                 warnings[line].append(img.page)
