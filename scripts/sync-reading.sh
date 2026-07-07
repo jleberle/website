@@ -41,57 +41,7 @@ BIB="${WEBSITE_BIBLIOGRAPHY:-$HOME/Documents/Library/Library.json}"
 
 [[ -f "$NOTE" ]] || { echo "Reading note not found: $NOTE" >&2; exit 1; }
 
-trim() {
-  local value="$1"
-  value="${value#"${value%%[![:space:]]*}"}"
-  value="${value%"${value##*[![:space:]]}"}"
-  printf '%s' "$value"
-}
-
-read_optional() {
-  local prompt="$1" value
-  read -r -p "$prompt: " value || value=""
-  printf '%s' "$value"
-}
-
-read_with_default() {
-  local prompt="$1" default_value="$2" value
-  if [[ -n "$default_value" ]]; then
-    read -r -p "$prompt [$default_value]: " value || value=""
-    value=$(trim "$value")
-    [[ -z "$value" ]] && value="$default_value"
-  else
-    read -r -p "$prompt: " value || value=""
-  fi
-  printf '%s' "$value"
-}
-
-slugify() {
-  printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | \
-    sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//'
-}
-
-yaml_escape() {
-  printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
-}
-
-current_timestamp() {
-  date +"%Y-%m-%dT%H:%M:%S%z" | sed -E 's/([0-9]{2})([0-9]{2})$/\1:\2/'
-}
-
-field() {
-  local key="$1" value
-  value=$(trim "$2")
-  [[ -z "$value" ]] && return 0
-  printf '%s: "%s"\n' "$key" "$(yaml_escape "$value")"
-}
-
-numeric_field() {
-  local key="$1" value
-  value=$(trim "$2")
-  [[ -z "$value" ]] && return 0
-  printf '%s: %s\n' "$key" "$value"
-}
+source "$SCRIPT_DIR/lib.sh"
 
 # Pull bibliographic identity from the Zotero library (preferred) or the vault
 # note front matter (fallback). Emits key<TAB>value lines.
@@ -247,13 +197,13 @@ STATUS=$(trim "$STATUS")
 STARTED=""; STARTED_ANNOUNCED=""; FINISHED=""; FINISHED_ANNOUNCED=""; READ_YEAR=""
 if [[ "$STATUS" == "current" ]]; then
   STARTED=$(read_optional "Started date YYYY-MM-DD (optional)")
-  [[ -n "$(trim "$STARTED")" ]] && STARTED_ANNOUNCED="$(current_timestamp)"
+  [[ -n "$(trim "$STARTED")" ]] && STARTED_ANNOUNCED="$(rfc3339_now)"
 else
   FINISHED=$(read_optional "Finished date YYYY-MM-DD (optional)")
   READ_YEAR_DEFAULT=""
   [[ "$FINISHED" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] && READ_YEAR_DEFAULT="${FINISHED%%-*}"
   READ_YEAR=$(read_with_default "Read year (optional)" "$READ_YEAR_DEFAULT")
-  [[ -n "$(trim "$FINISHED")" ]] && FINISHED_ANNOUNCED="$(current_timestamp)"
+  [[ -n "$(trim "$FINISHED")" ]] && FINISHED_ANNOUNCED="$(rfc3339_now)"
 fi
 
 NOTES=$(read_optional "Notes (optional)")

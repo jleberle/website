@@ -17,6 +17,9 @@ usage() {
 KIND="$1"; shift
 case "$KIND" in article|review|quote) ;; *) usage ;; esac
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$SCRIPT_DIR/lib.sh"
+
 # Drafts live in the Obsidian vault, outside the repo. Override with WEBSITE_DRAFTS_DIR.
 DRAFTS_ROOT="${WEBSITE_DRAFTS_DIR:-$HOME/Notes/04 Blog/Drafts}"
 
@@ -32,67 +35,10 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-read_optional() {
-  local prompt="$1" value
-  read -r -p "$prompt: " value || value=""
-  printf '%s' "$value"
-}
-
 if [[ -z "$TITLE" ]]; then
   TITLE=$(read_optional "Title")
 fi
 [[ -z "$TITLE" ]] && { echo "Title is required." >&2; exit 1; }
-
-slugify() {
-  printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | \
-    sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//'
-}
-
-yaml_escape() {
-  printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
-}
-
-trim() {
-  local value="$1"
-  value="${value#"${value%%[![:space:]]*}"}"
-  value="${value%"${value##*[![:space:]]}"}"
-  printf '%s' "$value"
-}
-
-rfc3339_now() {
-  local stamp offset
-  stamp=$(date +%Y-%m-%dT%H:%M:%S)
-  offset=$(date +%z)
-  printf '%s%s:%s' "$stamp" "${offset:0:3}" "${offset:3:2}"
-}
-
-field() {
-  local key="$1" value
-  value=$(trim "$2")
-  [[ -z "$value" ]] && return 0
-  printf '%s: "%s"\n' "$key" "$(yaml_escape "$value")"
-}
-
-indented_field() {
-  local key="$1" value
-  value=$(trim "$2")
-  [[ -z "$value" ]] && return 0
-  printf '  %s: "%s"\n' "$key" "$(yaml_escape "$value")"
-}
-
-list_field() {
-  local key="$1" raw="$2" item printed=false
-  IFS=',' read -r -a items <<< "$raw"
-  for item in "${items[@]}"; do
-    item=$(trim "$item")
-    [[ -z "$item" ]] && continue
-    if ! $printed; then
-      printf '%s:\n' "$key"
-      printed=true
-    fi
-    printf -- '- "%s"\n' "$(yaml_escape "$item")"
-  done
-}
 
 SLUG=$(slugify "$TITLE")
 [[ -z "$SLUG" ]] && SLUG="untitled"
@@ -183,12 +129,12 @@ cover_block() {
 cover:
   image: "cover.avif"
 EOF
-  indented_field "alt" "$COVER_ALT"
+  field "alt" "$COVER_ALT" "  "
   cat <<EOF
   hiddenInList: $hidden_in_list
   hiddenInSingle: false
 EOF
-  indented_field "caption" "$COVER_CAPTION"
+  field "caption" "$COVER_CAPTION" "  "
   printf '  relative: true\n'
 }
 

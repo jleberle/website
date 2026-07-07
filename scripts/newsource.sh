@@ -35,43 +35,7 @@ if [[ $# -gt 0 ]]; then
   esac
 fi
 
-trim() {
-  local value="$1"
-  value="${value#"${value%%[![:space:]]*}"}"
-  value="${value%"${value##*[![:space:]]}"}"
-  printf '%s' "$value"
-}
-
-read_optional() {
-  local prompt="$1" value
-  read -r -p "$prompt: " value || value=""
-  printf '%s' "$value"
-}
-
-read_with_default() {
-  local prompt="$1" default_value="$2" value
-  if [[ -n "$default_value" ]]; then
-    read -r -p "$prompt [$default_value]: " value || value=""
-    value=$(trim "$value")
-    [[ -z "$value" ]] && value="$default_value"
-  else
-    read -r -p "$prompt: " value || value=""
-  fi
-  printf '%s' "$value"
-}
-
-slugify() {
-  printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | \
-    sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//'
-}
-
-yaml_escape() {
-  printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
-}
-
-current_timestamp() {
-  date +"%Y-%m-%dT%H:%M:%S%z" | sed -E 's/([0-9]{2})([0-9]{2})$/\1:\2/'
-}
+source "$SCRIPT_DIR/lib.sh"
 
 normalize_isbn() {
   printf '%s' "$1" | tr -cd '[:alnum:]' | tr '[:lower:]' '[:upper:]'
@@ -84,20 +48,6 @@ normalize_doi() {
   doi="${doi#http://doi.org/}"
   doi="${doi#doi:}"
   printf '%s' "$doi"
-}
-
-field() {
-  local key="$1" value
-  value=$(trim "$2")
-  [[ -z "$value" ]] && return 0
-  printf '%s: "%s"\n' "$key" "$(yaml_escape "$value")"
-}
-
-numeric_field() {
-  local key="$1" value
-  value=$(trim "$2")
-  [[ -z "$value" ]] && return 0
-  printf '%s: %s\n' "$key" "$value"
 }
 
 lookup_openlibrary() {
@@ -377,7 +327,7 @@ STATUS=$(trim "$STATUS")
 
 if [[ "$STATUS" == "current" ]]; then
   STARTED=$(read_optional "Started date YYYY-MM-DD (optional)")
-  [[ -n "$(trim "$STARTED")" ]] && STARTED_ANNOUNCED="$(current_timestamp)"
+  [[ -n "$(trim "$STARTED")" ]] && STARTED_ANNOUNCED="$(rfc3339_now)"
 else
   FINISHED=$(read_optional "Finished date YYYY-MM-DD (optional)")
   READ_YEAR_DEFAULT=""
@@ -385,7 +335,7 @@ else
     READ_YEAR_DEFAULT="${FINISHED%%-*}"
   fi
   READ_YEAR=$(read_with_default "Read year (optional)" "$READ_YEAR_DEFAULT")
-  [[ -n "$(trim "$FINISHED")" ]] && FINISHED_ANNOUNCED="$(current_timestamp)"
+  [[ -n "$(trim "$FINISHED")" ]] && FINISHED_ANNOUNCED="$(rfc3339_now)"
 fi
 
 NOTES=$(read_optional "Notes (optional)")

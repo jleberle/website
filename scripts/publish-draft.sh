@@ -45,16 +45,10 @@ done
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 REPO_ROOT="$( cd "$SCRIPT_DIR/.." >/dev/null 2>&1 && pwd )"
+source "$SCRIPT_DIR/lib.sh"
 
 # Drafts live in the Obsidian vault, outside the repo. Override with WEBSITE_DRAFTS_DIR.
 DRAFTS_ROOT="${WEBSITE_DRAFTS_DIR:-$HOME/Notes/04 Blog/Drafts}"
-
-rfc3339_now() {
-  local stamp offset
-  stamp=$(date +%Y-%m-%dT%H:%M:%S)
-  offset=$(date +%z)
-  printf '%s%s:%s' "$stamp" "${offset:0:3}" "${offset:3:2}"
-}
 
 DRAFT_INPUT="${ARGS[0]}"
 case "$DRAFT_INPUT" in

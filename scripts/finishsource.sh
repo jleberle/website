@@ -28,50 +28,7 @@ done
 [[ ${#ARGS[@]} -gt 1 ]] && usage
 set -- "${ARGS[@]}"
 
-trim() {
-  local value="$1"
-  value="${value#"${value%%[![:space:]]*}"}"
-  value="${value%"${value##*[![:space:]]}"}"
-  printf '%s' "$value"
-}
-
-yaml_escape() {
-  printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
-}
-
-field() {
-  local key="$1" value
-  value=$(trim "$2")
-  [[ -z "$value" ]] && return 0
-  printf '%s: "%s"\n' "$key" "$(yaml_escape "$value")"
-}
-
-numeric_field() {
-  local key="$1" value
-  value=$(trim "$2")
-  [[ -z "$value" ]] && return 0
-  printf '%s: %s\n' "$key" "$value"
-}
-
-list_field() {
-  local key="$1" values="$2" item
-  [[ -z "$values" ]] && return 0
-  printf '%s:\n' "$key"
-  while IFS= read -r item; do
-    [[ -z "$(trim "$item")" ]] && continue
-    printf '  - "%s"\n' "$(yaml_escape "$item")"
-  done <<< "$values"
-}
-
-read_optional() {
-  local prompt="$1" value
-  read -r -p "$prompt: " value || value=""
-  printf '%s' "$value"
-}
-
-current_timestamp() {
-  date +"%Y-%m-%dT%H:%M:%S%z" | sed -E 's/([0-9]{2})([0-9]{2})$/\1:\2/'
-}
+source "$SCRIPT_DIR/lib.sh"
 
 extract_value() {
   local key="$1" file="$2" line
@@ -213,7 +170,7 @@ STARTED="$(extract_value "started" "$SOURCE_FILE")"
 STARTED_ANNOUNCED="$(extract_value "started_announced" "$SOURCE_FILE")"
 NOTES="$(extract_value "notes" "$SOURCE_FILE")"
 RELATED_POSTS="$(extract_list "related_posts" "$SOURCE_FILE")"
-FINISHED_ANNOUNCED="$(current_timestamp)"
+FINISHED_ANNOUNCED="$(rfc3339_now)"
 
 PUBLISHER="$(extract_value "publisher" "$SOURCE_FILE")"
 ISBN="$(extract_value "isbn" "$SOURCE_FILE")"
@@ -253,7 +210,7 @@ trap 'rm -f "$TMP_FILE"' EXIT
   field "finished" "$FINISHED"
   field "finished_announced" "$FINISHED_ANNOUNCED"
   field "notes" "$NOTES"
-  list_field "related_posts" "$RELATED_POSTS"
+  list_field_lines "related_posts" "$RELATED_POSTS"
 } > "$TMP_FILE"
 
 mv "$TMP_FILE" "$SOURCE_FILE"
