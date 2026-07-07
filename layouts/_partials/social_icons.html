@@ -7,7 +7,7 @@
         {{- if $custom -}}
             {{- $custom -}}
         {{- else -}}
-            {{ partial "svg.html" . }}
+            {{- errorf "social_icons: no icon named %q in custom_icons.html — add its SVG there" .name -}}
         {{- end -}}
         <span class="social-label">{{ $label }}</span>
     </a>

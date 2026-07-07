@@ -225,7 +225,6 @@ params:
     apple_touch_icon: "/icons/apple-touch-icon.png"
     background_color: "#efefed"
     theme_color: "#efefed"
-    safari_pinned_tab_color: "#20292e"
     msapplication_TileColor: "#20292e"
 
   brand:
