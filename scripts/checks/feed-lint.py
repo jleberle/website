@@ -27,6 +27,17 @@ RSS_NS = {
     "media": "http://search.yahoo.com/mrss/",
 }
 
+# Cross-repo contract: Micro.blog imports this reading feed as posts on
+# eberle.blog, and ~/git/micro-theme's homepage builds its Currently/Finished
+# Reading sections by matching these literal prefixes in the imported post
+# text (see layouts/reading.rss.xml's $action / $plainBody). A rendering
+# change here silently empties that homepage section without breaking this
+# site's own build, so it's asserted here rather than left undetected.
+READING_EVENT_PREFIXES = {
+    "started-reading": "Started reading: ",
+    "finished-reading": "Finished reading: ",
+}
+
 
 @dataclass(frozen=True)
 class Problem:
@@ -155,6 +166,15 @@ def check_rss(path: Path, public_dir: Path) -> list[Problem]:
         description = text_of(item.find("description"))
         if description:
             problems.extend(check_html_links(description, f"{item_source} description"))
+            categories = {text_of(c) for c in item.findall("category")}
+            for category, prefix in READING_EVENT_PREFIXES.items():
+                if category in categories and not description.startswith(prefix):
+                    problems.append(Problem(
+                        item_source,
+                        f"reading-feed contract: description does not start with {prefix!r} "
+                        "(~/git/micro-theme's eberle.blog homepage matches this prefix to "
+                        "build its Currently/Finished Reading sections)",
+                    ))
 
         content = item.find("content:encoded", RSS_NS)
         if content is not None and content.text:

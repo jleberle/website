@@ -50,6 +50,18 @@ That script:
 - stamps `publishDate` and `lastmod` when missing
 - merges any citation keys used in the body into `cite_keys` (see Citations below)
 
+Add `--push` to run `scripts/ship.sh` immediately after publishing — preflight,
+commit, and push in one step. Skip it for posts that still need
+`scripts/add-images.sh` first (a cover or body images); run `scripts/ship.sh`
+manually once those are in place instead:
+
+```sh
+scripts/publish-draft.sh --push articles/2026-06-24-post-title.md   # no images
+scripts/publish-draft.sh reviews/2026-06-24-review-slug.md          # has a cover
+scripts/add-images.sh content/reviews/2026-06-24-review-slug --cover photo.jpg
+scripts/ship.sh "Review: ..."
+```
+
 ## Citations
 
 For scholarly posts, cite works with pandoc-style keys in the draft body —
@@ -189,6 +201,7 @@ archive links to their own landing page.
 | `scripts/finishsource.sh` | Move a current reading source to read and stamp finish metadata |
 | `scripts/add-images.sh` | Add bundle images, with cover/body handling |
 | `scripts/preflight.sh` | Local pre-push gate, including published-draft and source-image policy checks |
+| `scripts/ship.sh` | Run preflight, then commit and push in one step (`--push` on publish-draft.sh / finishsource.sh calls this) |
 
 Less frequently used maintenance and audit helpers are documented in [operations.md](operations.md) and [maintenance.md](maintenance.md).
 

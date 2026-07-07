@@ -101,8 +101,18 @@ The script:
 - derives `read_year`
 - stamps `finished_announced` with the current local timestamp
 - preserves the rest of the metadata
+- if the entry has a `cite_key`, flips the matching vault reading note's
+  `status:` to `read` (silently skipped if no such note exists — see
+  `WEBSITE_VAULT_DIR` / `WEBSITE_READING_NOTES_DIR` in `scripts/sync-vault-status.py`)
 
 If you omit the argument, it lists sources currently marked `status: "current"` and lets you choose interactively.
+
+Add `--push` to skip the editor and run `scripts/ship.sh` instead (preflight,
+commit, push) with an auto-generated "Finished reading: ..." message:
+
+```sh
+scripts/finishsource.sh --push books/book-slug
+```
 
 Compatibility wrapper:
 
@@ -118,11 +128,15 @@ Articles and other multi-source pages can also use an optional `cite_keys` array
 
 The older manual `related_posts` list still works as a fallback, but `cite_key` is the main pattern going forward.
 
-`scripts/preflight.sh` runs an advisory **reading cross-reference** check
-(`scripts/checks/citekey-lint.py`) that reports any `cite_key`/`cite_keys` value —
-in `content/` or `data/reading/` — without a matching vault reading note. It never
-fails the gate (the vault is absent in CI); it surfaces drift between the ledger,
-the site's cross-links, and the research library so notes and keys stay aligned.
+`scripts/preflight.sh` runs an advisory **cite-key cross-reference** check
+(`scripts/checks/citekey-lint.py`). Its primary check is whether every
+`cite_key`/`cite_keys` value in `content/` or `data/reading/` exists in the
+Zotero library — that's the actual "is the ledger in sync with Zotero"
+contract, and the one worth fixing (a typo, a renamed citekey, or a source
+never added to Zotero). Separately, it reports keys with no vault reading note
+as informational only, since casual reading is never expected to have one. It
+never fails the gate by default (both Zotero and the vault are absent in CI);
+pass `--strict` directly to fail locally on a real Zotero mismatch.
 
 ## Feed Behavior
 

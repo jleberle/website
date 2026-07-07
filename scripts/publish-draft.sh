@@ -10,27 +10,33 @@
 # On publish, citation keys used in the body (pandoc [@key] citations or a
 # <!-- cite: @key --> comment) are merged into cite_keys front matter. With
 # --cite, a Chicago "Works Cited" list is appended to articles and reviews.
+# With --push, scripts/ship.sh runs immediately after (preflight, commit, push)
+# instead of leaving the change for a later scripts/ship.sh call — skip this if
+# the post still needs scripts/add-images.sh before it's ready to go live.
 
 set -euo pipefail
 
 usage() {
   cat >&2 <<EOF
-Usage: $(basename "$0") [--cite] <articles|reviews|quotes>/YYYY-MM-DD-slug.md
+Usage: $(basename "$0") [--cite] [--push] <articles|reviews|quotes>/YYYY-MM-DD-slug.md
 
 Moves an Obsidian draft (from the vault drafts folder, or an absolute path) into
 the Hugo content tree and sets draft: false. Articles and reviews publish as Hugo
 page bundles; quotes publish as flat files.
 
   --cite   Also append a rendered "Works Cited" list (articles and reviews only).
+  --push   Also run scripts/ship.sh (preflight, commit, push) once published.
 EOF
   exit 1
 }
 
 CITE=false
+PUSH=false
 ARGS=()
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --cite) CITE=true; shift ;;
+    --push) PUSH=true; shift ;;
     -*) echo "Unknown option: $1" >&2; usage ;;
     *) ARGS+=("$1"); shift ;;
   esac
@@ -172,4 +178,9 @@ if $CITE; then
       echo "  --cite ignored for $SECTION"
       ;;
   esac
+fi
+
+if $PUSH; then
+  TITLE="$(sed -n 's/^title: *"\(.*\)"[[:space:]]*$/\1/p' "$TARGET_PATH" | head -1)"
+  "$SCRIPT_DIR/ship.sh" "Publish: ${TITLE:-$SECTION post}"
 fi

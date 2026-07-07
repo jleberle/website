@@ -7,7 +7,7 @@
 #   2. image policy          — raster sources must be AVIF or allowed companions/icons
 #   3. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
 #   4. content resources     — source Markdown cover blocks point at real files
-#   4b. reading cross-ref    — advisory: cite keys without an Obsidian reading note
+#   4b. cite-key cross-ref   — advisory: cite keys missing from Zotero / without a vault note
 #   5. source junk files     — fail if OS/editor metadata sits in Hugo inputs
 #   6. generated junk files  — fail if OS/editor metadata lands in public/
 #   7. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs
@@ -96,9 +96,12 @@ else
   fail "content resource issues (e.g. cover block references a missing file)"
 fi
 
-step "reading cross-reference (advisory)"
-# Advisory only: reports site cite keys that lack a matching Obsidian reading
-# note. Never fails the gate (the vault is absent in CI), so no FAILURES bump.
+step "cite-key cross-reference (advisory)"
+# Advisory only: reports site cite keys missing from the Zotero library (the
+# real drift signal) and, separately, keys with no vault reading note yet
+# (expected for casual reading). Never fails the gate here — both Zotero and
+# the vault are absent in CI, so add --strict directly if you want this to
+# fail locally on a Zotero mismatch.
 python3 scripts/checks/citekey-lint.py content data/reading 2>&1 | sed 's/^/  /'
 
 step "source junk files"

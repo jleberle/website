@@ -4,9 +4,10 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $(basename "$0") [collection/slug|slug]" >&2
+  echo "Usage: $(basename "$0") [--push] [collection/slug|slug]" >&2
   echo "Marks data/reading/<type>s/<slug>.yaml as read, sets finished/read_year," >&2
   echo "and rewrites the file in canonical key order." >&2
+  echo "  --push  Skip the editor and run scripts/ship.sh (preflight, commit, push)." >&2
   exit 1
 }
 
@@ -14,8 +15,18 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 REPO_ROOT="$( cd "$SCRIPT_DIR/.." >/dev/null 2>&1 && pwd )"
 READING_ROOT="$REPO_ROOT/data/reading"
 
-[[ $# -gt 1 ]] && usage
-[[ "${1:-}" == "--help" || "${1:-}" == "-h" ]] && usage
+PUSH=false
+ARGS=()
+for arg in "$@"; do
+  case "$arg" in
+    --push) PUSH=true ;;
+    --help|-h) usage ;;
+    -*) echo "Unknown option: $arg" >&2; usage ;;
+    *) ARGS+=("$arg") ;;
+  esac
+done
+[[ ${#ARGS[@]} -gt 1 ]] && usage
+set -- "${ARGS[@]}"
 
 trim() {
   local value="$1"
@@ -252,4 +263,18 @@ echo "Updated ${SOURCE_FILE#$REPO_ROOT/}" >&2
 echo "  status: read" >&2
 echo "  read_year: $READ_YEAR" >&2
 echo "  finished: $FINISHED" >&2
-${VISUAL:-${EDITOR:-vi}} "$SOURCE_FILE"
+
+if [[ -n "$CITE_KEY" ]]; then
+  VAULT="${WEBSITE_VAULT_DIR:-$HOME/Notes}"
+  NOTES_SUB="${WEBSITE_READING_NOTES_DIR:-02 Notes/01 Reading Notes}"
+  VAULT_NOTE="$VAULT/$NOTES_SUB/$CITE_KEY.md"
+  if [[ "$(python3 "$SCRIPT_DIR/sync-vault-status.py" "$VAULT_NOTE" "read")" == "updated" ]]; then
+    echo "  vault note: $CITE_KEY status -> read" >&2
+  fi
+fi
+
+if $PUSH; then
+  "$SCRIPT_DIR/ship.sh" "Finished reading: ${SOURCE_TITLE:-$(basename "$SOURCE_FILE" .yaml)}"
+else
+  ${VISUAL:-${EDITOR:-vi}} "$SOURCE_FILE"
+fi

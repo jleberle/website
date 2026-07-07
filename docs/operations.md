@@ -2,13 +2,14 @@
 
 ## Remotes
 
-Codeberg is the public canonical remote. GitHub is a private testing mirror for Actions only.
+Codeberg is the public canonical remote. GitHub is a private testing mirror for Actions only. Both are reached through a single `origin` remote: it fetches from Codeberg and carries two push URLs, so one `git push` updates both.
 
-| Remote | Purpose |
-|---|---|
-| `origin` | Codeberg fetch/push |
-| `github` | Private GitHub testing mirror |
-| `both` | Legacy helper remote |
+```sh
+git remote -v
+# origin  codeberg:jle/website.git (fetch)
+# origin  codeberg:jle/website.git (push)
+# origin  github:jleberle/website.git (push)
+```
 
 The normal path is:
 
@@ -16,7 +17,11 @@ The normal path is:
 scripts/preflight.sh && git push
 ```
 
-`origin` should fetch from Codeberg and carry push URLs for both Codeberg and GitHub.
+or, to also stage and commit in the same step:
+
+```sh
+scripts/ship.sh "Commit message"
+```
 
 ## Deployment
 

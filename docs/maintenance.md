@@ -49,10 +49,9 @@ This repo no longer tracks PaperMod as a dependency. There is no `themes/` upstr
 What remains:
 
 - `layouts/`
-- `assets/css/base/`
-- `assets/css/license.css`
+- `assets/css/site/00-license.css`
 
-These originated in PaperMod and were vendored into the repo. The site-specific work lives on top of that as first-class local code.
+These originated in PaperMod and were vendored into the repo. The site-specific work lives on top of that as first-class local code; the rest of `assets/css/site/` (numbered `01-`–`99-`) is site-specific CSS with no PaperMod lineage.
 
 Dead compatibility shims and unused PaperMod pieces were deliberately removed rather than preserved for theme-upgrade compatibility.
 

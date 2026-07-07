@@ -43,11 +43,11 @@ scripts/newpost.sh article --cover "Post Title"
 scripts/newsource.sh book "Book Title"
 scripts/newsource.sh article "Article Title"
 scripts/sync-reading.sh mckenziejones2015        # ledger entry from a vault note + Zotero
-scripts/finishsource.sh books/book-slug
-scripts/publish-draft.sh articles/2026-06-24-post-title.md
-scripts/publish-draft.sh --cite reviews/2026-06-24-review-slug.md   # append Works Cited
+scripts/finishsource.sh --push books/book-slug   # updates the ledger, ships, and pushes
+scripts/publish-draft.sh --push articles/2026-06-24-post-title.md      # no images to add
+scripts/publish-draft.sh --cite reviews/2026-06-24-review-slug.md      # append Works Cited
 scripts/add-images.sh content/articles/<dir> --cover photo.jpg
-scripts/preflight.sh && git push
+scripts/ship.sh "Commit message"                 # preflight, commit, push in one step
 ```
 
 ## Documentation
