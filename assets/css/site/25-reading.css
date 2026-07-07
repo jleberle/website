@@ -261,6 +261,13 @@
     list-style: none;
 }
 
+.reading-entry-links li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.45rem;
+}
+
 .reading-entry-access {
     font-size: 0.78rem;
 }
