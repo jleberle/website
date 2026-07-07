@@ -77,6 +77,12 @@ body.home .home-info {
 
 .home-teaching-band,
 .home-context-band {
+    /* Deepen muted text on these tinted panels: the default --secondary
+       (driftgray) only clears 4.09:1 on the inset background, under AA.
+       Mixing toward the body-ink token lifts it to ~5.5:1 while staying
+       lighter than body copy. Derived from --fog-* base tokens rather than
+       --secondary to avoid a custom-property self-reference. */
+    --secondary: color-mix(in sRGB, var(--fog-driftgray), var(--fog-deepwater) 45%);
     padding: clamp(1rem, 2.5vw, 1.4rem);
     background: color-mix(in sRGB, var(--entry), var(--theme) 42%);
     border: 1px solid color-mix(in sRGB, var(--border), var(--rule) 24%);
