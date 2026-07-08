@@ -87,14 +87,17 @@
 <link crossorigin="anonymous" href="{{ $stylesheet.RelPermalink }}" rel="stylesheet">
 {{- end }}
 
-{{- /* Favicons */}}
+{{- /* Favicons. SVG first (embeds the actual Fraunces "E" mark used
+       across the site) so browsers that support it use a crisp vector
+       at any tab/bookmark size; ICO/PNG remain as fallbacks. */}}
+<link rel="icon" type="image/svg+xml" href="{{ site.Params.assets.faviconSvg | default "/icons/favicon.svg" | relURL }}">
 <link rel="icon" href="{{ site.Params.assets.favicon | default "favicon.ico" | relURL }}">
 <link rel="icon" type="image/png" sizes="16x16" href="{{ site.Params.assets.favicon16x16 | default "favicon-16x16.png" | relURL }}">
 <link rel="icon" type="image/png" sizes="32x32" href="{{ site.Params.assets.favicon32x32 | default "favicon-32x32.png" | relURL }}">
 <link rel="apple-touch-icon" href="{{ site.Params.assets.apple_touch_icon | default "apple-touch-icon.png" | relURL }}">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="{{ site.Params.assets.theme_color | default "#efefed" }}">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="{{ site.Params.assets.theme_color_dark | default "#1b2124" }}">
-<meta name="msapplication-TileColor" content="{{ site.Params.assets.msapplication_TileColor | default "#20292e" }}">
+<meta name="msapplication-TileColor" content="{{ site.Params.assets.msapplication_TileColor | default "#1b2124" }}">
 
 {{- /* RSS */}}
 {{ range .AlternativeOutputFormats -}}
