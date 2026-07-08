@@ -10,8 +10,9 @@
 {{- if isset .Params "showtoc" -}}
   {{- $showToc = .Params.showtoc -}}
 {{- end -}}
+{{- $isProse := in (slice "articles" "reviews") .Section -}}
 
-<article class="post-single h-entry{{ if $hasMarginRail }} has-margin-rail{{ end }}">
+<article class="post-single h-entry{{ if $hasMarginRail }} has-margin-rail{{ end }}{{ if eq .File.Path "about/index.md" }} uses-page{{ end }}{{ if $isProse }} has-prose-typography{{ end }}">
   <a class="u-url" href="{{ .RelPermalink }}" hidden></a>
   <header class="post-header">
     {{- with index $recordContext "entry" }}
@@ -84,6 +85,14 @@
       {{- if (.Param "suggestChanges.appendFilePath" | default false) }}{{ $editURL = printf "%s/%s" $editURL (path.Join .File.Path) }}{{ end }}
       {{- $editText := .Param "suggestChanges.text" | default (i18n "edit_post") }}
       {{- $foot = $foot | append (printf "<span><a href=\"%s\" rel=\"noopener noreferrer\" target=\"_blank\">%s</a></span>" $editURL $editText) }}
+    {{- end }}
+    {{- with partial "carbon_estimate.html" . }}
+      {{- $carbonEstimate := . }}
+      {{- with site.GetPage "/colophon" }}
+        {{- $foot = $foot | append (printf "<span><a href=\"%s#low-impact\">%s</a></span>" .RelPermalink $carbonEstimate) }}
+      {{- else }}
+        {{- $foot = $foot | append (printf "<span>%s</span>" $carbonEstimate) }}
+      {{- end }}
     {{- end }}
     {{- end }}
     {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}

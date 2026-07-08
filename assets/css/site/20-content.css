@@ -170,8 +170,15 @@
     user-select: none;
 }
 
-.anchor:hover {
-    color: var(--content) !important;
+/* Wants to win over .md-content h#:hover .anchor above (which sets a muted
+   color for the whole heading-hover state) when the anchor itself is the
+   hover target — but that rule is 3 classes + 1 type, and a bare
+   `.anchor:hover` is only 2 classes, so it always lost on raw specificity
+   despite being the more specific *intent*. Matching the same scoped
+   selector shape (rather than reaching for !important) legitimately wins:
+   4 classes + 1 type. */
+.md-content :is(h1, h2, h3, h4, h5, h6):hover .anchor:hover {
+    color: var(--content);
 }
 
 mark {
@@ -385,14 +392,49 @@ b {
     text-wrap: pretty;
 }
 
-/* Section dividers in prose: a full-width hairline under headings so
-   sections read as distinct blocks — especially on the long, heavily
-   sectioned course pages. h2 (major) and h3 (sub) both get the rule; the
-   size difference carries the hierarchy. h4–h6 stay unruled to avoid noise. */
+/* Section dividers: a full-width hairline under headings so sections read
+   as distinct blocks — earns its keep on the long, heavily sectioned
+   course/reference pages this was written for. .has-prose-typography
+   (articles, reviews) overrides this below: in narrative writing the same
+   rule turned every subheading into a hard wall between sections, when
+   what a reader skimming an essay wants is a waypoint, not a fence.
+   h2 (major) and h3 (sub) both get the rule; the size difference carries
+   the hierarchy. h4–h6 stay unruled to avoid noise. */
 .post-content h2,
 .post-content h3 {
     border-bottom: 1px solid var(--rule);
     padding-bottom: 0.3em;
+}
+
+/* Prose override: a short rule under the heading text itself rather than
+   the full-width column-spanning one, no bold shout, and extra whitespace
+   and letter-spacing — a waypoint, not a fence. display: inline-block
+   shrinks the border to the text's own width instead of the full measure;
+   h2/h3 are still 32px/24px elsewhere (.md-content) — dropped a little
+   further here since regular weight alone reads lighter at the same size.
+   That size gap from ~17.6px body text, the short rule, and the tracking
+   are what keep these legible as headings at a glance despite the lighter
+   weight — margin-top only needs a modest bump over the base rule now
+   that the rule itself is back to anchor the section break visually. */
+.has-prose-typography .post-content h2,
+.has-prose-typography .post-content h3 {
+    display: inline-block;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.2em;
+    font-weight: 400;
+    letter-spacing: 0.015em;
+}
+
+/* Same complete-shorthand fix as the base h2/h3 rule above — margin-top
+   alone left bottom/left/right leaking in from .md-content's shorthand. */
+.has-prose-typography .post-content h2 {
+    margin: 1.9em 0 24px;
+    font-size: 30px;
+}
+
+.has-prose-typography .post-content h3 {
+    margin: 1.65em 0 16px;
+    font-size: 22px;
 }
 
 /* Prevent widows (a lone word on a paragraph's last line) in supporting
@@ -405,6 +447,37 @@ b {
 .post-content li {
     text-wrap: pretty;
     hyphens: auto;
+}
+
+/* Justified body copy, book-style, above the site's own mobile breakpoint
+   (90-responsive.css switches layout at 768px). Ragged-right stays the
+   default below that width, where the narrower measure makes justification
+   with hyphenation prone to visible rivers of whitespace. */
+@media (width > 768px) {
+    .post-content p {
+        text-align: justify;
+        text-wrap: pretty;
+    }
+}
+
+/* Drop cap on the opening paragraph — chapter-opening convention, scoped
+   to long-form prose (articles, reviews) via .has-prose-typography on
+   <article> in single.html (same class the heading-rule override above
+   uses), not applied to quotes/courses/reference pages where a large
+   illuminated letter would read as decorative rather than structural.
+   Fraunces 600 is the only weight loaded for this face (fonts.css),
+   matching how headings already use it. Only matches when the article's
+   first child is literally a <p> — a lead image, figure, or blockquote as
+   the opening element simply won't match, which is the safe/graceful
+   outcome. */
+.has-prose-typography .post-content > p:first-child::first-letter {
+    float: left;
+    font-family: Fraunces, 'Fraunces Fallback', Georgia, serif;
+    font-weight: 600;
+    font-size: 3.6em;
+    line-height: 0.82;
+    padding: 0.03em 0.08em 0 0;
+    color: var(--primary);
 }
 
 /* Hang opening quotation marks into the margin so the left edge stays
@@ -421,12 +494,19 @@ b {
     line-height: 1.64;
 }
 
+/* Complete margin shorthand, not just margin-top: .md-content h2/h3 (line 13,
+   18 above) set margin via shorthand too, and overriding only margin-top
+   left bottom/left/right silently inherited from that older rule — an
+   accidental mix of this rule's em-based top with the other rule's px-based
+   bottom that nobody actually decided on. Values below reproduce exactly
+   what was already rendering (24px / 16px bottom), just as an explicit,
+   self-contained declaration instead of a cross-rule accident. */
 .post-content h2 {
-    margin-top: 1.8em;
+    margin: 1.8em 0 24px;
 }
 
 .post-content h3 {
-    margin-top: 1.55em;
+    margin: 1.55em 0 16px;
 }
 
 .post-content blockquote {
@@ -570,3 +650,71 @@ select {
 
 .post-content table th.align-right,
 .post-content table td.align-right { text-align: right; }
+
+/* ------------------------------------------------------------
+   "Uses" tables on the about page. Reformatted as a plain
+   two-column reference list (item / category) instead of a bordered
+   data grid: no cell borders, a hairline under each row, bold item
+   names on the left, muted category labels flush right. Scoped to
+   the .uses-page class (set in single.html for content/about only)
+   so the course-schedule tables elsewhere keep the standard bordered
+   table treatment above. The thead is display:none rather than just
+   visually hidden — a visually-hidden-but-present header row blockifies
+   its <th>s out of the table's cell grid (position: absolute forces
+   display: block per the CSS Display spec), which throws off
+   border-collapse's edge resolution and left the table's top border
+   short of the right edge. Screen-reader users lose the Item/Category
+   header association, but the bold-item / muted-category contrast
+   still conveys the two columns without it. */
+.uses-page .post-content h3:has(+ table) {
+    font-size: 0.95em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* .post-content.md-content (both classes are on the same element) rather
+   than plain .post-content: the theme's own .md-content table td rule uses
+   a :not(.highlight table) clause that outweighs a single extra class, so
+   these need the matching specificity to reliably override it. */
+.uses-page .post-content.md-content table {
+    display: table;
+    border-collapse: collapse;
+    border-top: 1px solid var(--rule);
+    width: 100%;
+    margin: 1.5em 0 1.75em;
+    font-size: 1em;
+}
+
+.uses-page .post-content.md-content table thead {
+    display: none;
+}
+
+.uses-page .post-content.md-content table tbody tr {
+    border-bottom: 1px solid var(--rule);
+}
+
+.uses-page .post-content.md-content table th,
+.uses-page .post-content.md-content table td {
+    min-width: 0;
+    border: none;
+    background: none;
+    padding: 0.6em 0;
+}
+
+.uses-page .post-content.md-content table tbody tr:nth-child(even) td {
+    background: none;
+}
+
+.uses-page .post-content.md-content table td:first-child {
+    color: var(--primary);
+    font-weight: 400;
+}
+
+.uses-page .post-content.md-content table td:last-child {
+    color: var(--secondary);
+    text-align: right;
+    font-weight: 400;
+    font-family: var(--meta-font);
+}

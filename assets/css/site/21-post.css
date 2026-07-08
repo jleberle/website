@@ -670,12 +670,16 @@ details.toc summary .title {
     text-underline-offset: 0.2rem;
 }
 
-/* Explicit list padding keeps outside markers inside the clipped details
-   content box instead of leaving half a bullet beyond its left edge. */
+/* A numbered contents page, not a bulleted list — decimal at the top
+   level, lower-alpha for nested subsections, echoing how a book's front
+   matter numbers its entries rather than bulleting them. Explicit list
+   padding keeps outside markers inside the clipped details content box
+   instead of leaving half a marker beyond its left edge. */
 .toc .inner ul {
     margin: 0;
-    padding-inline-start: 1.2rem;
+    padding-inline-start: 1.4rem;
     list-style-position: outside;
+    list-style-type: decimal;
     line-height: 1.5;
 }
 
@@ -691,12 +695,14 @@ details.toc summary .title {
 }
 
 .toc .inner li::marker {
+    font-family: var(--meta-font);
+    font-variant-numeric: tabular-nums;
     color: var(--accent);
     font-size: 0.78em;
 }
 
 .toc .inner li ul {
     margin: 0.25rem 0 0;
-    padding-inline-start: 1.15rem;
-    list-style-type: circle;
+    padding-inline-start: 1.3rem;
+    list-style-type: lower-alpha;
 }

@@ -199,9 +199,14 @@
     font-size: 0.9rem;
 }
 
+/* flex + space-between, not a fixed 50/50 grid: each side sizes to its own
+   content and the two blocks push out to the container's actual edges
+   (aligning with the divider rule above), with the gap between them
+   flexing to fill whatever's left — rather than each side being pinned to
+   a fixed half of the width regardless of how short its content is. */
 .cv-letterhead {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    display: flex;
+    justify-content: space-between;
     gap: 1rem;
     width: 100%;
     margin: 0 0 2rem;
@@ -217,11 +222,101 @@
 
 @media (width <= 520px) {
     .cv-letterhead {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 0.4rem;
     }
 
     .cv-letterhead-contact {
         text-align: left;
     }
+}
+
+/* Each work/education entry is a pandoc definition list (Makefile builds
+   with -t gfm+definition_lists so these survive as real <dl><dt><dd>
+   instead of being flattened to a paragraph + <br>). dt gets its own
+   column so the date reads as a scannable rail down the left rather than
+   running into the institution line above it. The bullet list that follows
+   each entry is a sibling of the <dl>, not nested inside <dd> — pandoc/
+   Goldmark have no way to nest it there — so it's indented with margin to
+   *look* like the grid's second column without actually being part of the
+   grid. :has(.cv-letterhead) scopes all of this to the CV page alone. */
+.post-content:has(.cv-letterhead) dl {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    column-gap: 1.5rem;
+    margin: 1.3em 0 0.3em;
+}
+
+.post-content:has(.cv-letterhead) dt {
+    /* .md-content dt (20-content.css) sets width: 25% and this div carries
+       both classes — higher specificity here wins on display: grid, but
+       width is never touched by that rule, so their 25%-of-the-track
+       (a sliver of the real column) was still silently squeezing every
+       word onto its own line. width: auto lets the grid track itself (not
+       a percentage of it) govern the column's width. */
+    width: auto;
+    font-family: var(--meta-font);
+    color: var(--secondary);
+    font-size: 0.85em;
+
+    /* .md-content dt sets font-weight: 700 (20-content.css) and was leaking
+       through unchanged, since this rule never touched font-weight despite
+       overriding everything else. Made explicit here rather than silently
+       inherited — kept at 700 to match what was already rendering. */
+    font-weight: 700;
+    padding-top: 0.2em;
+
+    /* Undo the global body { overflow-wrap: break-word } here specifically:
+       inherited into a narrow grid column, it lets the track shrink below
+       a single word's width, fragmenting "August" into "Aug"/"ust". Normal
+       wrapping at word boundaries (still fine to wrap "August 2022 –" /
+       "Present" onto two lines) is what a narrow date column actually wants. */
+    overflow-wrap: normal;
+}
+
+.post-content:has(.cv-letterhead) dd {
+    width: auto;
+    margin: 0;
+    padding-inline-start: 0;
+}
+
+.post-content:has(.cv-letterhead) dl + ul {
+    margin: 0.3em 0 0;
+    margin-inline-start: calc(8rem + 1.5rem);
+    padding-inline-start: 1.1rem;
+}
+
+@media (width <= 640px) {
+    .post-content:has(.cv-letterhead) dl {
+        grid-template-columns: 1fr;
+        row-gap: 0.1em;
+        margin-top: 1.6em;
+    }
+
+    .post-content:has(.cv-letterhead) dl + ul {
+        margin-inline-start: 0;
+    }
+}
+
+/* En-dash markers instead of generic disc bullets — same instinct as the
+   numbered table of contents: a CV should read as a considered document,
+   not a generic bulleted list. */
+.post-content:has(.cv-letterhead) ul {
+    list-style-type: "\2013\a0";
+}
+
+/* A bullet implies "one of several" — a lone item (a single job title
+   under an entry, "References: Available upon request") reads oddly
+   marked as if it were one of a list. :only-child catches both cases
+   without needing to know which section they're in; multi-item lists
+   (Dissertation/Major/Minor field, Awards, Service, etc.) are untouched
+   since their <li>s aren't lone children. The :has() on the <ul> zeroes
+   out the padding that only exists to hang-indent past a bullet, so the
+   now-unbulleted text sits flush instead of oddly offset. */
+.post-content:has(.cv-letterhead) ul:has(> li:only-child) {
+    padding-inline-start: 0;
+}
+
+.post-content:has(.cv-letterhead) ul > li:only-child {
+    list-style: none;
 }

@@ -179,6 +179,11 @@ module:
     # can share the same source image.
     - source: static/icons
       target: assets/icons
+    # Expose static/fonts to the asset pipeline so the carbon-estimate
+    # partial can read real font file sizes via resources.Get instead of
+    # hardcoding byte counts that would go stale if a font changes.
+    - source: static/fonts
+      target: assets/fonts
 
 # ------------------------------------------------------------
 # Privacy
@@ -256,7 +261,7 @@ params:
     # Rendered as Markdown in layouts/_partials/site_footer.html.
     # The literal {year} token is replaced with the current build year.
     about: |-
-      © 2011-{year} · [Creative Commons](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+      [© 2011-{year}](https://creativecommons.org/licenses/by-nc-sa/4.0/) · [Colophon](/colophon)
 
       [Human crafted](/humans.txt) · [Privacy First](/privacy)
 

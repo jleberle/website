@@ -48,6 +48,32 @@
 }
 
 /* ------------------------------------------------------------
+   Dark palette — same restrained editorial character, inverted:
+   warm off-white ink on a deep blue-black page, maritime blue
+   lightened for AA contrast on a dark surface. Follows the OS
+   setting only (no toggle, no stored preference, no JS) — see
+   layouts/_partials/carbon_estimate.html-adjacent notes for why
+   that's the deliberate choice here.
+   ------------------------------------------------------------ */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --fog-mist:      #1b2124;   /* page background — deep blue-black ink   */
+        --fog-granite:   #262d31;   /* panels — a step lighter, elevated       */
+        --fog-slate:     #e8e6e1;   /* headings — warm off-white paper         */
+        --fog-deepwater: #c7c3ba;   /* body text — softened warm paper         */
+        --fog-driftgray: #9aa1a4;   /* meta/muted text                         */
+        --fog-haze:      #4a5459;   /* rules — a step lighter than the page    */
+        --fog-pale-haze: #363e42;   /* borders — quiet dark edge               */
+        --driftwood:     #7a8a90;   /* blockquote/source rule                  */
+        --tide:          #6fa8c0;   /* links — lightened for dark contrast     */
+        --tide-deep:     #96cbe0;   /* link hover — brighter undertow          */
+        --code-bg:       var(--fog-granite);
+
+        color-scheme: dark;
+    }
+}
+
+/* ------------------------------------------------------------
    Global theme surface
    ------------------------------------------------------------ */
 body,
@@ -58,4 +84,21 @@ body,
             color-mix(in sRGB, var(--fog-granite), white 28%) 0,
             var(--theme) 13rem
         );
+}
+
+@media (prefers-color-scheme: dark) {
+    /* Mixing toward white reads as a light source in the light theme;
+       on a dark page the same move would wash out the top of the page.
+       A two-stop blend between the dark tokens keeps the same soft
+       "light from above" gesture without needing to lighten anything
+       toward white. */
+    body,
+    .list {
+        background:
+            linear-gradient(
+                180deg,
+                var(--fog-granite) 0,
+                var(--theme) 13rem
+            );
+    }
 }
