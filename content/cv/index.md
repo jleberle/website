@@ -1,8 +1,8 @@
 ---
-title: "Jared L. Eberle — Curriculum Vitae"
+title: "Curriculum Vitae"
 description: "Summer 2026"
-summary: "Curriculum vitae of Jared L. Eberle, historian of 20th century Native American activism."
-date: 2026-06-07
+summary: "Curriculum vitae of Jared L. Eberle, historian of 20th century Native American activism. Updated Summer 2026."
+date: 2026-07-08
 hideMeta: true
 ---
 
@@ -18,34 +18,34 @@ hideMeta: true
 
 ## Academic Employment
 
-August 2022 - Present  
-**Oklahoma State University**
+2022 - Present
+: **Oklahoma State University**
 
 - Lecturer
 
-August 2018 - August 2022  
-**Oklahoma State University**
+2018 - 2022
+: **Oklahoma State University**
 
 - Adjunct Instructor
 
 ## Education
 
-August 2012 — July 2018  
-**Ph.D, History**; Oklahoma State University
+2012 — 2018
+: **Ph.D, History**; Oklahoma State University
 
 - Dissertation: “‘No Longer Objects of History:’ American Indian
   Activism in the Late Twentieth Century”
 - Major field of study: American West/Native American
 - Minor field of study: Latin America
 
-August 2010 - May 2012  
-**Master of Arts**; University of Tulsa
+2010 - 2012
+: **Master of Arts**; University of Tulsa
 
 - Thesis: “Conflicting Narratives: Wounded Knee, Vietnam, and the
   Question of Indian Identity”
 
-August 2007 - May 2010  
-**Bachelor of Arts**, University of Tulsa
+2007 - 2010
+: **Bachelor of Arts**, University of Tulsa
 
 ## Publications
 
@@ -151,4 +151,4 @@ October 15, 2018.
 
 ## References
 
-- Available upon request
+Available upon request
