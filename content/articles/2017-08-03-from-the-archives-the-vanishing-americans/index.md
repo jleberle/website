@@ -2,7 +2,6 @@
 title: "From the Archives: The Vanishing Americans"
 slug: "from-the-archives-the-vanishing-americans"
 date: 2017-08-03
-author: "Jared L. Eberle"
 description: "Native Rock with the Vanishing Americans"
 summary: "Screenshot of Article detailing Native Rock Band"
 categories:

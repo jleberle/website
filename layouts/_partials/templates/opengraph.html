@@ -36,80 +36,20 @@
   <meta property="og:type" content="website">
 {{- end }}
 
-{{- /* Alt text shared by og:image:alt (and twitter:image:alt). */ -}}
-{{- $imgAlt := (.Params.cover.alt | default .Description | default site.Params.description | default .Title) | plainify | htmlUnescape -}}
-{{- if .Params.cover.image -}}
-  {{- $ogImage := "" -}}
-  {{- $w := 0 -}}{{- $h := 0 -}}
-  {{- $jpegName := replaceRE `\.[^.]+$` ".jpg" .Params.cover.image -}}
-  {{- with .Resources.GetMatch $jpegName -}}
-    {{- $ogImage = .Permalink -}}
-    {{- $w = .Width -}}{{- $h = .Height -}}
-  {{- else -}}
-    {{- if (ne $.Params.cover.relative true) }}
-      {{- $ogImage = $.Params.cover.image | absURL -}}
-    {{- else -}}
-      {{- $ogImage = (path.Join $.RelPermalink $.Params.cover.image) | absURL -}}
-    {{- end -}}
-  {{- end -}}
-  <meta property="og:image" content="{{ $ogImage }}">
-  {{- if gt $w 0 }}
-  <meta property="og:image:width" content="{{ $w }}">
-  <meta property="og:image:height" content="{{ $h }}">
+{{- $share := partial "templates/_funcs/share_image.html" . -}}
+{{- range $share.images }}
+  <meta property="og:image" content="{{ .url }}">
+  {{- if gt .width 0 }}
+  <meta property="og:image:width" content="{{ .width }}">
+  <meta property="og:image:height" content="{{ .height }}">
   {{- end }}
-  <meta property="og:image:alt" content="{{ $imgAlt }}">
-{{- else }}
-  {{- with partial "templates/_funcs/get-page-images" . }}
-    {{- range . | first 6 }}
-      <meta property="og:image" content="{{ .Permalink }}">
-      {{- with .Image }}
-      <meta property="og:image:width" content="{{ .Width }}">
-      <meta property="og:image:height" content="{{ .Height }}">
-      {{- end }}
-      <meta property="og:image:alt" content="{{ $imgAlt }}">
-    {{- end }}
-  {{- else }}
-    {{- /* Text-only pages with no cover and no in-body image: fall back to
-           the site-wide share card (site.Params.images, assets/images/card.jpg). */}}
-    {{- with index site.Params.images 0 }}
-      {{- with resources.Get (strings.TrimPrefix "/" .) }}
-      <meta property="og:image" content="{{ .Permalink }}">
-      <meta property="og:image:width" content="{{ .Width }}">
-      <meta property="og:image:height" content="{{ .Height }}">
-      <meta property="og:image:alt" content="{{ $imgAlt }}">
-      {{- end }}
-    {{- end }}
-  {{- end }}
-{{- end }}
-
-{{- with .Params.audio }}
-  {{- range . | first 6  }}
-    <meta property="og:audio" content="{{ . | absURL }}">
-  {{- end }}
-{{- end }}
-
-{{- with .Params.videos }}
-  {{- range . | first 6 }}
-    <meta property="og:video" content="{{ . | absURL }}">
-  {{- end }}
+  <meta property="og:image:alt" content="{{ $share.alt }}">
 {{- end }}
 
 {{- range .GetTerms "series" }}
   {{- range .Pages | first 7 }}
     {{- if ne $ . }}
       <meta property="og:see_also" content="{{ .Permalink }}">
-    {{- end }}
-  {{- end }}
-{{- end }}
-
-{{- with site.Params.social }}
-  {{- if reflect.IsMap . }}
-    {{- with .facebook_app_id }}
-      <meta property="fb:app_id" content="{{ . }}">
-    {{- else }}
-      {{- with .facebook_admin }}
-        <meta property="fb:admins" content="{{ . }}">
-      {{- end }}
     {{- end }}
   {{- end }}
 {{- end }}

@@ -2,7 +2,6 @@
 title: "On Abourerzk's AK-47s at Wounded Knee"
 slug: "on-abourerzks-ak-47s-at-wounded-knee"
 date: 2012-10-28
-author: "Jared L. Eberle"
 description: "Were there AK-47s at Wounded Knee?"
 summary: "Were there AK-47s at Wounded Knee?"
 categories:

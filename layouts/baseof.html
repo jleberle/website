@@ -25,7 +25,7 @@
     <main id="main" class="main">
         {{- block "main" . }}{{ end }}
     </main>
-    {{ partialCached "site_footer.html" . .Layout .Kind (.Param "hideFooter") -}}
+    {{ partialCached "site_footer.html" . -}}
 </body>
 
 </html>

@@ -1,17 +1,1 @@
-{{- $slugs := slice -}}
-{{- with .Params.courses -}}
-  {{- if reflect.IsSlice . -}}
-    {{- range . -}}
-      {{- $value := trim (printf "%v" .) " " -}}
-      {{- if ne $value "" -}}
-        {{- $slugs = $slugs | append $value -}}
-      {{- end -}}
-    {{- end -}}
-  {{- else -}}
-    {{- $value := trim (printf "%v" .) " " -}}
-    {{- if ne $value "" -}}
-      {{- $slugs = $slugs | append $value -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-{{- return ($slugs | uniq) -}}
+{{- return (partial "templates/_funcs/normalize_slug_list.html" (dict "page" . "param" "courses")) -}}

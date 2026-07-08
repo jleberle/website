@@ -1,14 +1,6 @@
-{{- /* Keep this set in lockstep with the home RSS feed (layouts/rss.xml):
-       same contentSections, the same hiddenInRss opt-out, and the same RSS limit. */ -}}
-{{- $pages := where site.RegularPages "Type" "in" site.Params.contentSections -}}
-{{- $pages = where $pages "Params.hiddenInRss" "!=" true -}}
-{{- $limit := site.Config.Services.RSS.Limit -}}
-{{- if ge $limit 1 }}{{ $pages = $pages | first $limit }}{{ end -}}
-{{- $base := site.BaseURL | strings.TrimSuffix "/" -}}
-{{- /* Square site icon for feed readers; JSON Feed `icon` is the large square
-       image shown in feed lists. Single-sourced from the apple-touch-icon. */ -}}
-{{- $icon := "" -}}
-{{- with resources.Get "icons/apple-touch-icon.png" -}}{{ $icon = (. | resources.Fingerprint).Permalink }}{{- end -}}
+{{- $pages := partial "templates/_funcs/feed_pages.html" . -}}
+{{- /* JSON Feed `icon` is the large square image shown in feed lists. */ -}}
+{{- $icon := partial "templates/_funcs/feed_icon.html" . -}}
 {
   "version": "https://jsonfeed.org/version/1.1",
   "title": {{ site.Title | jsonify }},
@@ -37,41 +29,14 @@
       "url": {{ $page.Permalink | jsonify }},
       "title": {{ $page.Title | jsonify }},
       "summary": {{ partial "page_summary.html" $page | plainify | jsonify }},
-      {{- /* Resolve the cover image once, for both the body and the `image`
-             field. Invoke the bundle resource so it stays published under
-             build.publishResources=false; else join the path onto the URL. */ -}}
-      {{- $cover := "" -}}
-      {{- with $page.Params.cover.image -}}
-        {{- /* Fingerprint so the feed shares the one content-hashed cover file
-               with the page/schema rather than publishing a second raw copy. */ -}}
-        {{- with $page.Resources.GetMatch . -}}{{ $cover = (. | resources.Fingerprint).Permalink }}{{- else -}}{{ $cover = print $page.Permalink . }}{{- end -}}
-      {{- end -}}
-      {{- /* Feeds have no base to resolve root-relative URLs and no responsive/
-             lightbox JS, so strip those attributes and absolutize src/href.
-             Fragment-only links are page-local footnotes in normal HTML, but
-             syndicated content needs the page URL as its base. */ -}}
-      {{- $c := $page.Content
-            | replaceRE `\s+(srcset|sizes|data-lightbox-src|loading|decoding)="[^"]*"` ""
-            | replaceRE `href="#([^"]*)"` (printf `href="%s#$1"` $page.Permalink)
-            | replaceRE `(src|href)="(/[^"]*)"` (printf `$1="%s$2"` $base) -}}
-      {{- /* Readers don't render the `image` metadata in the body, so lead with
-             the cover unless the post already embeds it in its content. Treat
-             both the original filename and Hugo's processed `cover_hu_*`
-             variants as already present to avoid duplicate lead images. */ -}}
-      {{- with $cover -}}
-        {{- $stem := strings.TrimSuffix (path.Ext $page.Params.cover.image) (path.Base $page.Params.cover.image) -}}
-        {{- if not (or (strings.Contains $c (printf "/%s." $stem)) (strings.Contains $c (printf "/%s_" $stem))) -}}
-          {{- $alt := $page.Params.cover.alt | default $page.Title -}}
-          {{- $c = printf "<img src=%q alt=%q>\n%s" . $alt $c -}}
-        {{- end -}}
-      {{- end -}}
-      "content_html": {{ $c | jsonify }},
+      {{- $feedItem := partial "templates/_funcs/feed_item.html" $page -}}
+      "content_html": {{ $feedItem.content | jsonify }},
       "date_published": {{ $page.PublishDate.Format "2006-01-02T15:04:05Z07:00" | jsonify }}
       {{- with partial "latest_revision.html" $page -}}
       {{- $revised := time.AsTime .date }},
       "date_modified": {{ $revised.Format "2006-01-02T15:04:05Z07:00" | jsonify }}
       {{- end }}
-      {{- with $cover }},
+      {{- with $feedItem.cover }},
       "image": {{ . | jsonify }}
       {{- end }}
       {{- with $page.Params.tags }},

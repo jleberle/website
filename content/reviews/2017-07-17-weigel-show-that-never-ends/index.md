@@ -3,7 +3,6 @@ title: "Redeeming the Uncool"
 slug: "weigel-show-that-never-ends"
 date: 2017-07-17
 draft: false
-author: "Jared L. Eberle"
 description: "A nerdy assessment of how prog rock became uncool"
 reviewed_type: "Book"
 reviewed_title: "The Show That Never Ends: The Rise and Downfall of Prog Rock"

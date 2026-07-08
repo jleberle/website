@@ -2,7 +2,6 @@
 title: "Bob Engelhart's Golden Hill Paugussett Cartoon"
 slug: "bob-engelharts-golden-hill-paugussett-cartoon"
 date: 2015-09-03
-author: "Jared L. Eberle"
 description: "A look a a racist political cartoon"
 summary: "A look at a 1990s anti-Pequot cartoon"
 categories:

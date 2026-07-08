@@ -98,8 +98,7 @@
       <span class="reading-entry-links-label">Connected writing</span>
       <ul>
         {{- range . }}
-          {{- $context := partial "record_context.html" . -}}
-          <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+          {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
         {{- end }}
       </ul>
     </div>

@@ -10,7 +10,7 @@
   {{- $path := strings.TrimPrefix "./" $u.Path }}
   {{- with or (.PageInner.Resources.Get $path) (resources.Get $path) -}}
     {{- if in $processable .MediaType.SubType -}}
-      {{- $r := partial "responsive-img.html" (dict "resource" .) -}}
+      {{- $r := partial "responsive_img.html" (dict "resource" .) -}}
       {{- $fullSrc = $r.full -}}
       {{- $src = $r.src -}}
       {{- $srcset = $r.srcset -}}

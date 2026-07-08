@@ -20,7 +20,7 @@
     {{- if $margin -}}
         {{- $imageOptions = merge $imageOptions (dict "widths" (slice 240 480 720) "display" 240 "sizes" "(min-width: 1280px) 240px, (max-width: 768px) 100vw, 680px") -}}
     {{- end -}}
-    {{- $r := partial "responsive-img.html" $imageOptions -}}
+    {{- $r := partial "responsive_img.html" $imageOptions -}}
     {{- $finalSrc = $r.src -}}
     {{- $srcset = $r.srcset -}}
     {{- $sizes = $r.sizes -}}

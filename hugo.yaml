@@ -44,6 +44,11 @@ caches:
 # (.Permalink/.RelPermalink). This prevents Hugo from copying unreferenced
 # full-size image originals into public/. Templates that reference bundle files
 # must resolve them as resources rather than constructing string paths.
+#
+# The /series/ taxonomy's own listing pages are suppressed via
+# content/series/_index.md (render: never, cascaded to its term pages) —
+# nothing on the site links to them; series_nav.html only uses
+# .GetTerms "series" to find sibling posts, never the term page itself.
 cascade:
   - build:
       publishResources: false
@@ -51,8 +56,12 @@ cascade:
 # ------------------------------------------------------------
 # Content model
 # ------------------------------------------------------------
+# `categories` was removed as a taxonomy: its /categories/ pages were never
+# linked from anywhere on the site (only .Params.categories itself is read,
+# for the RSS <category> tag and archive-page search text — both work off
+# plain frontmatter with no taxonomy declaration needed). `tags` stays: every
+# post footer links to its /tags/<tag>/ pages.
 taxonomies:
-  category: categories
   tag: tags
   series: series
 
@@ -198,7 +207,6 @@ privacy:
 # ------------------------------------------------------------
 params:
   # Site metadata used by head templates, feeds, schema, and manifest output.
-  env: production # enables Open Graph, Twitter Cards, and schema.org data
   title: Jared L. Eberle
   description: "Historian of late 20th Century Indigenous Activism"
   keywords: [CV, Indigenous History, Oklahoma]
@@ -222,7 +230,6 @@ params:
   showRssLink: true
   rssFullContent: true # emit <content:encoded> full article body in RSS
   websubHub: "https://pubsubhubbub.appspot.com/"
-  useBuiltInToc: true
   assets:
     favicon: "favicon.ico"
     favicon16x16: "/icons/favicon-16x16.png"
@@ -268,9 +275,10 @@ params:
       [Human crafted](/humans.txt) · [Privacy First](/privacy)
 
   cover:
-    hidden: true # hidden by default, but still available to structured data
-    hiddenInList: true
-    hiddenInSingle: true
+    # hiddenInList/hiddenInSingle both fall back to this (cover.html,
+    # list.html, single.html), so setting it alone hides covers everywhere
+    # while keeping them available to structured data (schema_json.html).
+    hidden: true
 
   schema:
     publisherType: Person

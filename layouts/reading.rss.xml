@@ -1,25 +1,7 @@
-{{- $authorEmail := "" }}
-{{- with site.Params.author }}
-  {{- if reflect.IsMap . }}
-    {{- with .email }}
-      {{- $authorEmail = . }}
-    {{- end }}
-  {{- end }}
-{{- end }}
-
-{{- $authorName := "" }}
-{{- with site.Params.author }}
-  {{- if reflect.IsMap . }}
-    {{- with .name }}
-      {{- $authorName = . }}
-    {{- end }}
-  {{- else }}
-    {{- $authorName = . }}
-  {{- end }}
-{{- end }}
+{{- $authorName := site.Params.author }}
 
 {{- $events := slice -}}
-{{- range $entry := partial "reading_entries.html" . }}
+{{- range $entry := partialCached "reading_entries.html" . }}
     {{- $title := $entry.title | default $entry.slug -}}
     {{- $author := $entry.author | default "" -}}
     {{- $publisher := $entry.publisher | default "" -}}
@@ -93,17 +75,15 @@
     <title>{{ .Title }} | {{ site.Title }}</title>
     <link>{{ .Permalink }}</link>
     <description>{{ .Description | default (printf "Reading activity from %s" site.Title) }}</description>
-    {{- with resources.Get "icons/apple-touch-icon.png" }}
+    {{- with partial "templates/_funcs/feed_icon.html" . }}
     <image>
       <title>{{ site.Title }}</title>
-      <url>{{ (. | resources.Fingerprint).Permalink }}</url>
+      <url>{{ . }}</url>
       <link>{{ $.Permalink }}</link>
     </image>
     {{- end }}
     <generator>Hugo</generator>
-    <language>{{ site.Language.Lang }}</language>{{ with $authorEmail }}
-    <managingEditor>{{.}}{{ with $authorName }} ({{ . }}){{ end }}</managingEditor>{{ end }}{{ with $authorEmail }}
-    <webMaster>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</webMaster>{{ end }}{{ with site.Copyright }}
+    <language>{{ site.Language.Lang }}</language>{{ with site.Copyright }}
     <copyright>{{ . | markdownify | plainify | strings.TrimPrefix "© " }}</copyright>{{ end }}
     {{- if gt (len $events) 0 }}
     <lastBuildDate>{{ (time.AsTime (index $events 0).announced_at).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
@@ -138,7 +118,6 @@
     <item>
       <link>{{ .anchor }}</link>
       <pubDate>{{ (time.AsTime .announced_at).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
-      {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
       {{- with $authorName }}<dc:creator>{{ . }}</dc:creator>{{ end }}
       <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s:%s" .type .slug .event_type }}</guid>
       <description>{{ $plainBody }}</description>

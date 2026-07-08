@@ -1,0 +1,23 @@
+{{- /* Shared slug-list normalizer for course_slugs.html / people_slugs.html.
+       Takes dict(page, param, lower) — param is the frontmatter key to read
+       (a string or a list of strings), lower controls whether each value is
+       lowercased before dedup (person slugs are matched case-insensitively;
+       course slugs are not). Returns a deduplicated slice. */ -}}
+{{- $page := .page -}}
+{{- $param := .param -}}
+{{- $lower := .lower | default false -}}
+{{- $slugs := slice -}}
+{{- with index $page.Params $param -}}
+  {{- $values := . -}}
+  {{- if not (reflect.IsSlice .) -}}
+    {{- $values = slice . -}}
+  {{- end -}}
+  {{- range $values -}}
+    {{- $value := trim (printf "%v" .) " " -}}
+    {{- if $lower -}}{{- $value = $value | lower -}}{{- end -}}
+    {{- if ne $value "" -}}
+      {{- $slugs = $slugs | append $value -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return ($slugs | uniq) -}}

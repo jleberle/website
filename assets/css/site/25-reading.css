@@ -64,6 +64,7 @@
 .reading-year-title {
     margin: 0;
     font-size: 0.98rem;
+    font-weight: 400;
     font-variant-caps: all-small-caps;
     letter-spacing: 0.02em;
     text-transform: lowercase;
@@ -132,6 +133,7 @@
     display: block;
     margin-bottom: 0.18rem;
     color: var(--secondary);
+    font-family: var(--meta-font);
     font-size: 0.68rem;
     font-variant-caps: all-small-caps;
     letter-spacing: 0.015em;

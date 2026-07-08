@@ -2,7 +2,6 @@
 title: "'Saturday Night in a Saloon' Or John Ratzenberger's Opening Photos From Cheers"
 slug: "saturday-night-in-a-saloon-or-john-ratzenbergers-opening-photos-from-cheers"
 date: 2011-10-04
-author: "Jared L. Eberle"
 description: "Where everybody knows your name in Minnesota"
 summary: "Finding Cheers' opening photos in the archives"
 categories:

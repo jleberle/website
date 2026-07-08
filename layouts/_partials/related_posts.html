@@ -1,6 +1,6 @@
 {{- $page := . -}}
 {{- $candidates := where site.RegularPages "Type" "in" site.Params.contentSections -}}
-{{- $currentKeys := partial "cite_keys.html" $page -}}
+{{- $currentKeys := partialCached "cite_keys.html" $page $page.RelPermalink -}}
 {{- $currentTitle := or ($page.Params.reviewed_title | default "") ($page.Params.source_title | default "") -}}
 {{- $currentAuthor := or ($page.Params.reviewed_author | default "") ($page.Params.source_author | default "") -}}
 {{- $currentSourceID := "" -}}
@@ -14,7 +14,7 @@
 {{- $sourceMatches := slice -}}
 {{- range $candidate := $candidates -}}
   {{- if ne $candidate.RelPermalink $page.RelPermalink -}}
-    {{- $candidateKeys := partial "cite_keys.html" $candidate -}}
+    {{- $candidateKeys := partialCached "cite_keys.html" $candidate $candidate.RelPermalink -}}
     {{- $candidateTitle := or ($candidate.Params.reviewed_title | default "") ($candidate.Params.source_title | default "") -}}
     {{- $candidateAuthor := or ($candidate.Params.reviewed_author | default "") ($candidate.Params.source_author | default "") -}}
     {{- $candidateSourceID := "" -}}
@@ -45,7 +45,7 @@
 {{- $readingPage := site.GetPage "reading" -}}
 {{- $readingMatches := slice -}}
 {{- if and (gt (len $currentKeys) 0) $readingPage -}}
-  {{- range partial "reading_entries.html" . -}}
+  {{- range partialCached "reading_entries.html" . -}}
     {{- $sourceKey := .cite_key | default "" -}}
     {{- if and $sourceKey (in $currentKeys $sourceKey) -}}
       {{- $readingMatches = $readingMatches | append (dict
@@ -83,7 +83,7 @@
     {{- range . }}
     <li>
       <span class="related-post-type">{{ .type_label }}</span>
-      <a href="{{ printf "%s#%s" $readingPage.RelPermalink .anchor_id }}">{{ .title }}</a>{{ with .author }}, <span>{{ . }}</span>{{ end }}
+      <span><a href="{{ printf "%s#%s" $readingPage.RelPermalink .anchor_id }}">{{ .title }}</a>{{ with .author }}, {{ . }}{{ end }}</span>
     </li>
     {{- end }}
   </ul>
@@ -95,8 +95,7 @@
   <span class="post-context-kicker">From the notebook</span>
   <ul class="related-posts-list">
     {{- range . }}
-    {{- $context := partial "record_context.html" . -}}
-    <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
     {{- end }}
   </ul>
 </section>
@@ -107,8 +106,7 @@
   <span class="post-context-kicker">Elsewhere on this source</span>
   <ul class="related-posts-list">
     {{- range . }}
-    {{- $context := partial "record_context.html" . -}}
-    <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
     {{- end }}
   </ul>
 </section>
@@ -119,8 +117,7 @@
   <span class="post-context-kicker">Related writing</span>
   <ul class="related-posts-list">
     {{- range . }}
-    {{- $context := partial "record_context.html" . -}}
-    <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
     {{- end }}
   </ul>
 </section>

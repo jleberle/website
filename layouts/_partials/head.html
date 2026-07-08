@@ -1,7 +1,6 @@
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-{{- if hugo.IsProduction | or (eq site.Params.env "production") | and (ne .Params.robotsNoIndex true) }}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{- if hugo.IsProduction }}
 <meta name="robots" content="index, follow">
 {{- else }}
 <meta name="robots" content="noindex, nofollow">
@@ -26,7 +25,7 @@
 {{- with .Store.Get "listPaginator" }}
 {{- if gt .PageNumber 1 }}{{ $canonical = .URL | absURL }}{{ end }}
 {{- end }}
-<link rel="canonical" href="{{ if .Params.canonicalURL -}} {{ trim .Params.canonicalURL " " }} {{- else -}} {{ $canonical }} {{- end }}">
+<link rel="canonical" href="{{ $canonical }}">
 {{- with .Store.Get "listPaginator" }}
 {{- if .HasPrev }}
 <link rel="prev" href="{{ .Prev.URL | absURL }}">
@@ -35,83 +34,39 @@
 <link rel="next" href="{{ .Next.URL | absURL }}">
 {{- end }}
 {{- end }}
-{{- if site.Params.analytics.google.SiteVerificationTag }}
-<meta name="google-site-verification" content="{{ site.Params.analytics.google.SiteVerificationTag }}">
-{{- end }}
-{{- if site.Params.analytics.yandex.SiteVerificationTag }}
-<meta name="yandex-verification" content="{{ site.Params.analytics.yandex.SiteVerificationTag }}">
-{{- end }}
-{{- if site.Params.analytics.bing.SiteVerificationTag }}
-<meta name="msvalidate.01" content="{{ site.Params.analytics.bing.SiteVerificationTag }}">
-{{- end }}
-{{- if site.Params.analytics.naver.SiteVerificationTag }}
-<meta name="naver-site-verification" content="{{ site.Params.analytics.naver.SiteVerificationTag }}">
-{{- end }}
 
 {{- /* Styles */}}
 
-{{- /* Explicit component order prevents a filename or directory move from
-       silently changing the cascade. Keep the license outside Minify so its
-       attribution comment remains in the delivered stylesheet. */}}
+{{- /* Keep the license outside Minify so its attribution comment remains in
+       the delivered stylesheet. The component list itself lives in
+       templates/_funcs/site_css.html, shared with carbon_estimate.html. */}}
 {{- $licenseCSS := resources.Get "css/site/00-license.css" }}
-{{- $componentPaths := slice
-    "css/site/01-tokens.css"
-    "css/site/02-reset.css"
-    "css/site/03-fonts.css"
-    "css/site/10-layout.css"
-    "css/site/11-header.css"
-    "css/site/12-footer.css"
-    "css/site/20-content.css"
-    "css/site/21-post.css"
-    "css/site/22-list.css"
-    "css/site/23-home.css"
-    "css/site/24-archives.css"
-    "css/site/25-reading.css"
-    "css/site/26-media.css"
-    "css/site/27-social.css"
-    "css/site/28-pages.css"
-    "css/site/90-responsive.css"
-    "css/site/99-print.css"
-}}
-{{- $components := slice }}
-{{- range $componentPaths }}
-    {{- $components = $components | append (resources.Get .) }}
-{{- end }}
-{{- $siteCSS := $components | resources.Concat "assets/css/site.css" | resources.Minify }}
-{{- $stylesheet := (slice $licenseCSS $siteCSS) | resources.Concat "assets/css/stylesheet.css" }}
-
-{{- if not site.Params.assets.disableFingerprinting }}
-{{- $stylesheet := $stylesheet | fingerprint }}
+{{- $siteCSS := partial "templates/_funcs/site_css.html" . }}
+{{- $stylesheet := (slice $licenseCSS $siteCSS) | resources.Concat "assets/css/stylesheet.css" | fingerprint }}
 <link crossorigin="anonymous" href="{{ $stylesheet.RelPermalink }}" integrity="{{ $stylesheet.Data.Integrity }}" rel="stylesheet">
-{{- else }}
-<link crossorigin="anonymous" href="{{ $stylesheet.RelPermalink }}" rel="stylesheet">
-{{- end }}
 
 {{- /* Favicons. SVG first (embeds the actual Fraunces "E" mark used
        across the site) so browsers that support it use a crisp vector
-       at any tab/bookmark size; ICO/PNG remain as fallbacks. */}}
-<link rel="icon" type="image/svg+xml" href="{{ site.Params.assets.faviconSvg | default "/icons/favicon.svg" | relURL }}">
-<link rel="icon" href="{{ site.Params.assets.favicon | default "favicon.ico" | relURL }}">
-<link rel="icon" type="image/png" sizes="16x16" href="{{ site.Params.assets.favicon16x16 | default "favicon-16x16.png" | relURL }}">
-<link rel="icon" type="image/png" sizes="32x32" href="{{ site.Params.assets.favicon32x32 | default "favicon-32x32.png" | relURL }}">
-<link rel="apple-touch-icon" href="{{ site.Params.assets.apple_touch_icon | default "apple-touch-icon.png" | relURL }}">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="{{ site.Params.assets.theme_color | default "#efefed" }}">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="{{ site.Params.assets.theme_color_dark | default "#1b2124" }}">
-<meta name="msapplication-TileColor" content="{{ site.Params.assets.msapplication_TileColor | default "#1b2124" }}">
+       at any tab/bookmark size; ICO/PNG remain as fallbacks. Values come
+       from hugo.yaml's params.assets — the single source of truth. */}}
+<link rel="icon" type="image/svg+xml" href="{{ site.Params.assets.faviconSvg | relURL }}">
+<link rel="icon" href="{{ site.Params.assets.favicon | relURL }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ site.Params.assets.favicon16x16 | relURL }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ site.Params.assets.favicon32x32 | relURL }}">
+<link rel="apple-touch-icon" href="{{ site.Params.assets.apple_touch_icon | relURL }}">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="{{ site.Params.assets.theme_color }}">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="{{ site.Params.assets.theme_color_dark }}">
+<meta name="msapplication-TileColor" content="{{ site.Params.assets.msapplication_TileColor }}">
 
 {{- /* RSS */}}
 {{ range .AlternativeOutputFormats -}}
 <link rel="{{ .Rel }}" type="{{ .MediaType.Type | html }}" href="{{ .Permalink | safeURL }}" title="{{ .Name }}">
 {{ end -}}
-{{- range .AllTranslations -}}
-<link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
-{{ end -}}
 
 {{- partial "extend_head.html" . -}}
 
 {{- /* Misc */}}
-{{- if hugo.IsProduction | or (eq site.Params.env "production") }}
-{{- partial "google_analytics.html" . }}
+{{- if hugo.IsProduction }}
 {{- partial "templates/opengraph.html" . }}
 {{- partial "templates/twitter_cards.html" . }}
 {{- partial "templates/schema_json.html" . }}

@@ -3,7 +3,6 @@ title: "The Ghosts of Louisiana's Johnson Gosset Plantation"
 slug: "the-ghosts-of-louisianas-johnson-gosset-plantation"
 date: 2013-02-02
 draft: false
-author: "Jared L. Eberle"
 description: "A haunted Louisiana plantation?"
 summary: "Story of a haunted Louisiana Plantation"
 categories:

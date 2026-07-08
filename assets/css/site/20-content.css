@@ -367,7 +367,12 @@ h1,
 .home-info .entry-header h1,
 .home-feature-title,
 .home-section-title,
+.home-band-title,
 .entry-header h2,
+.archive-entry-title,
+.reading-section-heading h2,
+.research-path-card h2,
+.research-path-stop h2,
 .logo a {
     font-family: Fraunces, 'Fraunces Fallback', Georgia, serif;
     text-rendering: optimizeLegibility;

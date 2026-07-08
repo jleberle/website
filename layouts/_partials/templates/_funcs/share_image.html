@@ -1,0 +1,43 @@
+{{- /* Shared image resolution for og:image / twitter:image (opengraph.html,
+       twitter_cards.html) — same priority order and same alt text for both:
+         1. frontmatter cover (prefer the JPEG variant; X/Twitter doesn't
+            reliably render AVIF, and OG crawlers are safest with JPEG too)
+         2. in-body images (templates/_funcs/get_page_images.html), up to 6
+         3. the site-wide share card (site.Params.images / assets/images/card.jpg)
+       Returns dict(alt, images) where images is a slice of dict(url, width,
+       height) in priority order (width/height are 0 when unknown). Twitter
+       only ever uses the first entry; OG emits all of them. */ -}}
+{{- $page := . -}}
+{{- $alt := ($page.Params.cover.alt | default $page.Description | default site.Params.description | default $page.Title) | plainify | htmlUnescape -}}
+{{- $images := slice -}}
+{{- if $page.Params.cover.image -}}
+  {{- $url := "" -}}
+  {{- $w := 0 -}}{{- $h := 0 -}}
+  {{- $jpegName := replaceRE `\.[^.]+$` ".jpg" $page.Params.cover.image -}}
+  {{- with $page.Resources.GetMatch $jpegName -}}
+    {{- $url = .Permalink -}}
+    {{- $w = .Width -}}{{- $h = .Height -}}
+  {{- else -}}
+    {{- if (ne $page.Params.cover.relative true) -}}
+      {{- $url = $page.Params.cover.image | absURL -}}
+    {{- else -}}
+      {{- $url = (path.Join $page.RelPermalink $page.Params.cover.image) | absURL -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $images = $images | append (dict "url" $url "width" $w "height" $h) -}}
+{{- else -}}
+  {{- with partial "templates/_funcs/get_page_images" $page -}}
+    {{- range . | first 6 -}}
+      {{- $w := 0 -}}{{- $h := 0 -}}
+      {{- with .Image -}}{{ $w = .Width }}{{ $h = .Height }}{{- end -}}
+      {{- $images = $images | append (dict "url" .Permalink "width" $w "height" $h) -}}
+    {{- end -}}
+  {{- else -}}
+    {{- with index site.Params.images 0 -}}
+      {{- with resources.Get (strings.TrimPrefix "/" .) -}}
+        {{- $images = $images | append (dict "url" .Permalink "width" .Width "height" .Height) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return (dict "alt" $alt "images" $images) -}}

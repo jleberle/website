@@ -1,0 +1,7 @@
+{{- /* Shared page selection for the home RSS and JSON feeds (layouts/rss.xml,
+       layouts/index.jsonfeed.json) — same content sections and the same
+       item limit, so the two feeds can't drift out of lockstep. */ -}}
+{{- $pages := where site.RegularPages "Type" "in" site.Params.contentSections -}}
+{{- $limit := site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 }}{{ $pages = $pages | first $limit }}{{ end -}}
+{{- return $pages -}}

@@ -16,8 +16,7 @@
     <span class="post-context-kicker">Related materials</span>
     <ul class="related-posts-list">
       {{- range . }}
-      {{- $context := partial "record_context.html" . -}}
-      <li><span class="related-post-type">{{ index $context "entry" }}</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
       {{- end }}
     </ul>
   </section>
@@ -38,7 +37,7 @@
     <span class="post-context-kicker">Teaching connection</span>
     <ul class="related-posts-list">
       {{- range . }}
-      <li><span class="related-post-type">Course</span><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{- partial "templates/_funcs/related_item.html" (dict "page" . "label" "Course") }}
       {{- end }}
     </ul>
   </section>

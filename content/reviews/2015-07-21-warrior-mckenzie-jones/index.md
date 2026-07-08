@@ -3,7 +3,6 @@ title: "The Birth of Red Power"
 slug: "warrior-mckenzie-jones"
 date: 2015-07-21
 draft: false
-author: "Jared L. Eberle"
 description: "An assessment of Ponca activist Clyde Warrior's contributions to Red Power"
 reviewed_type: "Book"
 reviewed_title: "Clyde Warrior: Tradition, Community, and Red Power"

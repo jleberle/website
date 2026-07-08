@@ -1,52 +1,19 @@
-{{- $authorEmail := "" }}
-{{- with site.Params.author }}
-  {{- if reflect.IsMap . }}
-    {{- with .email }}
-      {{- $authorEmail = . }}
-    {{- end }}
-  {{- end }}
-{{- end }}
-
-{{- $authorName := "" }}
-{{- with site.Params.author }}
-  {{- if reflect.IsMap . }}
-    {{- with .name }}
-      {{- $authorName = . }}
-    {{- end }}
-  {{- else }}
-    {{- $authorName  = . }}
-  {{- end }}
-{{- end }}
-
-{{- $base := site.BaseURL | strings.TrimSuffix "/" }}
-{{- /* Keep this set in lockstep with the JSON feed: same content sections,
-       hiddenInRss opt-out, and item limit. */ -}}
-{{- $pages := where site.RegularPages "Type" "in" site.Params.contentSections }}
-{{- $pages = where $pages "Params.hiddenInRss" "!=" true -}}
-{{- $limit := site.Config.Services.RSS.Limit }}
-{{- if ge $limit 1 }}
-{{- $pages = $pages | first $limit }}
-{{- end }}
+{{- $pages := partial "templates/_funcs/feed_pages.html" . }}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>{{ site.Title }}</title>
     <link>{{ .Permalink }}</link>
     <description>Recent content on {{ site.Title }}</description>
-    {{- /* Feed readers (e.g. NetNewsWire) pull the channel <image>; it must be
-           square and at least ~128px. site.Params.images is the 1000x688 OG card,
-           so use the square single-source site icon instead. */ -}}
-    {{- with resources.Get "icons/apple-touch-icon.png" }}
+    {{- with partial "templates/_funcs/feed_icon.html" . }}
     <image>
       <title>{{ site.Title }}</title>
-      <url>{{ (. | resources.Fingerprint).Permalink }}</url>
+      <url>{{ . }}</url>
       <link>{{ $.Permalink }}</link>
     </image>
     {{- end }}
     <generator>Hugo</generator>
-    <language>{{ site.Language.Lang }}</language>{{ with $authorEmail }}
-    <managingEditor>{{.}}{{ with $authorName }} ({{ . }}){{ end }}</managingEditor>{{ end }}{{ with $authorEmail }}
-    <webMaster>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</webMaster>{{ end }}{{ with site.Copyright }}
+    <language>{{ site.Language.Lang }}</language>{{ with site.Copyright }}
     <copyright>{{ . | markdownify | plainify | strings.TrimPrefix "© " }}</copyright>{{ end }}{{ if not .Date.IsZero }}
     <lastBuildDate>{{ (index $pages.ByLastmod.Reverse 0).Lastmod.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
     {{- with .OutputFormats.Get "RSS" }}
@@ -57,45 +24,24 @@
     {{- end }}
     {{- range $pages }}
     {{- $page := . }}
-    {{- $cover := "" }}
-    {{- with $page.Params.cover.image }}
-      {{- with $page.Resources.GetMatch . }}{{ $cover = (. | resources.Fingerprint).Permalink }}{{ else }}{{ $cover = print $page.Permalink . }}{{ end }}
-    {{- end }}
+    {{- $feedItem := partial "templates/_funcs/feed_item.html" $page }}
     <item>
       <title>{{ .Title }}</title>
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
-      {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
       {{- with partial "author.html" . }}<dc:creator>{{ . | plainify }}</dc:creator>{{ end }}
       <guid isPermaLink="true">{{ .Permalink }}</guid>
       <description>{{ partial "page_summary.html" . | html }}</description>
       {{- $categories := union (.Params.categories | default (slice)) (.Params.tags | default (slice)) }}
       {{- range $categories }}<category>{{ . }}</category>{{ end }}
-      {{- with $cover }}
+      {{- with $feedItem.cover }}
       <media:content url="{{ . }}" medium="image">
         <media:title type="plain">{{ $page.Title }}</media:title>
         <media:description type="plain">{{ $page.Params.cover.alt | default $page.Title }}</media:description>
       </media:content>
       {{- end }}
       {{- if and site.Params.rssFullContent .Content }}
-      {{- /* Absolutize root-relative URLs and drop feed-irrelevant responsive/
-             lightbox attributes so images resolve in feed readers. Fragment-only
-             links (mostly footnotes) also need the page URL in syndicated HTML. */ -}}
-      {{- $c := .Content
-            | replaceRE `\s+(srcset|sizes|data-lightbox-src|loading|decoding)="[^"]*"` ""
-            | replaceRE `href="#([^"]*)"` (printf `href="%s#$1"` .Permalink)
-            | replaceRE `(src|href)="(/[^"]*)"` (printf `$1="%s$2"` $base) }}
-      {{- /* Lead with the frontmatter cover image (PaperMod renders it outside
-             .Content, so it's otherwise absent), unless the body already embeds
-             either the original cover filename or Hugo's `cover_hu_*` variant. */ -}}
-      {{- with $page.Params.cover.image }}
-      {{- $stem := strings.TrimSuffix (path.Ext .) (path.Base .) }}
-      {{- if not (or (strings.Contains $c (printf "/%s." $stem)) (strings.Contains $c (printf "/%s_" $stem))) }}
-      {{- $alt := $page.Params.cover.alt | default $page.Title }}
-      {{- $c = printf "<img src=%q alt=%q>\n%s" $cover $alt $c }}
-      {{- end }}
-      {{- end }}
-      <content:encoded>{{ (printf "<![CDATA[%s]]>" $c) | safeHTML }}</content:encoded>
+      <content:encoded>{{ (printf "<![CDATA[%s]]>" $feedItem.content) | safeHTML }}</content:encoded>
       {{- end }}
     </item>
     {{- end }}

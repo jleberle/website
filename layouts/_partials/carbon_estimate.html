@@ -43,28 +43,18 @@
 {{- $htmlRaw := add $chromeBytes (len .Content) -}}
 {{- $htmlKB := mul (div (float $htmlRaw) 1024.0) 0.26 -}}
 
+{{- /* Same CSS/JS bundles head.html and extend_head.html actually ship —
+       shared via templates/_funcs/ so this measurement can't drift from
+       what's really delivered. */ -}}
 {{- $licenseCSS := resources.Get "css/site/00-license.css" -}}
-{{- $componentPaths := slice
-    "css/site/01-tokens.css" "css/site/02-reset.css" "css/site/03-fonts.css"
-    "css/site/10-layout.css" "css/site/11-header.css" "css/site/12-footer.css"
-    "css/site/20-content.css" "css/site/21-post.css" "css/site/22-list.css"
-    "css/site/23-home.css" "css/site/24-archives.css" "css/site/25-reading.css"
-    "css/site/26-media.css" "css/site/27-social.css" "css/site/28-pages.css"
-    "css/site/90-responsive.css" "css/site/99-print.css" -}}
-{{- $components := slice -}}
-{{- range $componentPaths -}}
-    {{- $components = $components | append (resources.Get .) -}}
-{{- end -}}
-{{- $siteCSS := $components | resources.Concat "assets/css/carbon-estimate-site.css" | resources.Minify -}}
+{{- $siteCSS := partial "templates/_funcs/site_css.html" . -}}
 {{- $stylesheet := (slice $licenseCSS $siteCSS) | resources.Concat "assets/css/carbon-estimate-stylesheet.css" -}}
 {{- $cssKB := mul (div (float (len $stylesheet.Content)) 1024.0) 0.21 -}}
 
-{{- $jsResources := slice -}}
-{{- range slice "js/embeds.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" "js/archive-filters.js" -}}
-    {{- with resources.Get . }}{{ $jsResources = $jsResources | append . }}{{ end -}}
+{{- $jsKB := 0.0 -}}
+{{- with partial "templates/_funcs/site_js.html" . -}}
+    {{- $jsKB = mul (div (float (len .Content)) 1024.0) 0.33 -}}
 {{- end -}}
-{{- $jsBundle := $jsResources | resources.Concat "js/carbon-estimate-bundle.js" | minify -}}
-{{- $jsKB := mul (div (float (len $jsBundle.Content)) 1024.0) 0.33 -}}
 
 {{- $fontBytes := 0 -}}
 {{- with resources.Get "fonts/sourceserif4-400-latin.woff2" }}{{ $fontBytes = add $fontBytes (len .Content) }}{{ end -}}

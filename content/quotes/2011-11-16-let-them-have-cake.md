@@ -2,7 +2,6 @@
 title: "Let Them Have Cake"
 slug: "let-them-have-cake"
 date: 2011-11-16
-author: "Jared L. Eberle"
 description: "Teddy Roosevelt's encounter with homeless children"
 summary: "Teddy Roosevelt's encounter with homeless children"
 source_title: "Diaries of Boyhood and Youth"

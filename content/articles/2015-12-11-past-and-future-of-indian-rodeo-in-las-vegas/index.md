@@ -2,7 +2,6 @@
 title: "Past and Future of Indian Rodeo in Las Vegas"
 slug: "past-and-future-of-indian-rodeo-in-las-vegas"
 date: 2015-12-11
-author: "Jared L. Eberle"
 description: "A trip to the Indian National Finals Rodeo"
 summary: "A report on the trip to the Indian National Finals Rodeo in 2015"
 categories:

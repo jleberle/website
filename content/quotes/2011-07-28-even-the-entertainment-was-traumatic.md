@@ -2,7 +2,6 @@
 title: "Even the Entertainment Was Traumatic"
 slug: "even-the-entertainment-was-traumatic"
 date: 2011-07-28
-author: "Jared L. Eberle"
 description: "On cow dips and the Dust Bowl."
 summary: "Quote on Dust Bowl era cow dips from Timothy Egan's The Worst Hard Time"
 source_title: "The Worst Hard Time"

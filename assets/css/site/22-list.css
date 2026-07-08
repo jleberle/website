@@ -245,6 +245,7 @@ body.list:not(.home) .entry-header {
 .entry-kicker {
     margin: 0 0 0.18rem;
     color: var(--secondary);
+    font-family: var(--meta-font);
     font-size: 0.78rem;
     font-variant-caps: all-small-caps;
     font-weight: 600;

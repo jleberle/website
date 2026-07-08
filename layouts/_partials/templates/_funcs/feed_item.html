@@ -1,0 +1,26 @@
+{{- /* Shared per-item syndication content for the home RSS and JSON feeds.
+       Takes a page as context, returns dict(content, cover):
+         - content: page HTML with responsive/lightbox attributes stripped
+           and root-relative/fragment URLs absolutized (feed readers have
+           no page base to resolve against), led by the frontmatter cover
+           image unless the body already embeds it.
+         - cover: the resolved cover permalink, or "" if none.
+       Both feeds need the same transform, so it lives in one place. */ -}}
+{{- $page := . -}}
+{{- $base := site.BaseURL | strings.TrimSuffix "/" -}}
+{{- $cover := "" -}}
+{{- with $page.Params.cover.image -}}
+  {{- with $page.Resources.GetMatch . -}}{{ $cover = (. | resources.Fingerprint).Permalink }}{{- else -}}{{ $cover = print $page.Permalink . }}{{- end -}}
+{{- end -}}
+{{- $c := $page.Content
+      | replaceRE `\s+(srcset|sizes|data-lightbox-src|loading|decoding)="[^"]*"` ""
+      | replaceRE `href="#([^"]*)"` (printf `href="%s#$1"` $page.Permalink)
+      | replaceRE `(src|href)="(/[^"]*)"` (printf `$1="%s$2"` $base) -}}
+{{- with $cover -}}
+  {{- $stem := strings.TrimSuffix (path.Ext $page.Params.cover.image) (path.Base $page.Params.cover.image) -}}
+  {{- if not (or (strings.Contains $c (printf "/%s." $stem)) (strings.Contains $c (printf "/%s_" $stem))) -}}
+    {{- $alt := $page.Params.cover.alt | default $page.Title -}}
+    {{- $c = printf "<img src=%q alt=%q>\n%s" $cover $alt $c -}}
+  {{- end -}}
+{{- end -}}
+{{- return (dict "content" $c "cover" $cover) -}}

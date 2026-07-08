@@ -8,7 +8,7 @@
 {{- $notebook := first 1 ((where site.RegularPages "Section" "quotes").ByPublishDate.Reverse) -}}
 {{- $courses := first 4 ((where site.RegularPages "Section" "courses").ByTitle) -}}
 {{- $featuredCourses := where (where site.RegularPages "Section" "courses") "Params.home_feature" true -}}
-{{- $readingEntries := partial "reading_entries.html" . -}}
+{{- $readingEntries := partialCached "reading_entries.html" . -}}
 {{- $currentReading := first 1 (sort (where $readingEntries "status" "current") "title") -}}
 {{- $recentReading := first 1 (sort (where $readingEntries "status" "ne" "current") "sort_read_key" "desc") -}}
 

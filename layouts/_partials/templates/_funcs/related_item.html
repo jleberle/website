@@ -1,0 +1,13 @@
+{{- /* Shared <li> row for the "related/connections" post-context sections
+       (related_posts.html, people_connections.html, teaching_connections.html,
+       reading_entry.html) — a type-label chip plus a linked title. Takes a
+       dict(page, label); label defaults to record_context.html's "entry" for
+       page when omitted (the explicit-label form is for callers whose type
+       isn't derivable from record_context, e.g. a hardcoded "Course"). */ -}}
+{{- $page := .page -}}
+{{- $label := .label -}}
+{{- if not $label -}}
+  {{- $context := partial "record_context.html" $page -}}
+  {{- $label = index $context "entry" -}}
+{{- end -}}
+<li><span class="related-post-type">{{ $label }}</span><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></li>

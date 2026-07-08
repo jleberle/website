@@ -2,7 +2,6 @@
 title: "At Least It's Only a Belief in Vampirism"
 slug: "at-least-its-only-a-belief-in-vampirism"
 date: 2012-11-30
-author: "Jared L. Eberle"
 description: "What's the worst that could happen?"
 summary: "Vampirism in New England is not that bad"
 source_title: "The Animistic Vampire in New England"

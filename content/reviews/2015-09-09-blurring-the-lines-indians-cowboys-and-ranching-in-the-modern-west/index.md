@@ -2,7 +2,6 @@
 title: "Blurring the Lines: Indians, Cowboys and Ranching in the Modern West"
 slug: "blurring-the-lines-indians-cowboys-and-ranching-in-the-modern-west"
 date: 2015-09-09
-author: "Jared L. Eberle"
 description: "Sometimes the cowboys and Indians were one and the same"
 reviewed_type: "Book"
 reviewed_title: "When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West"

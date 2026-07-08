@@ -1,0 +1,12 @@
+{{- /* Single source of truth for the site's JS bundle — consumed by
+       extend_head.html (emits the fingerprinted <script> tag) and
+       carbon_estimate.html (measures its byte weight). Returns the
+       concatenated + minified bundle, or nothing if none of the source
+       files resolve. */ -}}
+{{- $js := slice }}
+{{- range slice "js/embeds.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" "js/archive-filters.js" }}
+    {{- with resources.Get . }}{{ $js = $js | append . }}{{ end }}
+{{- end }}
+{{- if $js }}
+{{- return ($js | resources.Concat "js/bundle.js" | minify) }}
+{{- end -}}

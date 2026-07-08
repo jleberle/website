@@ -17,10 +17,8 @@
     {{- $scratch.Add "meta" (slice (printf "<span>%s</span>" (i18n "words" .WordCount | default (printf "%d words" .WordCount)))) }}
 {{- end }}
 
-{{- if not (.Param "hideAuthor") -}}
-    {{- with (partial "author.html" .) }}
-        {{- $scratch.Add "meta" (slice (printf "<span class=\"p-author\">%s</span>" .)) }}
-    {{- end }}
+{{- with (partial "author.html" .) }}
+    {{- $scratch.Add "meta" (slice (printf "<span class=\"p-author\">%s</span>" .)) }}
 {{- end }}
 
 {{- with ($scratch.Get "meta") }}

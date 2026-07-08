@@ -2,7 +2,6 @@
 title: "I Got Sick of Watching the Tulsa World Die"
 slug: "i-got-sick-of-watching-the-tulsa-world-die"
 date: 2020-09-17
-author: "Jared L. Eberle"
 description: "Why I cancelled the Tulsa World"
 summary: "Why I cancelled the Tulsa World"
 categories:

@@ -2,7 +2,6 @@
 title: "Hoboes, Tramps, and Bums"
 slug: "hoboes-tramps-and-bums"
 date: 2012-01-22
-author: "Jared L. Eberle"
 description: "They're not the same"
 summary: "They're not the same"
 source_title: "Hoboes: Bindlestiffs, Fruit Tramps, and the Harvesting of the West"

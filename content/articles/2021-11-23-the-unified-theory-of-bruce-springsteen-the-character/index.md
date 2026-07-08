@@ -3,7 +3,6 @@ title: "The unified theory of bruce springsteen the character"
 slug: "the-unified-theory-of-bruce-springsteen-the-character"
 date: 2021-11-23
 draft: false
-author: "Jared L. Eberle"
 description: "Bruce Springsteen the man and the character"
 summary: "How Bruce Springsteen constructed a long term story of a middle-class character in his albums"
 categories:

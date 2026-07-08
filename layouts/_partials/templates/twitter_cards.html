@@ -1,41 +1,10 @@
-{{- /* Add twitter:image:alt, using the same source as og:image:alt in
-       opengraph.html. */ -}}
-{{- $imgAlt := (.Params.cover.alt | default .Description | default site.Params.description | default .Title) | plainify | htmlUnescape -}}
-{{- if .Params.cover.image -}}
+{{- $share := partial "templates/_funcs/share_image.html" . -}}
+{{- with index $share.images 0 }}
 <meta name="twitter:card" content="summary_large_image">
-{{- /* Use the JPEG variant (like og:image); X doesn't reliably render AVIF. */ -}}
-{{- $twImage := "" -}}
-{{- $jpegName := replaceRE `\.[^.]+$` ".jpg" .Params.cover.image -}}
-{{- with .Resources.GetMatch $jpegName -}}
-  {{- $twImage = .Permalink -}}
-{{- else -}}
-  {{- if (ne $.Params.cover.relative true) }}
-    {{- $twImage = .Params.cover.image | absURL -}}
-  {{- else }}
-    {{- $twImage = (path.Join .RelPermalink .Params.cover.image) | absURL -}}
-  {{- end }}
-{{- end -}}
-<meta name="twitter:image" content="{{ $twImage }}">
-<meta name="twitter:image:alt" content="{{ $imgAlt }}">
+<meta name="twitter:image" content="{{ .url }}">
+<meta name="twitter:image:alt" content="{{ $share.alt }}">
 {{- else }}
-{{- $images := partial "templates/_funcs/get-page-images" . }}
-{{- with index $images 0 }}
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="{{ .Permalink }}">
-  <meta name="twitter:image:alt" content="{{ $imgAlt }}">
-{{- else }}
-  {{- /* Text-only pages with no cover and no in-body image: fall back to
-         the site-wide share card (site.Params.images, assets/images/card.jpg). */}}
-  {{- with index site.Params.images 0 }}
-    {{- with resources.Get (strings.TrimPrefix "/" .) }}
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="{{ .Permalink }}">
-  <meta name="twitter:image:alt" content="{{ $imgAlt }}">
-    {{- end }}
-  {{- else }}
-  <meta name="twitter:card" content="summary">
-  {{- end }}
-{{- end }}
+<meta name="twitter:card" content="summary">
 {{- end }}
 
 {{- with or .Title site.Title site.Params.title | plainify }}
@@ -44,17 +13,4 @@
 
 {{- with or .Description .Summary site.Params.description | plainify | htmlUnescape }}
   <meta name="twitter:description" content="{{ trim . "\n\r\t " }}">
-{{- end }}
-
-{{- $twitterSite := "" }}
-{{- with site.Params.social }}
-  {{- if reflect.IsMap . }}
-    {{- with .twitter }}
-      {{- $content := . }}
-      {{- if not (strings.HasPrefix . "@") }}
-        {{- $content = printf "@%v" . }}
-      {{- end }}
-      <meta name="twitter:site" content="{{ $content }}">
-    {{- end }}
-  {{- end }}
 {{- end }}

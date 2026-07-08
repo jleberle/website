@@ -6,15 +6,12 @@
            by list.html). Every other list cover stays lazy. */}}
     {{- $priority := (or $.IsSingle $.isFirst) }}
     {{- $loading := cond $priority "eager" "lazy" }}
-    {{- $addLink := (and site.Params.cover.linkFullImages $.IsSingle) }}
-    {{- $prod := (hugo.IsProduction | or (eq site.Params.env "production")) }}
     {{- $alt := (.Params.cover.alt | default .Params.cover.caption | plainify) }}
     {{- $focalPoint := .Params.cover.focalPoint | default "center" | lower }}
     {{- $focalPoints := slice "top-left" "top" "top-right" "left" "center" "right" "bottom-left" "bottom" "bottom-right" }}
     {{- if not (in $focalPoints $focalPoint) }}
         {{- errorf "invalid cover focalPoint %q on %s" $focalPoint .RelPermalink }}
     {{- end }}
-    {{- $responsiveImages := (.Params.cover.responsiveImages | default site.Params.cover.responsiveImages) | default true }}
 
     {{- $pageBundleCover := (.Resources.ByType "image").GetMatch (printf "*%s*" (.Params.cover.image)) }}
     {{- $globalResourcesCover := (resources.ByType "image").GetMatch (printf "*%s*" (.Params.cover.image)) }}
@@ -41,13 +38,9 @@
         {{- $imgdl = ($cover | fingerprint).RelPermalink }}
     {{- end -}}
 
-    {{- if $addLink }}
-        <a href="{{ $imgdl }}" target="_blank" rel="noopener noreferrer">
-    {{- end }}
-
     {{- if $cover -}}
         {{/* i.e it is present in page bundle */}}
-        {{- if (and (in $processableFormats $cover.MediaType.SubType) ($responsiveImages) (eq $prod true)) }}
+        {{- if (and (in $processableFormats $cover.MediaType.SubType) hugo.IsProduction) }}
             <img class="u-featured" loading="{{$loading}}" decoding="async"{{ if $priority }} fetchpriority="high"{{ end }}
                 data-focal-point="{{ $focalPoint }}"
                 srcset="{{- range $size := $sizes -}}
@@ -59,7 +52,7 @@
                                ($imgdl), same file the lightbox/schema reference — so the
                                original ships once (not raw + fingerprinted) and the content
                                hash makes the immutable cache header in _headers correct on
-                               in-place cover replacement. Mirrors responsive-img.html. */ -}}
+                               in-place cover replacement. Mirrors responsive_img.html. */ -}}
                         {{- printf "%s %dw" $imgdl ($cover.Width) }}"
                 src="{{ $imgdl }}"
                 {{- /* Match the actual rendered slot so the browser doesn't
@@ -84,10 +77,6 @@
         {{- /* For absolute urls and external links, no img processing here */}}
         <img loading="{{ $loading }}" decoding="async"{{ if $priority }} fetchpriority="high"{{ end }} data-focal-point="{{ $focalPoint }}" src="{{ $imgdl }}" alt="{{ $alt }}">
     {{- end }}
-
-    {{- if $addLink }}
-        </a>
-    {{- end -}}
 
     {{- /*  Display Caption  */}}
     {{- if $.IsSingle }}

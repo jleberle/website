@@ -3,7 +3,7 @@
 {{- with $entry.cite_key }}
   {{- $entryKey := . -}}
   {{- range site.RegularPages }}
-    {{- $pageKeys := partial "cite_keys.html" . -}}
+    {{- $pageKeys := partialCached "cite_keys.html" . .RelPermalink -}}
     {{- if in $pageKeys $entryKey -}}
       {{- $relatedPages = $relatedPages | append . -}}
     {{- end -}}

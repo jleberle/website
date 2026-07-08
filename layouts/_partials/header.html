@@ -3,37 +3,8 @@
         <div class="logo">
             {{- $label_text := (site.Params.brand.text | default site.Title) }}
             {{- if site.Title }}
-            <a href="{{ "" | relLangURL }}" accesskey="h" title="{{ $label_text }} (Alt + H)">
-                {{- if site.Params.brand.icon }}
-                {{- $img := resources.Get site.Params.brand.icon }}
-                {{- if $img }}
-                    {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
-                    {{- if hugo.IsExtended -}}
-                        {{- $processableFormats = $processableFormats | append "webp" -}}
-                    {{- end -}}
-                    {{- $prod := (hugo.IsProduction | or (eq site.Params.env "production")) }}
-                    {{- $h := int (site.Params.brand.iconHeight | default 30) }}
-                    {{- if and (in $processableFormats $img.MediaType.SubType) (eq $prod true)}}
-                        {{- /* Render at 2x the display height so the logo stays crisp on high-DPR screens. */}}
-                        {{- $img = $img.Resize (printf "x%d" (mul $h 2)) }}
-                        <img src="{{ $img.RelPermalink }}" alt=""
-                            width="{{ div $img.Width 2 }}" height="{{ div $img.Height 2 }}">
-                    {{- else }}
-                        <img src="{{ $img.RelPermalink }}" alt="" height="{{ $h }}">
-                    {{- end }}
-                {{- else }}
-                <img src="{{- site.Params.brand.icon | relURL -}}" alt=""
-                    height="{{- site.Params.brand.iconHeight | default "30" -}}">
-                {{- end -}}
-                {{- else if hasPrefix site.Params.brand.iconSvg "<svg" }}
-                    {{ site.Params.brand.iconSvg | safeHTML }}
-                {{- end -}}
-                {{- $label_text -}}
-            </a>
+            <a href="{{ "" | relLangURL }}" accesskey="h" title="{{ $label_text }} (Alt + H)">{{ $label_text }}</a>
             {{- end }}
-
-            {{- /* The theme toggle lives in the footer (layouts/_partials/footer.html).
-                   The language switcher is omitted: this site is single-language. */}}
         </div>
         {{- $currentPage := . }}
         <ul id="menu" class="menu">

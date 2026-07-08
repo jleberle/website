@@ -3,7 +3,6 @@ title: "Digital Humanities: A Primer"
 slug: "gardner-musto-digital-humanities"
 date: 2015-11-22
 draft: false
-author: "Jared L. Eberle"
 description: "An updated assessment of digital humanities and their uses"
 reviewed_type: "Book"
 reviewed_title: "The Digital Humanities: A Primer for Students and Scholars"

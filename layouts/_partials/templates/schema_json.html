@@ -6,64 +6,45 @@
   "name": {{ site.Title }},
   "url": {{ site.Home.Permalink }},
   "description": {{ site.Params.description | plainify | truncate 180 | safeHTML }},
-  {{- if (eq site.Params.schema.publisherType "Person") }}
-  {{- /* Override of PaperMod's template: use a real portrait (site.Params.schema.image,
-         resolved from assets) instead of the favicon for the Person image. Keep
-         the structured-data image crawler-friendly without publishing the full
-         source portrait. */}}
-  {{- $personImage := site.Params.assets.favicon | default "favicon.ico" | absURL }}
+  {{- /* A real portrait (site.Params.schema.image, resolved from assets)
+         rather than the favicon for the Person image — the structured-data
+         image crawler-friendly without publishing the full source portrait. */}}
+  {{- $personImage := site.Params.assets.favicon | absURL }}
   {{- with site.Params.schema.image }}
     {{- with resources.Get . }}{{ $personImage = (.Resize "240x240 avif" | fingerprint).Permalink }}{{ else }}{{ $personImage = . | absURL }}{{ end }}
   {{- end }}
   "image": {{ $personImage }},
-  {{- else }}
-  "logo": {{ site.Params.assets.favicon | default "favicon.ico" | absURL }},
-  {{- end }}
   "sameAs": [
-    {{- if site.Params.schema.sameAs }}
-      {{ range $i, $e := site.Params.schema.sameAs }}{{ if $i }}, {{ end }}{{ trim $e " " }}{{ end }}
-    {{- else}}
-      {{ range $i, $e := site.Params.SocialIcons }}{{ if $i }}, {{ end }}{{ trim $e.url " " | safeURL }}{{ end }}
-    {{- end}}
+    {{ range $i, $e := site.Params.schema.sameAs }}{{ if $i }}, {{ end }}{{ trim $e " " }}{{ end }}
   ]
 }
 </script>
 {{- else if (or .IsPage .IsSection) }}
-{{/* BreadcrumbList */}}
-{{- $url := replace .Parent.Permalink ( printf "%s" site.Home.Permalink) "" }}
-{{- $lang_url := strings.TrimPrefix ( printf "%s/" .Lang) $url }}
-{{- $bc_list := (split $lang_url "/")}}
-
-{{- $scratch := newScratch }}
+{{/* BreadcrumbList: ancestors from Home down to this page's parent, plus
+     this page itself. Same ancestor chain breadcrumbs.html walks, just
+     minus the "Home" entry (schema.org convention omits it here) and with
+     the current page appended as the final item. */}}
+{{- $items := slice }}
+{{- range $i, $a := .Ancestors.Reverse }}
+  {{- if gt $i 0 }}
+    {{- $items = $items | append (dict "name" $a.Name "item" $a.Permalink) }}
+  {{- end }}
+{{- end }}
+{{- $items = $items | append (dict "name" .Name "item" .Permalink) }}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-  {{- range $index, $element := $bc_list }}
-
-    {{- $scratch.Add "path" (printf "%s/" $element ) | safeJS }}
-    {{- $bc_pg := site.GetPage ($scratch.Get "path") -}}
-
-    {{- if (and ($bc_pg) (gt (len . ) 0))}}
-    {{- if (and $index)}}, {{end }}
+  {{- range $i, $it := $items }}
+    {{- if $i }},{{ end }}
     {
       "@type": "ListItem",
-      "position": {{ add 1 $index  }},
-      "name": {{ $bc_pg.Name }},
-      "item": {{ $bc_pg.Permalink | safeHTML }}
+      "position": {{ add $i 1 }},
+      "name": {{ $it.name }},
+      "item": {{ $it.item | safeHTML }}
     }
-    {{- end }}
-
   {{- end }}
-  {{- /*  self-page addition  */ -}}
-  {{- if (ge (len $bc_list) 2) }}, {{end }}
-    {
-      "@type": "ListItem",
-      "position": {{len $bc_list}},
-      "name": {{ .Name }},
-      "item": {{ .Permalink | safeHTML }}
-    }
   ]
 }
 </script>
@@ -102,7 +83,7 @@
     {{- end}}
   {{- end }}
   {{- else }}
-    {{- $images := partial "templates/_funcs/get-page-images" . -}}
+    {{- $images := partial "templates/_funcs/get_page_images" . -}}
     {{- with index $images 0 -}}
   "image": {{ .Permalink }},
     {{- end }}
@@ -111,24 +92,12 @@
   {{- with partial "latest_revision.html" . }}{{ $dateModified = time.AsTime .date }}{{ end -}}
   "datePublished": {{ .PublishDate }},
   "dateModified": {{ $dateModified }},
-  {{- with (.Params.author | default site.Params.author) }}
-  "author":
-    {{- if (or (eq (printf "%T" .) "[]string") (eq (printf "%T" .) "[]interface {}")) -}}
-  [{{- range $i, $v := . -}}
-  {{- if $i }}, {{end -}}
-  {
-    "@type": "Person",
-    "name": {{ $v }},
-    "url": {{ site.Home.Permalink }}
-  }
-  {{- end }}],
-    {{- else -}}
-  {
+  {{- with partial "author.html" . }}
+  "author": {
     "@type": "Person",
     "name": {{ . }},
     "url": {{ site.Home.Permalink }}
   },
-    {{- end -}}
   {{- end }}
   "mainEntityOfPage": {
     "@type": "WebPage",
@@ -139,7 +108,7 @@
     "name": {{ site.Title }},
     "logo": {
       "@type": "ImageObject",
-      "url": {{ site.Params.assets.favicon | default "favicon.ico" | absURL }}
+      "url": {{ "/icons/icon-512.png" | absURL }}
     }
   }
 }

@@ -1,6 +1,6 @@
 {{- define "main" }}
 
-{{- $readingEntries := partial "reading_entries.html" . -}}
+{{- $readingEntries := partialCached "reading_entries.html" . -}}
 
 <article class="research-path">
   <header class="page-header research-path-header">

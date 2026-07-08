@@ -1,0 +1,8 @@
+{{- /* Fingerprinted square site icon for feed readers (e.g. NetNewsWire's
+       channel <image>/JSON Feed `icon`) — must be square and >=~128px, so
+       this uses the touch icon rather than the 1000x688 OG card. Shared by
+       layouts/rss.xml, layouts/index.jsonfeed.json, layouts/reading.rss.xml. */ -}}
+{{- $icon := resources.Get "icons/apple-touch-icon.png" -}}
+{{- if $icon -}}
+  {{- return ($icon | resources.Fingerprint).Permalink -}}
+{{- end -}}

@@ -2,7 +2,6 @@
 title: "Always Take First Hand Accounts With a Grain of Salt"
 slug: "always-take-first-hand-accounts-with-a-grain-of-salt"
 date: 2014-07-24
-author: "Jared L. Eberle"
 description: "Raymond Yellow Thunder and the Wounded Knee Occupation"
 summary: "Raymond Yellow Thunder and the Wounded Knee Occupation"
 categories:

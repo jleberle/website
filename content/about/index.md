@@ -11,7 +11,7 @@ My name is Jared Eberle and I'm currently a lecturer at Oklahoma State Universit
 
 This website is mostly meant for me to track the [things I've read](/reviews) or [notebook entries](/quotes) collecting material from sources I find important. But you will also find [longer pieces of historical randomness](/articles) building on the shorter material found here.
 
-If you're curious what takes up my time, here's my [media diet](/sources) and the [things I use](/uses). 
+If you're curious what takes up my time, here's my [media diet](/sources).
 
 ## Connect
 

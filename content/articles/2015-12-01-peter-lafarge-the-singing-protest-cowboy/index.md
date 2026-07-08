@@ -2,7 +2,6 @@
 title: "Peter LaFarge, The Singing Protest Cowboy"
 slug: "peter-lafarge-the-singing-protest-cowboy"
 date: 2015-12-01
-author: "Jared L. Eberle"
 description: "Indigeneity and protestor singers"
 summary: "Peter LaFarge used his western heritage and claims of Indigenous heritage to build credibility in the 1950s folk scene."
 categories:

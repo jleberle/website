@@ -39,7 +39,7 @@
     <div class="carousel-track">
         {{- range $i, $s := $slides }}
         {{- $img := $s.img }}
-        {{- $r := partial "responsive-img.html" (dict "resource" $img) }}
+        {{- $r := partial "responsive_img.html" (dict "resource" $img) }}
         <figure class="carousel-slide{{ if eq $i 0 }} active{{ end }}" aria-hidden="{{ if eq $i 0 }}false{{ else }}true{{ end }}">
             <img src="{{ $r.src }}"
                  {{- with $r.srcset }}
