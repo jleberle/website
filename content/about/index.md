@@ -5,60 +5,88 @@ description: "About myself and the website you're visiting"
 summary: "This is who I am and how I made this little website"
 ---
 
-## The Human
+## Hello there
 
-Welcome to my tiny little corner of the internet. My name is Jared Eberle and I'm currently a lecturer at Oklahoma State University where I teach primarily first year US history surveys and Oklahoma History. Otherwise my research focus has traditionally been on Indigenous activism in the latter half of the 20th century with a particular focus on the American Indian Movement following the occupation of Wounded Knee, South Dakota in 1973. More about all of that can be found on [my CV](/cv). 
+My name is Jared Eberle and I'm currently a lecturer at Oklahoma State University where I teach primarily first year US history surveys and Oklahoma History. This is my tiny little corner of the internet, where I build on my research related to Indigenous activism in the latter half of the 20th century. More about all of that can be found on [my CV](/cv). 
 
-As for here, this little corner is largely meant for myself, to track the [things I've read](/reviews) or [notebook entries](/quotes) collecting material from sources I find important. But you will also find [longer pieces of historical randomness](/articles) building on the shorter material found here.
+This website is mostly meant for me to track the [things I've read](/reviews) or [notebook entries](/quotes) collecting material from sources I find important. But you will also find [longer pieces of historical randomness](/articles) building on the shorter material found here.
 
 If you're curious what takes up my time, here's my [media diet](/sources) and the [things I use](/uses). 
 
-## Contact
+## Connect
 
 **For Students**: please consult the [student hours](/studenthours) page for additional information on utilizing student hours to discuss issues in the course you're enrolled in.
 
 **For anyone not currently enrolled**: If you want to discuss anything here, please utilize {{< email "jared@jaredeberle.org" "my email" >}}. ([PGP Key](/key.asc)) or contact me on social media linked in the footer.
 
-### Office Mailing address
+### Office
 
 154 Social Sciences and Humanities\
 Department of History\
 Oklahoma State University\
 Stillwater, OK 74078
 
-### Office location
+My office is located on the south wing of Social Sciences and Humanities. The easiest door to use is the main level door closest to University Ave. Here's [a map](location.avif) and [an interactive version](https://www.openstreetmap.org/?mlat=36.119911&mlon=-97.072347#map=18/36.119911/-97.072349).
 
-My office is located on the south wing of Social Sciences and Humanities. The easiest door to use is the main level door closest to University Ave.
+## Uses
 
-![Screenshot of a map of Jared Eberle's office at Oklahoma State University](location.avif "Map of my office location at Oklahoma State University")
+### Analogue Items
 
-[View interactive map](https://www.openstreetmap.org/?mlat=36.119911&mlon=-97.072347#map=18/36.119911/-97.072349)
+| Item | Category |
+| --- | --- |
+| Field Notes | Notebook |
+| Desk pad | Notepad |
+| Zebra Sarasa Clip | Pen |
+| Uniball AIR | Pen |
+| Records & CDs | Music Media |
+| LEGO | Hobby |
 
-## Colophon
+### Gadgets
 
-{{< figure
-src="northeaster-winslow-homer.avif"
-alt="Winslow Homer's The Northeaster showing waves crashing on a rocky shore"
-caption="Winslow Homer, Northeaster"
-attr="Metropolitan Museum of Art, New York, NY"
-attrlink="http://www.metmuseum.org/collection/the-collection-online/search/11130"
-align="center"
->}}
+| Item | Category |
+| --- | --- |
+| Mac Mini M4 Pro | Desktop |
+| Macbook Air M3 15in | Laptop |
+| iPad Pro M5 11in | Tablet |
+| iPhone 17 Pro | Phone |
+| Apple Watch Series 10 | Watch |
+| PS5 | Console |
 
-This site is built with [Hugo](https://gohugo.io) and served through [Codeberg](https://codeberg.org/jleberle/website) and [Statichost.eu](https://statichost.eu). The current inspiration for the site's theming comes from Winslow Homer's coastal paintings, in particular *Northeaster* and [*The Fog Warning*](winslow-homer-the-fog-warning.avif), experiencing my New England heritage.
+### Media 
 
-The site's theme was largely designed with the help of Claude but the programs only touched back-end files on the site, everything you see publicly is written and edited by me, a [real human](/humans.txt). Typos are my own but for errors, please blame my cat.
+| Item | Category |
+| --- | --- |
+| Denon DP-300F | Turntable |
+| Onkyo DX-C390 | CD Player |
+| Sony STR-DH190 | Receiver |
+| Schiit Modi | DAC   |
+| Schiit Magni | Amp  | 
+| Homepod  | Smart Speaker |
+| AirPods (Pro / Max) | Earphones |
+| Sennheiser Mic | Microphone |
+| Apple TV | Streaming Device |
 
-Besides the theme design, I've intently worked to make this site as environmentally friendly as possible meaning the homepage uses only [0.013g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor.[^1] In terms of my [biggest page](/articles/past-and-future-of-indian-rodeo-in-las-vegas/), it only uses 0.045g and downloads at just under 145KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data (20 times the amount). This is the result of a number of very opinionated decisions:
+### Everyday Software
 
-[^1]: It used to be 0.008g but I added a self-hosted font to make the site better for readability.
+| Item | Category |
+| --- | --- |
+| Obsidian | Writing |
+| Neovim | Editor |
+| BBEdit | Editor |
+| Tot | Quick Notes |
+| Safari | Browser |
+| NetNewsWire | RSS Reader |
+| Overcast | Podcasts |
+| Broadcasts | Internet Radio |
+| Ghostty | Terminal |
+| Apple Mail | Email |
 
-- A static blog like Hugo is more efficient than software like Wordpress and to
-  further enhance that, all resources are minified when built and my javascript usage is minimal (roughly 7KB in total) and deferred
-- The site uses one self-hosted and subsetted font (Fraunces) for the headers while all remaining fonts are system fonts. This removes an extra outside url fetch and it removes unneeded weight from the font download. 
-- Images are AVIF format, lazy loaded, and responsive which reduces file sizes and only loads them when needed.
-- The website uses hashed files and immutable cache times, which basically means your browser won't redownload things unless they change and a new hashed file is created.
- 
-This site should also be fully compliant with web accessibility standards, if you run into issues, please {{< email "jared@jaredeberle.org" "let me know" >}} and I will work to fix the issue as best as possible.
- 
-Further information on [privacy](/privacy) and [terms of use](/terms) can be found at those links but privacy boils down to I keep nothing about your visit and terms is really just please be kind and report issues you find. For errors you can either email me or submit a request through Git and Codeberg through the Suggest Changes link at the top of every post.
+### Services
+
+| Item | Category |
+| --- | --- |
+| Zotero | Reference Manager |
+| Kagi | Search Engine |
+| NextDNS | DNS Filtering |
+| Feedbin | RSS Sync |
+| Apple Music | Music Streaming |
