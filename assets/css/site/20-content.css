@@ -266,10 +266,16 @@ code, pre, kbd, samp, tt {
    Serif typography and prose accents live together in this component.
    ------------------------------------------------------------ */
 .md-content hr {
-    height: 2px;
+    height: 0;
     margin: 30px 0;
-    background: var(--rule);
     border: 0;
+    text-align: center;
+}
+
+.md-content hr::after {
+    content: "❦";
+    color: var(--secondary);
+    font-size: 1.1rem;
 }
 
 .md-content blockquote {
@@ -278,6 +284,7 @@ code, pre, kbd, samp, tt {
     padding: 0.15rem 0 0.15rem 1rem;
     border-inline-start: 2px solid var(--quote-rule);
     color: var(--content);
+    font-style: italic;
 }
 
 .md-content blockquote p {
