@@ -7,7 +7,7 @@
 }
 
 .page-header h1 {
-    font-size: 40px;
+    font-size: 2.5rem;
 }
 
 .pagination {
@@ -16,7 +16,7 @@
 
 .pagination a {
     color: var(--theme);
-    font-size: 13px;
+    font-size: 0.8125rem;
     line-height: 36px;
     background: var(--primary);
     border-radius: calc(36px / 2);

@@ -6,7 +6,7 @@
 
 html {
     -webkit-tap-highlight-color: transparent;
-    overflow-y: scroll;
+    scrollbar-gutter: stable;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
@@ -27,11 +27,22 @@ h6 {
 body {
     font-family: 'Source Serif 4', 'Source Serif 4 Fallback',
                  Georgia, Cambria, 'Times New Roman', Times, serif;
-    font-size: 18px;
+    font-size: 1.125rem;
     line-height: 1.7;
     overflow-wrap: break-word;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light-on-dark text tends to "bloom" against the page, and macOS/Firefox's
+   default stroke dilation compounds that. Scoped to dark mode only: on
+   light-mode standard-DPI Macs, dilation-off drops thin serif strokes below
+   a pixel and reads as thinner, lower-contrast body text — a cost with no
+   corresponding benefit there. Both properties are macOS-only no-ops
+   everywhere else (iOS has no subpixel/dilation mode to disable). */
+@media (prefers-color-scheme: dark) {
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
 }
 
 article,

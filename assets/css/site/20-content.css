@@ -7,28 +7,28 @@
 
 .md-content h1 {
     margin: 40px auto 32px;
-    font-size: 40px;
+    font-size: 2.5rem;
 }
 
 .md-content h2 {
     margin: 32px auto 24px;
-    font-size: 32px;
+    font-size: 2rem;
 }
 
 .md-content h3 {
-    font-size: 24px;
+    font-size: 1.5rem;
 }
 
 .md-content h4 {
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 .md-content h5 {
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .md-content h6 {
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 .md-content del {
@@ -149,7 +149,6 @@
     background: var(--code-block-bg) !important;
     border-radius: var(--radius);
     overflow-x: auto;
-    word-break: break-all;
 }
 
 .md-content iframe {
@@ -459,12 +458,12 @@ b {
    alone left bottom/left/right leaking in from .md-content's shorthand. */
 .has-prose-typography .post-content h2 {
     margin: 1.9em 0 24px;
-    font-size: 30px;
+    font-size: 1.875rem;
 }
 
 .has-prose-typography .post-content h3 {
     margin: 1.65em 0 16px;
-    font-size: 22px;
+    font-size: 1.375rem;
 }
 
 /* Ragged-right at every width, not justified: browsers only stretch

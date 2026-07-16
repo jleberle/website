@@ -1,7 +1,7 @@
 @media screen and (width <= 768px) {
     /* theme-vars */
     :root {
-        --gap: 14px;
+        --gap: 1.125rem;
     }
 
     /* post-entry */
