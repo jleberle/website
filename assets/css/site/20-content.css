@@ -509,6 +509,7 @@ b {
    book-typography touch suited to quotation-heavy prose. Safari/iOS only
    today; silently ignored elsewhere. Disabled on blockquotes so it doesn't
    pull the deliberate first-line quote-mark indent into the margin. */
+
 /* 1.2rem (~19.2px) at the 640px capped measure (01-tokens.css) works out to
    ~66-67 characters per line — the standard target for sustained reading,
    ragged-right or justified alike. This same size is shared down to phone
