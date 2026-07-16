@@ -235,7 +235,7 @@ h1>a>svg {
     color: var(--accent);
 }
 
-/* Wide-screen scholarly apparatus. The normal 700px reading measure stays
+/* Wide-screen scholarly apparatus. The normal 640px reading measure stays
    untouched; notes and explicitly marked figures borrow otherwise empty space
    to its right. At narrower widths these rules do not apply, so footnotes use
    the popover/bottom-list presentation and margin figures return to the flow. */

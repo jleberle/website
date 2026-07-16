@@ -30,6 +30,8 @@ body {
     font-size: 18px;
     line-height: 1.7;
     overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 article,

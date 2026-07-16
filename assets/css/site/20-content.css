@@ -37,10 +37,22 @@
 
 .md-content dl:not(:last-child),
 .md-content ol:not(:last-child),
-.md-content p:not(:last-child),
 .md-content figure:not(:last-child),
 .md-content ul:not(:last-child) {
     margin-bottom: var(--content-gap);
+}
+
+/* Spaced paragraphs, no first-line indent: on screen, readers scan for the
+   gap rather than track an indent the way a print reader would, so vertical
+   space is the more legible "new paragraph" signal here. A touch more air
+   than the shared --content-gap (used by lists/figures/tables) since space
+   is now the *only* cue doing that job - em-based so it scales with the
+   paragraph's own font-size rather than needing separate breakpoint
+   tuning. The drop cap and heading rules below still mark section/article
+   openings, so the academic apparatus around these paragraphs is unchanged
+   even though the paragraphs themselves read as plain spaced blocks. */
+.md-content p:not(:last-child) {
+    margin-bottom: 1.3em;
 }
 
 .md-content ol,
@@ -338,9 +350,15 @@ code, pre, kbd, samp, tt {
     transition: color 0.15s ease;
 }
 
-.md-content a:not(.anchor):hover {
+.md-content a:not(.anchor):hover,
+.md-content a:not(.anchor):focus-visible {
     color: var(--accent);
     text-underline-offset: 0.25rem;
+}
+
+.md-content a:not(.anchor):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 
@@ -449,27 +467,21 @@ b {
     font-size: 22px;
 }
 
-/* Prevent widows (a lone word on a paragraph's last line) in supporting
-   browsers, and let long words break at the column edge instead of
-   leaving a large gap before wrapping — the standard pairing for
-   unjustified prose. Both are progressive enhancements, ignored where
-   unsupported. lang="en" (set on <html> by Hugo) is what lets browsers
-   pick correct English hyphenation points. */
+/* Ragged-right at every width, not justified: browsers only stretch
+   word-spacing rather than the glyph-scaling a print layout engine would
+   use, so justified text on screen tends toward uneven gaps and "rivers,"
+   especially at this column width. WCAG 1.4.8 (Visual Presentation) calls
+   out full justification as a readability problem for the same reason.
+   text-wrap: pretty prevents widows (a lone word on a paragraph's last
+   line) in supporting browsers, and hyphens: auto lets long words break at
+   the column edge instead of leaving a large gap before wrapping, keeping
+   the ragged edge itself fairly even. Both are progressive enhancements,
+   ignored where unsupported. lang="en" (set on <html> by Hugo) is what
+   lets browsers pick correct English hyphenation points. */
 .post-content p,
 .post-content li {
     text-wrap: pretty;
     hyphens: auto;
-}
-
-/* Justified body copy, book-style, above the site's own mobile breakpoint
-   (90-responsive.css switches layout at 768px). Ragged-right stays the
-   default below that width, where the narrower measure makes justification
-   with hyphenation prone to visible rivers of whitespace. */
-@media (width > 768px) {
-    .post-content p {
-        text-align: justify;
-        text-wrap: pretty;
-    }
 }
 
 /* Drop cap on the opening paragraph — chapter-opening convention, scoped
@@ -497,13 +509,22 @@ b {
    book-typography touch suited to quotation-heavy prose. Safari/iOS only
    today; silently ignored elsewhere. Disabled on blockquotes so it doesn't
    pull the deliberate first-line quote-mark indent into the margin. */
+/* 1.2rem (~19.2px) at the 640px capped measure (01-tokens.css) works out to
+   ~66-67 characters per line — the standard target for sustained reading,
+   ragged-right or justified alike. This same size is shared down to phone
+   width (90-responsive.css only retunes line-height there): screen reading
+   size doesn't need to track viewing distance the way print size once did,
+   and a phone, tablet, and laptop all land in a similar comfortable range
+   at ~19px regardless of category, so there is no separate "tablet" step
+   to maintain here — only the measure and leading change with the
+   viewport. */
 .post-content {
     margin: 30px 0;
     color: color-mix(in sRGB, var(--content), var(--primary) 24%);
     hanging-punctuation: first;
     font-variant-numeric: oldstyle-nums proportional-nums;
-    font-size: 1.1rem;
-    line-height: 1.64;
+    font-size: 1.2rem;
+    line-height: 1.6;
 }
 
 /* Complete margin shorthand, not just margin-top: .md-content h2/h3 (line 13,

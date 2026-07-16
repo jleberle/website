@@ -9,6 +9,15 @@
         min-height: 260px;
     }
 
+    /* Body copy keeps the same font-size as tablet/desktop (20-content.css)
+       — only the leading tightens here. The phone column runs edge-to-edge
+       at whatever the viewport is, much narrower than the 640px capped
+       measure above this breakpoint, and a narrower column needs less
+       line-height to stay comfortable. */
+    .post-content {
+        line-height: 1.58;
+    }
+
 }
 
 @media (prefers-reduced-motion) {
