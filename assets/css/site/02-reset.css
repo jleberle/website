@@ -12,6 +12,16 @@ html {
     text-size-adjust: 100%;
 }
 
+/* A tinted-ink wash rather than the browser default (usually a saturated
+   platform blue that clashes with this palette). --tide and --fog-slate
+   already flip for dark mode in 01-tokens.css, so this one rule tracks
+   both themes without a separate dark media query. 25% tide over the page
+   background clears 8:1+ against the ink text color in both themes. */
+::selection {
+    background: color-mix(in sRGB, var(--tide), transparent 75%);
+    color: var(--fog-slate);
+}
+
 a,
 button,
 body,
