@@ -9,15 +9,32 @@
         min-height: 260px;
     }
 
-    /* Body copy keeps the same font-size as tablet/desktop (20-content.css)
-       — only the leading tightens here. The phone column runs edge-to-edge
-       at whatever the viewport is, much narrower than the 640px capped
-       measure above this breakpoint, and a narrower column needs less
-       line-height to stay comfortable. */
+    /* The phone column runs edge-to-edge, far narrower than the 640px capped
+       measure above this breakpoint, so a fixed 1.2rem would drop the line to
+       ~34 characters on a 360px phone — roughly half the ~66ch the desktop
+       measure targets. Leading tightens here; the two steps below ease the
+       prose size down on the narrowest widths to recover characters-per-line,
+       never enlarging past the tuned 1.2rem desktop size. Kept in rem (no vw)
+       so body text still scales fully with browser zoom. */
     .post-content {
         line-height: 1.58;
     }
+}
 
+/* Narrow-phone reading steps. ~18px holds roughly 40-50 characters per line
+   across the 380-520px band; ~17px keeps the smallest phones near ~38 cpl.
+   Overlapping max-width ranges resolve by source order, so the 380px step
+   must stay after the 520px one to win where both match. */
+@media screen and (width <= 520px) {
+    .post-content {
+        font-size: 1.125rem;
+    }
+}
+
+@media screen and (width <= 380px) {
+    .post-content {
+        font-size: 1.0625rem;
+    }
 }
 
 @media (prefers-reduced-motion) {
