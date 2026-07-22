@@ -134,7 +134,11 @@
     margin-bottom: 0.18rem;
     color: var(--secondary);
     font-family: var(--meta-font);
-    font-size: 0.68rem;
+
+    /* 0.75rem = 12px, the small-text accessibility floor. The quiet
+       small-caps labels across the reading ledger, related posts, and
+       home context list all share this size so nothing renders below it. */
+    font-size: 0.75rem;
     font-variant-caps: all-small-caps;
     letter-spacing: 0.015em;
     text-transform: lowercase;
@@ -217,7 +221,7 @@
 .reading-entry-record dt {
     margin: 0 0 0.1rem;
     color: var(--secondary);
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     font-variant-caps: all-small-caps;
     letter-spacing: 0.015em;
     text-transform: lowercase;
@@ -248,7 +252,7 @@
     display: block;
     margin-bottom: 0.16rem;
     color: var(--secondary);
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     font-variant-caps: all-small-caps;
     letter-spacing: 0.015em;
     text-transform: lowercase;

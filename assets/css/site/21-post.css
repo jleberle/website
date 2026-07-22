@@ -449,7 +449,7 @@ h1>a>svg {
 .related-post-type {
     color: var(--secondary);
     font-family: var(--meta-font);
-    font-size: 0.68rem;
+    font-size: 0.75rem;   /* 12px small-text floor — see 25-reading.css */
     font-variant-caps: all-small-caps;
     font-weight: 600;
     letter-spacing: 0.018em;

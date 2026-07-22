@@ -51,7 +51,7 @@
 }
 
 .home-info .social-icons a {
-    font-size: 0.74rem;
+    font-size: 0.75rem;   /* 12px small-text floor — see 25-reading.css */
     color: var(--content);
     border-color: color-mix(in sRGB, var(--border), transparent 8%);
     padding: 4px 9px;

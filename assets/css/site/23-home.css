@@ -299,7 +299,7 @@ body.home .home-info {
     margin: 0 0 0.14rem;
     color: var(--content);
     font-family: var(--meta-font);
-    font-size: 0.74rem;
+    font-size: 0.75rem;   /* 12px small-text floor — see 25-reading.css */
     font-variant-caps: all-small-caps;
     font-weight: 600;
     letter-spacing: 0.018em;
