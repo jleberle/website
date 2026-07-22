@@ -12,7 +12,9 @@
   <meta property="og:description" content="{{ trim . "\n\r\t " }}">
 {{- end }}
 
-{{- with or .Params.locale site.Language.Lang }}
+{{- /* OG spec wants language_TERRITORY (e.g. en_US). site.Language.Lang is only
+       `en`, so fall back to the site locale (en-US) and convert the hyphen. */}}
+{{- with or .Params.locale `en-US` }}
   <meta property="og:locale" content="{{ replace . `-` `_` }}">
 {{- end }}
 

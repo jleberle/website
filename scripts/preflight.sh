@@ -12,6 +12,7 @@
 #   6. generated junk files  — fail if OS/editor metadata lands in public/
 #   7. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs
 #   8. csp-hashes.sh --check — CSP hash drift against the fresh build
+#   8b. security.txt sig     — RFC 9116 clearsignature present, valid, unexpired
 #   9. published references  — every internal src/href/srcset/feed URL in the
 #                               output must resolve to a published file; guards
 #                               the build.publishResources=false resource pattern
@@ -136,6 +137,14 @@ if bash scripts/csp-hashes.sh --check --no-build >/dev/null 2>&1; then
 else
   bash scripts/csp-hashes.sh --check --no-build 2>&1 | tail -5
   fail "CSP hash drift — run scripts/csp-hashes.sh and update static/_headers"
+fi
+
+step "security.txt signature"
+if SEC_OUT=$(scripts/sign-security-txt.sh --check 2>&1); then
+  pass "security.txt $SEC_OUT"
+else
+  echo "$SEC_OUT"
+  fail "security.txt unsigned/tampered/expired — run scripts/sign-security-txt.sh"
 fi
 
 step "published-reference scan"

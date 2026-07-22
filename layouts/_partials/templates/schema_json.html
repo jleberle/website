@@ -103,13 +103,19 @@
     "@type": "WebPage",
     "@id": {{ .Permalink | safeHTML }}
   },
+  {{- $publisherType := ( site.Params.schema.publisherType | default "Organization") | title }}
   "publisher": {
-    "@type": "{{- ( site.Params.schema.publisherType | default "Organization") | title -}}",
-    "name": {{ site.Title }},
+    "@type": "{{ $publisherType }}",
+    "name": {{ site.Title }}
+    {{- /* schema.org defines `logo` only on Organization/Brand, not Person, so
+           emit it only for an Organization publisher — it's invalid vocabulary
+           on a Person and Google ignores it there. */}}
+    {{- if eq $publisherType "Organization" }},
     "logo": {
       "@type": "ImageObject",
       "url": {{ "/icons/icon-512.png" | absURL }}
     }
+    {{- end }}
   }
 }
 </script>
