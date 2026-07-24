@@ -9,6 +9,8 @@ categories:
 tags:
 - "1970s"
 - "American Indian Movement"
+people:
+- "james-abourezk"
 ---
 [Former Senator Jim Abourezk discussing his visit to the occupied town of Wounded Knee in 1973 with the South Dakota CBS affiliate](https://web.archive.org/web/20160611061224/http://www.keloland.com/news/article/news/abourezk-shares-means--mcgovern-memories):
 

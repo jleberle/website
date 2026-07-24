@@ -9,6 +9,8 @@ categories:
 - "American History"
 tags:
 - "19th Century"
+people:
+- "mary-elizabeth-lease"
 ---
 I teach primarily introductory level survey courses and the notes for those courses are a Frankenstein's monster of assembled sources. I used to try and keep track of what came from where but found the citations too distracting, so I just settled for double checking notes when I add new material in. Every now and then I stumble across something that makes me question what is in my notes and leads me to dig around trying to figure out if I'm saying the right or wrong thing in class. Recently I went down a rabbit hole thanks to [Wikipedia entry for Mary Lease](https://en.wikipedia.org/wiki/Mary_Elizabeth_Lease) because the opening sentence caught me off guard:
 

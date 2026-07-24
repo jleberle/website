@@ -9,6 +9,8 @@ categories:
 tags:
 - "1970s"
 - "American Indian Movement"
+people:
+- "dennis-banks"
 cover:
   image: "cover.avif"
   alt: "Russell Means in front of the statue of Massasoit"

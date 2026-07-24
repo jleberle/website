@@ -17,6 +17,9 @@ tags:
 - "1960s"
 - "American Indian Movement"
 - "Oklahoma"
+people:
+- "clyde-warrior"
+- "dennis-banks"
 cover:
   image: "cover.avif"
   alt: "Front cover of Clyde Warrior: Tradition, Community, and Red Power"

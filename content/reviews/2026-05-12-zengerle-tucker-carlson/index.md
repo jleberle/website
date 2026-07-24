@@ -15,6 +15,8 @@ categories:
 - "Culture and Media"
 tags:
 - "Journalism"
+people:
+- "tucker-carlson"
 cover:
   image: "cover.avif"
   alt: "Front cover of Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"

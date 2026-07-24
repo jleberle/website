@@ -10,6 +10,8 @@ categories:
 tags:
 - "1970s"
 - "Music"
+people:
+- "bruce-springsteen"
 ---
 Driving home the other day one of the DJs on a random SiriusXM station mentioned that they felt Bruce Springsteen was singing about a character in all of his songs. Well, of course. This isn't actually a new idea I said aloud to no one. Springsteen himself acknowledged in his Broadway show that he's made a career out of singing about stuff he's never actually experienced in his life (to his credit the DJ mentioned this). And that is the biggest criticism of Springsteen's music, it's a hollow career of a rich guy playing a poor man. When I taught a class dealing with music and American History the students generally hated Springsteen and many of them talked about how it felt weird for Springsteen to be singing about those topics. 
 

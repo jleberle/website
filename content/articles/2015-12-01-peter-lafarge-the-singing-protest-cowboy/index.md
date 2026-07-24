@@ -9,6 +9,8 @@ categories:
 tags:
 - "1960s"
 - "Music"
+people:
+- "peter-la-farge"
 cover:
   image: "cover.avif"
   alt: "Peter LaFarge"

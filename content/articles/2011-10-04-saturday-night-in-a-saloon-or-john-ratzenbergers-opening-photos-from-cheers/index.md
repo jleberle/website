@@ -8,6 +8,8 @@ categories:
 - "American History"
 tags:
 - "1930s"
+people:
+- "john-ratzenberger"
 cover:
   image: "cover.avif"
   alt: "Still of Cheers Opening with John Ratzenberger's credit"
