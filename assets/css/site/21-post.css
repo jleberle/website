@@ -480,9 +480,82 @@ h1>a>svg {
    compact apparatus block. */
 .post-apparatus {
     margin-top: 1.8rem;
-    padding-top: 0.85rem;
+    padding-top: 0.9rem;
     border-top: 1px solid var(--border);
     color: var(--secondary);
+}
+
+/* ------------------------------------------------------------
+   Aligned label grid for end matter. Each apparatus section
+   (Topics, People, reading/source/related connections, teaching)
+   becomes a two-column row: a small-caps kicker in a fixed left
+   column and its content flush right, so the labels form one quiet
+   aligned column instead of a tall stack of ruled blocks. A single
+   hairline (on .post-apparatus) separates the whole end matter from
+   the article above; there are no rules between rows, and the per-row
+   type chips are dropped since the row label already names the
+   category. Longer kicker phrases simply wrap within the label
+   column. The suggest-changes / carbon utility line closes the block
+   at the bottom (see .post-meta-footer).
+   ------------------------------------------------------------ */
+.post-context-grid {
+    --pc-label: 8.5rem;
+}
+
+.post-context-grid > .post-context {
+    display: grid;
+    grid-template-columns: var(--pc-label) minmax(0, 1fr);
+    gap: 0.3rem 1.1rem;
+    /* Top-align, not baseline: when either the label or the content wraps
+       to multiple lines, baseline alignment drops the label to a lower
+       line and the rows visually merge. start keeps every label pinned to
+       its content's first line. */
+    align-items: start;
+    margin: 0;
+    padding: 0.4rem 0;
+    border: 0;
+}
+
+.post-context-grid .post-context-kicker {
+    margin: 0;
+    color: var(--secondary);
+    line-height: 1.35;
+}
+
+/* The row label already names the category, so the inline type chip
+   (Figure / Book / Article) is redundant in the grid. */
+.post-context-grid .related-post-type {
+    display: none;
+}
+
+/* Flow connection links as normal inline text (overriding the inline-block
+   tap-target padding used for standalone lists elsewhere): long titles then
+   wrap naturally and a trailing ", author" stays attached to the title's
+   last word instead of orphaning the comma onto its own line. These are
+   inline targets constrained by line-height, so WCAG 2.5.8's inline
+   exception applies and dropping the block padding is fine here. */
+.post-context-grid .related-posts-list a {
+    display: inline;
+    padding-block: 0;
+}
+
+/* Topics row reuses the grid's kicker, so suppress the standalone
+   "Topics" pseudo-label the bare tag list carries on its own. */
+.post-context-grid .post-tags {
+    margin: 0;
+}
+
+.post-context-grid .post-tags::before {
+    content: none;
+}
+
+/* Stack label over content on narrow phones. */
+@media (width <= 640px) {
+    .post-context-grid > .post-context {
+        grid-template-columns: 1fr;
+        gap: 0.12rem;
+        padding: 0.4rem 0;
+    }
 }
 
 .post-meta-footer {
@@ -490,6 +563,12 @@ h1>a>svg {
     color: var(--secondary);
     font-family: var(--meta-font);
     font-size: 0.82rem;
+}
+
+/* When it follows the relationship grid, the suggest-changes / carbon line
+   reads as a quiet closing utility footer; space it off from the last row. */
+.post-context-grid + .post-meta-footer {
+    margin-top: 1.1rem;
 }
 
 /* --- Tags as a journal-style keyword line --- */

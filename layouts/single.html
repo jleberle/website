@@ -89,23 +89,38 @@
     {{- end }}
     {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
     {{- $terms := $.GetTerms $tags }}
-    {{- if or $foot $terms }}
+    {{- $peopleOut := partial "people_connections.html" . }}
+    {{- $teachingOut := partial "teaching_connections.html" . }}
+    {{- $relatedOut := partial "related_posts.html" . }}
+    {{- $hasRows := false }}
+    {{- if $terms }}{{ $hasRows = true }}{{ end }}
+    {{- if trim (printf "%s" $peopleOut) " \r\n\t" }}{{ $hasRows = true }}{{ end }}
+    {{- if trim (printf "%s" $teachingOut) " \r\n\t" }}{{ $hasRows = true }}{{ end }}
+    {{- if trim (printf "%s" $relatedOut) " \r\n\t" }}{{ $hasRows = true }}{{ end }}
+    {{- if or $foot $hasRows }}
     <div class="post-apparatus">
+      {{- if $hasRows }}
+      <div class="post-context-grid">
+        {{- with $terms }}
+        <div class="post-context related-posts" aria-label="Topics">
+          <span class="post-context-kicker">Topics</span>
+          <ul class="post-tags">
+            {{- range . }}
+            <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+            {{- end }}
+          </ul>
+        </div>
+        {{- end }}
+        {{ $peopleOut }}
+        {{ $teachingOut }}
+        {{ $relatedOut }}
+      </div>
+      {{- end }}
       {{- with $foot }}
       <div class="post-meta post-meta-footer">{{ delimit . "&nbsp;·&nbsp;" | safeHTML }}</div>
       {{- end }}
-      {{- with $terms }}
-    <ul class="post-tags">
-      {{- range . }}
-      <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
-      {{- end }}
-    </ul>
-    {{- end }}
     </div>
     {{- end }}
-    {{- partial "people_connections.html" . }}
-    {{- partial "teaching_connections.html" . }}
-    {{- partial "related_posts.html" . }}
   </footer>
 </article>
 
