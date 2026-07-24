@@ -74,6 +74,34 @@
 }
 
 /* ------------------------------------------------------------
+   High-contrast preference. For readers who ask the OS for more
+   contrast (Increase Contrast on macOS/iOS, "More contrast" on
+   Windows/Android). Body text is already AA; these deepen the ink and
+   pull the muted meta/link tones toward the primary so text/meta clear
+   a higher ratio without changing layout or hue. Split by scheme so the
+   move is "darker" in light mode and "lighter" in dark mode; the
+   dark+contrast block is last so it wins over the plain dark palette
+   above. Nothing here is load-bearing — unset preferences render the
+   tuned defaults unchanged. */
+@media (prefers-contrast: more) {
+    :root {
+        --content:   #262f34;   /* body ink — deepened toward the slate    */
+        --secondary: #3f464b;   /* meta/muted — darkened for a higher ratio */
+        --link:      var(--tide-deep);
+        --accent:    var(--tide-deep);
+    }
+}
+
+@media (prefers-color-scheme: dark) and (prefers-contrast: more) {
+    :root {
+        --content:   #ddd9d0;   /* body ink — lightened toward warm paper   */
+        --secondary: #b4bbbe;   /* meta/muted — lifted for a higher ratio   */
+        --link:      var(--tide-deep);
+        --accent:    var(--tide-deep);
+    }
+}
+
+/* ------------------------------------------------------------
    Global theme surface
    ------------------------------------------------------------ */
 body,

@@ -481,6 +481,15 @@ b {
 .post-content li {
     text-wrap: pretty;
     hyphens: auto;
+
+    /* Refine the auto-hyphenation above for the narrow phone measures (the
+       whole reason hyphens are on): only break words of at least 6 letters,
+       and never strand fewer than 3 letters on either side of the break.
+       Keeps short words whole and stops runt hyphenations from roughening
+       the ragged edge on ~38-50 cpl lines. Progressive enhancement — browsers
+       without hyphenate-limit-chars (Firefox today) fall back to plain
+       hyphens: auto. */
+    hyphenate-limit-chars: 6 3 3;
 }
 
 /* Drop cap on the opening paragraph — chapter-opening convention, scoped
