@@ -57,10 +57,10 @@
 {{- end -}}
 
 {{- $fontBytes := 0 -}}
-{{- with resources.Get "fonts/sourceserif4-400-latin.woff2" }}{{ $fontBytes = add $fontBytes (len .Content) }}{{ end -}}
+{{- with resources.Get "fonts/charter-400-latin.woff2" }}{{ $fontBytes = add $fontBytes (len .Content) }}{{ end -}}
 {{- with resources.Get "fonts/fraunces-600-latin.woff2" }}{{ $fontBytes = add $fontBytes (len .Content) }}{{ end -}}
 {{- if and .IsPage .Description -}}
-    {{- with resources.Get "fonts/sourceserif4-400i-latin.woff2" }}{{ $fontBytes = add $fontBytes (len .Content) }}{{ end -}}
+    {{- with resources.Get "fonts/charter-400i-latin.woff2" }}{{ $fontBytes = add $fontBytes (len .Content) }}{{ end -}}
 {{- end -}}
 {{- if or (strings.Contains .Content "footnote-ref") (strings.Contains .Content "<pre") (strings.Contains .Content "<code") -}}
     {{- with resources.Get "fonts/ibmplexmono-400-latin.woff2" }}{{ $fontBytes = add $fontBytes (len .Content) }}{{ end -}}

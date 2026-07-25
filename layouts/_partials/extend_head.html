@@ -7,12 +7,12 @@
 <link rel="terms-of-service" href="{{ "terms/" | relURL }}">
 {{- /* Preload the regular body face and the single display face. The rest of
        the font stack loads on demand via weight/style in fonts.css. */}}
-<link rel="preload" href="{{ "fonts/sourceserif4-400-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="{{ "fonts/charter-400-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin="anonymous">
 <link rel="preload" href="{{ "fonts/fraunces-600-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin="anonymous">
 {{- /* Single-page descriptions are italic and visible above the fold. Preload
        that face there so it downloads alongside CSS instead of after it. */}}
 {{- if and .IsPage .Description }}
-<link rel="preload" href="{{ "fonts/sourceserif4-400i-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" href="{{ "fonts/charter-400i-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin="anonymous">
 {{- end }}
 {{- with partial "templates/_funcs/site_js.html" . }}
 {{- $bundle := . | fingerprint }}
