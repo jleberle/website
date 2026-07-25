@@ -375,9 +375,9 @@ code, pre, kbd, samp, tt {
 
 
 /* ------------------------------------------------------------
-   Body type. Source Serif 4 gives the site a consistent scholarly text
-   face across platforms, while Fraunces stays confined to display work.
-   The fallback proxy (fonts.css) keeps the swap from reflowing prose.
+   Body type. Charter gives the site a consistent, warm text face across
+   platforms, while Fraunces stays confined to display work. The fallback
+   proxy (fonts.css) keeps the swap from reflowing prose.
    ------------------------------------------------------------ */
 
 /* Headings (prose + page title). Fraunces, pinned at its display optical
