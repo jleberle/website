@@ -102,14 +102,14 @@
       {{- if $hasRows }}
       <div class="post-context-grid">
         {{- with $terms }}
-        <div class="post-context related-posts" aria-label="Topics">
+        <section class="post-context related-posts" aria-label="Topics">
           <span class="post-context-kicker">Topics</span>
           <ul class="post-tags">
             {{- range . }}
             <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
             {{- end }}
           </ul>
-        </div>
+        </section>
         {{- end }}
         {{ $peopleOut }}
         {{ $teachingOut }}
