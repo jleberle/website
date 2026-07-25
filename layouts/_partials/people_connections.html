@@ -3,7 +3,7 @@
 {{- if gt (len $personSlugs) 0 -}}
   {{- $people := slice -}}
   {{- range $slug := $personSlugs -}}
-    {{- $record := index site.Data.people $slug -}}
+    {{- $record := index hugo.Data.people $slug -}}
     {{- $name := humanize (replace $slug "-" " ") -}}
     {{- if and $record $record.name -}}
       {{- $name = $record.name -}}
