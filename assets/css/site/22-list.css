@@ -84,15 +84,6 @@
     border-radius: var(--radius);
 }
 
-.entry-hint {
-    color: var(--secondary);
-}
-
-.entry-hint-parent {
-    display: flex;
-    justify-content: space-between;
-}
-
 .entry-cover {
     font-size: 0.875rem;
     margin-bottom: var(--gap);

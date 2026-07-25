@@ -70,13 +70,8 @@
     {{- with index $pageContext "entry" }}
     <p class="entry-kicker">{{ . }}</p>
     {{- end }}
-    <h2 class="entry-hint-parent p-name">
+    <h2 class="p-name">
       {{- .Title }}
-      {{- if .Draft }}
-      <span class="entry-hint" title="Draft">
-        {{- partial "templates/_funcs/icon_draft.html" 20 }}
-      </span>
-      {{- end }}
     </h2>
   </header>
   {{- $summary := partial "page_summary.html" . }}

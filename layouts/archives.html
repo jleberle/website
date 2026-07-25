@@ -83,13 +83,8 @@
     <article class="archive-entry" data-archive-entry data-archive-section="{{ .Section }}" data-archive-search-text="{{ $searchText | lower }}">
       <time class="archive-date" datetime="{{ .PublishDate.Format "2006-01-02" }}">{{ .PublishDate.Format "Jan 2, 2006" }}</time>
       <div class="archive-entry-body">
-        <h2 class="archive-entry-title entry-hint-parent">
+        <h2 class="archive-entry-title">
           {{- .Title | markdownify }}
-          {{- if .Draft }}
-          <span class="entry-hint" title="Draft">
-            {{- partial "templates/_funcs/icon_draft.html" 15 }}
-          </span>
-          {{- end }}
         </h2>
         <div class="archive-meta">
           {{- with index $pageContext "entry" }}{{ . }}{{ else }}{{ .Section | title }}{{ end -}}

@@ -15,13 +15,8 @@
     {{- with index $recordContext "entry" }}
     <p class="page-kicker post-kicker">{{ . }}</p>
     {{- end }}
-    <h1 class="post-title entry-hint-parent p-name">
+    <h1 class="post-title p-name">
       {{ .Title }}
-      {{- if .Draft }}
-      <span class="entry-hint" title="Draft">
-        {{- partial "templates/_funcs/icon_draft.html" 35 }}
-      </span>
-      {{- end }}
     </h1>
     {{- if .Description }}
     <div class="post-description p-summary">
