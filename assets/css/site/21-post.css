@@ -506,6 +506,7 @@ h1>a>svg {
     display: grid;
     grid-template-columns: var(--pc-label) minmax(0, 1fr);
     gap: 0.3rem 1.1rem;
+
     /* Top-align, not baseline: when either the label or the content wraps
        to multiple lines, baseline alignment drops the label to a lower
        line and the rows visually merge. start keeps every label pinned to
@@ -547,6 +548,25 @@ h1>a>svg {
 
 .post-context-grid .post-tags::before {
     content: none;
+}
+
+/* A lone end-matter row (e.g. a post whose only apparatus is Topics, or
+   only related posts) has nothing to align against, so the fixed 8.5rem
+   label column just opens an awkward gap before a short value like a
+   single tag. When the row is the sole child, let the label hug its
+   content instead. Scoped above the phone breakpoint so the stacked
+   layout below still wins on narrow screens. */
+@media (width > 640px) {
+    .post-context-grid > .post-context:only-child {
+        grid-template-columns: max-content minmax(0, 1fr);
+
+        /* With only one row there is no stack of labels to keep top-aligned,
+           so drop the grid's start-alignment (chosen for multi-row wrapping)
+           and sit the label on its content's baseline. The sans kicker and
+           the serif value carry different line-heights, so start-alignment
+           would otherwise leave them visibly off the same line. */
+        align-items: baseline;
+    }
 }
 
 /* Stack label over content on narrow phones. */
