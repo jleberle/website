@@ -124,6 +124,39 @@ PY
   printf '%s\n' "$lookup"
 }
 
+# The edition lookup above reports the printing you hold, which is the right
+# `published_year` for a reading ledger but the wrong year for a citation key —
+# a 2012 printing of The Hobbit is not tolkien2012. Open Library keeps a "work"
+# above its editions, and its search index exposes that work's first publication
+# year, so the key can cite the work while the record describes the edition.
+lookup_openlibrary_first_year() {
+  local isbn="$1" response year
+
+  command -v curl >/dev/null 2>&1 || return 1
+  command -v python3 >/dev/null 2>&1 || return 1
+
+  response=$(curl --fail --silent --location --max-time 10 \
+    "https://openlibrary.org/search.json?isbn=${isbn}&fields=first_publish_year&limit=1" 2>/dev/null || true)
+
+  [[ -n "$response" ]] || return 1
+
+  year=$(OPENLIB_SEARCH="$response" python3 - <<'PY_INNER'
+import json
+import os
+
+try:
+    docs = (json.loads(os.environ.get("OPENLIB_SEARCH") or "{}") or {}).get("docs") or []
+except (ValueError, AttributeError):
+    docs = []
+year = docs[0].get("first_publish_year") if isinstance(docs and docs[0], dict) else None
+print(year if isinstance(year, int) and 1000 < year < 2200 else "")
+PY_INNER
+)
+
+  [[ -n "$year" ]] || return 1
+  printf '%s\n' "$year"
+}
+
 lookup_crossref() {
   local doi="$1" encoded_doi response lookup
 
@@ -213,10 +246,11 @@ case "$SOURCE_TYPE" in
 esac
 
 AUTHOR=""; PUBLISHER=""; PUBLISHED_YEAR=""; FORMAT=""
-ISBN=""; DOI=""; ACCESS_URL=""
+ISBN=""; DOI=""; ACCESS_URL=""; LOOKUP_FIRST_YEAR=""
 
 if [[ "$SOURCE_TYPE" == "book" ]]; then
   LOOKUP_TITLE=""; LOOKUP_AUTHOR=""; LOOKUP_PUBLISHER=""; LOOKUP_PUBLISHED_YEAR=""
+  LOOKUP_FIRST_YEAR=""
 
   ISBN_INPUT=$(read_optional "ISBN (optional, used for Open Library lookup)")
   ISBN=$(normalize_isbn "$ISBN_INPUT")
@@ -231,6 +265,10 @@ if [[ "$SOURCE_TYPE" == "book" ]]; then
         esac
       done <<< "$lookup_data"
       echo "Prefilled metadata from Open Library for ISBN $ISBN." >&2
+      LOOKUP_FIRST_YEAR=$(lookup_openlibrary_first_year "$ISBN" || true)
+      if [[ -n "$LOOKUP_FIRST_YEAR" && "$LOOKUP_FIRST_YEAR" != "$LOOKUP_PUBLISHED_YEAR" ]]; then
+        echo "This edition is $LOOKUP_PUBLISHED_YEAR; the work was first published $LOOKUP_FIRST_YEAR." >&2
+      fi
     else
       echo "No Open Library data for ISBN $ISBN; continuing with manual entry." >&2
     fi
@@ -297,9 +335,13 @@ KEY_AUTHOR=$(printf '%s' "$AUTHOR" \
   | sed 's/ and .*//; s/,.*//' \
   | awk '{ for (i = NF; i > 0; i--) if (length($i) > 2 || $i !~ /^[A-Z]\.?$/) { print $i; exit } }' \
   | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z')
-SLUG="${KEY_AUTHOR}${PUBLISHED_YEAR}"
+KEY_YEAR="${LOOKUP_FIRST_YEAR:-$PUBLISHED_YEAR}"
+SLUG="${KEY_AUTHOR}${KEY_YEAR}"
 [[ -z "$SLUG" ]] && SLUG=$(slugify "$TITLE")
 [[ -z "$SLUG" ]] && SLUG="untitled-source"
+if [[ -n "$LOOKUP_FIRST_YEAR" && "$LOOKUP_FIRST_YEAR" != "$PUBLISHED_YEAR" ]]; then
+  echo "Key uses the work's first publication year ($LOOKUP_FIRST_YEAR), not this edition ($PUBLISHED_YEAR)." >&2
+fi
 SLUG=$(read_with_default "Key (folder name, referenced as sources: [\"...\"])" "$SLUG")
 
 DEST="$SOURCES_ROOT/$SLUG"

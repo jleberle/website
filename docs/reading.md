@@ -7,7 +7,13 @@ content/sources/<key>/_index.md
 ```
 
 The folder name is the key posts reference, so it is a citation-style
-`lastname` + `year` — `egan2023`, `mckenziejones2015` — not a title slug. It is
+`lastname` + `year` — `egan2023`, `mckenziejones2015` — not a title slug.
+
+That year is the **work's first publication**, while `published_year` in the
+front matter is the **edition you read**. They usually match; for a reprint they
+don't, and conflating them is how you end up with `tolkien2012` for a book from
+1937. An ISBN identifies an edition, so `newsource.sh` looks the work up
+separately and says so when the two years differ. It is
 short enough to type from memory and does not go stale when a subtitle changes.
 Any name works as long as it urlizes to itself: lowercase, no spaces, no
 underscores. A mismatch does not error, it silently creates a second empty
@@ -116,8 +122,10 @@ scripts/newsource.sh article "Article Title"
 ```
 
 The script prompts for an ISBN first and prefills title, author, publisher, and
-year from Open Library; articles prompt for a DOI and prefill from Crossref. It
-then proposes the `lastname`+`year` key as an editable default.
+year from Open Library; articles prompt for a DOI and prefill from Crossref. A
+second Open Library call resolves the work's first publication year, so the
+proposed key cites the work even when the ISBN describes a later printing. Every
+value, the key included, is an editable default.
 Both lookups are best-effort — if the network is down or the record is missing,
 it says so and falls through to manual entry with nothing lost. Every prefilled
 value is still shown as an editable default.
