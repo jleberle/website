@@ -5,10 +5,10 @@
        <category> values started-reading / finished-reading and the literal
        "Started reading: " / "Finished reading: " description prefixes are what
        ~/git/micro-theme matches to build eberle.blog's reading sections.
-       The guid urn keeps its old shape — urn:reading-event:<type>:<slug>:<event>
-       — so items already imported are not re-imported. What changed is <link>:
-       an event now points at the source's own page rather than an anchor in
-       the ledger. */ -}}
+       A guid is urn:reading-event:<type>:<key>:<event>, where <key> is the
+       source's folder name. It is stable as long as that folder is: renaming a
+       source rewrites its guids, and Micro.blog re-imports any event still
+       inside the feed window. <link> points at the source's own page. */ -}}
 {{- $authorName := site.Params.author }}
 
 {{- $events := slice -}}

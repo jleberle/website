@@ -13,7 +13,7 @@ Any name works as long as it urlizes to itself: lowercase, no spaces, no
 underscores. A mismatch does not error, it silently creates a second empty
 source, so `preflight.sh` is what catches a typo.
 
-That page is the single record for the work. It publishes at `/sources/<slug>/`,
+That page is the single record for the work. It publishes at `/sources/<key>/`,
 it is listed on `/reading/`, and it automatically collects every post that names
 it. There is no separate data file and no key registry.
 
@@ -88,8 +88,10 @@ contract: `~/git/micro-theme` matches them to build eberle.blog's reading
 sections. `scripts/checks/feed-lint.py` asserts this, so the build catches a
 rendering change that would otherwise silently empty that homepage section.
 
-Item guids keep the shape `urn:reading-event:<type>:<slug>:<event>`, so
-already-imported events are not re-imported.
+Item guids are `urn:reading-event:<type>:<key>:<event>`. They are stable only
+as long as the source's folder name is: renaming a source rewrites its guids,
+and Micro.blog re-imports any event still inside the 20-item feed window. That
+is the real cost of renaming a key after it has been published.
 
 ## Cite Keys
 
