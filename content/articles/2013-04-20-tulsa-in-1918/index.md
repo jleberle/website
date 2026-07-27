@@ -4,8 +4,6 @@ slug: "tulsa-in-1918"
 date: 2013-04-20
 description: "1918 map of Tulsa, Oklahoma"
 summary: "1918 map of Tulsa, Oklahoma"
-categories:
-- "American History"
 tags:
 - "Oklahoma"
 cover:

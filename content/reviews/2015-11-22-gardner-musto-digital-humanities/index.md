@@ -4,15 +4,8 @@ slug: "gardner-musto-digital-humanities"
 date: 2015-11-22
 draft: false
 description: "An updated assessment of digital humanities and their uses"
-reviewed_type: "Book"
-reviewed_title: "The Digital Humanities: A Primer for Students and Scholars"
-reviewed_author: "Eileen Gardiner and Ronald G. Musto"
-reviewed_publisher: "Cambridge University Press"
-reviewed_year: "2015"
-cite_key: "gardiner2015"
+sources: ["gardiner2015"]
 external_url: "https://www.cambridge.org/core/books/digital-humanities/E31D46FD97BF94B81B461F7234D29BE4"
-categories:
-- "Culture and Media"
 tags:
 - "Historiography"
 cover:

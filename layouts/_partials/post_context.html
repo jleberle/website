@@ -1,51 +1,35 @@
+{{- /* The "what work is this about" line on a review or a quote. The
+       bibliographic detail is not repeated in the page's own frontmatter any
+       more — it is read from the source term page the post lists in
+       `sources:`, so a book is described once and the title links through to
+       its hub. `external_url` stays on the post because it points at the
+       specific passage or edition being discussed, not at the work. */ -}}
 {{- $page := .page | default . -}}
 {{- $kind := .kind | default "" -}}
-{{- $p := $page.Params -}}
-{{- $reviewTitle := $p.reviewed_title -}}
-{{- $reviewAuthor := $p.reviewed_author -}}
-{{- $reviewPublisher := $p.reviewed_publisher -}}
-{{- $reviewYear := $p.reviewed_year -}}
-{{- $reviewType := $p.reviewed_type -}}
-{{- $sourceTitle := $p.source_title -}}
-{{- $sourceAuthor := $p.source_author -}}
-{{- $sourceYear := $p.source_year -}}
-{{- $externalURL := $p.external_url -}}
-
-{{- if and (eq $kind "review") (or $reviewTitle $reviewAuthor $reviewPublisher $reviewYear $reviewType) }}
-<section class="post-context post-context-review" aria-label="Reviewed work">
-  <span class="post-context-kicker">{{ with $reviewType }}Reviewed {{ . | lower | plainify }}{{ else }}Reviewed work{{ end }}</span>
+{{- with $page.GetTerms "sources" -}}
+{{- $source := index . 0 -}}
+{{- $p := $source.Params -}}
+<section class="post-context post-context-{{ $kind }}" aria-label="{{ if eq $kind "review" }}Reviewed work{{ else }}Source{{ end }}">
+  <span class="post-context-kicker">
+    {{- if eq $kind "review" }}Reviewed {{ $p.type | default "book" | lower }}{{ else }}Source{{ end -}}
+  </span>
   <p class="post-context-entry">
-    {{- with $reviewAuthor }}<span>{{ . | plainify }}</span>{{ end -}}
-    {{- if and $reviewAuthor $reviewTitle }}<span aria-hidden="true">, </span>{{ end -}}
-    {{- with $reviewTitle }}
-      {{- if $externalURL -}}
-      <cite><a href="{{ $externalURL }}" rel="external noopener" target="_blank">{{ . | markdownify }}</a></cite>
-      {{- else -}}
-      <cite>{{ . | markdownify }}</cite>
-      {{- end -}}
-    {{- end -}}
-    {{- if or $reviewPublisher $reviewYear }}
+    {{- with $p.author }}<span>{{ . }}</span><span aria-hidden="true">, </span>{{ end -}}
+    <cite><a href="{{ $source.RelPermalink }}">{{ $source.Title }}</a></cite>
+    {{- if or $p.publisher $p.published_year }}
     <span class="post-context-record">
-      {{- if or $reviewTitle $reviewAuthor }} {{ end -}}
-      {{- with $reviewPublisher }}(<span class="post-context-publisher">{{ . | plainify }}</span>{{ with $reviewYear }}, <span class="post-context-year">{{ . | plainify }}</span>{{ end }}){{ else }}(<span class="post-context-year">{{ $reviewYear | plainify }}</span>){{ end -}}
+      {{ if $p.publisher -}}
+        (<span class="post-context-publisher">{{ $p.publisher }}</span>
+        {{- with $p.published_year }}, <span class="post-context-year">{{ . }}</span>{{ end -}})
+      {{- else -}}
+        (<span class="post-context-year">{{ $p.published_year }}</span>)
+      {{- end }}
     </span>
+    {{- end }}
+    {{- with $page.Params.external_url }}
+    <span class="post-context-access" aria-hidden="true"> · </span>
+    <a class="post-context-access" href="{{ . }}" rel="external noopener" target="_blank">Read online</a>
     {{- end }}
   </p>
 </section>
-{{- else if and (eq $kind "quote") (or $sourceTitle $sourceAuthor $sourceYear) }}
-<section class="post-context post-context-source" aria-label="Source information">
-  <span class="post-context-kicker">Source</span>
-  <p class="post-context-entry">
-    {{- with $sourceAuthor }}<span>{{ . | plainify }}</span>{{ end -}}
-    {{- if and $sourceAuthor $sourceTitle }}<span aria-hidden="true">, </span>{{ end -}}
-    {{- with $sourceTitle }}
-      {{- if $externalURL -}}
-      <cite><a href="{{ $externalURL }}" rel="external noopener" target="_blank">{{ . | markdownify }}</a></cite>
-      {{- else -}}
-      <cite>{{ . | markdownify }}</cite>
-      {{- end -}}
-    {{- end -}}
-    {{- with $sourceYear }}<span class="post-context-record"> (<span class="post-context-year">{{ . | plainify }}</span>)</span>{{ end -}}
-  </p>
-</section>
-{{- end }}
+{{- end -}}

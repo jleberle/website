@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Shared bash helpers for the authoring scripts (newpost.sh, newsource.sh,
-# sync-reading.sh, finishsource.sh, publish-draft.sh). Source, don't execute:
+# finishsource.sh, publish-draft.sh, ship.sh). Source, don't execute:
 #   source "$SCRIPT_DIR/lib.sh"
 #
 # These were previously copy-pasted verbatim across those five scripts, which
@@ -76,7 +76,7 @@ _emit_list_field() {
 
 # list_field KEY "a, b, c"
 # Prints a 2-space-indented YAML block list from a comma-separated string, for
-# fields typed directly by a user (tags, courses, people, categories). Prints
+# fields typed directly by a user (tags, sources). Prints
 # nothing if every item is empty.
 list_field() {
   local key="$1" raw="$2" item items=() trimmed=()

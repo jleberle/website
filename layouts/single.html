@@ -1,7 +1,11 @@
 {{- define "main" }}
 
-{{- $hasReviewContext := or .Params.reviewed_title .Params.reviewed_author .Params.reviewed_publisher .Params.reviewed_year .Params.reviewed_type }}
-{{- $hasSourceContext := or .Params.source_title .Params.source_author .Params.source_year }}
+{{- /* A review shows its source above the text (you should know what is being
+       reviewed before reading it); a quote shows it below (the passage comes
+       first, the attribution follows). */ -}}
+{{- $hasSource := gt (len (.GetTerms "sources")) 0 }}
+{{- $hasReviewContext := and $hasSource (eq .Section "reviews") }}
+{{- $hasSourceContext := and $hasSource (eq .Section "quotes") }}
 {{- $recordContext := partial "record_context.html" . }}
 {{- $pageContent := .Content -}}
 {{- $tocHeadings := findRE "<h[2-3][^>]*>" $pageContent -}}
@@ -73,24 +77,12 @@
       {{- $editText := .Param "suggestChanges.text" | default (i18n "edit_post") }}
       {{- $foot = $foot | append (printf "<span><a href=\"%s\" rel=\"noopener noreferrer\" target=\"_blank\">%s</a></span>" $editURL $editText) }}
     {{- end }}
-    {{- with partial "carbon_estimate.html" . }}
-      {{- $carbonEstimate := . }}
-      {{- with site.GetPage "/colophon" }}
-        {{- $foot = $foot | append (printf "<span><a href=\"%s#low-impact\">%s</a></span>" .RelPermalink $carbonEstimate) }}
-      {{- else }}
-        {{- $foot = $foot | append (printf "<span>%s</span>" $carbonEstimate) }}
-      {{- end }}
-    {{- end }}
     {{- end }}
     {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
     {{- $terms := $.GetTerms $tags }}
-    {{- $peopleOut := partial "people_connections.html" . }}
-    {{- $teachingOut := partial "teaching_connections.html" . }}
     {{- $relatedOut := partial "related_posts.html" . }}
     {{- $hasRows := false }}
     {{- if $terms }}{{ $hasRows = true }}{{ end }}
-    {{- if trim (printf "%s" $peopleOut) " \r\n\t" }}{{ $hasRows = true }}{{ end }}
-    {{- if trim (printf "%s" $teachingOut) " \r\n\t" }}{{ $hasRows = true }}{{ end }}
     {{- if trim (printf "%s" $relatedOut) " \r\n\t" }}{{ $hasRows = true }}{{ end }}
     {{- if or $foot $hasRows }}
     <div class="post-apparatus">
@@ -106,8 +98,6 @@
           </ul>
         </section>
         {{- end }}
-        {{ $peopleOut }}
-        {{ $teachingOut }}
         {{ $relatedOut }}
       </div>
       {{- end }}

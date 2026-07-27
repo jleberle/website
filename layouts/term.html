@@ -1,0 +1,12 @@
+{{- /* Every taxonomy term page. Hugo 0.164 resolves term templates from
+       layouts/term.html only — layouts/<plural>/term.html is not consulted —
+       so one template serves all taxonomies and branches on .Data.Singular.
+       Sources are bibliographic records with a body; everything else is a
+       plain list of the pages carrying the term. */ -}}
+{{- define "main" }}
+{{- if eq .Data.Singular "source" }}
+{{- partial "source_page.html" . }}
+{{- else }}
+{{- partial "page_list.html" . }}
+{{- end }}
+{{- end }}{{- /* end main */ -}}

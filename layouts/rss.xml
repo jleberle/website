@@ -32,8 +32,7 @@
       {{- with partial "author.html" . }}<dc:creator>{{ . | plainify }}</dc:creator>{{ end }}
       <guid isPermaLink="true">{{ .Permalink }}</guid>
       <description>{{ partial "page_summary.html" . | html }}</description>
-      {{- $categories := union (.Params.categories | default (slice)) (.Params.tags | default (slice)) }}
-      {{- range $categories }}<category>{{ . }}</category>{{ end }}
+      {{- range (.Params.tags | default (slice)) }}<category>{{ . }}</category>{{ end }}
       {{- with $feedItem.cover }}
       <media:content url="{{ . }}" medium="image">
         <media:title type="plain">{{ $page.Title }}</media:title>

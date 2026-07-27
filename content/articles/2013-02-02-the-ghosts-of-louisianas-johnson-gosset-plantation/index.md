@@ -5,8 +5,6 @@ date: 2013-02-02
 draft: false
 description: "A haunted Louisiana plantation?"
 summary: "Story of a haunted Louisiana Plantation"
-categories:
-- "American History"
 tags:
 - "19th Century"
 - "Folklore"

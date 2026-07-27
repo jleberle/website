@@ -4,12 +4,8 @@ slug: "saturday-night-in-a-saloon-or-john-ratzenbergers-opening-photos-from-chee
 date: 2011-10-04
 description: "Where everybody knows your name in Minnesota"
 summary: "Finding Cheers' opening photos in the archives"
-categories:
-- "American History"
 tags:
 - "1930s"
-people:
-- "john-ratzenberger"
 cover:
   image: "cover.avif"
   alt: "Still of Cheers Opening with John Ratzenberger's credit"

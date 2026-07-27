@@ -14,7 +14,14 @@
 {{- if and .IsPage .Description }}
 <link rel="preload" href="{{ "fonts/charter-400i-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin="anonymous">
 {{- end }}
-{{- with partial "templates/_funcs/site_js.html" . }}
-{{- $bundle := . | fingerprint }}
+{{- /* The site's single deferred JS bundle. Sources are concatenated in this
+       order, minified, then fingerprinted; nothing is emitted if none of them
+       resolve. Add a new assets/js/*.js file here or it won't ship. */}}
+{{- $js := slice }}
+{{- range slice "js/pdf.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" "js/archive-filters.js" }}
+    {{- with resources.Get . }}{{ $js = $js | append . }}{{ end }}
+{{- end }}
+{{- with $js }}
+{{- $bundle := . | resources.Concat "js/bundle.js" | minify | fingerprint }}
 <script defer src="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous"></script>
 {{- end }}

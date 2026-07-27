@@ -1,7 +1,5 @@
 {{- define "main" }}
 
-{{- $readingEntries := partialCached "reading_entries.html" . -}}
-
 <article class="research-path">
   <header class="page-header research-path-header">
     <p class="page-kicker"><a href="{{ (site.GetPage "/research").RelPermalink }}">Research path</a></p>
@@ -27,22 +25,21 @@
           {{- with $note }}<p class="research-path-note">{{ . }}</p>{{ end }}
           <p class="research-path-meta"><time datetime="{{ $target.Date.Format "2006-01-02" }}">{{ $target.Date | time.Format (default ":date_long" site.Params.dateFormat) }}</time></p>
         </li>
-      {{- else if .reading -}}
-        {{- $matches := where $readingEntries "cite_key" .reading -}}
-        {{- if ne (len $matches) 1 }}{{ errorf "research path %s must resolve reading cite_key %q exactly once (found %d)" $.RelPermalink .reading (len $matches) }}{{ end -}}
-        {{- $source := index $matches 0 -}}
+      {{- else if .source -}}
+        {{- $source := site.GetPage (printf "/sources/%s" .source) -}}
+        {{- if not $source }}{{ errorf "research path %s references source %q, which has no page under content/sources/" $.RelPermalink .source }}{{ end -}}
         <li class="research-path-stop">
           <p class="research-path-type">Source</p>
-          <h2><a href="{{ (site.GetPage "/reading").RelPermalink }}#{{ $source.anchor_id }}">{{ $source.title }}</a></h2>
+          <h2><a href="{{ $source.RelPermalink }}">{{ $source.Title }}</a></h2>
           {{- with $note }}<p class="research-path-note">{{ . }}</p>{{ end }}
           <p class="research-path-meta">
-            {{- with $source.author }}{{ . }}{{ end -}}
-            {{- if and $source.author (gt $source.published_year 0) }}<span aria-hidden="true"> · </span>{{ end -}}
-            {{- if gt $source.published_year 0 }}{{ $source.published_year }}{{ end -}}
+            {{- with $source.Params.author }}{{ . }}{{ end -}}
+            {{- if and $source.Params.author $source.Params.published_year }}<span aria-hidden="true"> · </span>{{ end -}}
+            {{- with $source.Params.published_year }}{{ . }}{{ end -}}
           </p>
         </li>
       {{- else -}}
-        {{- errorf "research path %s contains an item without page or reading" $.RelPermalink -}}
+        {{- errorf "research path %s contains an item without page or source" $.RelPermalink -}}
       {{- end }}
     {{- end }}
   </ol>

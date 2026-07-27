@@ -1,122 +1,74 @@
+{{- /* Footer connection blocks. At most two are emitted: single.html adds a
+       "Topics" block alongside, and the grid is capped at three so the
+       apparatus stays shorter than the post it hangs off.
+
+       "Elsewhere on this source" used to be built by comparing cite keys
+       across every page in the site. The sources taxonomy already maintains
+       that index, so it is now a lookup on the term's .Pages — if a connection
+       isn't firing, the page is missing its `sources:` entry.
+
+       The source itself is only named here for pages that don't already show
+       it inline: reviews and quotes render post_context.html next to their
+       text, and repeating the book in the footer would say it twice. */ -}}
 {{- $page := . -}}
 {{- $candidates := where site.RegularPages "Type" "in" site.Params.contentSections -}}
-{{- $currentKeys := partialCached "cite_keys.html" $page $page.RelPermalink -}}
-{{- $currentTitle := or ($page.Params.reviewed_title | default "") ($page.Params.source_title | default "") -}}
-{{- $currentAuthor := or ($page.Params.reviewed_author | default "") ($page.Params.source_author | default "") -}}
-{{- $currentSourceID := "" -}}
-{{- if $currentTitle -}}
-  {{- $normTitle := $currentTitle | plainify | lower | replaceRE "[^a-z0-9]+" " " | replaceRE "^\\s+|\\s+$" "" -}}
-  {{- $normAuthor := $currentAuthor | plainify | lower | replaceRE "[^a-z0-9]+" " " | replaceRE "^\\s+|\\s+$" "" -}}
-  {{- $currentSourceID = printf "%s|%s" $normTitle $normAuthor -}}
-{{- end -}}
+{{- $sources := $page.GetTerms "sources" -}}
+{{- $showSources := and $sources (not (in (slice "reviews" "quotes") $page.Section)) -}}
 
-{{- $notebookMatches := slice -}}
 {{- $sourceMatches := slice -}}
-{{- range $candidate := $candidates -}}
-  {{- if ne $candidate.RelPermalink $page.RelPermalink -}}
-    {{- $candidateKeys := partialCached "cite_keys.html" $candidate $candidate.RelPermalink -}}
-    {{- $candidateTitle := or ($candidate.Params.reviewed_title | default "") ($candidate.Params.source_title | default "") -}}
-    {{- $candidateAuthor := or ($candidate.Params.reviewed_author | default "") ($candidate.Params.source_author | default "") -}}
-    {{- $candidateSourceID := "" -}}
-    {{- if $candidateTitle -}}
-      {{- $normTitle := $candidateTitle | plainify | lower | replaceRE "[^a-z0-9]+" " " | replaceRE "^\\s+|\\s+$" "" -}}
-      {{- $normAuthor := $candidateAuthor | plainify | lower | replaceRE "[^a-z0-9]+" " " | replaceRE "^\\s+|\\s+$" "" -}}
-      {{- $candidateSourceID = printf "%s|%s" $normTitle $normAuthor -}}
-    {{- end -}}
-    {{- $sameCite := false -}}
-    {{- if and (gt (len $currentKeys) 0) (gt (len $candidateKeys) 0) -}}
-      {{- range $key := $currentKeys -}}
-        {{- if in $candidateKeys $key -}}
-          {{- $sameCite = true -}}
-        {{- end -}}
-      {{- end -}}
-    {{- end -}}
-    {{- $sameSource := and (not $sameCite) $currentSourceID $candidateSourceID (eq $candidateSourceID $currentSourceID) -}}
-    {{- if or $sameCite $sameSource -}}
-      {{- if eq $candidate.Section "quotes" -}}
-        {{- $notebookMatches = $notebookMatches | append $candidate -}}
-      {{- else -}}
-        {{- $sourceMatches = $sourceMatches | append $candidate -}}
-      {{- end -}}
+{{- range $source := $sources -}}
+  {{- range $source.Pages -}}
+    {{- if ne .RelPermalink $page.RelPermalink -}}
+      {{- $sourceMatches = $sourceMatches | append . -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
-
-{{- $readingPage := site.GetPage "reading" -}}
-{{- $readingMatches := slice -}}
-{{- if and (gt (len $currentKeys) 0) $readingPage -}}
-  {{- range partialCached "reading_entries.html" . -}}
-    {{- $sourceKey := .cite_key | default "" -}}
-    {{- if and $sourceKey (in $currentKeys $sourceKey) -}}
-      {{- $readingMatches = $readingMatches | append (dict
-          "anchor_id" .anchor_id
-          "title" .title
-          "author" .author
-          "type_label" .type_label
-        ) -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
+{{- $sourceMatches = $sourceMatches | uniq -}}
 
 {{- $relatedByTag := slice -}}
 {{- range $candidate := ($candidates.Related $page) -}}
   {{- if and (ne $candidate.RelPermalink $page.RelPermalink) (lt (len $relatedByTag) 3) -}}
-    {{- $skip := false -}}
-    {{- range $match := $notebookMatches -}}
-      {{- if eq $match.RelPermalink $candidate.RelPermalink -}}{{- $skip = true -}}{{- end -}}
-    {{- end -}}
-    {{- if not $skip -}}
-      {{- range $match := $sourceMatches -}}
-        {{- if eq $match.RelPermalink $candidate.RelPermalink -}}{{- $skip = true -}}{{- end -}}
-      {{- end -}}
-    {{- end -}}
-    {{- if not $skip -}}
+    {{- if not (in $sourceMatches $candidate) -}}
       {{- $relatedByTag = $relatedByTag | append $candidate -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
 
-{{- with $readingMatches }}
-<section class="post-context related-posts" aria-label="Reading ledger connection">
-  <span class="post-context-kicker">In the reading ledger</span>
+{{- $emitted := 0 -}}
+
+{{- if and $showSources (lt $emitted 2) }}
+{{- $emitted = add $emitted 1 }}
+<section class="post-context related-posts" aria-label="Source connection">
+  <span class="post-context-kicker">{{ cond (eq (len $sources) 1) "The source" "Sources" }}</span>
   <ul class="related-posts-list">
-    {{- range . }}
+    {{- range $sources }}
     <li>
-      <span class="related-post-type">{{ .type_label }}</span>
-      <span><a href="{{ printf "%s#%s" $readingPage.RelPermalink .anchor_id }}">{{ .title }}</a>{{ with .author }}, {{ . }}{{ end }}</span>
+      <span class="related-post-type">{{ .Params.type | default "book" | humanize }}</span>
+      <span><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Params.author }}, {{ . }}{{ end }}</span>
     </li>
     {{- end }}
   </ul>
 </section>
 {{- end }}
 
-{{- with $notebookMatches }}
-<section class="post-context related-posts" aria-label="Notebook connections">
-  <span class="post-context-kicker">From the notebook</span>
-  <ul class="related-posts-list">
-    {{- range . }}
-    {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
-    {{- end }}
-  </ul>
-</section>
-{{- end }}
-
-{{- with $sourceMatches }}
+{{- if and $sourceMatches (lt $emitted 2) }}
+{{- $emitted = add $emitted 1 }}
 <section class="post-context related-posts" aria-label="Related source writing">
   <span class="post-context-kicker">Elsewhere on this source</span>
   <ul class="related-posts-list">
-    {{- range . }}
+    {{- range $sourceMatches }}
     {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
     {{- end }}
   </ul>
 </section>
 {{- end }}
 
-{{- with $relatedByTag }}
+{{- if and $relatedByTag (lt $emitted 2) }}
+{{- $emitted = add $emitted 1 }}
 <section class="post-context related-posts" aria-label="Related writing">
   <span class="post-context-kicker">Related writing</span>
   <ul class="related-posts-list">
-    {{- range . }}
+    {{- range $relatedByTag }}
     {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
     {{- end }}
   </ul>

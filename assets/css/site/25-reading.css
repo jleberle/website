@@ -1,8 +1,13 @@
 
 /* ------------------------------------------------------------
-   Reading ledger. Source entries built from data/reading/<type>/*.yaml:
-   currently-reading rows above, expandable ledger entries below.
-   Older years collapse progressively through native details elements.
+   Reading ledger and source pages. Entries are the term pages under
+   content/sources/: currently-reading rows above, the dated ledger below,
+   with older years collapsing through native details elements.
+
+   A ledger row expands in place through a native details element: /reading/
+   is the central index and the full record is readable there. The same record
+   styles are reused by /sources/<slug>/, which exists so a work can be linked
+   to and can collect backlinks.
    ------------------------------------------------------------ */
 
 .reading-header {
@@ -99,21 +104,11 @@
     background: transparent;
 }
 
-.reading-current-grid .reading-entry:first-child,
-.reading-list .reading-entry:first-child {
-    border-top: 0;
-}
-
-.reading-current-grid .reading-entry:last-child,
-.reading-list .reading-entry:last-child {
-    border-bottom: 1px solid color-mix(in sRGB, var(--border), var(--rule) 25%);
-}
-
 .reading-entry-summary {
     display: block;
+    padding: 0.9rem 0;
     list-style: none;
     cursor: pointer;
-    padding: 0.9rem 0;
 }
 
 .reading-entry-summary::-webkit-details-marker {
@@ -122,6 +117,22 @@
 
 .reading-entry-summary::marker {
     content: "";
+}
+
+.reading-entry-summary:hover .reading-entry-title,
+.reading-entry:focus-visible .reading-entry-title {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.reading-current-grid .reading-entry:first-child,
+.reading-list .reading-entry:first-child {
+    border-top: 0;
+}
+
+.reading-current-grid .reading-entry:last-child,
+.reading-list .reading-entry:last-child {
+    border-bottom: 1px solid color-mix(in sRGB, var(--border), var(--rule) 25%);
 }
 
 .reading-entry-main {
@@ -192,6 +203,10 @@
     white-space: nowrap;
 }
 
+.reading-entry-connected {
+    color: var(--secondary);
+}
+
 .reading-entry-pill {
     display: inline-flex;
     padding: 0;
@@ -244,6 +259,10 @@
     line-height: 1.65;
 }
 
+.reading-entry-notes p {
+    margin: 0;
+}
+
 .reading-entry-links {
     margin-top: 0.85rem;
 }
@@ -274,6 +293,15 @@
     gap: 0.45rem;
 }
 
+.reading-entry-links li + li {
+    margin-top: 0.1rem;
+}
+
+.reading-entry-permalink {
+    margin: 0.85rem 0 0;
+    font-size: 0.8rem;
+}
+
 .reading-entry-access {
     font-size: 0.78rem;
 }
@@ -289,10 +317,6 @@
 .reading-entry-access,
 .reading-entry-access a {
     white-space: nowrap;
-}
-
-.reading-entry-links li + li {
-    margin-top: 0.1rem;
 }
 
 .reading-empty {
@@ -317,4 +341,43 @@
     .reading-entry-record-item--wide dd {
         flex-wrap: wrap;
     }
+}
+
+/* ------------------------------------------------------------
+   A single source: /sources/<slug>/. The bibliographic record reuses the
+   ledger's .reading-entry-record grid; the rest is specific to the page.
+   ------------------------------------------------------------ */
+
+.source-header {
+    margin-bottom: 1.4rem;
+}
+
+.source-header h1 {
+    margin-bottom: 0.35rem;
+}
+
+.source-header cite {
+    font-style: inherit;
+}
+
+.source-byline {
+    margin: 0;
+    color: var(--secondary);
+    font-size: 0.95rem;
+}
+
+.source-record {
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--rule);
+}
+
+.source-notes {
+    margin-top: 1.4rem;
+}
+
+.source-backlink {
+    margin-top: 2rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.88rem;
 }

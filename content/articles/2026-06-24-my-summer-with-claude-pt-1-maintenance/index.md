@@ -6,8 +6,6 @@ lastmod: 2026-06-24
 draft: false
 description: The first in a series of posts about using Claude this summer
 series: "My Summer With Claude"
-categories:
-- "Personal"
 tags:
 - "AI"
 ---

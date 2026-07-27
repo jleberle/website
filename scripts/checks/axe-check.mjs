@@ -14,6 +14,7 @@ const pages = [
   '/courses/1493/',
   '/archives/',
   '/reading/',
+  '/sources/mckenziejones2015/',
   '/cv/',
   '/about/',
 ];

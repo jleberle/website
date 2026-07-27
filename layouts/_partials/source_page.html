@@ -1,0 +1,77 @@
+{{- /* A single source: the bibliographic record from
+       content/sources/<slug>/_index.md, any notes written in its body, and the
+       list of pages that name it. That list is Hugo's taxonomy reverse index
+       (.Pages) — nothing here matches on cite keys, so a source connects to
+       writing simply by being listed in that page's `sources:` field. A source
+       with nothing written about it still gets this page; that is the normal
+       case for most of the ledger. */ -}}
+{{- $p := .Params -}}
+{{- $typeLabel := $p.type | default "book" | humanize -}}
+{{- $isbn := "" -}}
+{{- with $p.isbn }}{{ $isbn = replaceRE "[^0-9Xx]" "" . }}{{ end -}}
+{{- $accessURL := $p.access_url | default "" -}}
+{{- if and (not $accessURL) $p.doi }}{{ $accessURL = printf "https://doi.org/%s" $p.doi }}{{ end -}}
+
+<article class="source-page">
+  <header class="page-header source-header">
+    {{- partial "breadcrumbs.html" . }}
+    <p class="page-kicker">{{ $typeLabel }}</p>
+    <h1><cite>{{ .Title }}</cite></h1>
+    {{- if or $p.author $p.published_year }}
+    <p class="source-byline">
+      {{- with $p.author }}<span>{{ . }}</span>{{ end -}}
+      {{- if and $p.author $p.published_year }}<span aria-hidden="true"> · </span>{{ end -}}
+      {{- with $p.published_year }}<span>{{ . }}</span>{{ end -}}
+    </p>
+    {{- end }}
+  </header>
+
+  <dl class="reading-entry-record source-record">
+    {{- with $p.publisher }}<div><dt>Press</dt><dd>{{ . }}</dd></div>{{ end }}
+    {{- with $p.format }}<div><dt>Format</dt><dd>{{ . }}</dd></div>{{ end }}
+    {{- if eq $p.status "reading" }}
+      {{- with $p.started }}<div><dt>Started</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end }}
+    {{- else }}
+      {{- with $p.finished }}<div><dt>Finished</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end }}
+    {{- end }}
+    {{- with $p.isbn }}
+    <div class="reading-entry-record-item reading-entry-record-item--wide">
+      <dt>ISBN</dt>
+      <dd>
+        <span>{{ . }}</span>
+        {{- with $isbn }}
+        <span class="reading-entry-access" aria-hidden="true"> · </span>
+        <span class="reading-entry-access">
+          <a href="https://openlibrary.org/isbn/{{ . }}" rel="external noopener" target="_blank">Open Library</a>
+          <span aria-hidden="true"> · </span>
+          <a href="https://search.worldcat.org/isbn/{{ . }}" rel="external noopener" target="_blank">WorldCat</a>
+        </span>
+        {{- end }}
+      </dd>
+    </div>
+    {{- end }}
+    {{- with $accessURL }}
+    <div class="reading-entry-record-item reading-entry-record-item--wide">
+      <dt>{{ if $p.doi }}DOI{{ else }}Access{{ end }}</dt>
+      <dd><a href="{{ . }}" rel="external noopener" target="_blank">{{ with $p.doi }}{{ . }}{{ else }}Access source{{ end }}</a></dd>
+    </div>
+    {{- end }}
+  </dl>
+
+  {{- with .Content }}
+  <div class="source-notes md-content">{{ . }}</div>
+  {{- end }}
+
+  {{- with .Pages.ByDate.Reverse }}
+  <section class="post-context related-posts" aria-label="Writing about this source">
+    <span class="post-context-kicker">Writing about this source</span>
+    <ul class="related-posts-list">
+      {{- range . }}
+      {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+
+  <p class="source-backlink"><a href="{{ (site.GetPage "/reading").RelPermalink }}">&larr; All sources</a></p>
+</article>

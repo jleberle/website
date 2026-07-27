@@ -8,7 +8,7 @@
 #   <drafts>/quotes/YYYY-MM-DD-slug.md   -> content/quotes/YYYY-MM-DD-slug.md
 #
 # On publish, citation keys used in the body (pandoc [@key] citations or a
-# <!-- cite: @key --> comment) are merged into cite_keys front matter. With
+# <!-- cite: @key --> comment) can be rendered as a Works Cited list. With
 # --cite, a Chicago "Works Cited" list is appended to articles and reviews.
 # With --push, scripts/ship.sh runs immediately after (preflight, commit, push)
 # instead of leaving the change for a later scripts/ship.sh call — skip this if
@@ -147,14 +147,6 @@ rm "$DRAFT_PATH"
 echo "Published $SECTION draft:"
 echo "  $DRAFT_INPUT"
 echo "  -> ${TARGET_PATH#$REPO_ROOT/}"
-
-# Merge any citation keys used in the body into cite_keys front matter.
-DISCOVERED_KEYS="$("$SCRIPT_DIR/cite-refs.sh" --keys "$TARGET_PATH" 2>/dev/null || true)"
-if [[ -n "$DISCOVERED_KEYS" ]]; then
-  # shellcheck disable=SC2086
-  ADDED_KEYS="$(python3 "$SCRIPT_DIR/merge-cite-keys.py" "$TARGET_PATH" $DISCOVERED_KEYS)"
-  [[ -n "$ADDED_KEYS" ]] && echo "  cite_keys += $ADDED_KEYS"
-fi
 
 # With --cite, append a rendered Chicago "Works Cited" list to prose posts.
 if $CITE; then

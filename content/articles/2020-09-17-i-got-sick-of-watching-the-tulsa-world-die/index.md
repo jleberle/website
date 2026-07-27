@@ -4,8 +4,6 @@ slug: "i-got-sick-of-watching-the-tulsa-world-die"
 date: 2020-09-17
 description: "Why I cancelled the Tulsa World"
 summary: "Why I cancelled the Tulsa World"
-categories:
-- "Culture and Media"
 tags:
 - "Journalism"
 - "Oklahoma"

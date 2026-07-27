@@ -4,12 +4,8 @@ slug: "at-least-its-only-a-belief-in-vampirism"
 date: 2012-11-30
 description: "What's the worst that could happen?"
 summary: "Vampirism in New England is not that bad"
-source_title: "The Animistic Vampire in New England"
-source_author: "George R. Stetson"
-source_year: "1896"
+sources: ["stetson1896"]
 external_url: "https://www.jstor.org/stable/658266"
-categories:
-- "American History"
 tags:
 - "19th Century"
 - "Folklore"

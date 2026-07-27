@@ -1,9 +1,16 @@
+{{- /* The reading ledger. Entries are the source term pages under
+       content/sources/; they are reached through the taxonomy's branch page
+       rather than site.Taxonomies.sources, because the latter only contains
+       terms some page actually references — most of the ledger is books
+       nothing has been written about yet, and those must still be listed.
+
+       Years are walked with seq rather than GroupByParam: Hugo parses
+       read_year as uint64, which GroupByParam skips silently. */ -}}
 {{- define "main" }}
 
-{{- $entries := partialCached "reading_entries.html" . -}}
-
-{{- $current := where $entries "status" "current" -}}
-{{- $read := sort (where $entries "status" "ne" "current") "sort_read_key" "desc" -}}
+{{- $sources := (site.GetPage "/sources").Pages -}}
+{{- $current := where $sources "Params.status" "reading" -}}
+{{- $read := where $sources "Params.status" "ne" "reading" -}}
 {{- $currentYear := now.Year -}}
 {{- $displayedCurrentYear := false -}}
 
@@ -32,7 +39,7 @@
   </div>
   {{- if $current }}
   <div class="reading-current-grid">
-    {{- range sort $current "title" }}{{ partial "reading_entry.html" (dict "entry" . "mode" "current") }}{{- end }}
+    {{- range $current.ByTitle }}{{ partial "reading_entry.html" (dict "entry" . "mode" "current") }}{{- end }}
   </div>
   {{- else }}
   <div class="reading-empty">
@@ -50,10 +57,9 @@
   </div>
 
   {{- if $read }}
-  {{- $yeared := where $read "read_year" "gt" 0 -}}
-  {{- $undated := where $read "read_year" "eq" 0 -}}
+  {{- $undated := where $read "Params.read_year" nil -}}
   {{- range $year := seq $currentYear -1 1900 }}
-    {{- $yearEntries := where $yeared "read_year" $year -}}
+    {{- $yearEntries := (where $read "Params.read_year" $year).ByTitle -}}
     {{- if $yearEntries }}
       {{- if eq $year $currentYear }}
       {{- $displayedCurrentYear = true -}}
@@ -84,20 +90,20 @@
     <p>No finished sources logged yet for {{ $currentYear }}.</p>
   </div>
   {{- end }}
-  {{- if $undated }}
+  {{- with $undated }}
   <details class="reading-year-group">
     <summary class="reading-year-summary">
       <span class="reading-year-title">Undated</span>
-      <span class="reading-year-count">{{ len $undated }} {{ cond (eq (len $undated) 1) "source" "sources" }}</span>
+      <span class="reading-year-count">{{ len . }} {{ cond (eq (len .) 1) "source" "sources" }}</span>
     </summary>
     <div class="reading-list">
-      {{- range $undated }}{{ partial "reading_entry.html" (dict "entry" . "mode" "read") }}{{- end }}
+      {{- range .ByTitle }}{{ partial "reading_entry.html" (dict "entry" . "mode" "read") }}{{- end }}
     </div>
   </details>
   {{- end }}
   {{- else }}
   <div class="reading-empty">
-    <p>No sources logged yet. Add individual YAML files under <code>data/reading/books/</code> or <code>data/reading/articles/</code>.</p>
+    <p>No sources logged yet. Add a page under <code>content/sources/</code>.</p>
   </div>
   {{- end }}
 </section>

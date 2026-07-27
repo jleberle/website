@@ -120,115 +120,41 @@
 
 
 /* ------------------------------------------------------------
-   Privacy-light media embeds (assets/js/embeds.js, the youtube /
-   bluesky shortcodes). A clickable facade (poster + play button)
-   stands in for the real iframe until the visitor opts in, so no
-   third-party frame loads on page view.
+   Privacy-light PDF embeds (assets/js/pdf.js, the pdf shortcode).
+   A clickable facade stands in for the real frame until the visitor
+   opts in. The YouTube and Bluesky facades that used to share these
+   styles are gone, along with the third-party origins they needed in
+   the CSP — the site links out to that material instead.
    ------------------------------------------------------------ */
-.yt-facade {
-    position: relative;
-    display: block;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    cursor: pointer;
-    background: #000;
-    overflow: hidden;
-}
-
-.yt-facade img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.85;
-    transition: opacity 0.2s;
-}
-
-.yt-facade:hover img,
-.yt-facade:focus-visible img {
-    opacity: 1;
-}
-
-.yt-facade:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 2px;
-}
-
-.yt-play {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 68px;
-    height: 48px;
-    background: #f00;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s, transform 0.2s;
-}
-
-.yt-facade:hover .yt-play,
-.yt-facade:focus-visible .yt-play {
-    background: #c00;
-    transform: translate(-50%, -50%) scale(1.1);
-}
-
-.yt-play::after {
-    content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 10px 0 10px 20px;
-    border-color: transparent transparent transparent #fff;
-    margin-left: 4px;
-}
-
-.yt-facade-fallback {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    color: #aaa;
-    font-size: 0.9rem;
-}
-
-.bsky-facade,
 .pdf-facade {
     display: block;
+    width: 100%;
     padding: 1rem;
     border: 1px solid var(--border);
     border-radius: 8px;
+    background: transparent;
     cursor: pointer;
     text-decoration: none;
     color: var(--primary);
     transition: border-color 0.2s;
+
+    /* Native <button> for keyboard/semantics; strip the default chrome so it
+       renders exactly as the former <div> did. */
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+    font: inherit;
+    text-align: left;
 }
 
-.bsky-facade:hover,
-.bsky-facade:focus-visible,
 .pdf-facade:hover,
 .pdf-facade:focus-visible {
     border-color: var(--secondary);
 }
 
-.bsky-facade:focus-visible,
 .pdf-facade:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
-}
-
-.bsky-facade-label {
-    font-size: 0.85rem;
-    color: var(--secondary);
-    margin-bottom: 0.25rem;
-}
-
-.bsky-facade-url {
-    font-size: 0.9rem;
-    word-break: break-all;
 }
 
 .pdf-facade-label {
@@ -241,58 +167,15 @@
     margin-top: 0.25rem;
 }
 
-/* The facades are native <button>s for keyboard/semantics; strip the default
-   button chrome so they render exactly as the former <div>s did. */
-.yt-facade,
-.bsky-facade,
-.pdf-facade {
-    appearance: none;
-    -webkit-appearance: none;
-    margin: 0;
-    font: inherit;
-    text-align: left;
-}
-
-/* stylelint-disable-next-line no-duplicate-selectors -- intentional: button-chrome reset is grouped above with .bsky-facade, this is the yt-only layout block */
-.yt-facade {
-    border: 0;
-    padding: 0;
-    color: inherit;
-}
-
-/* stylelint-disable-next-line no-duplicate-selectors -- intentional: button-chrome reset is grouped above with .yt-facade/.pdf-facade, this is the bsky-only layout block */
-.bsky-facade {
-    width: 100%;
-    background: transparent;
-}
-
-/* stylelint-disable-next-line no-duplicate-selectors -- intentional: button-chrome reset is grouped above with .yt-facade/.bsky-facade, this is the pdf-only layout block */
-.pdf-facade {
-    width: 100%;
-    background: transparent;
-}
-
 /* Former <div> children are now <span>; restore block stacking. */
-.bsky-facade-label,
-.bsky-facade-url,
 .pdf-facade-label,
 .pdf-facade-meta {
     display: block;
 }
 
-/* Container that replaces the YouTube facade button once loaded. */
-.yt-embed {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background: #000;
-    overflow: hidden;
-}
-
-/* Wraps the facade + its no-JS/no-iframe-rendering fallback link (PDFs are
-   often primary-source content here, not decorative embeds — unlike the
-   yt/bsky facades above, losing access entirely without JS isn't acceptable,
-   so a plain direct link always stays available alongside the facade). */
+/* Wraps the facade + its no-JS/no-iframe-rendering fallback link. PDFs are
+   primary-source content here, not decorative embeds, so a plain direct link
+   always stays available alongside the facade. */
 .pdf-block {
     margin: 1rem 0;
 }
@@ -319,9 +202,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .yt-facade img,
-    .yt-play,
-    .bsky-facade,
     .pdf-facade {
         transition: none;
     }

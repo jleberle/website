@@ -11,7 +11,7 @@ items:
     note: "Peter LaFarge's identity in the folk scene was rooted in the authenticity his rodeo background and Indigenous heritage. The only problem is he wasn't Indigenous."
   - page: "reviews/blurring-the-lines-indians-cowboys-and-ranching-in-the-modern-west"
     note: "Rodeo grew out of ranching in the 19th Century American west, this provides a look at Indigenous cowboys during the period."
-  - reading: "iverson1994"
+  - source: "iverson1994"
     note: "A link to information on Iverson's full book if you want to read more."
 ---
 

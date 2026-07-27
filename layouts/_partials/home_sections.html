@@ -8,9 +8,9 @@
 {{- $notebook := first 1 ((where site.RegularPages "Section" "quotes").ByPublishDate.Reverse) -}}
 {{- $courses := first 4 ((where site.RegularPages "Section" "courses").ByTitle) -}}
 {{- $featuredCourses := where (where site.RegularPages "Section" "courses") "Params.home_feature" true -}}
-{{- $readingEntries := partialCached "reading_entries.html" . -}}
-{{- $currentReading := first 1 (sort (where $readingEntries "status" "current") "title") -}}
-{{- $recentReading := first 1 (sort (where $readingEntries "status" "ne" "current") "sort_read_key" "desc") -}}
+{{- $sources := (site.GetPage "/sources").Pages -}}
+{{- $currentReading := first 1 (where $sources "Params.status" "reading").ByTitle -}}
+{{- $recentReading := first 1 ((where $sources "Params.status" "ne" "reading").ByParam "finished").Reverse -}}
 
 <div class="home-frontpage h-feed">
     {{- if $courses }}
@@ -120,12 +120,12 @@
                     </div>
                 </header>
                 <article class="home-context-entry home-context-entry--reading">
-                    <p class="home-context-kicker">{{ if eq .status "current" }}Current{{ else }}Recently read{{ end }}</p>
-                    <h4 class="home-list-title"><a href="{{ printf "%s#%s" $readingPage.RelPermalink .anchor_id }}">{{ .title }}</a></h4>
+                    <p class="home-context-kicker">{{ if eq .Params.status "reading" }}Current{{ else }}Recently read{{ end }}</p>
+                    <h4 class="home-list-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h4>
                     <p class="home-context-meta">
-                        {{- with .author }}<span>{{ . }}</span>{{- end -}}
-                        {{- if and .author (gt .published_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
-                        {{- if gt .published_year 0 }}<span>{{ .published_year }}</span>{{- end -}}
+                        {{- with .Params.author }}<span>{{ . }}</span>{{- end -}}
+                        {{- if and .Params.author .Params.published_year }}<span aria-hidden="true"> · </span>{{- end -}}
+                        {{- with .Params.published_year }}<span>{{ . }}</span>{{- end -}}
                     </p>
                 </article>
                 <a class="home-section-all" href="{{ $readingPage.RelPermalink }}">Open the reading ledger &rarr;</a>

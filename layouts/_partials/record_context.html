@@ -10,8 +10,14 @@
   {{- $group = "Index" -}}
   {{- $collection = "Topics" -}}
 {{- else if eq .Kind "term" -}}
-  {{- $group = "Topic" -}}
-  {{- $collection = "Topic file" -}}
+  {{- if eq .Data.Singular "source" -}}
+    {{- $group = "Source" -}}
+    {{- $entry = "Source" -}}
+    {{- $collection = "Reading" -}}
+  {{- else -}}
+    {{- $group = "Topic" -}}
+    {{- $collection = "Topic file" -}}
+  {{- end -}}
 {{- else if eq $section "articles" -}}
   {{- $group = "Writing" -}}
   {{- $entry = "Article" -}}

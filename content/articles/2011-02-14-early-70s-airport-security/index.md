@@ -4,8 +4,6 @@ slug: "early-70s-airport-security"
 date: 2011-02-14
 description: "The hassles of 1970s airport security"
 summary: "The hassles of airport security and your drugs"
-categories:
-- "American History"
 tags:
 - "1970s"
 ---

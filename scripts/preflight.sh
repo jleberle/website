@@ -97,14 +97,6 @@ else
   fail "content resource issues (e.g. cover block references a missing file)"
 fi
 
-step "cite-key cross-reference (advisory)"
-# Advisory only: reports site cite keys missing from the Zotero library (the
-# real drift signal) and, separately, keys with no vault reading note yet
-# (expected for casual reading). Never fails the gate here — both Zotero and
-# the vault are absent in CI, so add --strict directly if you want this to
-# fail locally on a Zotero mismatch.
-python3 scripts/checks/citekey-lint.py content data/reading 2>&1 | sed 's/^/  /'
-
 step "source junk files"
 SOURCE_JUNK_OUT=$(find assets content data layouts static -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -name 'desktop.ini' \) -print 2>/dev/null)
 if [[ -z "$SOURCE_JUNK_OUT" ]]; then

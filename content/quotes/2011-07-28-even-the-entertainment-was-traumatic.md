@@ -4,12 +4,8 @@ slug: "even-the-entertainment-was-traumatic"
 date: 2011-07-28
 description: "On cow dips and the Dust Bowl."
 summary: "Quote on Dust Bowl era cow dips from Timothy Egan's The Worst Hard Time"
-source_title: "The Worst Hard Time"
-source_author: "Timothy Egan"
-source_year: "2006"
+sources: ["egan2006"]
 external_url: "https://archive.org/details/worsthardtimeunt0000timo/page/38/mode/2up"
-categories:
-- "American History"
 tags:
 - "1930s"
 - "Oklahoma"

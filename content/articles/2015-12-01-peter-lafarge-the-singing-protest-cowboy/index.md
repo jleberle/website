@@ -4,13 +4,9 @@ slug: "peter-lafarge-the-singing-protest-cowboy"
 date: 2015-12-01
 description: "Indigeneity and protestor singers"
 summary: "Peter LaFarge used his western heritage and claims of Indigenous heritage to build credibility in the 1950s folk scene."
-categories:
-- "Indigenous History"
 tags:
 - "1960s"
 - "Music"
-people:
-- "peter-la-farge"
 cover:
   image: "cover.avif"
   alt: "Peter LaFarge"

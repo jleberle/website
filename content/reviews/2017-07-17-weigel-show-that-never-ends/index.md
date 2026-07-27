@@ -4,15 +4,8 @@ slug: "weigel-show-that-never-ends"
 date: 2017-07-17
 draft: false
 description: "A nerdy assessment of how prog rock became uncool"
-reviewed_type: "Book"
-reviewed_title: "The Show That Never Ends: The Rise and Downfall of Prog Rock"
-reviewed_author: "Dave Weigel"
-reviewed_publisher: "W.W. Norton"
-reviewed_year: "2017"
-cite_key: "weigel2017"
+sources: ["weigel2017"]
 external_url: "https://bookshop.org/p/books/the-show-that-never-ends-the-rise-and-fall-of-prog-rock-david-weigel/c0328b31031f2338"
-categories:
-- "Culture and Media"
 tags:
 - "1970s"
 - "Music"

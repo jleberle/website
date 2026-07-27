@@ -4,8 +4,6 @@ slug: "always-take-first-hand-accounts-with-a-grain-of-salt"
 date: 2014-07-24
 description: "Raymond Yellow Thunder and the Wounded Knee Occupation"
 summary: "Raymond Yellow Thunder and the Wounded Knee Occupation"
-categories:
-- "Indigenous History"
 tags:
 - "1970s"
 - "American Indian Movement"

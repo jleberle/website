@@ -4,15 +4,8 @@ slug: "jennings-ruby-ridge"
 date: 2026-05-07
 draft: false
 description: "Religion, economic crises, and the standoff that further fueled 1990s right-wing fears"
-reviewed_type: "Book"
-reviewed_title: "End of Days: Ruby Ridge, the Apocalypse, and the Unmaking of America"
-reviewed_author: "Chris Jennings"
-reviewed_publisher: "Little, Brown and Company"
-reviewed_year: "2026"
-cite_key: "jennings2026"
+sources: ["jennings2026"]
 external_url: "https://www.hachettebookgroup.com/titles/chris-jennings/end-of-days/9780316381949/"
-categories:
-- "American History"
 tags:
 - "1990s"
 - "Federal Law Enforcement"

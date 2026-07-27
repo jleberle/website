@@ -47,7 +47,6 @@ That script:
 - leaves quotes as flat files
 - flips `draft: true` to `draft: false`
 - stamps `publishDate` and `lastmod` when missing
-- merges any citation keys used in the body into `cite_keys` (see Citations below)
 
 Add `--push` to run `scripts/ship.sh` immediately after publishing — preflight,
 commit, and push in one step. Skip it for posts that still need
@@ -65,9 +64,9 @@ scripts/ship.sh "Review: ..."
 
 For scholarly posts, cite works with pandoc-style keys in the draft body —
 `[@mckenziejones2015]` inline, or a non-rendering `<!-- cite: @allen2012 @cobb2015 -->`
-comment to declare sources without printing a marker. On publish, those keys are
-merged into `cite_keys` front matter automatically, wiring the post into the
-reading page's cross-linking without retyping keys.
+comment to declare sources without printing a marker. These keys feed the
+rendered bibliography only — post-to-source connections are made with the
+`sources:` field, not with cite keys (see [reading.md](reading.md)).
 
 Add `--cite` to also append a rendered Chicago "Works Cited" list (articles and
 reviews only):
@@ -115,62 +114,34 @@ cover:
 An unsupported value fails the Hugo build instead of silently producing an
 incorrect crop. The setting has no effect where the full image is shown.
 
-Optional review metadata:
-
-- `reviewed_type`
-- `reviewed_title`
-- `reviewed_author`
-- `reviewed_publisher`
-- `reviewed_year`
-- `external_url`
-
-Optional quote/source metadata:
-
-- `source_title`
-- `source_author`
-- `source_year`
-- `external_url`
-
-`external_url` links the reviewed/source title in the context line. It does not turn the post title into an outbound link.
-
-`cite_key` is the preferred primary cross-linking key between reading-ledger entries and site posts. The expected format matches Zotero style, e.g. `mckenziejones2015`.
-
-For multi-source pages, especially articles, add an optional `cite_keys` array:
+Naming the work a post is about — for reviews, quotes, and any article that
+discusses a specific source:
 
 ```yaml
-cite_key: "mckenziejones2015"
-cite_keys:
-  - "iverson1994"
-  - "gardiner2015"
+sources: ["mckenziejones2015"]
+external_url: "https://example.org/the-passage"
 ```
 
-`cite_key` remains the primary work; `cite_keys` adds additional related books or sources. Neither field is displayed publicly.
+`sources` holds the folder names of pages under `content/sources/`, which are
+citation-style keys (`lastname` + `year`); the work's title,
+author, publisher, and year live there and are never retyped on the post. See
+[reading.md](reading.md) for the source format and what the connection produces.
 
-For teaching-specific cross-linking, use a separate `courses` array keyed by course slugs:
+`external_url` is optional and points at the specific passage or edition being
+discussed. It renders as a "Read online" link beside the citation; it does not
+turn the post title into an outbound link.
 
-```yaml
-courses:
-  - "1493"
-  - "3793"
-```
-
-This is distinct from tags. Tags stay conceptual; `courses` is only for linking material into course pages and surfacing `Teaching connection` blocks on related posts.
-
-For recurring historical figures or actors, use a `people` array keyed by slug:
-
-```yaml
-people:
-  - "theodore-roosevelt"
-  - "clyde-warrior"
-```
-
-Authority records live in `data/people/`. At minimum, add `name`; other fields are optional. This keeps person names consistent and allows the footer apparatus to surface `People` and `Elsewhere on these figures` blocks without exposing backend-only keys.
+Cross-linking between pages is handled two ways: automatically by shared tags
+(the `Related writing` footer block), and deliberately by research paths. There
+are no `courses`, `people`, or `categories` frontmatter fields — curated
+connections go in a research path, where the reason for the connection can be
+stated in prose.
 
 ## Research Paths
 
 Research paths live in `content/research/` and provide short, intentionally
 ordered routes through existing work. A path may reference a site page by its
-published URL path or a reading-ledger source by `cite_key`:
+published URL path or a source by its key:
 
 ```yaml
 items:
@@ -178,13 +149,13 @@ items:
     note: "Why this is the useful place to begin."
   - page: "courses/1493"
     note: "The broader teaching context."
-  - reading: "example2026"
+  - source: "example2026"
     note: "A source for continuing beyond the site."
 ```
 
 Every item requires a short editorial `note`; the sequence should explain a
-route rather than merely duplicate a tag page. Missing pages, unknown reading
-keys, duplicate reading keys, or malformed items fail the Hugo build. Research
+route rather than merely duplicate a tag page. Missing pages, unknown or
+duplicate source keys, or malformed items fail the Hugo build. Research
 paths are deliberately excluded from the main feed and writing archive; the
 archive links to their own landing page.
 
@@ -193,11 +164,10 @@ archive links to their own landing page.
 | Script | Purpose |
 |---|---|
 | `scripts/newpost.sh` | Create an article, review, or quote draft in the vault |
-| `scripts/publish-draft.sh` | Move an Obsidian draft into `content/`; merge `cite_keys`; optional `--cite` Works Cited |
-| `scripts/newsource.sh` | Create a reading-ledger source entry, with prompts tailored to books or articles |
-| `scripts/sync-reading.sh` | Scaffold a reading-ledger entry from a vault reading note + the Zotero library |
+| `scripts/publish-draft.sh` | Move an Obsidian draft into `content/`; optional `--cite` Works Cited |
+| `scripts/newsource.sh` | Create a source page, prefilling from Open Library (ISBN) or Crossref (DOI) |
+| `scripts/finishsource.sh` | Mark a source read and stamp its finish metadata |
 | `scripts/cite-refs.sh` | Extract citation keys / render a Works Cited list for a draft (used by publish-draft) |
-| `scripts/finishsource.sh` | Move a current reading source to read and stamp finish metadata |
 | `scripts/add-images.sh` | Add bundle images, with cover/body handling |
 | `scripts/preflight.sh` | Local pre-push gate, including published-draft and source-image policy checks |
 | `scripts/ship.sh` | Run preflight, then commit and push in one step (`--push` on publish-draft.sh / finishsource.sh calls this); lists all pending files and asks for confirmation first (`--yes` skips the prompt) |
@@ -209,8 +179,6 @@ Less frequently used maintenance and audit helpers are documented in [operations
 
 | Shortcode | Usage | Description |
 |---|---|---|
-| `youtube` | `{{</* youtube VIDEO_ID */>}}` | Click-to-load YouTube embed |
-| `bluesky` | `{{</* bluesky "https://bsky.app/..." */>}}` | Click-to-load Bluesky embed |
 | `carousel` | `{{</* carousel "a.avif" "b.avif" */>}}` | Image carousel from page bundle resources |
 | `figure` | `{{</* figure src="image.avif" alt="Description" caption="Caption text" */>}}` | Responsive figure with optional caption, title, attribution, link, and lightbox |
 

@@ -24,7 +24,7 @@ The site is available at `http://localhost:1313`.
 | Path | Purpose |
 |---|---|
 | `content/` | Published site content |
-| `data/reading/` | Reading ledger YAML entries grouped by source type |
+| `content/sources/` | One page per cited work, keyed by citation key; the reading ledger and connection hubs |
 | `layouts/` | Hugo templates and shortcodes |
 | `assets/` | CSS and JavaScript |
 | `scripts/` | Authoring, build, and maintenance helpers |
@@ -42,10 +42,8 @@ copy, so edit them there directly.
 ```sh
 scripts/newpost.sh article "Post Title"
 scripts/newpost.sh article --cover "Post Title"
-scripts/newsource.sh book "Book Title"
-scripts/newsource.sh article "Article Title"
-scripts/sync-reading.sh mckenziejones2015        # ledger entry from a vault note + Zotero
-scripts/finishsource.sh --push books/book-slug   # updates the ledger, ships, and pushes
+scripts/newsource.sh book "Book Title"           # prefills from Open Library by ISBN
+scripts/finishsource.sh --push egan2023          # mark read, ship, and push
 scripts/publish-draft.sh --push articles/2026-06-24-post-title.md      # no images to add
 scripts/publish-draft.sh --cite reviews/2026-06-24-review-slug.md      # append Works Cited
 scripts/add-images.sh content/articles/<dir> --cover photo.jpg

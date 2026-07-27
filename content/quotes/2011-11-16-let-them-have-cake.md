@@ -4,12 +4,8 @@ slug: "let-them-have-cake"
 date: 2011-11-16
 description: "Teddy Roosevelt's encounter with homeless children"
 summary: "Teddy Roosevelt's encounter with homeless children"
-source_title: "Diaries of Boyhood and Youth"
-source_author: "Theodore Roosevelt"
-source_year: "1928"
+sources: ["roosevelt1928"]
 external_url: "https://archive.org/details/theodoreroosevel0000roos_t4a1/page/122/mode/2up"
-categories:
-- "American History"
 tags:
 - "19th Century"
 ---

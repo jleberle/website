@@ -50,46 +50,21 @@ DESCRIPTION=$(read_optional "Description (optional)")
 SUMMARY=$(read_optional "Summary override (optional)")
 SERIES=$(read_optional 'Series name, for multi-part posts (optional; same name on every part, e.g. "My Summer With Claude")')
 TAGS=$(read_optional "Tags, comma-separated (optional)")
-COURSES=$(read_optional "Course links, comma-separated course slugs such as 1493,3793 (optional)")
-PEOPLE=$(read_optional "People links, comma-separated slugs such as theodore-roosevelt,clyde-warrior (optional)")
 
-REVIEWED_TYPE=""
-REVIEWED_TITLE=""
-REVIEWED_AUTHOR=""
-REVIEWED_PUBLISHER=""
-REVIEWED_YEAR=""
-SOURCE_TITLE=""
-SOURCE_AUTHOR=""
-SOURCE_YEAR=""
 URL=""
-CITE_KEY=""
-EXTRA_CITE_KEYS=""
+# The work a post is about is named once, by its source key — the directory name
+# under content/sources/, a citation-style lastname+year. Its title, author,
+# publisher and year live on that page, so nothing here re-types them. A key with
+# no page yet is fine: create content/sources/<key>/_index.md and the connection
+# starts working.
+SOURCES=$(read_optional "Source key(s), comma-separated, e.g. mckenziejones2015 (optional)")
 
 if [[ "$KIND" == "review" ]]; then
-  REVIEWED_TYPE=$(read_optional "Reviewed type, e.g. Book/Film (optional)")
-  REVIEWED_TITLE=$(read_optional "Reviewed work title (optional)")
-  REVIEWED_AUTHOR=$(read_optional "Reviewed work author/creator (optional)")
-  REVIEWED_PUBLISHER=$(read_optional "Reviewed work publisher/studio (optional)")
-  REVIEWED_YEAR=$(read_optional "Reviewed work year (optional)")
-  CITE_KEY=$(read_optional "Cite key, e.g. mckenziejones2015 (optional)")
   URL=$(read_optional "Reviewed work URL (optional)")
-  CATEGORIES=$(read_optional "Categories, comma-separated (optional; defaults to Reviews)")
-  [[ -z "$CATEGORIES" ]] && CATEGORIES="Reviews"
-else
-  CATEGORIES=$(read_optional "Categories, comma-separated (optional)")
 fi
 
 if [[ "$KIND" == "quote" ]]; then
-  SOURCE_TITLE=$(read_optional "Source title (optional)")
-  SOURCE_AUTHOR=$(read_optional "Source author (optional)")
-  SOURCE_YEAR=$(read_optional "Source year (optional)")
-  CITE_KEY=$(read_optional "Cite key, e.g. mckenziejones2015 (optional)")
-  URL=$(read_optional "External URL (optional)")
-fi
-
-if [[ "$KIND" == "article" ]]; then
-  CITE_KEY=$(read_optional "Primary cite key for a related work, e.g. mckenziejones2015 (optional)")
-  EXTRA_CITE_KEYS=$(read_optional "Additional cite keys, comma-separated (optional)")
+  URL=$(read_optional "External URL for this passage (optional)")
 fi
 
 ADD_COVER=false
@@ -154,11 +129,7 @@ EOF
       field "description" "$DESCRIPTION"
       field "summary" "$SUMMARY"
       field "series" "$SERIES"
-      field "cite_key" "$CITE_KEY"
-      list_field "cite_keys" "$EXTRA_CITE_KEYS"
-      list_field "courses" "$COURSES"
-      list_field "people" "$PEOPLE"
-      list_field "categories" "$CATEGORIES"
+      list_field "sources" "$SOURCES"
       list_field "tags" "$TAGS"
       $ADD_COVER && cover_block false
       printf -- '---\n\n'
@@ -178,16 +149,8 @@ EOF
       field "description" "$DESCRIPTION"
       field "summary" "$SUMMARY"
       field "series" "$SERIES"
-      field "reviewed_type" "$REVIEWED_TYPE"
-      field "reviewed_title" "$REVIEWED_TITLE"
-      field "reviewed_author" "$REVIEWED_AUTHOR"
-      field "reviewed_publisher" "$REVIEWED_PUBLISHER"
-      field "reviewed_year" "$REVIEWED_YEAR"
-      field "cite_key" "$CITE_KEY"
+      list_field "sources" "$SOURCES"
       field "external_url" "$URL"
-      list_field "courses" "$COURSES"
-      list_field "people" "$PEOPLE"
-      list_field "categories" "$CATEGORIES"
       list_field "tags" "$TAGS"
       $ADD_COVER && cover_block true
       printf -- '---\n\n'
@@ -208,14 +171,8 @@ EOF
       field "description" "$DESCRIPTION"
       field "summary" "$SUMMARY"
       field "series" "$SERIES"
-      field "source_title" "$SOURCE_TITLE"
-      field "source_author" "$SOURCE_AUTHOR"
-      field "source_year" "$SOURCE_YEAR"
-      field "cite_key" "$CITE_KEY"
+      list_field "sources" "$SOURCES"
       field "external_url" "$URL"
-      list_field "courses" "$COURSES"
-      list_field "people" "$PEOPLE"
-      list_field "categories" "$CATEGORIES"
       list_field "tags" "$TAGS"
       printf -- '---\n\n'
     } > "$FILE"

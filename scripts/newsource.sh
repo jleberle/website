@@ -1,19 +1,26 @@
 #!/usr/bin/env bash
-# Create a reading-ledger entry under data/reading/<type>s/.
-# Books can prefill from Open Library via ISBN. Articles can prefill from Crossref via DOI.
+# Create a source page under content/sources/<slug>/_index.md.
+#
+# A source is one cited work. Its page is the single record for that work: it
+# is listed on /reading/, published at /sources/<slug>/, and collects every post
+# that names it in `sources:`. See docs/reading.md.
+#
+# Books prefill from Open Library via ISBN; articles prefill from Crossref via
+# DOI. Both lookups are best-effort — if the network or the record is missing,
+# the script says so and falls through to manual entry with no fields lost.
 
 set -euo pipefail
 
 usage() {
   echo "Usage: $(basename "$0") [book|article] [\"Title\"]" >&2
-  echo "Creates data/reading/books/<slug>.yaml or data/reading/articles/<slug>.yaml" >&2
+  echo "Creates content/sources/<slug>/_index.md." >&2
   echo "If type is omitted, the script prompts for it." >&2
   exit 1
 }
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 REPO_ROOT="$( cd "$SCRIPT_DIR/.." >/dev/null 2>&1 && pwd )"
-READING_ROOT="$REPO_ROOT/data/reading"
+SOURCES_ROOT="$REPO_ROOT/content/sources"
 
 SOURCE_TYPE=""
 TITLE=""
@@ -200,40 +207,16 @@ if [[ -z "$SOURCE_TYPE" ]]; then
   SOURCE_TYPE=$(read_with_default "Source type [book/article]" "book")
 fi
 SOURCE_TYPE=$(trim "$SOURCE_TYPE")
-
 case "$SOURCE_TYPE" in
-  book) SOURCE_DIR="$READING_ROOT/books" ;;
-  article) SOURCE_DIR="$READING_ROOT/articles" ;;
+  book|article) ;;
   *) echo "Unsupported source type: $SOURCE_TYPE" >&2; exit 1 ;;
 esac
 
-mkdir -p "$SOURCE_DIR"
-
-AUTHOR=""
-CITE_KEY=""
-STATUS="read"
-PUBLISHED_YEAR=""
-READ_YEAR=""
-STARTED=""
-STARTED_ANNOUNCED=""
-FINISHED=""
-FINISHED_ANNOUNCED=""
-NOTES=""
-PUBLISHER=""
-ISBN=""
-FORMAT=""
-CONTAINER_TITLE=""
-VOLUME=""
-ISSUE=""
-PAGES=""
-DOI=""
-URL=""
+AUTHOR=""; PUBLISHER=""; PUBLISHED_YEAR=""; FORMAT=""
+ISBN=""; DOI=""; ACCESS_URL=""
 
 if [[ "$SOURCE_TYPE" == "book" ]]; then
-  LOOKUP_TITLE=""
-  LOOKUP_AUTHOR=""
-  LOOKUP_PUBLISHER=""
-  LOOKUP_PUBLISHED_YEAR=""
+  LOOKUP_TITLE=""; LOOKUP_AUTHOR=""; LOOKUP_PUBLISHER=""; LOOKUP_PUBLISHED_YEAR=""
 
   ISBN_INPUT=$(read_optional "ISBN (optional, used for Open Library lookup)")
   ISBN=$(normalize_isbn "$ISBN_INPUT")
@@ -247,28 +230,21 @@ if [[ "$SOURCE_TYPE" == "book" ]]; then
           published_year) LOOKUP_PUBLISHED_YEAR="$value" ;;
         esac
       done <<< "$lookup_data"
-      echo "Prefilled basic metadata from Open Library for ISBN $ISBN." >&2
+      echo "Prefilled metadata from Open Library for ISBN $ISBN." >&2
     else
-      echo "No Open Library lookup data found for ISBN $ISBN; continuing with manual entry." >&2
+      echo "No Open Library data for ISBN $ISBN; continuing with manual entry." >&2
     fi
   fi
 
   TITLE=$(read_with_default "Book title" "${LOOKUP_TITLE:-$TITLE}")
   [[ -z "${TITLE// }" ]] && { echo "Book title is required." >&2; exit 1; }
-
   AUTHOR=$(read_with_default "Author (optional)" "$LOOKUP_AUTHOR")
   PUBLISHER=$(read_with_default "Publisher/press (optional)" "$LOOKUP_PUBLISHER")
   PUBLISHED_YEAR=$(read_with_default "Publication year (optional)" "$LOOKUP_PUBLISHED_YEAR")
   FORMAT=$(read_optional "Format (optional)")
 else
-  LOOKUP_TITLE=""
-  LOOKUP_AUTHOR=""
-  LOOKUP_CONTAINER_TITLE=""
-  LOOKUP_PUBLISHED_YEAR=""
-  LOOKUP_VOLUME=""
-  LOOKUP_ISSUE=""
-  LOOKUP_PAGES=""
-  LOOKUP_URL=""
+  LOOKUP_TITLE=""; LOOKUP_AUTHOR=""; LOOKUP_CONTAINER_TITLE=""
+  LOOKUP_PUBLISHED_YEAR=""; LOOKUP_URL=""
 
   DOI_INPUT=$(read_optional "DOI (optional, used for Crossref lookup)")
   DOI=$(normalize_doi "$DOI_INPUT")
@@ -280,92 +256,79 @@ else
           author) LOOKUP_AUTHOR="$value" ;;
           container_title) LOOKUP_CONTAINER_TITLE="$value" ;;
           published_year) LOOKUP_PUBLISHED_YEAR="$value" ;;
-          volume) LOOKUP_VOLUME="$value" ;;
-          issue) LOOKUP_ISSUE="$value" ;;
-          pages) LOOKUP_PAGES="$value" ;;
           url) LOOKUP_URL="$value" ;;
         esac
       done <<< "$lookup_data"
-      echo "Prefilled basic metadata from Crossref for DOI $DOI." >&2
+      echo "Prefilled metadata from Crossref for DOI $DOI." >&2
     else
-      echo "No Crossref lookup data found for DOI $DOI; continuing with manual entry." >&2
+      echo "No Crossref data for DOI $DOI; continuing with manual entry." >&2
     fi
   fi
 
   TITLE=$(read_with_default "Article title" "${LOOKUP_TITLE:-$TITLE}")
   [[ -z "${TITLE// }" ]] && { echo "Article title is required." >&2; exit 1; }
-
   AUTHOR=$(read_with_default "Author (optional)" "$LOOKUP_AUTHOR")
-  CONTAINER_TITLE=$(read_with_default "Journal/publication (optional)" "$LOOKUP_CONTAINER_TITLE")
+  PUBLISHER=$(read_with_default "Journal/publication (optional)" "$LOOKUP_CONTAINER_TITLE")
   PUBLISHED_YEAR=$(read_with_default "Publication year (optional)" "$LOOKUP_PUBLISHED_YEAR")
-  VOLUME=$(read_with_default "Volume (optional)" "$LOOKUP_VOLUME")
-  ISSUE=$(read_with_default "Issue (optional)" "$LOOKUP_ISSUE")
-  PAGES=$(read_with_default "Pages (optional)" "$LOOKUP_PAGES")
-  if [[ -n "$DOI" && -z "$LOOKUP_URL" ]]; then
-    LOOKUP_URL="https://doi.org/$DOI"
-  fi
-  URL=$(read_with_default "Access URL (optional)" "$LOOKUP_URL")
+  ACCESS_URL=$(read_with_default "Access URL (optional)" "$LOOKUP_URL")
 fi
 
-slug="$(slugify "$TITLE")"
-[[ -z "$slug" ]] && slug="untitled-$SOURCE_TYPE"
-
-file="$SOURCE_DIR/$slug.yaml"
-if [[ -e "$file" ]]; then
-  echo "Refusing to overwrite existing file: ${file#$REPO_ROOT/}" >&2
-  exit 1
-fi
-
-CITE_KEY=$(read_optional "Cite key, e.g. mckenziejones2015 (optional)")
-STATUS=$(read_with_default 'Status [read/current]' "read")
+STATUS=$(read_with_default "Status [read/reading]" "read")
 STATUS=$(trim "$STATUS")
-[[ -z "$STATUS" ]] && STATUS="read"
-[[ "$STATUS" == "read" || "$STATUS" == "current" ]] || {
-  echo "Status must be read or current." >&2
-  exit 1
-}
+TODAY=$(date +%Y-%m-%d)
 
-if [[ "$STATUS" == "current" ]]; then
-  STARTED=$(read_optional "Started date YYYY-MM-DD (optional)")
-  [[ -n "$(trim "$STARTED")" ]] && STARTED_ANNOUNCED="$(rfc3339_now)"
+STARTED=""; FINISHED=""; READ_YEAR=""
+if [[ "$STATUS" == "reading" ]]; then
+  STARTED=$(read_with_default "Started (YYYY-MM-DD)" "$TODAY")
 else
-  FINISHED=$(read_optional "Finished date YYYY-MM-DD (optional)")
-  READ_YEAR_DEFAULT=""
-  if [[ "$FINISHED" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
-    READ_YEAR_DEFAULT="${FINISHED%%-*}"
-  fi
-  READ_YEAR=$(read_with_default "Read year (optional)" "$READ_YEAR_DEFAULT")
-  [[ -n "$(trim "$FINISHED")" ]] && FINISHED_ANNOUNCED="$(rfc3339_now)"
+  STATUS="read"
+  FINISHED=$(read_with_default "Finished (YYYY-MM-DD, blank if unknown)" "$TODAY")
+  READ_YEAR="${FINISHED%%-*}"
+  READ_YEAR=$(read_with_default "Read year (optional)" "$READ_YEAR")
 fi
 
-NOTES=$(read_optional "Notes (optional)")
+NOTES=$(read_optional "Short note (optional)")
+
+# The folder name IS the key a post references in `sources:`, so it defaults to
+# a citation-style lastname+year rather than a title slug — short enough to type
+# from memory and stable when a subtitle changes. Anything is accepted as long
+# as it urlizes to itself (lowercase, no spaces or underscores).
+KEY_AUTHOR=$(printf '%s' "$AUTHOR" \
+  | sed 's/ and .*//; s/,.*//' \
+  | awk '{ for (i = NF; i > 0; i--) if (length($i) > 2 || $i !~ /^[A-Z]\.?$/) { print $i; exit } }' \
+  | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z')
+SLUG="${KEY_AUTHOR}${PUBLISHED_YEAR}"
+[[ -z "$SLUG" ]] && SLUG=$(slugify "$TITLE")
+[[ -z "$SLUG" ]] && SLUG="untitled-source"
+SLUG=$(read_with_default "Key (folder name, referenced as sources: [\"...\"])" "$SLUG")
+
+DEST="$SOURCES_ROOT/$SLUG"
+if [[ -e "$DEST/_index.md" ]]; then
+  echo "A source already exists at content/sources/$SLUG/_index.md" >&2
+  exit 1
+fi
+mkdir -p "$DEST"
 
 {
-  field "title" "$TITLE"
+  printf -- '---\n'
+  printf 'title: "%s"\n' "$(yaml_escape "$TITLE")"
   field "author" "$AUTHOR"
-  field "type" "$SOURCE_TYPE"
-  field "cite_key" "$CITE_KEY"
-  field "status" "$STATUS"
-  numeric_field "published_year" "$PUBLISHED_YEAR"
-  numeric_field "read_year" "$READ_YEAR"
-  if [[ "$SOURCE_TYPE" == "book" ]]; then
-    field "publisher" "$PUBLISHER"
-    field "isbn" "$ISBN"
-    field "format" "$FORMAT"
-  else
-    field "container_title" "$CONTAINER_TITLE"
-    field "volume" "$VOLUME"
-    field "issue" "$ISSUE"
-    field "pages" "$PAGES"
-    field "doi" "$DOI"
-    field "url" "$URL"
-  fi
+  [[ "$SOURCE_TYPE" != "book" ]] && printf 'type: "%s"\n' "$SOURCE_TYPE"
+  printf 'status: "%s"\n' "$STATUS"
+  [[ -n "$PUBLISHED_YEAR" ]] && printf 'published_year: %s\n' "$PUBLISHED_YEAR"
+  [[ -n "$READ_YEAR" ]] && printf 'read_year: %s\n' "$READ_YEAR"
+  field "publisher" "$PUBLISHER"
+  field "format" "$FORMAT"
+  field "isbn" "$ISBN"
+  field "doi" "$DOI"
+  field "access_url" "$ACCESS_URL"
   field "started" "$STARTED"
-  field "started_announced" "$STARTED_ANNOUNCED"
   field "finished" "$FINISHED"
-  field "finished_announced" "$FINISHED_ANNOUNCED"
-  field "notes" "$NOTES"
-} > "$file"
+  printf -- '---\n\n'
+  [[ -n "$NOTES" ]] && printf '%s\n' "$NOTES"
+} > "$DEST/_index.md"
 
-echo "Created ${file#$REPO_ROOT/}" >&2
-${VISUAL:-${EDITOR:-vi}} "$file"
+echo "Created content/sources/$SLUG/_index.md" >&2
+echo "Connect writing to it with: sources: [\"$SLUG\"]" >&2
+EDITOR_CMD="${VISUAL:-${EDITOR:-vi}}"
+exec $EDITOR_CMD "$DEST/_index.md"

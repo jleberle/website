@@ -4,22 +4,12 @@ slug: "warrior-mckenzie-jones"
 date: 2015-07-21
 draft: false
 description: "An assessment of Ponca activist Clyde Warrior's contributions to Red Power"
-reviewed_type: "Book"
-reviewed_title: "Clyde Warrior: Tradition, Community, and Red Power"
-reviewed_author: "Paul McKenzie-Jones"
-reviewed_publisher: "University of Oklahoma Press"
-reviewed_year: "2015"
-cite_key: "mckenziejones2015"
+sources: ["mckenziejones2015"]
 external_url: "https://www.oupress.com/9780806147055/clyde-warrior/"
-categories:
-- "Indigenous History"
 tags:
 - "1960s"
 - "American Indian Movement"
 - "Oklahoma"
-people:
-- "clyde-warrior"
-- "dennis-banks"
 cover:
   image: "cover.avif"
   alt: "Front cover of Clyde Warrior: Tradition, Community, and Red Power"

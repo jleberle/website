@@ -4,8 +4,6 @@ slug: "from-the-archives-the-vanishing-americans"
 date: 2017-08-03
 description: "Native Rock with the Vanishing Americans"
 summary: "Screenshot of Article detailing Native Rock Band"
-categories:
-- "Indigenous History"
 tags:
 - "1970s"
 - "Music"

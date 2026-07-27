@@ -4,8 +4,6 @@ slug: "bia-recognition-changes-in-connecticut"
 date: 2014-03-11
 description: "Tribal recognition and its problems in Connecticut"
 summary: "Tribal recognition and its problems in Connecticut"
-categories:
-- "Indigenous History"
 tags:
 - "Tribal Recognition"
 ---

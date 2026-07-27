@@ -1,0 +1,10 @@
+---
+title: "The Digital Humanities: A Primer for Students and Scholars"
+author: "Eileen Gardiner and Ronald G. Musto"
+status: "read"
+published_year: 2015
+read_year: 2015
+publisher: "Cambridge University Press"
+format: "Hardcover"
+finished: "2015-11-21"
+---

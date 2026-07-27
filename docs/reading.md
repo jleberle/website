@@ -1,151 +1,135 @@
-# Reading Ledger
+# Sources and the Reading Ledger
 
-The `/reading/` page is built from individual YAML files in `data/reading/books/` and `data/reading/articles/`.
+A source is one work — a book, an article, anything cited. Each one is a page:
 
-Each file represents one source record. Books and articles share a common core:
-
-```yaml
-title: "Example Title"
-author: "Author Name"
-type: "book"            # or "article"
-cite_key: "author2024"
-status: "read"          # or "current"
-published_year: 2024
-read_year: 2026
-started: "2026-06-01"
-started_announced: "2026-07-02T14:37:00-05:00"
-finished: "2026-06-14"
-finished_announced: "2026-07-02T15:02:00-05:00"
-notes: "Optional short note shown when expanded."
+```
+content/sources/<key>/_index.md
 ```
 
-Book-specific fields:
+The folder name is the key posts reference, so it is a citation-style
+`lastname` + `year` — `egan2023`, `mckenziejones2015` — not a title slug. It is
+short enough to type from memory and does not go stale when a subtitle changes.
+Any name works as long as it urlizes to itself: lowercase, no spaces, no
+underscores. A mismatch does not error, it silently creates a second empty
+source, so `preflight.sh` is what catches a typo.
+
+That page is the single record for the work. It publishes at `/sources/<slug>/`,
+it is listed on `/reading/`, and it automatically collects every post that names
+it. There is no separate data file and no key registry.
 
 ```yaml
-publisher: "University Press"
-isbn: "9780000000000"
+---
+title: "Clyde Warrior: Tradition, Community, and Red Power"
+author: "Paul McKenzie-Jones"
+type: "book"              # optional; defaults to book
+status: "read"            # or "reading"
+published_year: 2015
+read_year: 2015
+publisher: "University of Oklahoma Press"
 format: "Hardcover"
+isbn: "9780806147055"
+finished: "2015-07-14"
+access_url: "https://example.org/full-text"
+---
+
+Anything below the front matter is shown on the source page as notes.
 ```
 
-Article-specific fields:
+`access_url` is spelled that way because `url` is reserved by Hugo — setting it
+would move the page.
+
+## Connecting Writing to a Source
+
+Add the key to any article, review, or quote:
 
 ```yaml
-container_title: "The Popular Science Monthly"
-volume: "50"
-issue: "1"
-pages: "12-19"
-doi: "10.0000/example-doi"
-url: "https://doi.org/10.0000/example-doi"
+sources: ["mckenziejones2015"]
 ```
 
-## Meaning of the Date Fields
+That is the whole mechanism. Hugo's taxonomy index does the rest:
 
+- the post shows the work's citation, linked to the source page
+- the source page lists the post under "Writing about this source"
+- other posts on the same work appear under "Elsewhere on this source"
+
+A post can list several sources. A source with nothing written about it still
+gets a page and still appears in the ledger — that is the normal case for most
+of the ledger.
+
+If a connection isn't appearing, the post is missing its `sources:` entry. There
+is deliberately no fuzzy title matching to fall back on.
+
+## Status and Dates
+
+- `status: reading` puts the source in "Currently reading" on `/reading/`
+- `status: read` files it under `read_year`; a source with no `read_year` lands
+  in the "Undated" group
 - `started` and `finished` are the actual reading dates
-- `started_announced` and `finished_announced` are feed timestamps used when the event is announced on the site
+- `started_announced` / `finished_announced` are optional feed timestamps, used
+  when an event is announced later than it happened; the feed falls back to the
+  reading date
 
-If the announcement fields are absent, the RSS feed falls back to the reading date.
+That separation exists so Micro.blog treats a newly added reading event as new,
+rather than as an old midnight post. Older records without announcement
+timestamps stay quiet unless you edit them, which avoids waking up the archive
+in downstream syndication.
 
-That separation exists so services like Micro.blog treat a newly added reading event as new, rather than as an old midnight post.
+## The Reading Feed
 
-## Creating Entries
+`/reading/index.xml` emits one item per started/finished event:
+
+- book titles link to `https://micro.blog/books/<isbn>` when an ISBN is present
+- otherwise the title links to `access_url`, then a DOI, if either is set
+- an item's `<link>` is the source's own page
+
+Its `started-reading` / `finished-reading` categories and the literal
+"Started reading: " / "Finished reading: " description prefixes are a cross-repo
+contract: `~/git/micro-theme` matches them to build eberle.blog's reading
+sections. `scripts/checks/feed-lint.py` asserts this, so the build catches a
+rendering change that would otherwise silently empty that homepage section.
+
+Item guids keep the shape `urn:reading-event:<type>:<slug>:<event>`, so
+already-imported events are not re-imported.
+
+## Cite Keys
+
+There is no `cite_key` field: the folder name is the citation key, so the fact is
+recorded once. Where a source came from Zotero, its folder keeps the Zotero key
+verbatim.
+
+`scripts/cite-refs.sh` still renders a Chicago "Works Cited" list from
+pandoc-style `[@key]` citations in a draft body via `publish-draft.sh --cite`.
+It reads those keys from the post body and resolves them against the Zotero
+library, independently of anything here.
+
+The substantive change from the old model: a source no longer has to exist in
+Zotero to be linkable, so connecting a quote to a book you read casually costs
+one file instead of a round trip through Zotero and Obsidian.
+
+## Creating a Source
 
 ```sh
 scripts/newsource.sh book "Book Title"
 scripts/newsource.sh article "Article Title"
 ```
 
-The script:
-- prompts for source type when omitted
-- for books, prompts for ISBN first and queries Open Library when possible
-- for articles, prompts for DOI first and queries Crossref when possible
-- prefills metadata when lookup data is available
-- writes the file in canonical key order
+The script prompts for an ISBN first and prefills title, author, publisher, and
+year from Open Library; articles prompt for a DOI and prefill from Crossref. It
+then proposes the `lastname`+`year` key as an editable default.
+Both lookups are best-effort — if the network is down or the record is missing,
+it says so and falls through to manual entry with nothing lost. Every prefilled
+value is still shown as an editable default.
 
-Compatibility wrappers still exist:
+The front matter above is the whole format, so writing the file by hand is
+equally valid when you already have the details.
 
-```sh
-scripts/newbook.sh "Book Title"
-```
-
-`status: "current"` places a source in the currently reading section.
-
-### From an Obsidian reading note
-
-For academic sources already in the `~/Notes` vault and Zotero, scaffold the
-ledger entry from that data instead of retyping it:
+## Finishing a Source
 
 ```sh
-scripts/sync-reading.sh mckenziejones2015
-scripts/sync-reading.sh allen2012 article   # force the source type
+scripts/finishsource.sh puhak2026
+scripts/finishsource.sh                      # lists what is currently reading
+scripts/finishsource.sh --push puhak2026     # then preflight, commit, push
 ```
 
-`sync-reading.sh` requires a matching reading note at
-`~/Notes/02 Notes/01 Reading Notes/<citekey>.md` (the same note the site's
-cross-linking points at) and pulls the bibliographic identity — title, author,
-year, and publisher/ISBN or journal/volume/issue/pages/DOI/URL — from the
-Zotero-exported CSL-JSON library, falling back to the note's front matter. It then
-prompts only for the reading-specific fields (status, dates, notes, format) and
-opens the entry in your editor. Override the vault and library paths with
-`WEBSITE_VAULT_DIR` and `WEBSITE_BIBLIOGRAPHY`.
-
-## Marking a Source Finished
-
-```sh
-scripts/finishsource.sh books/book-slug
-scripts/finishsource.sh articles/article-slug
-```
-
-The script:
-- changes `status` from `current` to `read`
-- prompts for a finish date
-- derives `read_year`
-- stamps `finished_announced` with the current local timestamp
-- preserves the rest of the metadata
-- if the entry has a `cite_key`, flips the matching vault reading note's
-  `status:` to `read` (silently skipped if no such note exists — see
-  `WEBSITE_VAULT_DIR` / `WEBSITE_READING_NOTES_DIR` in `scripts/sync-vault-status.py`)
-
-If you omit the argument, it lists sources currently marked `status: "current"` and lets you choose interactively.
-
-Add `--push` to skip the editor and run `scripts/ship.sh` instead (preflight,
-commit, push) with an auto-generated "Finished reading: ..." message:
-
-```sh
-scripts/finishsource.sh --push books/book-slug
-```
-
-Compatibility wrapper:
-
-```sh
-scripts/finishbook.sh book-slug
-```
-
-## Post Linking
-
-`cite_key` is the preferred way to connect a reading entry to posts on the site. Add the same `cite_key` to reviews, quotes, or articles and the reading page links them automatically.
-
-Articles and other multi-source pages can also use an optional `cite_keys` array so one page can connect to several reading-ledger entries without exposing those keys to readers. `publish-draft.sh` populates `cite_keys` automatically from the citation keys used in a post's body.
-
-The older manual `related_posts` list still works as a fallback, but `cite_key` is the main pattern going forward.
-
-`scripts/preflight.sh` runs an advisory **cite-key cross-reference** check
-(`scripts/checks/citekey-lint.py`). Its primary check is whether every
-`cite_key`/`cite_keys` value in `content/` or `data/reading/` exists in the
-Zotero library — that's the actual "is the ledger in sync with Zotero"
-contract, and the one worth fixing (a typo, a renamed citekey, or a source
-never added to Zotero). Separately, it reports keys with no vault reading note
-as informational only, since casual reading is never expected to have one. It
-never fails the gate by default (both Zotero and the vault are absent in CI);
-pass `--strict` directly to fail locally on a real Zotero mismatch.
-
-## Feed Behavior
-
-The reading page emits its own RSS feed:
-
-- started sources produce a "started reading" event
-- finished sources produce a "finished reading" event
-- entries are intentionally content-first for Micro.blog syndication
-- book titles in feed HTML link to `https://micro.blog/books/<isbn>` when ISBN is present
-- article titles link to `url` or DOI targets when present
-
-Older source records without announcement timestamps stay quiet unless you explicitly edit them, which avoids waking up the archive in downstream syndication.
+It flips `status` to `read`, stamps `finished`, derives `read_year`, and records
+`finished_announced` so the feed treats the event as new.

@@ -4,8 +4,6 @@ slug: "from-the-archives-indian-prison-rodeo"
 date: 2016-10-19
 description: "\"If an indian takes the prize, I think its saying something\""
 summary: "A letter discussing a prison rodeo"
-categories:
-- "Indigenous History"
 tags:
 - "1970s"
 - "Rodeo"

@@ -1,68 +1,71 @@
+{{- /* One row in the reading ledger. The entry is a source term page
+       (content/sources/<slug>/_index.md), so its params are read directly —
+       there is no intermediate dict.
+
+       The row expands in place: /reading/ is the central index, and the record,
+       the notes, and the connected writing should all be readable without
+       leaving it. The source's own page at /sources/<slug>/ carries the same
+       material and exists so a work can be linked to and can collect backlinks;
+       the "Source page" link at the foot of the panel is the way across.
+
+       The id is <type>-<slug>, matching the anchors the ledger has always
+       used, so existing /reading/#book-<slug> links still land. */ -}}
 {{- $entry := .entry -}}
 {{- $mode := .mode | default "read" -}}
-{{- $relatedPages := partial "reading_related_pages.html" $entry -}}
-{{- $isbnLookup := "" -}}
-{{- with $entry.isbn }}{{- $isbnLookup = replaceRE "[^0-9Xx]" "" . -}}{{- end }}
-{{- $accessURL := $entry.url | default "" -}}
-{{- if and (not $accessURL) $entry.doi -}}
-  {{- $accessURL = printf "https://doi.org/%s" $entry.doi -}}
-{{- end -}}
+{{- $p := $entry.Params -}}
+{{- $type := $p.type | default "book" -}}
+{{- $typeLabel := $type | humanize -}}
+{{- $slug := path.Base $entry.RelPermalink -}}
+{{- $connected := $entry.Pages.ByDate.Reverse -}}
+{{- $isbn := "" -}}
+{{- with $p.isbn }}{{ $isbn = replaceRE "[^0-9Xx]" "" . }}{{ end -}}
+{{- $accessURL := $p.access_url | default "" -}}
+{{- if and (not $accessURL) $p.doi }}{{ $accessURL = printf "https://doi.org/%s" $p.doi }}{{ end -}}
 
 <details
   class="reading-entry{{ if eq $mode "current" }} reading-entry--current{{ end }}"
-  id="{{ $entry.anchor_id }}"
-  {{- if ne $mode "current" }} data-reading-entry data-sort-read="{{ $entry.sort_read_key }}" data-sort-published="{{ $entry.sort_published_key }}"{{ end -}}
+  id="{{ $type }}-{{ $slug }}"
+  {{- if ne $mode "current" }} data-reading-entry{{ end -}}
 >
   <summary class="reading-entry-summary">
     <span class="reading-entry-main">
-      <span class="reading-entry-kicker">{{ $entry.type_label }}</span>
+      <span class="reading-entry-kicker">{{ $typeLabel }}</span>
       <span class="reading-entry-title-line">
-        <span class="reading-entry-title">{{ $entry.title }}</span>
+        <span class="reading-entry-title">{{ $entry.Title }}</span>
         <span class="reading-entry-years">
           {{- if eq $mode "current" -}}
-            {{- with $entry.started }}<span class="reading-entry-pill">Started {{ time.AsTime . | time.Format "1/2/2006" }}</span>{{- end -}}
+            {{- with $p.started }}<span class="reading-entry-pill">Started {{ time.AsTime . | time.Format "1/2/2006" }}</span>{{ end -}}
           {{- else -}}
-            {{- if gt $entry.read_year 0 }}<span class="reading-entry-year">{{ $entry.read_year }}</span>{{- end -}}
+            {{- with $p.read_year }}<span class="reading-entry-year">{{ . }}</span>{{ end -}}
           {{- end -}}
         </span>
       </span>
-      {{- if or $entry.author (gt $entry.published_year 0) $entry.container_title }}
+      {{- if or $p.author $p.published_year $connected }}
       <span class="reading-entry-author">
-        {{- with $entry.author }}<span>{{ . }}</span>{{- end -}}
-        {{- if and $entry.author (gt $entry.published_year 0) }}<span aria-hidden="true"> · </span>{{- end -}}
-        {{- if gt $entry.published_year 0 }}<span class="reading-entry-published">{{ $entry.published_year }}</span>{{- end -}}
-        {{- if and (or $entry.author (gt $entry.published_year 0)) $entry.container_title }}<span aria-hidden="true"> · </span>{{- end -}}
-        {{- with $entry.container_title }}<span class="reading-entry-container">{{ . }}</span>{{- end -}}
+        {{- with $p.author }}<span>{{ . }}</span>{{ end -}}
+        {{- if and $p.author $p.published_year }}<span aria-hidden="true"> · </span>{{ end -}}
+        {{- with $p.published_year }}<span class="reading-entry-published">{{ . }}</span>{{ end -}}
+        {{- with $connected }}<span aria-hidden="true"> · </span><span class="reading-entry-connected">{{ len . }} connected</span>{{ end -}}
       </span>
       {{- end }}
     </span>
   </summary>
   <div class="reading-entry-details">
     <dl class="reading-entry-record">
-      {{- with $entry.published_year }}<div><dt>Published</dt><dd>{{ . }}</dd></div>{{- end }}
-      {{- if eq $entry.type "book" -}}
-        {{- with $entry.publisher }}<div><dt>Press</dt><dd>{{ . }}</dd></div>{{- end }}
-        {{- with $entry.format }}<div><dt>Format</dt><dd>{{ . }}</dd></div>{{- end }}
-      {{- else if eq $entry.type "article" -}}
-        {{- with $entry.container_title }}<div><dt>Journal</dt><dd>{{ . }}</dd></div>{{- end }}
-        {{- with $entry.volume }}<div><dt>Volume</dt><dd>{{ . }}</dd></div>{{- end }}
-        {{- with $entry.issue }}<div><dt>Issue</dt><dd>{{ . }}</dd></div>{{- end }}
-        {{- with $entry.pages }}<div><dt>Pages</dt><dd>{{ . }}</dd></div>{{- end }}
-      {{- else -}}
-        {{- with $entry.publisher }}<div><dt>Publication</dt><dd>{{ . }}</dd></div>{{- end }}
-        {{- with $entry.format }}<div><dt>Format</dt><dd>{{ . }}</dd></div>{{- end }}
+      {{- with $p.published_year }}<div><dt>Published</dt><dd>{{ . }}</dd></div>{{ end }}
+      {{- with $p.publisher }}<div><dt>{{ if eq $type "book" }}Press{{ else }}Publication{{ end }}</dt><dd>{{ . }}</dd></div>{{ end }}
+      {{- with $p.format }}<div><dt>Format</dt><dd>{{ . }}</dd></div>{{ end }}
+      {{- if eq $mode "current" }}
+        {{- with $p.started }}<div><dt>Started</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end }}
+      {{- else }}
+        {{- with $p.finished }}<div><dt>Finished</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end }}
       {{- end }}
-      {{- if eq $mode "current" -}}
-        {{- with $entry.started }}<div><dt>Started</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{- end }}
-      {{- else -}}
-        {{- with $entry.finished }}<div><dt>Finished</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{- end }}
-      {{- end }}
-      {{- with $entry.isbn }}
+      {{- with $p.isbn }}
       <div class="reading-entry-record-item reading-entry-record-item--wide">
         <dt>ISBN</dt>
         <dd>
           <span>{{ . }}</span>
-          {{- with $isbnLookup }}
+          {{- with $isbn }}
           <span class="reading-entry-access" aria-hidden="true"> · </span>
           <span class="reading-entry-access">
             <a href="https://openlibrary.org/isbn/{{ . }}" rel="external noopener" target="_blank">Open Library</a>
@@ -73,35 +76,31 @@
         </dd>
       </div>
       {{- end }}
-      {{- with $entry.doi }}
+      {{- with $accessURL }}
       <div class="reading-entry-record-item reading-entry-record-item--wide">
-        <dt>DOI</dt>
+        <dt>{{ if $p.doi }}DOI{{ else }}Access{{ end }}</dt>
         <dd>
-          <span>{{ . }}</span>
-          {{- with $accessURL }}
-          <span class="reading-entry-access" aria-hidden="true"> · </span>
+          {{- with $p.doi }}<span>{{ . }}</span><span class="reading-entry-access" aria-hidden="true"> · </span>{{ end }}
           <span class="reading-entry-access"><a href="{{ . }}" rel="external noopener" target="_blank">Access source</a></span>
-          {{- end }}
         </dd>
       </div>
       {{- end }}
-      {{- if and (not $entry.doi) $accessURL }}
-      <div class="reading-entry-record-item reading-entry-record-item--wide">
-        <dt>Access</dt>
-        <dd><a href="{{ $accessURL }}" rel="external noopener" target="_blank">Access source</a></dd>
-      </div>
-      {{- end }}
     </dl>
-    {{- with $entry.notes }}<p class="reading-entry-notes">{{ . }}</p>{{- end }}
-    {{- with $relatedPages }}
+    {{- with $entry.Content }}
+    <div class="reading-entry-notes">{{ . }}</div>
+    {{- end }}
+    {{- with $connected }}
     <div class="reading-entry-links">
       <span class="reading-entry-links-label">Connected writing</span>
       <ul>
         {{- range . }}
-          {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
+        {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
         {{- end }}
       </ul>
     </div>
     {{- end }}
+    <p class="reading-entry-permalink">
+      <a href="{{ $entry.RelPermalink }}">Source page &rarr;</a>
+    </p>
   </div>
 </details>

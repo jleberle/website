@@ -4,8 +4,6 @@ slug: "past-and-future-of-indian-rodeo-in-las-vegas"
 date: 2015-12-11
 description: "A trip to the Indian National Finals Rodeo"
 summary: "A report on the trip to the Indian National Finals Rodeo in 2015"
-categories:
-- "Indigenous History"
 tags:
 - "Rodeo"
 cover:
@@ -26,11 +24,10 @@ While significant at personal, community, and tribal levels, the  {{< abbr "INFR
 
 {{< figure src="bennybinionstatue.avif" alt="Statue of Benny Binion" align=center >}}
 
-Luckily for everyone involved, contestants, Indian Country at-large, and this lowly rodeo fan, the event went off without a hitch this year. Upon entering the smoky South Point Casino and navigating your way through the flashing and whirring slot machines, the $9.99 all-you-can-eat buffet, and the Benny Binion[^4] statue and wall of cattle brands, you accend the {{< abbr "INFR" "Indian National Finals Rodeo" >}} decorated stairs and enter the small arena. Upon entering two things hit you in the face. First, you can clearly tell you're at a rodeo and animals aren't shy about where and when they relieve themselves. Secondly, the Indian arts &amp; crafts, frybread, Indian tacos, and ceremonial dancers tell you know this is an Indian rodeo.
+Luckily for everyone involved, contestants, Indian Country at-large, and this lowly rodeo fan, the event went off without a hitch this year. Upon entering the smoky South Point Casino and navigating your way through the flashing and whirring slot machines, the $9.99 all-you-can-eat buffet, and the Benny Binion[^4] statue and wall of cattle brands, you accend the {{< abbr "INFR" "Indian National Finals Rodeo" >}} decorated stairs and enter the small arena. Upon entering two things hit you in the face. First, you can clearly tell you're at a rodeo and animals aren't shy about where and when they relieve themselves. Secondly, the Indian arts & crafts, frybread, Indian tacos, and ceremonial dancers tell you know this is an Indian rodeo.
 
-{{< youtube 4gqm65_2njM >}}
-
-The small arena slowly filed in by the time we hit the customary 7PM start time, when the rodeo began under a dark house with a performance by Armond Duck Chief, a steer wrestler, who performed one of his songs. The grand entrance involved the contestants walking down the arena stairs handing out signed cards (we walked away with two). Afterwards we had three national anthems, the first for Native America was an honor song, followed by the Canadian National Anthem for all of the First Nation representatives, and finally the United States Anthem which concluded with the announcer asking for anyone who is "Proud to be Native American." With the bareback horses loaded into the bucking chutes it was time to rodeo.
+The small arena slowly filed in by the time we hit the customary 7PM start time, when the rodeo began under a dark house with a performance by [Armond Duck Chief](
+https://www.youtube.com/watch?v=4gqm65_2njM), a steer wrestler, who performed one of his songs. The grand entrance involved the contestants walking down the arena stairs handing out signed cards (we walked away with two). Afterwards we had three national anthems, the first for Native America was an honor song, followed by the Canadian National Anthem for all of the First Nation representatives, and finally the United States Anthem which concluded with the announcer asking for anyone who is "Proud to be Native American." With the bareback horses loaded into the bucking chutes it was time to rodeo.
 
 {{< figure src="bareback.avif" alt="Bareback rider at 2015 Indian National Finals Rodeo" align=center >}}
 

@@ -51,9 +51,8 @@
    Dark palette — same restrained editorial character, inverted:
    warm off-white ink on a deep blue-black page, maritime blue
    lightened for AA contrast on a dark surface. Follows the OS
-   setting only (no toggle, no stored preference, no JS) — see
-   layouts/_partials/carbon_estimate.html-adjacent notes for why
-   that's the deliberate choice here.
+   setting only (no toggle, no stored preference, no JS) — keeping the
+   page free of theme-toggle state is the deliberate choice here.
    ------------------------------------------------------------ */
 @media (prefers-color-scheme: dark) {
     :root {

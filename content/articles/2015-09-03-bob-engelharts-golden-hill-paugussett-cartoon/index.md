@@ -4,8 +4,6 @@ slug: "bob-engelharts-golden-hill-paugussett-cartoon"
 date: 2015-09-03
 description: "A look a a racist political cartoon"
 summary: "A look at a 1990s anti-Pequot cartoon"
-categories:
-- "Indigenous History"
 tags:
 - "1990s"
 - "Tribal Recognition"

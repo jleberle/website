@@ -495,8 +495,8 @@ h1>a>svg {
    the article above; there are no rules between rows, and the per-row
    type chips are dropped since the row label already names the
    category. Longer kicker phrases simply wrap within the label
-   column. The suggest-changes / carbon utility line closes the block
-   at the bottom (see .post-meta-footer).
+   column. The suggest-changes utility line closes the block at the
+   bottom (see .post-meta-footer).
    ------------------------------------------------------------ */
 .post-context-grid {
     --pc-label: 8.5rem;
@@ -585,8 +585,8 @@ h1>a>svg {
     font-size: 0.82rem;
 }
 
-/* When it follows the relationship grid, the suggest-changes / carbon line
-   reads as a quiet closing utility footer; space it off from the last row. */
+/* When it follows the relationship grid, the suggest-changes line reads as
+   a quiet closing utility footer; space it off from the last row. */
 .post-context-grid + .post-meta-footer {
     margin-top: 1.1rem;
 }

@@ -3,15 +3,8 @@ title: "Blurring the Lines: Indians, Cowboys and Ranching in the Modern West"
 slug: "blurring-the-lines-indians-cowboys-and-ranching-in-the-modern-west"
 date: 2015-09-09
 description: "Sometimes the cowboys and Indians were one and the same"
-reviewed_type: "Book"
-reviewed_title: "When Indians Became Cowboys: Native Peoples and Cattle Ranching in the American West"
-reviewed_author: "Peter Iverson"
-reviewed_publisher: "University of Oklahoma Press"
-reviewed_year: "1994"
-cite_key: "iverson1994"
+sources: ["iverson1994"]
 external_url: "https://www.oupress.com/9780806128849/when-indians-became-cowboys/"
-categories:
-- "Indigenous History"
 tags:
 - "19th Century"
 cover:

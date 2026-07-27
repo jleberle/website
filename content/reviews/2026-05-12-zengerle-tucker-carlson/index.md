@@ -4,19 +4,10 @@ slug: "zengerle-tucker-carlson"
 date: 2026-05-12
 draft: false
 description: "The descent of Tucker Carlson from fresh-faced magazine writer to right-wing pundit, and what it says about today's media landscape"
-reviewed_type: "Book"
-reviewed_title: "Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"
-reviewed_author: "Jason Zengerle"
-reviewed_publisher: "Crooked Media Reads"
-reviewed_year: "2026"
-cite_key: "zengerle2026"
+sources: ["zengerle2026"]
 external_url: "https://zandoprojects.com/books/hated-by-all-the-right-people-hardcover"
-categories:
-- "Culture and Media"
 tags:
 - "Journalism"
-people:
-- "tucker-carlson"
 cover:
   image: "cover.avif"
   alt: "Front cover of Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"
