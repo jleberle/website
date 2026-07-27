@@ -5,10 +5,18 @@
        <category> values started-reading / finished-reading and the literal
        "Started reading: " / "Finished reading: " description prefixes are what
        ~/git/micro-theme matches to build eberle.blog's reading sections.
-       A guid is urn:reading-event:<type>:<key>:<event>, where <key> is the
-       source's folder name. It is stable as long as that folder is: renaming a
-       source rewrites its guids, and Micro.blog re-imports any event still
-       inside the feed window. <link> points at the source's own page. */ -}}
+
+       A guid is urn:reading-event:<type>:<key>:<event>, where <key> is a
+       STABLE identifier for the work — isbn, then doi, then access_url — NOT
+       the source's folder name. Renaming a source folder used to rewrite every
+       guid it had ever emitted, and Micro.blog would re-import any event still
+       inside the 20-item feed window as if it were new (root cause of the
+       2026-07 duplicate-post cleanup on eberle.blog). Keying on the work's own
+       identifier means a rename is guid-invisible for any source that has one.
+       Only the ~2 sources with none of isbn/doi/access_url fall back to the
+       folder slug, so renaming THOSE still re-imports — same old risk, now
+       scoped to a known-small set instead of every source. <link> points at
+       the source's own page. */ -}}
 {{- $authorName := site.Params.author }}
 
 {{- $events := slice -}}
@@ -16,8 +24,15 @@
     {{- $p := $source.Params -}}
     {{- $slug := path.Base $source.RelPermalink -}}
     {{- $type := $p.type | default "book" -}}
+    {{- $rawKey := "" -}}
+    {{- with $p.isbn }}{{ $rawKey = printf "isbn-%s" . }}{{ end -}}
+    {{- if not $rawKey }}{{ with $p.doi }}{{ $rawKey = printf "doi-%s" . }}{{ end }}{{ end -}}
+    {{- if not $rawKey }}{{ with $p.access_url }}{{ $rawKey = printf "url-%s" . }}{{ end }}{{ end -}}
+    {{- if not $rawKey }}{{ $rawKey = printf "slug-%s" $slug }}{{ end -}}
+    {{- $stableKey := trim (lower (replaceRE `[^a-zA-Z0-9]+` "-" $rawKey)) "-" -}}
     {{- $record := dict
         "slug" $slug
+        "key" $stableKey
         "type" $type
         "title" $source.Title
         "author" ($p.author | default "")
@@ -99,7 +114,7 @@
       <link>{{ .permalink }}</link>
       <pubDate>{{ (time.AsTime .announced_at).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorName }}<dc:creator>{{ . }}</dc:creator>{{ end }}
-      <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s:%s" .type .slug .event_type }}</guid>
+      <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s:%s" .type .key .event_type }}</guid>
       <description>{{ $plainBody }}</description>
       <category>reading</category>
       <category>sources</category>

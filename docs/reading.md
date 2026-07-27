@@ -94,10 +94,17 @@ contract: `~/git/micro-theme` matches them to build eberle.blog's reading
 sections. `scripts/checks/feed-lint.py` asserts this, so the build catches a
 rendering change that would otherwise silently empty that homepage section.
 
-Item guids are `urn:reading-event:<type>:<key>:<event>`. They are stable only
-as long as the source's folder name is: renaming a source rewrites its guids,
-and Micro.blog re-imports any event still inside the 20-item feed window. That
-is the real cost of renaming a key after it has been published.
+Item guids are `urn:reading-event:<type>:<key>:<event>`, where `<key>` is a
+sanitized `isbn`/`doi`/`access_url` — the work's own identifier, not the
+source's folder name. Renaming a folder no longer changes it, so it survives
+a rename for any source that has one of those three fields (nearly all of
+them; `newsource.sh` records an ISBN for most books automatically). Only a
+source with none of the three falls back to the folder slug, in which case a
+rename still rewrites its guids and Micro.blog will re-import any event still
+inside the 20-item feed window — that is the real cost of renaming a key
+after it has been published, now scoped to that small remainder instead of
+every source. (This replaced a slug-only guid in 2026-07 after renames had
+produced ~45 groups of duplicate imported posts on eberle.blog.)
 
 ## Cite Keys
 
