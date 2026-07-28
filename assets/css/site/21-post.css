@@ -154,8 +154,34 @@ h1>a>svg {
     margin-top: 2.5em;
 }
 
+/* Below the sidenotes breakpoint, footnotes stack in-flow at the foot of
+   the article instead of sitting beside it in the margin rail, so the
+   seam wants a clearer break than a bare rule. Goldmark's own <hr> is
+   swapped for a centered dinkus, the plain-asterisk section-break mark
+   printers use to close a chapter or section — plain ASCII, so it
+   renders correctly in every font with no glyph-coverage risk. Above
+   the breakpoint the whole .footnotes block is hidden (see
+   .sidenotes-active), so this is inert there regardless. */
 .post-content .footnotes hr {
-    margin: 0 0 1.2em;
+    display: block;
+    height: auto;
+    margin: 2.5rem 0 1.5rem;
+    border: 0;
+    text-align: center;
+    color: var(--rule);
+}
+
+.post-content .footnotes hr::before {
+    content: "* * *";
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+}
+
+/* .md-content hr::after (20-content.css) puts a scene-break glyph on
+   every prose <hr>; the footnotes rule supplies its own dinkus above,
+   so suppress the duplicate here. */
+.post-content .footnotes hr::after {
+    content: none;
 }
 
 .post-content .footnotes li {
