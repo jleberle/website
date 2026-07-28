@@ -36,6 +36,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_ENABLE_COMMENTS: "false"
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
+          # Pinned past 8.24.3: that version silently ignores the top-level
+          # [[allowlists]] entry in .gitleaks.toml when a rule is also
+          # extended from the default config, so the cite_key allowlist
+          # never suppressed the generic-api-key false positive it targets.
+          # Verified fixed as of 8.30.1.
+          GITLEAKS_VERSION: "8.30.1"
 
   verify:
     name: Build, validate, and audit
@@ -103,8 +109,6 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: site-checks-failure-${{ github.run_id }}-${{ github.run_attempt }}
-          retention-days: 14
+          retention-days: 3
           if-no-files-found: warn
-          path: |
-            .ci-artifacts/
-            public/
+          path: .ci-artifacts/
