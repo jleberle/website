@@ -16,14 +16,23 @@
 
   var current = null; // the reference that opened the popover, or null
 
-  // Clone the matching note's content, minus its back-link arrow.
-  function noteHTML(ref) {
+  // Clone the matching note's content, minus its back-link arrow. Returns the
+  // cloned <li> itself; callers move its children into place with
+  // moveChildren rather than serializing it through innerHTML.
+  function noteContent(ref) {
     var id = (ref.getAttribute('href') || '').slice(1); // "#fn:1" -> "fn:1"
     var li = id && document.getElementById(id);
     if (!li) return null;
     var clone = li.cloneNode(true);
     clone.querySelectorAll('.footnote-backref').forEach(function (b) { b.remove(); });
-    return clone.innerHTML;
+    return clone;
+  }
+
+  // Move every child of a detached node into target, in order — the DOM
+  // equivalent of `target.innerHTML = source.innerHTML` without building or
+  // parsing an HTML string.
+  function moveChildren(target, source) {
+    while (source.firstChild) target.appendChild(source.firstChild);
   }
 
   // On wide screens, copy each semantic footnote into the free outer margin.
@@ -33,9 +42,9 @@
   function buildSidenotes() {
     var madeOne = false;
     refs.forEach(function (ref, index) {
-      var html = noteHTML(ref);
+      var noteBody = noteContent(ref);
       var marker = ref.closest('sup');
-      if (html === null || !marker || ref.marginNote) return;
+      if (noteBody === null || !marker || ref.marginNote) return;
 
       var note = document.createElement('aside');
       note.className = 'margin-note';
@@ -44,8 +53,18 @@
       note.setAttribute('aria-label', 'Footnote ' + ref.textContent);
       note.tabIndex = -1;
       note.referenceMarker = marker;
-      note.innerHTML = '<span class="margin-note-number" aria-hidden="true">' +
-        ref.textContent + '</span><div class="margin-note-content">' + html + '</div>';
+
+      var number = document.createElement('span');
+      number.className = 'margin-note-number';
+      number.setAttribute('aria-hidden', 'true');
+      number.textContent = ref.textContent;
+      note.appendChild(number);
+
+      var body = document.createElement('div');
+      body.className = 'margin-note-content';
+      moveChildren(body, noteBody);
+      note.appendChild(body);
+
       content.appendChild(note);
       ref.marginNote = note;
       ref.setAttribute('aria-describedby', note.id);
@@ -111,9 +130,10 @@
   }
 
   function open(ref) {
-    var html = noteHTML(ref);
-    if (html === null) return;
-    pop.innerHTML = html;
+    var noteBody = noteContent(ref);
+    if (noteBody === null) return;
+    pop.textContent = '';
+    moveChildren(pop, noteBody);
     if (current) current.setAttribute('aria-expanded', 'false');
     pop.classList.add('is-open');
     place(ref);
@@ -141,7 +161,7 @@
   content.addEventListener('click', function (e) {
     var ref = e.target.closest && e.target.closest('a.footnote-ref');
     if (!ref || !content.contains(ref)) return;
-    if (noteHTML(ref) === null) return;   // unknown note -> leave default behavior
+    if (noteContent(ref) === null) return;   // unknown note -> leave default behavior
     e.preventDefault();
     e.stopPropagation();
     if (content.classList.contains('sidenotes-active')) {

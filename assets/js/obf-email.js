@@ -1,5 +1,9 @@
 document.querySelectorAll(".obf-email").forEach(function (el) {
-  var a = atob(el.dataset.e);
-  var t = atob(el.dataset.t);
-  el.innerHTML = '<a href="mailto:' + a + '">' + t + '</a>';
+  var address = atob(el.dataset.e);
+  var text = atob(el.dataset.t);
+  var link = document.createElement("a");
+  link.href = "mailto:" + address;
+  link.textContent = text;
+  el.textContent = "";
+  el.appendChild(link);
 });

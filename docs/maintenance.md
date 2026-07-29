@@ -44,17 +44,11 @@ When drift appears:
 
 ## Trusted Types
 
-`static/_headers` sets `require-trusted-types-for 'script'; trusted-types default`, and `assets/js/trusted-types-policy.js` registers the `default` policy:
+`static/_headers` sets `require-trusted-types-for 'script'; trusted-types 'none'`. No script on the site creates a Trusted Types policy, and `'none'` means the CSP won't let one be created even if some future or compromised script tried to. Combined with `require-trusted-types-for 'script'`, the practical effect is that a raw-string write to `innerHTML` (or any other injection sink) is unconditionally blocked, by the browser, from any script on the page — first-party or not. There's no passthrough policy standing in for it.
 
-```js
-trustedTypes.createPolicy('default', {
-  createHTML: function (html) { return html; }
-});
-```
+This used to be a `default` policy in `assets/js/trusted-types-policy.js` whose `createHTML` just returned its input unchanged — it satisfied the CSP directive without sanitizing anything, so the actual protection was narrower than it looked. `footnotes.js` and `obf-email.js` were rewritten to build DOM nodes directly (`createElement`/`textContent`/moving child nodes) instead of assembling HTML strings, which removed every `innerHTML` write on the site. Once none were left, the policy — and the CSP allowance for it — could come out entirely rather than stay around as an unused pass-through.
 
-That `createHTML` is a pass-through, not a sanitizer. It satisfies the CSP directive — every `innerHTML` write on the site (`footnotes.js`, `obf-email.js`) goes through a declared policy instead of failing under Trusted Types enforcement — but it does not strip or escape anything. The only real protection Trusted Types currently gives this site is refusing an *undeclared* write (code that doesn't route through this policy at all); it does not defend against a malicious string that does.
-
-That's an acceptable trade today because there's no path for attacker-controlled data to reach `innerHTML`: no comments, no client-side rendering of remote or user-submitted content, nothing beyond static Hugo-rendered footnote markup and build-time base64 in `obf-email.js`'s own `data-*` attributes. If a future feature ever pipes external or user-submitted content into `innerHTML` (a comments system, client-rendered search results, etc.), replace this pass-through with an actual sanitizer (or a narrow per-call-site allowlist) before that feature ships — don't assume the existing policy already covers it.
+If a future feature ever needs to write HTML dynamically (a comments system, client-rendered remote content, etc.), that's the point to add a real, narrowly-named policy with an actual sanitizer — and add exactly that name to `static/_headers`' `trusted-types` directive. Don't reach for `'default'` or a pass-through `createHTML` again; both defeat the point of declaring one.
 
 ## Layout File Naming
 
