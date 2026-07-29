@@ -41,15 +41,16 @@ Default `scripts/preflight.sh` checks:
 
 1. no `draft: true` files in the publishable content tree
 2. no unoptimized JPEG, PNG, or WebP source images outside approved icons and JPEG companions
-3. Hugo build
-4. content resource references
-5. source junk files
-6. generated junk files
-7. feed lint
-8. CSP hash drift
-9. published-reference scan
-10. page-size lint
-11. image display lint
+3. no EXIF/IPTC/XMP metadata left on a published raster image
+4. Hugo build
+5. content resource references
+6. source junk files
+7. generated junk files
+8. feed lint
+9. CSP hash drift
+10. published-reference scan
+11. page-size lint
+12. image display lint
 
 Useful modes:
 

@@ -23,6 +23,14 @@ Body images become:
 
 Do not pre-generate resized variants. The build handles responsive resizing.
 
+`scripts/to-avif.sh` strips EXIF/IPTC/XMP from every output it writes (GPS
+tags and similar were the original concern). The AVIF/HEIC encoder writes
+some of its own EXIF back in after the first `-strip` pass, so the script
+runs a second `-strip` pass on the finished file — a single pass isn't
+enough. `scripts/checks/image-metadata-lint.py` (wired into preflight)
+enforces this on every published raster file regardless of how it got
+there, so an image added outside the helper still gets caught.
+
 ## Responsive Output
 
 Several templates route through `layouts/_partials/responsive-img.html`, which is the single source of truth for the shared image sizing logic.

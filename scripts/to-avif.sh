@@ -95,6 +95,14 @@ for src in "${FILES[@]}"; do
   # opaque alpha channel carries no information, so drop it (screenshots saved
   # as PNG often ship one); genuine transparency is preserved since AVIF
   # supports it and we only touch images that report as opaque.
+  #
+  # The libheif encoder writes some of its own EXIF/XMP back in (Orientation,
+  # PixelXDimension, and sometimes a UserComment carried over from the
+  # source) even though -strip already ran in the same command — verified by
+  # inspecting real output with `magick file.avif -format '%[EXIF:*]'`. A
+  # second -strip pass on the finished file, after encoding, is what actually
+  # clears it; this is caught going forward by
+  # scripts/checks/image-metadata-lint.py.
   if ! $OG_ONLY; then
     dest_avif="${src%.*}.avif"
     alpha_args=()
@@ -103,6 +111,7 @@ for src in "${FILES[@]}"; do
     fi
     magick "$src" -auto-orient -strip "${alpha_args[@]}" -quality "$QUALITY" \
       -define heic:speed=2 -define heic:chroma="$CHROMA" "$dest_avif"
+    magick "$dest_avif" -strip "$dest_avif"
     after_avif=$(du -k "$dest_avif" | cut -f1)
     pct_avif=$(( (after_avif - before) * 100 / before ))
     sign=""; [[ $pct_avif -gt 0 ]] && sign="+"
@@ -125,6 +134,7 @@ for src in "${FILES[@]}"; do
       after_b=$(stat -f%z "$tmp_jpg" 2>/dev/null || stat -c%s "$tmp_jpg")
       if (( after_b * 100 <= before_b * 95 )); then
         mv "$tmp_jpg" "$src"
+        magick "$src" -strip "$src"
         echo "  ${src} re-encoded for OG  ($((before_b / 1024))K → $((after_b / 1024))K, -$(( (before_b - after_b) * 100 / before_b ))%)"
       else
         rm -f "$tmp_jpg"
@@ -133,6 +143,7 @@ for src in "${FILES[@]}"; do
     else
       magick "$src" -auto-orient -background white -alpha remove -strip \
         -resize "${OG_MAX_WIDTH}x>" -interlace JPEG -quality "$JPEG_QUALITY" "$dest_jpg"
+      magick "$dest_jpg" -strip "$dest_jpg"
       after_jpg=$(du -k "$dest_jpg" | cut -f1)
       pct_jpg=$(( (after_jpg - before) * 100 / before ))
       sign=""; [[ $pct_jpg -gt 0 ]] && sign="+"

@@ -5,6 +5,7 @@
 # Default local gate:
 #   1. published drafts      — content/ must not contain draft: true
 #   2. image policy          — raster sources must be AVIF or allowed companions/icons
+#   2b. image metadata       — no EXIF/IPTC/XMP left on a published raster file
 #   3. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
 #   4. content resources     — source Markdown cover blocks point at real files
 #   4b. cite-key cross-ref   — advisory: cite keys missing from Zotero / without a vault note
@@ -69,6 +70,14 @@ if IMAGE_OUT=$(python3 scripts/checks/image-policy-lint.py assets content static
 else
   echo "$IMAGE_OUT"
   fail "unoptimized raster sources (use the image helper before publishing)"
+fi
+
+step "image metadata"
+if META_OUT=$(python3 scripts/checks/image-metadata-lint.py assets content static 2>&1); then
+  pass "$META_OUT"
+else
+  echo "$META_OUT"
+  fail "raster file(s) still carry EXIF/IPTC/XMP metadata"
 fi
 
 step "hugo build"
