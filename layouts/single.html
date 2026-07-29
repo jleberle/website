@@ -32,7 +32,7 @@
       {{- if not .Date.IsZero }}
       <span class="post-meta-line">
         <time class="dt-published" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" title="{{ .Date }}">
-          {{ .Date | time.Format (default ":date_long" site.Params.dateFormat) }}
+          {{ partial "templates/_funcs/format_date" .Date }}
         </time>
       </span>
       {{- end }}
@@ -68,8 +68,8 @@
     {{- if not (.Param "hideMeta") }}
     {{- with partial "latest_revision.html" . }}
       {{- $revised := time.AsTime .date }}
-      {{- $foot = $foot | append (printf "<span>Originally published %s</span>" ($.Date | time.Format (default ":date_long" site.Params.dateFormat))) }}
-      {{- $foot = $foot | append (printf "<span title=\"%s\">Revised %s</span>" (.summary | default "Substantively revised") ($revised | time.Format (default ":date_long" site.Params.dateFormat))) }}
+      {{- $foot = $foot | append (printf "<span>Originally published %s</span>" (partial "templates/_funcs/format_date" $.Date)) }}
+      {{- $foot = $foot | append (printf "<span title=\"%s\">Revised %s</span>" (.summary | default "Substantively revised") (partial "templates/_funcs/format_date" $revised)) }}
     {{- end }}
     {{- if and (.Param "suggestChanges.url") (not (.Param "suggestChanges.disabled")) }}
       {{- $editURL := .Param "suggestChanges.url" }}

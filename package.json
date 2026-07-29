@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "description": "Tooling for jaredeberle.org (Hugo site). Single source of truth for validation dependencies used by GitHub Actions and scripts/preflight.sh.",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "test:axe": "node scripts/checks/axe-check.mjs public"
   },

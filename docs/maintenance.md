@@ -42,6 +42,24 @@ When drift appears:
 2. update both CSP blocks in `static/_headers`
 3. commit the result
 
+## Trusted Types
+
+`static/_headers` sets `require-trusted-types-for 'script'; trusted-types default`, and `assets/js/trusted-types-policy.js` registers the `default` policy:
+
+```js
+trustedTypes.createPolicy('default', {
+  createHTML: function (html) { return html; }
+});
+```
+
+That `createHTML` is a pass-through, not a sanitizer. It satisfies the CSP directive — every `innerHTML` write on the site (`footnotes.js`, `obf-email.js`) goes through a declared policy instead of failing under Trusted Types enforcement — but it does not strip or escape anything. The only real protection Trusted Types currently gives this site is refusing an *undeclared* write (code that doesn't route through this policy at all); it does not defend against a malicious string that does.
+
+That's an acceptable trade today because there's no path for attacker-controlled data to reach `innerHTML`: no comments, no client-side rendering of remote or user-submitted content, nothing beyond static Hugo-rendered footnote markup and build-time base64 in `obf-email.js`'s own `data-*` attributes. If a future feature ever pipes external or user-submitted content into `innerHTML` (a comments system, client-rendered search results, etc.), replace this pass-through with an actual sanitizer (or a narrow per-call-site allowlist) before that feature ships — don't assume the existing policy already covers it.
+
+## Layout File Naming
+
+`layouts/` is snake_case throughout (`post_meta.html`, `site_footer.html`, `format_date.html`, the shortcode `cv_letterhead.html`, ...), with one deliberate exception: `layouts/_markup/render-link.html`, `render-image.html`, and `render-table.html` stay kebab-case. Those are Hugo's own [markdown render hook](https://gohugo.io/render-hooks/introduction/) filenames — Hugo discovers them by exact name, not by registration, so renaming one to `render_image.html` doesn't error, it just silently stops Hugo from calling it and that hook's content quietly reverts to default rendering. Leave those three names alone; everything else under `layouts/` follows snake_case.
+
 ## Theme History
 
 This repo no longer tracks PaperMod as a dependency. There is no `themes/` upstream relationship to diff against for active maintenance purposes.

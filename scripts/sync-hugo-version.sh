@@ -37,6 +37,20 @@ curl -fsS -o /dev/null "https://github.com/gohugoio/hugo/releases/download/v${LO
   || { echo "GitHub release v${LOCAL_VERSION} .deb not published yet. No changes made."; exit 0; }
 echo "Docker image and GitHub release both available."
 
+# statichost.yml pins the image by digest (tag alone is mutable), so the new
+# tag's digest has to be resolved here too — the sed below would otherwise
+# leave the old digest attached to the new tag, silently pulling stale bits.
+DOCKER_TAG="debian-git-${LOCAL_VERSION}"
+DOCKER_TOKEN=$(curl -fsS "https://auth.docker.io/token?service=registry.docker.io&scope=repository:hugomods/hugo:pull" \
+  | python3 -c "import json,sys; print(json.load(sys.stdin)['token'])")
+HUGO_DIGEST=$(curl -fsS -D - -o /dev/null \
+  -H "Authorization: Bearer ${DOCKER_TOKEN}" \
+  -H "Accept: application/vnd.docker.distribution.manifest.list.v2+json,application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
+  "https://registry-1.docker.io/v2/hugomods/hugo/manifests/${DOCKER_TAG}" \
+  | grep -i '^docker-content-digest:' | tr -d '\r' | awk '{print $2}')
+[[ -n "$HUGO_DIGEST" ]] || { echo "Error: could not resolve digest for hugomods/hugo:${DOCKER_TAG}." >&2; exit 1; }
+echo "Resolved hugomods/hugo:${DOCKER_TAG} -> ${HUGO_DIGEST}"
+
 if $DRY_RUN; then
   echo "Dry run — would update $GITHUB_WORKFLOW and $STATICHOST to Hugo $LOCAL_VERSION."
   exit 0
@@ -44,6 +58,6 @@ fi
 
 # -i.bak is portable across BSD and GNU sed (only a bare -i differs between them).
 sed -i.bak -E "s/HUGO_VERSION: \"[0-9]+\.[0-9]+\.[0-9]+\"/HUGO_VERSION: \"${LOCAL_VERSION}\"/" "$GITHUB_WORKFLOW" && rm -f "$GITHUB_WORKFLOW.bak"
-sed -i.bak -E "s|hugomods/hugo:[a-z-]+[0-9]+\.[0-9]+\.[0-9]+|hugomods/hugo:debian-git-${LOCAL_VERSION}|" "$STATICHOST" && rm -f "$STATICHOST.bak"
+sed -i.bak -E "s|hugomods/hugo:[a-z-]+[0-9]+\.[0-9]+\.[0-9]+(@sha256:[a-f0-9]+)?|hugomods/hugo:${DOCKER_TAG}@${HUGO_DIGEST}|" "$STATICHOST" && rm -f "$STATICHOST.bak"
 
 echo "Updated (or already current). Review with: git diff $GITHUB_WORKFLOW $STATICHOST"

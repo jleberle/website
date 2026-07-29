@@ -1,0 +1,5 @@
+{{- /* Formats a time.Time with site.Params.dateFormat, defaulting to Hugo's
+       ":date_long" layout — single source of truth for the site's date
+       display format. Shared by single.html, research/single.html,
+       post_meta.html, and home_sections.html. */ -}}
+{{- return (. | time.Format (default ":date_long" site.Params.dateFormat)) -}}

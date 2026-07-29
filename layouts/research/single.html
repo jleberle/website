@@ -23,7 +23,7 @@
           <p class="research-path-type">{{ index $context "entry" | default ($target.Section | title) }}</p>
           <h2><a href="{{ $target.RelPermalink }}">{{ $target.Title }}</a></h2>
           {{- with $note }}<p class="research-path-note">{{ . }}</p>{{ end }}
-          <p class="research-path-meta"><time datetime="{{ $target.Date.Format "2006-01-02" }}">{{ $target.Date | time.Format (default ":date_long" site.Params.dateFormat) }}</time></p>
+          <p class="research-path-meta"><time datetime="{{ $target.Date.Format "2006-01-02" }}">{{ partial "templates/_funcs/format_date" $target.Date }}</time></p>
         </li>
       {{- else if .source -}}
         {{- $source := site.GetPage (printf "/sources/%s" .source) -}}

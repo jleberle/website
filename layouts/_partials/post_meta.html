@@ -1,12 +1,12 @@
 {{- $scratch := collections.NewScratch }}
 
 {{- if not .Date.IsZero -}}
-    {{- $scratch.Add "meta" (slice (printf "<time class=\"dt-published\" datetime=\"%s\" title=\"%s\">%s</time>" (.Date.Format "2006-01-02T15:04:05Z07:00") (.Date) (.Date | time.Format (default ":date_long" site.Params.dateFormat)))) }}
+    {{- $scratch.Add "meta" (slice (printf "<time class=\"dt-published\" datetime=\"%s\" title=\"%s\">%s</time>" (.Date.Format "2006-01-02T15:04:05Z07:00") (.Date) (partial "templates/_funcs/format_date" .Date))) }}
 {{- end }}
 
 {{- with partial "latest_revision.html" . -}}
     {{- $revised := time.AsTime .date -}}
-    {{- $scratch.Add "meta" (slice (printf "<span title=\"%s\">Revised %s</span>" (.summary | default "Substantively revised") ($revised | time.Format (default ":date_long" site.Params.dateFormat)))) }}
+    {{- $scratch.Add "meta" (slice (printf "<span title=\"%s\">Revised %s</span>" (.summary | default "Substantively revised") (partial "templates/_funcs/format_date" $revised))) }}
 {{- end }}
 
 {{- if (.Param "showReadingTime") -}}
