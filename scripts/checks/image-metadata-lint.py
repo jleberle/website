@@ -23,7 +23,7 @@ IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".avif", ".webp"}
 def has_metadata(path: Path) -> bool:
     for kind in ("EXIF", "IPTC", "XMP"):
         result = subprocess.run(
-            ["magick", str(path), "-format", f"%[{kind}:*]", "info:"],
+            ["identify", "-format", f"%[{kind}:*]", str(path)],
             capture_output=True,
             text=True,
             check=False,
@@ -34,8 +34,13 @@ def has_metadata(path: Path) -> bool:
 
 
 def main() -> int:
-    if not shutil.which("magick"):
-        print("Error: ImageMagick (magick) not found; required to check image metadata.", file=sys.stderr)
+    # `identify` exists under every ImageMagick major version (v6 apt
+    # packages ship it as the primary binary; v7 installs, including this
+    # site's local Homebrew one, keep it alongside `magick`), unlike the
+    # unified `magick` binary, which Ubuntu's `imagemagick` apt package does
+    # not provide — verified against a real CI failure before switching.
+    if not shutil.which("identify"):
+        print("Error: ImageMagick (identify) not found; required to check image metadata.", file=sys.stderr)
         return 2
 
     roots = [Path(arg) for arg in sys.argv[1:]] or [Path("assets"), Path("content"), Path("static")]
