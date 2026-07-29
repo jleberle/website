@@ -42,6 +42,19 @@ fi
 
 SLUG=$(slugify "$TITLE")
 [[ -z "$SLUG" ]] && SLUG="untitled"
+
+# A review's slug names the reviewed work, not the review's own headline: the
+# archive publishes "The Rise and Fall of Tucker Carlson" at
+# /reviews/zengerle-tucker-carlson/, an author-plus-short-title form that keeps
+# the URL stable no matter what the piece ends up being called. Nothing can
+# derive that from the title, so offer the title-derived slug as the default and
+# let it be typed over. Whatever comes back is slugified, so either
+# "zengerle-tucker-carlson" or "Zengerle Tucker Carlson" works.
+if [[ "$KIND" == "review" ]]; then
+  SLUG=$(slugify "$(read_with_default "Slug" "$SLUG")")
+  [[ -z "$SLUG" ]] && SLUG="untitled"
+fi
+
 TODAY=$(date +%Y-%m-%d)
 NOW=$(rfc3339_now)
 BASE="$TODAY-$SLUG"
@@ -124,7 +137,6 @@ title: "$(yaml_escape "$TITLE")"
 slug: $SLUG
 date: "$NOW"
 draft: true
-author: Jared L. Eberle
 EOF
       field "description" "$DESCRIPTION"
       field "summary" "$SUMMARY"
@@ -132,7 +144,7 @@ EOF
       list_field "sources" "$SOURCES"
       list_field "tags" "$TAGS"
       $ADD_COVER && cover_block false
-      printf -- '---\n\n'
+      printf -- '---\n\n<!-- more -->\n'
     } > "$FILE"
     ;;
   review)
@@ -153,7 +165,7 @@ EOF
       field "external_url" "$URL"
       list_field "tags" "$TAGS"
       $ADD_COVER && cover_block true
-      printf -- '---\n\n'
+      printf -- '---\n\n<!-- more -->\n'
     } > "$FILE"
     ;;
   quote)
@@ -166,7 +178,6 @@ title: "$(yaml_escape "$TITLE")"
 slug: $SLUG
 date: "$NOW"
 draft: true
-author: Jared L. Eberle
 EOF
       field "description" "$DESCRIPTION"
       field "summary" "$SUMMARY"
@@ -174,7 +185,7 @@ EOF
       list_field "sources" "$SOURCES"
       field "external_url" "$URL"
       list_field "tags" "$TAGS"
-      printf -- '---\n\n'
+      printf -- '---\n\n<!-- more -->\n'
     } > "$FILE"
     ;;
 esac

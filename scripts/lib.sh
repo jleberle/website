@@ -18,9 +18,23 @@ yaml_escape() {
   printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
 }
 
+# Title -> URL slug, matching the Obsidian Templater templates in
+# ~/Notes/Meta/templates/Website byte for byte. Two rules do the work beyond
+# lowercasing: NFKD-decompose and drop combining marks, so "Montréal" slugs as
+# "montreal" rather than losing the letter to the separator pass; and delete
+# apostrophes outright, so possessives and contractions read "louisianas" and
+# "whered" like the rest of the archive, not "louisiana-s" and "where-d". A
+# plain sed pipeline can't do the first, hence python3 (already required by
+# eight preflight checks).
 slugify() {
-  printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | \
-    sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//'
+  python3 -c '
+import re, sys, unicodedata
+value = unicodedata.normalize("NFKD", sys.argv[1]).lower()
+value = "".join(c for c in value if not unicodedata.combining(c))
+value = re.sub(r"[\x27\u2018\u2019\u02bc]+", "", value)
+value = re.sub(r"[^a-z0-9]+", "-", value).strip("-")
+sys.stdout.write(value)
+' "$1"
 }
 
 rfc3339_now() {
