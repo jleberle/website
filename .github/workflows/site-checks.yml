@@ -79,6 +79,13 @@ jobs:
           sudo dpkg -i "/tmp/${DEB}"
           hugo version
 
+      - name: Install ImageMagick
+        # scripts/checks/image-metadata-lint.py (run by preflight) shells out
+        # to `magick`. Only needed in CI — to-avif.sh is a local-only
+        # authoring tool, so this was never a CI dependency before that check
+        # was added.
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+
       - name: Install Node dependencies
         run: npm ci --no-audit --no-fund
 
