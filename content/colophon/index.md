@@ -22,16 +22,21 @@ The site's theme was largely designed with the help of Claude but the programs o
 
 ## Low Impact
 
-Besides the theme design, I've intently worked to make this site as environmentally friendly as possible meaning the homepage uses only [0.013g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor.[^1] In terms of my [biggest page](/articles/past-and-future-of-indian-rodeo-in-las-vegas/), it only uses 0.045g and downloads at just under 145KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data (20 times the amount). This is the result of a number of very opinionated decisions:
+Besides the theme design, I've intently worked to make this site as environmentally friendly as possible meaning the homepage uses only [0.028g of carbon dioxide](https://digitalbeacon.co/report/jaredeberle-org) for a first time visitor.[^1] In terms of my [biggest page](/articles/past-and-future-of-indian-rodeo-in-las-vegas/), it only uses 0.059g and downloads at just under 191KB for a first time visitor whereas a standard news article on any major site will download 2-3MB of data. What all this means is that if 10,000 people visit this site a month, which doesn't happen, this would produce the same amount of carbon as watching an hour of Netflix.
 
-[^1]: It used to be 0.008g but I added a self-hosted font to make the site better for readability.
+[^1]: These numbers aren't exact but are a good gauge. For reference, another scoring metric puts the [CO2 produced at 0.01g](https://www.websitecarbon.com/website/jaredeberle-org/). Regardless the basic point is the site uses minimal resources.
 
-- A static blog like Hugo is more efficient than software like Wordpress and to
-  further enhance that, all resources are minified when built and my javascript usage is minimal (roughly 7KB in total) and deferred
-- The site uses one self-hosted and subsetted font (Fraunces) for the headers while all remaining fonts are system fonts. This removes an extra outside url fetch and it removes unneeded weight from the font download. 
-- Images are AVIF format, lazy loaded, and responsive which reduces file sizes and only loads them when needed.
-- The website uses hashed files and immutable cache times, which basically means your browser won't redownload things unless they change and a new hashed file is created.
- 
+I've made a number of conscious choices to keep the impact of the site minimal while maintaining reasonable style choices:
+
+- I run the blog with hugo, which generates all the pages as static files and minimizes the outputted CSS and javascript. I keep the javascript files as minimal as possible and do not source any outside libraries.
+- The site uses self-hosted subsetted fonts (Fraunces, Charter, IBM Plex Mono) that reduce file sizes. IBM Plex Mono and the italicized Charter are only loaded on pages that explicitly need them.
+- Images are AVIF format, lazy loaded, and responsive which reduces file sizes and only loads them on the page when needed.
+- The website uses hashed files and immutable cache times for everything besides the html and RSS feeds. This seems resources are not redownload unless they change on the site.
+
+## Accessibility
+
 This site should also be fully compliant with web accessibility standards, if you run into issues, please {{< email "jared@jaredeberle.org" "let me know" >}} and I will work to fix the issue as best as possible.
- 
+
+## Privacy and Terms of Use
+
 Further information on [privacy](/privacy) and [terms of use](/terms) can be found at those links but privacy boils down to I keep nothing about your visit and terms is really just please be kind and report issues you find. For errors you can either email me or submit a request through Git and Codeberg through the Suggest Changes link at the top of every post.

@@ -7,11 +7,15 @@ summary: "This is who I am and how I made this little website"
 
 ## Hello there
 
-My name is Jared Eberle and I'm currently a lecturer at Oklahoma State University where I teach primarily first year US history surveys and Oklahoma History. This is my tiny little corner of the internet, where I build on my research related to Indigenous activism in the latter half of the 20th century. More about all of that can be found on [my CV](/cv). 
+My name is Jared Eberle and I'm currently a lecturer at Oklahoma State University where I teach primarily first year US history surveys and Oklahoma History. More about me can be found on [my CV](/cv/) or [teaching portfolio](/teaching/)
+
+This is my tiny little corner of the internet, where I build on my research related to Indigenous activism in the latter half of the 20th century. Here you will mainly found posts groups around a few broad themes: Indigenous activism and history, Oklahoma, the 1970s, and Music.
 
 This website is mostly meant for me to track the [things I've read](/reviews) or [notebook entries](/quotes) collecting material from sources I find important. But you will also find [longer pieces of historical randomness](/articles) building on the shorter material found here.
 
-If you're curious what takes up my time, here's my [media diet](/reading/).
+If you're curious what takes up my time, here's my [media diet](/media-diet/) and [reading ledger](/reading/).[^1]
+
+[^1]: Additional non-academic reading can be found on my [micro.blog](https://eberle.blog/)
 
 ## Connect
 
