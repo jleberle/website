@@ -81,14 +81,33 @@ const browser = await chromium.launch();
 const context = await browser.newContext();
 const page = await context.newPage();
 
+// A CSP or Trusted Types violation doesn't fail page load or necessarily
+// register as an axe rule — it just logs. Catching it here is the only
+// automated net for a future regression like a reintroduced innerHTML write.
+let pageErrors = [];
+page.on('console', (msg) => {
+  if (msg.type() === 'error') pageErrors.push(msg.text());
+});
+page.on('pageerror', (err) => {
+  pageErrors.push(String(err));
+});
+
 try {
   for (const pagePath of pages) {
+    pageErrors = [];
     const url = `${baseURL}${pagePath}`;
     const response = await page.goto(url, { waitUntil: 'networkidle' });
     if (!response || !response.ok()) {
       failures += 1;
       console.error(`\naxe target failed to load: ${pagePath} (${response?.status() ?? 'no response'})`);
       continue;
+    }
+    if (pageErrors.length > 0) {
+      failures += pageErrors.length;
+      console.error(`\nconsole/page errors on ${pagePath}:`);
+      for (const err of pageErrors) {
+        console.error(`- ${err}`);
+      }
     }
     const result = await new AxeBuilder({ page }).analyze();
     if (result.violations.length === 0) {
