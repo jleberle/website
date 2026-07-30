@@ -1,0 +1,370 @@
+================================================================================
+SITE REORGANIZATION ASSESSMENT
+jaredeberle.org — balancing professional identity with an open knowledge base
+Prepared: 2026-07-30 | Status: planning document, not yet implemented
+================================================================================
+
+--------------------------------------------------------------------------------
+0. HOW TO READ THIS
+--------------------------------------------------------------------------------
+This is an assessment + target-state proposal, not a task list you have to take
+whole. It is organized so you can adopt pieces independently:
+
+  §1  What's here now (inventory)
+  §2  Verdict up front
+  §3  The real tension you're navigating
+  §4  Where siloing actually happens — and where it doesn't
+  §5  Proposed target structure (the two-layer model)
+  §6  Content-type decisions (quotes/notes, reviews, sources, topics)
+  §7  Navigation
+  §8  Workflow (capture -> connect -> publish -> maintain)
+  §9  Phased implementation
+  §10 What to preserve — do not break these
+  §11 Open questions for you to decide
+
+--------------------------------------------------------------------------------
+1. CURRENT STATE (INVENTORY)
+--------------------------------------------------------------------------------
+Content sections under content/:
+
+  PROFESSIONAL / FRONT-OF-HOUSE
+    about/        single page + photo
+    cv/           single page + cv.pdf
+    courses/      1103, 1493, 3703, 3793 (teaching)
+    articles/     ~20 essays/blog posts, dated page bundles
+
+  WRITING THAT IS ALSO KNOWLEDGE WORK
+    reviews/      ~6 book/media reviews, page bundles, each -> a source
+    quotes/       ~5 "Notebook" passages, flat files, each -> a source
+
+  THE KNOWLEDGE GRAPH ITSELF
+    sources/      ~46 book/article records (the reading ledger's spine);
+                  each is content/sources/<citekey>/_index.md with
+                  bibliographic front matter + notes; /sources/ listing is
+                  SUPPRESSED (render:never); term pages render at /sources/<key>/
+    research/     curated "research paths" (ordered routes through the site)
+    series/       taxonomy, currently suppressed / near-empty
+
+  STANDALONE PAGES
+    reading.md    -> /reading/ ledger index (custom layout)
+    archives.md   -> /archives/ ("Writing") merged, filterable, searchable
+    sources.md    -> /media-diet/-ish "Media Diet" page (NOTE: filename collides
+                  conceptually with the sources/ section; see §11)
+    colophon, privacy, terms, studenthours
+
+Connective mechanisms already in place (this matters — see §2):
+  - sources taxonomy: `sources: ["key"]` on any post backlinks to the source
+    page AND the source page auto-lists everything written about it.
+  - tags taxonomy: drives the "Related writing" footer block.
+  - research paths: hand-curated, ordered, editorialized routes.
+  - /archives/ ("Writing"): already MERGES articles + reviews + quotes into one
+    stream with per-type filter chips and full-text search.
+  - homepage bands: "Current work" (Teaching) / "Writing" (Selected) /
+    "At the desk" (Notebook + Reading). The homepage already narrates the
+    professional-vs-knowledge split cleanly.
+
+Adoption is healthy: every real quote and every review carries a `sources:`
+link. The spine is not theoretical — it's actually wired up.
+
+--------------------------------------------------------------------------------
+2. VERDICT UP FRONT
+--------------------------------------------------------------------------------
+You are NOT badly siloed. The instinct that quotes/reviews are "defined" into
+boxes is understandable, but the machinery that de-silos them already exists and
+is already adopted: the sources taxonomy, the merged Writing archive, shared-tag
+relations, research paths, and the "At the desk" homepage band.
+
+The gap between what you have and "an open personal knowledge database" is not
+that quotes and reviews are separate sections. It's three things:
+
+  (A) NO TOPIC MAP. The knowledge base has no browsable "what is this collection
+      ABOUT" surface. Tags exist but are thin, flat, and auto-only; research
+      paths are curated but few and linear. A knowledge base needs standing
+      subject hubs. This is the single highest-leverage change.
+
+  (B) THE NOTE MODEL IS TOO NARROW. "Quotes" captures only verbatim passages. A
+      knowledge base also wants your own short notes, marginalia, and connective
+      observations. Right now those have nowhere to live except a full article.
+
+  (C) NO SINGLE FRONT DOOR TO THE GRAPH. Reading, Notebook, Research Paths, and
+      Tags are four separate doors into the same knowledge graph. Nothing ties
+      them into one "here is the workshop" entry point.
+
+So: keep the sections. Do NOT collapse quotes/reviews into articles. Instead,
+raise the connective layer (topics), broaden the note model, and give the graph
+a front door. That's evolution of a system that's already well-designed, not a
+teardown.
+
+--------------------------------------------------------------------------------
+3. THE REAL TENSION YOU'RE NAVIGATING
+--------------------------------------------------------------------------------
+Two goals pull the IA in opposite directions:
+
+  PROFESSIONAL IDENTITY wants:            KNOWLEDGE DATABASE wants:
+    - few, stable, legible sections         - dense interlinking
+    - clean categories a hiring/tenure      - low-friction capture
+      /peer reader can scan                 - many small nodes
+    - "output" framing (articles,           - "thinking in public" framing
+      reviews, CV, teaching)                - topics over chronology
+    - curation                              - accretion
+
+The mistake would be to let one win. If the knowledge base wins, the front page
+reads like a personal wiki and the professional signal (historian, lecturer,
+peer-reviewed-adjacent output) gets buried. If professional identity wins, the
+knowledge work stays locked in publication silos and never becomes a browsable
+web of ideas.
+
+The resolution is a TWO-LAYER model (§5): a curated professional surface sitting
+on top of an openly-linked knowledge graph, with the sources taxonomy as the
+spine connecting both. You already have most of the pieces; they just aren't
+named or framed as two coherent layers yet.
+
+--------------------------------------------------------------------------------
+4. WHERE SILOING ACTUALLY HAPPENS — AND WHERE IT DOESN'T
+--------------------------------------------------------------------------------
+NOT siloed (leave alone):
+  - Browsing writing: /archives/ already merges the three writing types.
+  - Book <-> writing: a source page already aggregates its review + quotes +
+    articles. A book IS a hub already.
+  - Related-by-tag footer works across sections.
+
+Genuinely siloed / thin:
+  - TOPICS. There is no page that says "everything I have on 1990s right-wing
+    movements" (article + review + quotes + sources), with framing. Tag pages
+    are the closest thing and they're bare lists.
+  - NOTEBOOK is a dead-end island. A quote links OUT to its source, and shows up
+    on that source page, but the Notebook itself is just a reverse-chron list. It
+    isn't grouped by book or topic, so it reads as a blog of quotes rather than
+    as the raw material of a commonplace book.
+  - SOURCES are reachable but not browsable AS a graph. /sources/ is suppressed
+    (correct call — it duplicated /reading/), so the richest node type only
+    surfaces through /reading/ (activity-ordered) or inline links. There is no
+    "by subject" view of the library.
+  - RESEARCH PATHS are excellent but invisible-by-default (excluded from feed and
+    archive; reachable via one link on /archives/). For a knowledge base they
+    should be a more prominent, standing feature.
+
+--------------------------------------------------------------------------------
+5. PROPOSED TARGET STRUCTURE — THE TWO-LAYER MODEL
+--------------------------------------------------------------------------------
+Think of the site as two layers over one spine.
+
+  LAYER 1 — PROFESSIONAL SURFACE (curated, stable, few doors)
+    /            home: identity + selected work + "at the desk" teaser (as now)
+    /about/      who you are
+    /cv/         cv + PDF
+    /courses/    teaching
+    /archives/   "Writing" — articles + reviews + quotes, merged (as now)
+
+  LAYER 2 — KNOWLEDGE GRAPH (open, linked, accretive)
+    /reading/    the ledger: what has been read / is being read (as now)
+    /notes/      RENAMED + BROADENED "Notebook": quotes AND short notes (§6.1)
+    /topics/     NEW: standing subject hubs (§6.4) — the topic map
+    /research/   research paths: curated, ordered routes (promote; §6.5)
+    /sources/<key>/  per-work node pages (as now; listing stays suppressed)
+
+  SPINE (connects both layers, already built)
+    sources: taxonomy  +  tags: taxonomy  +  research paths
+
+The key insight: you don't need new top-level *sections* so much as one new
+connective surface (/topics/) and a broadened note model. Everything else is
+reframing what exists into two coherent layers so the site can be read either as
+a CV-grade professional presence OR as a public knowledge base, depending on
+which door the visitor comes through.
+
+--------------------------------------------------------------------------------
+6. CONTENT-TYPE DECISIONS
+--------------------------------------------------------------------------------
+
+6.1 QUOTES -> NOTES (broaden, don't collapse)
+  Keep the section. Rename the concept from "quotes/Notebook" to "notes" (public
+  label can stay "Notebook"). Support two kinds via a front-matter `kind`:
+      kind: quote   — a verbatim passage (current behavior; require `sources:`)
+      kind: note    — your own short observation/marginalia (may cite a source,
+                      may connect two sources, may stand alone)
+  Why: a commonplace book is quotes; a knowledge base is quotes + your thinking
+  about them. This is the lowest-friction way to start "thinking in public"
+  without every idea needing to become a full article.
+  Rule: a `quote` MUST carry `sources:`. A `note` SHOULD carry either `sources:`
+  or `topics:` so it can't become an orphan (this is the anti-silo guard).
+  Grouping: on /notes/, offer a "by source" and "by topic" view in addition to
+  reverse-chron, so the notebook reads as material, not as a microblog.
+
+6.2 REVIEWS (keep the label, unify the data model)
+  Do NOT fold reviews into articles. For a historian, a distinct, scannable list
+  of book/media reviews is a professional asset (it reads as scholarly output).
+  BUT recognize that a review IS a source-anchored article. Unify the data model:
+      - a review = section:reviews, REQUIRED `sources:`, optional cover +
+        external_url (as today)
+      - an article that happens to review something can carry `sources:` too
+  Nothing to migrate here — this is mostly a documented principle so the two
+  don't drift into different mechanisms. The merged archive already presents them
+  together for browsing; the separate section still gives you the clean list.
+
+6.3 SOURCES (leave the mechanism; add a subject facet)
+  The per-work page with auto-backlinks is the best thing in the system. Keep it
+  exactly. The only addition: let a source declare `topics:` (or reuse tags) so a
+  book can appear on a /topics/ hub. Today a source is discoverable by reading
+  activity (/reading/) and by inbound links; it is not discoverable by subject.
+  Adding a subject facet is what turns the ledger into a library.
+
+6.4 TOPICS (NEW — the highest-leverage addition)
+  Create /topics/ as standing subject hubs. A topic is a curated page (like a
+  research path, but faceted/standing rather than ordered/linear) that aggregates
+  everything on a theme: articles + reviews + notes + sources, with a paragraph
+  of editorial framing at the top.
+  Two ways to build it, pick per §11:
+    (a) PROMOTE TAGS: designate a small set of tags as "topics" and give those
+        term pages a richer template (intro prose + grouped sections). Cheapest;
+        reuses the taxonomy you already have.
+    (b) FIRST-CLASS SECTION: content/topics/<slug>/_index.md with an editorial
+        body and either an explicit member list or a tag/`topics` query that
+        auto-collects members. More control, more upkeep.
+  Recommendation: start with (a) on 3-5 real themes you already have depth in
+  (e.g. Indigenous activism; 1990s right-wing movements; rodeo/identity;
+  Oklahoma). If a topic wants ordered guidance, that's what a research path is —
+  topics and research paths are the standing vs. guided views of the same graph.
+
+6.5 RESEARCH PATHS (promote)
+  Keep as-is mechanically. Raise visibility: link them from the homepage "At the
+  desk" band and from relevant /topics/ pages. They are the guided counterpart to
+  topic hubs and currently under-surfaced.
+
+--------------------------------------------------------------------------------
+7. NAVIGATION
+--------------------------------------------------------------------------------
+Current: About | Writing | Teaching | Reading | CV
+
+This is good and professional-forward — keep the spirit. The only change the
+knowledge layer needs is a door to the graph beyond /reading/. Two options:
+
+  OPTION A (minimal): add one item.
+      About | Writing | Teaching | Reading | Notes | CV
+    ...where "Notes" (or "Topics") is the knowledge-base front door and links to
+    a page that surfaces topics + notes + research paths + the ledger.
+
+  OPTION B (grouped): keep 5 items but let "Reading" become a broader
+    knowledge door ("Notebook", "Library", or "Notes") whose landing page fans
+    out to reading ledger / notes / topics / research paths, and keep the current
+    /reading/ ledger one click in.
+
+Keep the top nav at 5-6 items. Do not surface /sources/, /series/, or raw tag
+pages in nav — those are graph-internal, reached by links.
+
+Recommendation: Option A. One clear professional cluster (About/Writing/Teaching
+/CV) + two knowledge doors (Reading = activity, Notes/Topics = ideas), which is
+exactly the two-layer model made visible in the menu.
+
+--------------------------------------------------------------------------------
+8. WORKFLOW (capture -> connect -> publish -> maintain)
+--------------------------------------------------------------------------------
+The current draft->publish pipeline (Obsidian vault drafts, newpost.sh,
+publish-draft.sh, newsource.sh, finishsource.sh, ship.sh) is excellent and
+should not change. The knowledge-base additions are about CAPTURE friction and
+GRAPH upkeep, not about the publish path.
+
+  CAPTURE (lower the floor)
+    - Add a `note` kind to the quote template so a stray thought is one hotkey,
+      not a blank article. Reuse the existing Obsidian Templater quote binding;
+      add a sibling "note" template that prefills `kind: note` and prompts for a
+      source OR a topic.
+    - Keep the rule: nothing gets published without a `sources:` or `topics:`
+      handle. Enforce it in preflight.sh (see below). This is the mechanical
+      guarantee against re-siloing.
+
+  CONNECT (make the graph the default, not an afterthought)
+    - When creating a source (newsource.sh), optionally prompt for one or more
+      `topics:` so the book lands on a subject hub immediately.
+    - When publishing, if a post's tags include a designated topic tag, it
+      auto-joins that hub (if using §6.4a).
+
+  PUBLISH (unchanged)
+    - publish-draft.sh handles articles/reviews/notes exactly as today.
+
+  MAINTAIN (new, lightweight)
+    - preflight.sh additions:
+        * a `quote` with no `sources:` fails (today it's convention only)
+        * a `note` with neither `sources:` nor `topics:` fails
+        * a `topics:`/topic-tag value with no corresponding hub page warns
+    - A periodic (manual) pass to review thin topics and fold or split them.
+      Topics are curated, so they need occasional gardening — budget for it the
+      same way you already garden research paths.
+
+--------------------------------------------------------------------------------
+9. PHASED IMPLEMENTATION
+--------------------------------------------------------------------------------
+Do these in order; each phase stands alone and ships value.
+
+  PHASE 1 — Topic map (biggest payoff, least structural risk)
+    - Pick 3-5 themes with existing depth.
+    - Implement /topics/ via promoted tags (§6.4a): richer term template with
+      intro prose + grouped member sections (articles / reviews / notes /
+      sources).
+    - Add `topics:` (or reuse tags) to existing sources so they appear.
+    - Link topics from the homepage "At the desk" band.
+
+  PHASE 2 — Broaden the notebook
+    - Add `kind: note` support to the quotes section + templates.
+    - Add /notes/ grouping views (by source, by topic).
+    - preflight guards for orphan notes/quotes.
+
+  PHASE 3 — Front door + nav
+    - Nav: adopt Option A (add Notes/Topics).
+    - Build the knowledge-base landing page that fans out to reading / notes /
+      topics / research paths.
+    - Promote research paths onto that landing + relevant topic pages.
+
+  PHASE 4 — Polish
+    - Rename "Notebook" concept to "notes" internally if desired.
+    - Reconcile the sources.md "Media Diet" filename collision (§11).
+    - Review whether `series/` earns its keep or should be retired.
+
+--------------------------------------------------------------------------------
+10. WHAT TO PRESERVE — DO NOT BREAK THESE
+--------------------------------------------------------------------------------
+  - The sources taxonomy backlink mechanism and citekey folder scheme. It's the
+    spine. Everything new hangs off it.
+  - The reading feed contract (/reading/index.xml categories + description
+    prefixes) consumed by ~/git/micro-theme -> eberle.blog. feed-lint.py guards
+    it; keep it green.
+  - Reading-event guids (urn:reading-event:...) keyed on isbn/doi/access_url, not
+    folder slug. Don't reintroduce slug-based identity.
+  - /sources/ staying suppressed (it duplicated /reading/). Topics give sources a
+    subject view WITHOUT un-suppressing the raw taxonomy listing.
+  - contentSections (articles, reviews, quotes) drives archive/feeds/prev-next.
+    If /notes/ stays section:quotes, nothing here changes; if you ever split it,
+    update contentSections + static/_headers per docs/workflow.md "Adding a New
+    Content Type".
+  - The professional-forward homepage and 5-6 item nav. The knowledge layer is
+    added AROUND this, not on top of it.
+
+--------------------------------------------------------------------------------
+11. OPEN QUESTIONS FOR YOU TO DECIDE
+--------------------------------------------------------------------------------
+  Q1. TOPICS mechanism: promoted tags (§6.4a, cheap, recommended to start) vs a
+      first-class content/topics/ section (§6.4b, more control). Start with tags?
+
+  Q2. NAV: Option A (add a 6th "Notes"/"Topics" item) vs Option B (broaden
+      "Reading" into a graph door). Recommendation: A.
+
+  Q3. NOTES vs QUOTES: do you actually want to write short original notes in
+      public, or is the Notebook deliberately quotes-only? If the latter, skip
+      §6.1's `note` kind and just add the topic/source grouping views. This is a
+      voice/comfort call only you can make.
+
+  Q4. FILENAME COLLISION: content/sources.md publishes the "Media Diet" page but
+      the name reads like the sources/ section. Rename to content/media-diet.md
+      (set url or slug to preserve the current path if it's linked/indexed)?
+
+  Q5. SERIES: content/series/ is suppressed and near-empty. Retire it, or is
+      there a planned use? Retiring removes a dormant taxonomy.
+
+  Q6. SCOPE OF "OPEN": how open is open? A true digital-garden posture (rough,
+      dated-as-evolving, low bar) vs a still-curated-but-linked posture. Your
+      revisions/provenance conventions suggest you value polish; topics + notes
+      can be as rough or as finished as you set the bar. Decide the bar before
+      Phase 2 so the note template's tone matches it.
+
+================================================================================
+END
+================================================================================
