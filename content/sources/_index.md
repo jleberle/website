@@ -1,6 +1,6 @@
 ---
 title: "Bibliography"
-description: "Every work cited across the site — read through or consulted."
+description: "A list of all works cited on the website. Sources also appear in the reading ledger if read in full."
 # This page was suppressed while /reading/ listed every source and two indexes
 # of the same books would have competed. The `status` split ended that:
 # /reading/ is the reading ledger, this is everything cited, and the works

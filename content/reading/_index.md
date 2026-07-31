@@ -1,8 +1,8 @@
 ---
 title: "Reading"
 layout: "reading"
-summary: "Books, articles, and other sources read and in progress"
-description: "A reading activity ledger for books, articles, and other sources. Click items for more information."
+summary: "A list of books, articles and other resources I've read over the years."
+description: "A list of books, articles, and other resources I've read over the years. Click each entry for more information."
 outputs:
   - HTML
   - RSS
