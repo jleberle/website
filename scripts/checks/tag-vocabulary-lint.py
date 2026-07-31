@@ -31,6 +31,14 @@ Guidance for the list, applied 2026-07-31 and not enforceable here:
     correct outcome — inventing a term to satisfy the rule is the sprawl the
     rule exists to prevent.
 
+A few terms name a work's FORM rather than its subject — `Fiction`,
+`Autobiography` — which the "what is this about" rule does not strictly cover.
+They are kept deliberately, and only for the reading log: `/reading/` is a
+record of what was read, and "what kind of book was it" is a real question to
+ask of a reading list even though it is not a research subject. Keep this
+subset small and obvious. A form term that starts collecting writing as well as
+works is a sign it has drifted into being a subject and should be re-examined.
+
 Place terms (`Oklahoma`, `Connecticut`, `Europe`) live here rather than in a
 `places` facet. Regional history is a subject, and a facet with three members is
 still thinner than the vocabulary it would be carved out of. Note that `Europe`
@@ -50,6 +58,7 @@ from pathlib import Path
 VOCABULARY = {
     "AI",
     "American Indian Movement",
+    "Autobiography",
     "Connecticut",
     "Disaster",
     "Environment",

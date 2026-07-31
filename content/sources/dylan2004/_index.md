@@ -10,6 +10,7 @@ isbn: "9780743228152"
 finished: "2026-04-19"
 tags:
 - "Music"
+- "Autobiography"
 eras:
 - "1960s"
 ---

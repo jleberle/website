@@ -183,7 +183,7 @@ contains a year — `Tulsa in 1918` — is a subject and is left alone.
 
 The period vocabulary is closed by construction, which is why a regex can check
 it. The subject vocabulary has no shape to check against, so as of 2026-07-31 it
-is closed by list instead: `scripts/checks/tag-vocabulary-lint.py` holds the 21
+is closed by list instead: `scripts/checks/tag-vocabulary-lint.py` holds the 22
 approved terms and fails the preflight on anything else. Adding a subject is a
 two-line commit — the term in the lint, the term in the front matter — which is
 the point, since a new hub should be a decision rather than a side effect of
@@ -199,6 +199,14 @@ member already carried the broader term. And `Native American History` is the
 travels with a narrower term wherever one fits. Two sources carry it alone
 because nothing narrower exists for them yet, which is the right outcome;
 inventing a term to satisfy the rule is the sprawl the rule exists to prevent.
+
+A few terms name a work's **form** rather than its subject — `Fiction`,
+`Autobiography` — which the "what is this about" rule does not strictly cover.
+They are kept deliberately, and only for the reading log: `/reading/` records
+what was read, and "what kind of book was it" is a fair question to ask of a
+reading list even though it is not a research subject. Keep the subset small and
+obvious. A form term that starts collecting *writing* as well as works has
+drifted into being a subject and wants re-examining.
 
 Place terms (`Oklahoma`, `Connecticut`, `Europe`) sit in `tags` rather than a
 `places` facet of their own. Regional history is a subject, and three terms is

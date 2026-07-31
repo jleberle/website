@@ -399,11 +399,36 @@ untagged source on the site.
 `Travel` is gone from `VOCABULARY`; the lint's orphan check would have caught
 it otherwise.
 
+### `Autobiography` added — 2026-07-31
+
+`roosevelt1928` was the last untagged source after the Europe pass, and the term
+that fits it also fits two works already on the shelf: `banks2004` (Dennis Banks
+with Richard Erdoes) and `dylan2004` (*Chronicles, Vol. 1*). Three members on
+arrival, with room — the reading log takes memoirs steadily.
+
+This makes explicit something the vocabulary was already doing quietly.
+`Fiction` and now `Autobiography` name a work's **form**, not its subject, which
+the "what is this about" rule does not cover. They are kept for the reading log
+specifically: `/reading/` records what was read, and "what kind of book was it"
+is a fair question of a reading list even where it is not a research subject.
+Both docs now say so rather than leaving `Fiction` as an unexplained exception.
+
+One wrinkle logged rather than resolved. *Diaries of Boyhood and Youth* is a
+contemporaneous diary, not retrospective autobiography — strictly a different
+genre, and it is the work that prompted the term. `Life Writing` is the
+scholarly umbrella that covers autobiography, memoir, diaries and letters
+without the mismatch, and would have more room to grow. `Autobiography` was
+chosen anyway as the plainer word; renaming is three files plus the lint entry
+if the diary case ever starts to grate.
+
+`coates2024` (*The Message*) was considered and left as `Journalism`. It carries
+personal narrative but is essayistic reportage rather than life writing.
+
 ### Still open
 
-`Fiction` (4) and `Sports` (3) carry **no writing at all** — they describe the
-reading log, not the research, so `/tags/` holds two kinds of term. That is
-legitimate and they stay.
+`Fiction` (4), `Sports` (3) and `Autobiography` (3) carry **no writing at all** —
+they describe the reading log, not the research, so `/tags/` holds two kinds of
+term. That is legitimate and they stay.
 
 `Europe` is coarser than the other place terms. Three of its seven works are
 English, so `England` is the plausible next addition, and it would bring the
