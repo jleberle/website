@@ -2,12 +2,13 @@
 
 ## Remotes
 
-Codeberg is the public canonical remote. GitHub is a private testing mirror for Actions only. Both are reached through a single `origin` remote: it fetches from Codeberg and carries two push URLs, so one `git push` updates both.
+GitHub is the sole canonical remote, reached through `origin`. Codeberg was
+dropped in 2026-07 after sustained reliability problems (88% uptime over the
+prior two weeks).
 
 ```sh
 git remote -v
-# origin  codeberg:jle/website.git (fetch)
-# origin  codeberg:jle/website.git (push)
+# origin  github:jleberle/website.git (fetch)
 # origin  github:jleberle/website.git (push)
 ```
 
@@ -34,7 +35,9 @@ Bypass the hook deliberately with `git push --no-verify`.
 
 Deployment is handled by [statichost.eu](https://statichost.eu) via `statichost.yml`.
 
-- every push deploys from the canonical repo path
+- every push deploys from the canonical repo path, which must be set to the
+  GitHub repo in Statichost's dashboard — this is external config, not
+  anything in this repo
 - Hugo runs with `--minify`
 - output is written to `public/`
 
@@ -144,7 +147,7 @@ rendered as links in each row, which is what dropped the ceiling above from
 
 GitHub Actions runs from `.github/workflows/site-checks.yml` on:
 
-- pushes to the private mirror
+- pushes to the canonical repo
 - manual dispatch
 - weekly schedule
 

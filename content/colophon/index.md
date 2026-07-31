@@ -39,4 +39,4 @@ This site should also be fully compliant with web accessibility standards, if yo
 
 ## Privacy and Terms of Use
 
-Further information on [privacy](/privacy) and [terms of use](/terms) can be found at those links but privacy boils down to I keep nothing about your visit and terms is really just please be kind and report issues you find. For errors you can either email me or submit a request through Git and Codeberg through the Suggest Changes link at the top of every post.
+Further information on [privacy](/privacy) and [terms of use](/terms) can be found at those links but privacy boils down to I keep nothing about your visit and terms is really just please be kind and report issues you find. For errors you can either email me or submit a request through Git and GitHub through the Suggest Changes link at the top of every post.

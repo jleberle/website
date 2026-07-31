@@ -311,6 +311,6 @@ params:
       - "https://eberle.blog"
 
   suggestChanges:
-    url: "https://codeberg.org/jleberle/website/src/branch/main/content"
+    url: "https://github.com/jleberle/website/edit/main/content"
     text: "Suggest Changes"
     appendFilePath: true
