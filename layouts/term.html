@@ -20,7 +20,10 @@
        gives the same answer for `tags` and `eras`, and does not depend on how
        Hugo chooses to assemble one taxonomy's terms into another's. */ -}}
 {{- $facet := .Data.Plural }}
-{{- $works := where (site.GetPage "/sources").Pages (printf "Params.%s" $facet) "intersect" (slice .Data.Term) }}
+{{- /* On a century era page this is the century plus its decades, matching the
+       widened writing list baseof.html builds; the bare term everywhere else. */ -}}
+{{- $terms := partial "era_rollup.html" . | default (slice .Data.Term) }}
+{{- $works := where (site.GetPage "/sources").Pages (printf "Params.%s" $facet) "intersect" $terms }}
 {{- with $works }}
 <section class="post-context related-posts term-sources" aria-label="Sources on this subject">
   <span class="post-context-kicker">Sources on this subject</span>

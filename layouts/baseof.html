@@ -5,6 +5,12 @@
 <!DOCTYPE html>
 {{- if and (not .IsHome) (ne .Section "research") (in (slice "section" "term" "taxonomy") .Kind) }}
 {{- $pages := union .RegularPages .Sections }}
+{{- /* A century era page lists the decades inside it too — see
+       era_rollup.html. The paginator has to be built here, before "main"
+       renders, so the widened set is assembled here rather than in term.html. */ -}}
+{{- with partial "era_rollup.html" . }}
+{{- $pages = where site.RegularPages "Params.eras" "intersect" . }}
+{{- end }}
 {{- .Store.Set "listPaginator" (.Paginate $pages) }}
 {{- end }}
 <html lang="{{ site.Language }}" dir="{{ .Language.Direction | default "auto" }}">

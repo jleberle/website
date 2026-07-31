@@ -1,0 +1,32 @@
+{{- /* Expand a century era term into the set of period terms it covers.
+
+       `eras` mixes two granularities on purpose: a work focused on one stretch
+       gets a decade (`1970s`), and one that genuinely spans — Scheips covers
+       1945-1992, Iverson runs from open-range ranching to the 1990s — gets the
+       century. Hugo does not roll one into the other, so /eras/20th Century/
+       listed only the five works filed at century granularity while the
+       sixteen 1970s items sat in a page that never linked to it.
+
+       Rolling up here rather than storing both terms in front matter keeps the
+       redundancy out of the files and off the rendered "Period" row, the same
+       way source_index.html derives "Uncategorized" from the absence of `tags`
+       instead of writing it down. It also means a piece is never asked to
+       claim a scope narrower than its author's.
+
+       Returns the century plus its ten decades. Returns an empty slice for
+       anything else — a decade page must NOT roll up, since a century-tagged
+       work is not evidence about any particular decade within it — so callers
+       can use `with`/`default` to fall back to the bare term. */ -}}
+{{- $terms := slice }}
+{{- if eq .Kind "term" }}
+{{- $term := .Data.Term }}
+{{- if and (eq .Data.Singular "era") (findRE `(?i)^\d{1,2}(st|nd|rd|th) century$` $term) }}
+{{- $ordinal := int (index (findRE `^\d{1,2}` $term) 0) }}
+{{- $base := mul (sub $ordinal 1) 100 }}
+{{- $terms = $terms | append $term }}
+{{- range $offset := (seq 0 10 90) }}
+{{- $terms = $terms | append (printf "%ds" (add $base $offset)) }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- return $terms }}
