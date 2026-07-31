@@ -377,7 +377,7 @@ The fix was not a rename of the genre but a place term, which fits the model
 | `winner2005` Those Feet | Sports | Sports, Europe |
 | `clegg2018` Club | Sports | Sports, Europe |
 | `kerr2002` Dogs and Demons | Travel | Environment |
-| `binelli2012` Detroit City Is the Place to Be | Travel | *(untagged)* |
+| `binelli2012` Detroit City Is the Place to Be | Travel | Labor |
 
 `clegg2018` was not on the original list but is English football by the same
 criterion as `winner2005` and `jones2019`. `kerr2002` moved to `Environment`
@@ -385,13 +385,16 @@ because that is what the book argues — its core chapters are dam-building,
 river concreting and forestry monoculture — which also gives `Environment` a
 member outside American history.
 
-Two consequences worth naming. `healey2025` and `raddenkeefe2026` had been in
-the deliberately-untagged set since the July sweep; `Europe` is the first term
-that fits either. And `binelli2012` took their place there: with Travel retired
-nothing in the vocabulary describes a book about post-industrial Detroit.
-`Labor` is arguable — it is fundamentally a book about what happened to a union
-auto town — but that is a reading of a book this pass has not read, so it was
-left for the person who has.
+`healey2025` and `raddenkeefe2026` had been in the deliberately-untagged set
+since the July sweep, and `Europe` is the first term that fits either — a fair
+sign the term is a hub rather than a bin.
+
+`binelli2012` briefly took their place there, since with Travel retired nothing
+obviously described a book about post-industrial Detroit. It resolved to
+`Labor`, confirmed 2026-07-31: the book is fundamentally about what happened to
+a union auto town, which is the same subject `andrews2008` and `wyman2010`
+carry. That takes `Labor` to four and leaves `roosevelt1928` as the only
+untagged source on the site.
 
 `Travel` is gone from `VOCABULARY`; the lint's orphan check would have caught
 it otherwise.
@@ -409,5 +412,3 @@ the wider term at render time, as `era_rollup.html` does, not by storing both.
 
 `AI` remains at one member. It is the first part of a running series, so it is
 expected to grow rather than be retired; if the series stalls it should go.
-
-`binelli2012` is untagged pending a call on whether `Labor` fits.
