@@ -5,7 +5,8 @@
 # Default local gate:
 #   1. published drafts      — content/ must not contain draft: true
 #   1b. taxonomy facets      — period values must be in `eras`, not `tags`
-#   1c. graph connections    — no orphan posts; `about:` is a subset of `sources:`
+#   1c. tag vocabulary       — every `tags` value is an approved subject term
+#   1d. graph connections    — no orphan posts; `about:` is a subset of `sources:`
 #   2. image policy          — raster sources must be AVIF or allowed companions/icons
 #   2b. image metadata       — no EXIF/IPTC/XMP left on a published raster file
 #   3. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
@@ -72,6 +73,14 @@ if FACET_OUT=$(python3 scripts/checks/taxonomy-facet-lint.py content 2>&1); then
 else
   echo "$FACET_OUT"
   fail "period values filed under \`tags\` instead of \`eras\`"
+fi
+
+step "tag vocabulary"
+if VOCAB_OUT=$(python3 scripts/checks/tag-vocabulary-lint.py content 2>&1); then
+  pass "$VOCAB_OUT"
+else
+  echo "$VOCAB_OUT"
+  fail "a subject tag is outside the approved vocabulary"
 fi
 
 step "graph connections"

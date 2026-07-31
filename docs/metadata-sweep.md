@@ -267,3 +267,104 @@ own `.Pages`.
 `scripts/preflight.sh` passes clean: 237 pages built with no Hugo warnings,
 both new lints green, feeds valid, every internal reference resolving, and
 `/reading/` unchanged at 84.3 KiB against its 128 KiB soft ceiling.
+
+## Vocabulary audit — 2026-07-31
+
+A follow-on pass over the vocabulary the sweep produced, asking whether each
+term earns a page. The count came out unchanged at 21 subject tags, but the
+membership moved: two terms retired, two added, and the open vocabulary closed.
+
+### Retired
+
+| Tag | Members | Folded into | Why |
+|---|--:|---|---|
+| `Digital Humanities` | 2 | `Historiography` | A book and the review of that book, already joined by `sources:` — the tag page restated a backlink |
+| `Drinking` | 2 | `Folklore` | Both members already carried `Folklore`; the narrow term was a second name for the same shelf |
+
+Neither retirement lost information: all four pages already carried the target
+term, so both edits were pure deletions.
+
+### Added
+
+| Tag | Members | Why |
+|---|--:|---|
+| `Disaster` | 4 | `grann2018`, `elmhirst2025`, `bacon2025`, `jacobsen2024` — four of the seven untagged sources were survival-and-catastrophe narratives, the largest real cluster the sweep left behind |
+| `Connecticut` | 4 | `eisler2002`, `fromson2004` and the two Golden Hill Paugussett / BIA-recognition posts — the tightest untagged cluster on the site, and the reason `Tribal Recognition` read as a national subject when half its members are one state |
+
+Two assignments were considered and dropped. `cramer2005` is national in scope
+even though this site cites it for Connecticut material, so tagging the book by
+the use made of it would have mislabelled the book. `lowery2010` is Lumbee, in
+North Carolina.
+
+### `Native American History` is a parent term
+
+At 32 of 143 assignments it is the field, not a subject — a hub that returns
+roughly the site. It survives because only **two** items carry it alone:
+`carpio2011` (urban Indian history) and `blackhawk2008` (violence and empire in
+the Great Basin). Nothing in the vocabulary is narrower for either, and adding
+`Urban History` or similar for one member each is the sprawl the audit was
+meant to remove. They stay as documented exceptions rather than invented terms.
+
+### Closed vocabulary
+
+`scripts/checks/tag-vocabulary-lint.py` now holds the 21 approved terms and
+fails the preflight on anything else, with a case-insensitive near-match hint so
+`rodeo` names `Rodeo` rather than just failing. It also fails when an approved
+term drops to zero uses, so a retirement has to be finished rather than left
+half-done. This is the controlled vocabulary [workflow.md](workflow.md)
+anticipated; the trigger was reaching the point where the list was worth
+writing down, not the point where it had become unreadable.
+
+The period facet needs no such list — it stays closed by construction.
+
+### Era granularity
+
+`20th Century` overlapped `1910s`–`1990s`, and Hugo relates neither to the
+other, so `/eras/20th Century/` showed 5 sources and **no writing at all** while
+17 pieces sat in decade pages beneath it.
+
+The first plan was to retire `20th Century` and assign decades. Reading the five
+sources killed it: only `scheips2005` states a span, and that span is 1945-1992
+— five decades. `iverson1994`, `carpio2011` and `lowery2010` genuinely cover
+most of a century. Forcing a decade onto them would have invented scope claims
+about books the site's author has read and this pass had not, which is exactly
+the failure the sweep's "needs your review" section was written to avoid.
+
+So the term stayed and the template changed instead.
+`layouts/_partials/era_rollup.html` expands a century term into itself plus its
+ten decades; `baseof.html` widens the paginated writing list and `term.html` the
+works list. Rollup is one-directional — a decade page must not absorb
+century-tagged items, since `20th Century` is not evidence about the 1970s in
+particular. Nothing is stored in front matter, so no page's "Period" row gained
+a redundant term, and the derived value cannot drift from the stored one.
+
+| Page | Writing before | Writing after | Sources before | Sources after |
+|---|--:|--:|--:|--:|
+| `/eras/20th Century/` | 0 | 17 | 5 | 29 |
+| `/eras/1970s/` | 10 | 10 | 6 | 8 |
+
+### Eras backfilled
+
+Only three of the twelve gaps were fillable without guessing. `tulsa-in-1918`
+took `1910s`; `bacon2025` and `elmhirst2025` took `1970s`, the Edmund Fitzgerald
+having sunk in 1975 and the Baileys' shipwreck dating to 1973 — facts about
+events, not readings of an argument.
+
+The rest were left empty on purpose. Eight are contemporary pieces — the Tucker
+Carlson review, the Tulsa World essay, the Claude series — and the site's
+standing convention is that `eras` marks historical subject matter rather than
+the present. Introducing `2010s`/`2020s` would put an era on nearly every new
+post and say nothing. `hoboes-tramps-and-bums` is a definition with no period,
+and `grann2018` braids Shackleton's expedition with a 2015 one.
+
+### Still open
+
+`Fiction` (4), `Sports` (3) and `Travel` (3) carry **no writing at all** — they
+describe the reading log, not the research, so `/tags/` holds two kinds of term.
+That is legitimate and they stay, but `Travel` is misnamed: Detroit City, Why
+the Dutch Are Different and Dogs and Demons are place portraits, not travel
+writing. `Place Portraits` or similar would be more accurate, and renaming costs
+three files plus the lint entry whenever you want it.
+
+`AI` remains at one member. It is the first part of a running series, so it is
+expected to grow rather than be retired; if the series stalls it should go.

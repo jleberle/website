@@ -181,16 +181,53 @@ guarding both directions, since a subject filed under `eras` builds a
 they are what keeps the two facets from quietly merging again. A tag that merely
 contains a year — `Tulsa in 1918` — is a subject and is left alone.
 
-The period vocabulary is closed by construction, which is why it can be checked
-at all. The subject vocabulary is open and cannot be: a misspelled tag silently
-becomes a new single-member hub. Nothing guards that, and at 19 subject terms
-the list is still short enough to read. If it stops being so, the fix is a
-controlled vocabulary — a list of approved terms that the lint enforces, making
-a new subject a deliberate one-line addition rather than a typo.
+The period vocabulary is closed by construction, which is why a regex can check
+it. The subject vocabulary has no shape to check against, so as of 2026-07-31 it
+is closed by list instead: `scripts/checks/tag-vocabulary-lint.py` holds the 21
+approved terms and fails the preflight on anything else. Adding a subject is a
+two-line commit — the term in the lint, the term in the front matter — which is
+the point, since a new hub should be a decision rather than a side effect of
+typing `rodeo` for `Rodeo`. The lint also fails when an approved term falls out
+of use, so retiring a tag means retiring it from the list in the same commit.
+
+Three rules govern what belongs on that list. A term wants **three or more
+members** — below that the hub returns roughly what the page linking to it
+already showed. A term must not **restate its neighbours**: `Digital Humanities`
+and `Drinking` were retired into `Historiography` and `Folklore` because every
+member already carried the broader term. And `Native American History` is the
+**field, not a subject** — it runs to about a third of everything tagged, so it
+travels with a narrower term wherever one fits. Two sources carry it alone
+because nothing narrower exists for them yet, which is the right outcome;
+inventing a term to satisfy the rule is the sprawl the rule exists to prevent.
+
+Place terms (`Oklahoma`, `Connecticut`) sit in `tags` rather than a `places`
+facet of their own. Regional history is a subject, and a facet with two members
+is worse than none — the argument that justified the eras split is worth
+repeating for place only once the place terms outnumber that.
 
 Both render on a post, in separate "Topics" and "Period" rows, and both have
 term pages (`/tags/<term>/`, `/eras/<term>/`). A post may carry only one facet;
 five posts currently carry an era and no subject tag at all.
+
+### Centuries roll up their decades
+
+`eras` mixes two granularities deliberately. A piece focused on one stretch gets
+a decade; one that genuinely spans gets the century — Scheips covers 1945-1992,
+Iverson runs from open-range ranching to the 1990s, and asking either to name a
+decade would invent a scope its author never claimed.
+
+Hugo does not relate the two, so `/eras/20th Century/` once listed only the five
+works filed at century granularity while the sixteen `1970s` items sat in a page
+that never linked to it. `layouts/_partials/era_rollup.html` closes that: a
+century term page lists the century *and* its ten decades, for writing
+(`baseof.html`, where the paginator is built) and for works (`term.html`). The
+rollup is one-directional — a decade page must never absorb century-tagged
+items, since "20th Century" is not evidence about the 1970s specifically.
+
+Nothing is written into front matter to make this work, which is the same choice
+`source_index.html` makes when it derives "Uncategorized" from the absence of
+`tags`: the redundant term never reaches the file or the rendered "Period" row,
+so it cannot drift out of agreement with the term it duplicates.
 
 Cross-linking between pages is handled two ways: automatically by shared terms
 (the `Related writing` footer block), and deliberately by research paths. The
