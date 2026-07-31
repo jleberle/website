@@ -1,7 +1,23 @@
 name: Site checks
 
+# Scoped to main and PRs: an unqualified `on: push` ran the full matrix — a
+# full-history clone for the secret scan, plus Hugo, ImageMagick and a
+# Playwright Chromium for the build — on every push to every branch.
+# paths-ignore covers only files nothing is built from; note `README.md`
+# anchors to the repo root, so assets/css/README.md still triggers a run.
 on:
   push:
+    branches: [main]
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+      - "docs/**"
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+      - "docs/**"
   workflow_dispatch:
   schedule:
     - cron: "17 9 * * 1"

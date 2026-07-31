@@ -5,3 +5,9 @@ public/
 .vale/
 node_modules/
 __pycache__/
+
+# Obsidian vault config. Untracked in a473bb9, but that commit never added the
+# ignore rule it promised — so opening content/ as a vault again would silently
+# re-add ~4 MB of third-party plugin bundles (the history still carries the
+# 86 blobs from last time).
+.obsidian/
