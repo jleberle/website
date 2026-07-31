@@ -96,4 +96,16 @@
 
 {{- partial "reading_years.html" (dict "page" .) }}
 
+{{- /* The ledger is the subset of sources that were read; the bibliography is
+       all of them, including works consulted for a post but never read
+       through. Linking out to it is what keeps those reachable by browsing
+       rather than only from the writing that cites them. */ -}}
+{{- with (site.GetPage "/sources") }}
+{{- $cited := len (where (site.GetPage "/sources").Pages "Params.status" nil) }}
+<p class="reading-bibliography-link">
+  <a href="{{ .RelPermalink }}">Bibliography</a> &mdash; every work cited,
+  including {{ $cited }} consulted but not read through.
+</p>
+{{- end }}
+
 {{- end }}

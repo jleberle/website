@@ -136,8 +136,11 @@ about: ["postel2007"]
 
 `about` must be a subset of `sources` — it labels those links rather than
 creating new ones, so a key that appears only in `about` does nothing at all.
-`scripts/checks/connection-lint.py` catches that, and also fails any post
-carrying neither a source nor a subject tag.
+`scripts/checks/connection-lint.py` catches that, and three other silent
+failures: a post carrying neither a source nor a subject tag, a `sources:` key
+with no page under `content/sources/` (Hugo publishes an empty phantom rather
+than erroring — see [reading.md](reading.md)), and a source `type` the
+templates do not know.
 
 The distinction shows up on the source page, which separates "Writing about this
 source" from "Cited in". Without it, an essay citing a book once would be
@@ -172,9 +175,18 @@ Note that an era is the period a piece is *about*, not when it was published;
 
 Write a period as a decade (`1970s`) or a named century (`19th Century`).
 `scripts/checks/taxonomy-facet-lint.py` fails the preflight if a period-shaped
-value turns up under `tags`, which is what keeps the two facets from quietly
-merging again. A tag that merely contains a year — `Tulsa in 1918` — is a
-subject and is left alone.
+value turns up under `tags`, or if an `eras` value is not period-shaped —
+guarding both directions, since a subject filed under `eras` builds a
+`/eras/<subject>/` hub that answers the wrong question just as surely. Together
+they are what keeps the two facets from quietly merging again. A tag that merely
+contains a year — `Tulsa in 1918` — is a subject and is left alone.
+
+The period vocabulary is closed by construction, which is why it can be checked
+at all. The subject vocabulary is open and cannot be: a misspelled tag silently
+becomes a new single-member hub. Nothing guards that, and at 19 subject terms
+the list is still short enough to read. If it stops being so, the fix is a
+controlled vocabulary — a list of approved terms that the lint enforces, making
+a new subject a deliberate one-line addition rather than a typo.
 
 Both render on a post, in separate "Topics" and "Period" rows, and both have
 term pages (`/tags/<term>/`, `/eras/<term>/`). A post may carry only one facet;
@@ -216,7 +228,7 @@ archive links to their own landing page.
 |---|---|
 | `scripts/newpost.sh` | Create an article, review, or quote draft in the vault |
 | `scripts/publish-draft.sh` | Move an Obsidian draft into `content/`; optional `--cite` Works Cited |
-| `scripts/newsource.sh` | Create a source page, prefilling from Open Library (ISBN) or Crossref (DOI) |
+| `scripts/newsource.sh` | Create a source page, prefilling from the Zotero library (citation key), Open Library (ISBN), or Crossref (DOI) |
 | `scripts/finishsource.sh` | Mark a source read and stamp its finish metadata |
 | `scripts/cite-refs.sh` | Extract citation keys / render a Works Cited list for a draft (used by publish-draft) |
 | `scripts/add-images.sh` | Add bundle images, with cover/body handling |

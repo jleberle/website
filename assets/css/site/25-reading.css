@@ -423,3 +423,95 @@
     border-top: 1px solid var(--rule);
     font-size: 0.88rem;
 }
+
+/* Bibliography index (/sources/). Deliberately a dense list rather than the
+   card treatment used on /reading/: this page's job is to be scanned for a
+   title, and its per-row cost is what determines how large the library can
+   grow before page-size-lint objects. */
+.bib-summary {
+    margin: 0 0 1.6rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--rule);
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+.bib-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.bib-entry {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 0.2rem 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--rule);
+}
+
+.bib-type {
+    grid-row: span 2;
+    color: var(--secondary);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding-top: 0.15rem;
+}
+
+.bib-title {
+    font-weight: 600;
+}
+
+.bib-title cite {
+    font-style: inherit;
+}
+
+.bib-meta {
+    color: var(--secondary);
+    font-size: 0.88rem;
+}
+
+@media (max-width: 560px) {
+    .bib-entry {
+        grid-template-columns: 1fr;
+        gap: 0.15rem;
+    }
+
+    .bib-type {
+        grid-row: auto;
+        padding-top: 0;
+    }
+}
+
+.reading-bibliography-link {
+    margin-top: 2rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+.bib-subjects {
+    grid-column: 2;
+    font-size: 0.82rem;
+    color: var(--secondary);
+}
+
+.bib-subjects a {
+    color: inherit;
+    text-decoration-color: var(--rule);
+}
+
+/* Derived from the absence of tags, so it is not a link — there is no hub to
+   send anyone to. Reads as an absence rather than a category. */
+.bib-uncategorized {
+    font-style: italic;
+    opacity: 0.75;
+}
+
+@media (max-width: 560px) {
+    .bib-subjects {
+        grid-column: auto;
+    }
+}

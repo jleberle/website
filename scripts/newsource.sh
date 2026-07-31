@@ -27,7 +27,7 @@ TITLE=""
 
 if [[ $# -gt 0 ]]; then
   case "${1:-}" in
-    book|article)
+    book|article|zotero)
       SOURCE_TYPE="$1"
       TITLE="${2:-}"
       [[ $# -le 2 ]] || usage
@@ -236,15 +236,233 @@ PY
   printf '%s\n' "$lookup"
 }
 
+# Zotero is the scholarly half of the library and the only lookup here that is
+# local, offline, and already correct — the record was curated when the work was
+# read rather than reconstructed from a catalogue afterwards. It also carries
+# the one field the network lookups cannot supply: `citation-key`, which is
+# exactly what a source folder is named (see docs/reading.md), so importing a
+# work and naming its page are the same act.
+#
+# It is a prefill, never a requirement. Only 23 of 59 current sources are in
+# Zotero at all — the casual reading is not and should not be, which is the
+# whole reason the cite-key ledger was replaced by the sources taxonomy in
+# b8fce17. A book read on holiday still costs one file.
+zotero_library() {
+  printf '%s' "${WEBSITE_BIBLIOGRAPHY:-$HOME/Documents/Library/Library.json}"
+}
+
+# Emits the same key<TAB>value stream as the network lookups. MODE is "key" for
+# an exact citation-key match or "search" to list candidates.
+lookup_zotero() {
+  local mode="$1" needle="$2" bib
+  bib=$(zotero_library)
+  [[ -f "$bib" ]] || return 1
+  command -v python3 >/dev/null 2>&1 || return 1
+
+  python3 - "$bib" "$mode" "$needle" <<'PY'
+import json, re, sys, unicodedata
+
+bib, mode, needle = sys.argv[1], sys.argv[2], sys.argv[3]
+try:
+    lib = json.load(open(bib, encoding="utf-8"))
+except (OSError, ValueError):
+    sys.exit(1)
+
+def name(a):
+    if a.get("literal"):
+        return a["literal"].strip()
+    return " ".join(p for p in (a.get("given", "").strip(), a.get("family", "").strip()) if p)
+
+def authors(e):
+    return " and ".join(n for n in (name(a) for a in e.get("author", [])) if n)
+
+def year(e):
+    parts = (e.get("issued") or {}).get("date-parts") or [[]]
+    return str(parts[0][0]) if parts and parts[0] else ""
+
+# Zotero stores titles in sentence case; every source page on the site is in
+# title case, so importing verbatim would leave one record in five looking
+# unlike its neighbours. This only ever raises a word's first letter — a token
+# already carrying a capital anywhere (Pequots, Seminole, U.S., McKenzie-Jones)
+# is passed through untouched — so it cannot mangle a proper noun or an
+# acronym, and the result is still only the editable default at the prompt.
+SMALL = {"a", "an", "the", "and", "but", "or", "nor", "for", "so", "yet", "at",
+         "by", "in", "of", "on", "to", "up", "as", "from", "with", "into",
+         "over", "than", "that", "via"}
+
+def title_case(text):
+    words = text.split(" ")
+    out = []
+    start = True
+    for w in words:
+        if not w:
+            out.append(w)
+            continue
+        if any(c.isupper() for c in w):
+            out.append(w)
+        elif start or w.lower().strip(".,;:'\"()") not in SMALL:
+            out.append(w[0].upper() + w[1:])
+        else:
+            out.append(w)
+        start = w.endswith(":") or w.endswith("?") or w.endswith("—")
+    return " ".join(out)
+
+# Zotero packs every ISBN an edition ever had into one space-separated field —
+# 39 of 94 entries here do. The site's templates strip non-alphanumerics to
+# build Open Library and WorldCat links, so passing the raw field through would
+# fuse two ISBNs into one bogus 26-digit number and produce dead links on both.
+def isbn(e):
+    raw = (e.get("ISBN") or "").strip()
+    return re.sub(r"[^0-9Xx]", "", raw.split()[0]) if raw else ""
+
+# The site knows five kinds; CSL knows dozens. Anything archival maps to
+# `archive` so it is not offered a library-catalogue search it cannot satisfy.
+TYPES = {
+    "book": "book", "chapter": "book",
+    "thesis": "thesis",
+    "article-journal": "article", "article-magazine": "article",
+    "article-newspaper": "article", "paper-conference": "article",
+    "manuscript": "archive", "document": "archive", "report": "archive",
+}
+
+# CSL has one `thesis` type for work at every degree level; Zotero keeps the
+# level in the item's own Type field, exported as `genre` — "Dissertation",
+# "Master's Thesis", "M.S.". A doctoral dissertation is not a thesis and the
+# kicker is the only place the site says which it is, so read the degree rather
+# than flattening both to "Thesis". Anything not clearly doctoral stays
+# `thesis`, which covers the master's spellings without enumerating them.
+DOCTORAL = re.compile(r"dissertation|doctoral|ph\.?\s*d", re.I)
+
+# Zotero also only sometimes types a dissertation as `thesis` at all; older and
+# imported records land on the generic `document` and carry the kind in `genre`
+# alone. Trusting the CSL type there labels a dissertation "Archive".
+def source_type(e):
+    t = TYPES.get(e.get("type", ""), "book")
+    genre = e.get("genre") or ""
+    if t == "archive" and re.search(r"thesis|dissertation", genre, re.I):
+        t = "thesis"
+    if t == "thesis" and DOCTORAL.search(genre):
+        return "dissertation"
+    return t
+
+# Neither has a publisher; Zotero files the granting institution under
+# `publisher-place`. Reading that field for any other type would put a city
+# where the press belongs.
+def publisher(e):
+    p = (e.get("publisher") or e.get("container-title") or "").strip()
+    if not p and source_type(e) in ("thesis", "dissertation"):
+        p = (e.get("publisher-place") or "").strip()
+    return p
+
+if mode == "key":
+    hit = next((e for e in lib if e.get("citation-key") == needle), None)
+    if hit is None:
+        sys.exit(1)
+    fields = (
+        ("citation_key", hit.get("citation-key", "")),
+        ("source_type", source_type(hit)),
+        ("title", title_case(re.sub(r"\s+", " ", (hit.get("title") or "").strip()))),
+        ("author", authors(hit)),
+        ("publisher", publisher(hit)),
+        ("published_year", year(hit)),
+        ("isbn", isbn(hit)),
+        ("doi", (hit.get("DOI") or "").strip()),
+        ("url", (hit.get("URL") or "").strip()),
+    )
+    for k, v in fields:
+        print(f"{k}\t{v}")
+    sys.exit(0)
+
+def fold(s):
+    s = unicodedata.normalize("NFKD", s or "")
+    return re.sub(r"[^a-z0-9 ]+", " ", s.encode("ascii", "ignore").decode().lower())
+
+terms = [t for t in fold(needle).split() if t]
+rows = []
+for e in lib:
+    hay = fold(f"{e.get('citation-key','')} {e.get('title','')} {authors(e)} {year(e)}")
+    if all(t in hay for t in terms):
+        rows.append((e.get("citation-key", ""), year(e), authors(e)[:28], (e.get("title") or "")[:52]))
+for r in sorted(rows, key=lambda r: r[1], reverse=True)[:15]:
+    print("\t".join(r))
+sys.exit(0 if rows else 1)
+PY
+}
+
+if [[ "$SOURCE_TYPE" == "zotero" ]]; then
+  BIB_PATH=$(zotero_library)
+  [[ -f "$BIB_PATH" ]] || {
+    echo "Zotero library not found: $BIB_PATH (set WEBSITE_BIBLIOGRAPHY)" >&2
+    exit 3
+  }
+
+  ZKEY="$TITLE"
+  if [[ -z "$ZKEY" ]]; then
+    ZKEY=$(read_optional "Zotero citation key (or words to search for)")
+  fi
+  [[ -n "${ZKEY// }" ]] || { echo "A citation key or search term is required." >&2; exit 1; }
+
+  if ! ZLOOKUP=$(lookup_zotero key "$ZKEY"); then
+    echo "No entry with citation key '$ZKEY'. Searching…" >&2
+    if ! MATCHES=$(lookup_zotero search "$ZKEY"); then
+      echo "Nothing in the Zotero library matches '$ZKEY'." >&2
+      exit 1
+    fi
+    printf '\n%-24s %-6s %-30s %s\n' "KEY" "YEAR" "AUTHOR" "TITLE" >&2
+    while IFS=$'\t' read -r k y a t; do
+      printf '%-24s %-6s %-30s %s\n' "$k" "$y" "$a" "$t" >&2
+    done <<< "$MATCHES"
+    printf '\n' >&2
+    ZKEY=$(read_optional "Citation key")
+    ZLOOKUP=$(lookup_zotero key "$ZKEY") || {
+      echo "No entry with citation key '$ZKEY'." >&2
+      exit 1
+    }
+  fi
+
+  ZKEY_FIELD=""; ZTYPE=""; ZTITLE=""; ZAUTHOR=""; ZPUBLISHER=""
+  ZYEAR=""; ZISBN=""; ZDOI=""; ZURL=""
+  while IFS=$'\t' read -r key value; do
+    case "$key" in
+      citation_key) ZKEY_FIELD="$value" ;;
+      source_type) ZTYPE="$value" ;;
+      title) ZTITLE="$value" ;;
+      author) ZAUTHOR="$value" ;;
+      publisher) ZPUBLISHER="$value" ;;
+      published_year) ZYEAR="$value" ;;
+      isbn) ZISBN="$value" ;;
+      doi) ZDOI="$value" ;;
+      url) ZURL="$value" ;;
+    esac
+  done <<< "$ZLOOKUP"
+
+  echo "Prefilled from Zotero: [$ZKEY_FIELD] $ZTITLE" >&2
+
+  SOURCE_TYPE=$(read_with_default "Source type [book/article/archive/thesis/dissertation]" "$ZTYPE")
+  SOURCE_TYPE=$(trim "$SOURCE_TYPE")
+  TITLE=$(read_with_default "Title" "$ZTITLE")
+  [[ -z "${TITLE// }" ]] && { echo "Title is required." >&2; exit 1; }
+  AUTHOR=$(read_with_default "Author (optional)" "$ZAUTHOR")
+  PUBLISHER=$(read_with_default "Publisher/publication (optional)" "$ZPUBLISHER")
+  PUBLISHED_YEAR=$(read_with_default "Publication year (optional)" "$ZYEAR")
+  FORMAT=""
+  ISBN=$(read_with_default "ISBN (optional)" "$ZISBN")
+  ISBN=$(normalize_isbn "$ISBN")
+  DOI=$(normalize_doi "$(read_with_default "DOI (optional)" "$ZDOI")")
+  ACCESS_URL=$(read_with_default "Access URL (optional)" "$ZURL")
+  ZOTERO_KEY="$ZKEY_FIELD"
+fi
+
 if [[ -z "$SOURCE_TYPE" ]]; then
   SOURCE_TYPE=$(read_with_default "Source type [book/article]" "book")
 fi
 SOURCE_TYPE=$(trim "$SOURCE_TYPE")
 case "$SOURCE_TYPE" in
-  book|article) ;;
+  book|article|archive|thesis|dissertation) ;;
   *) echo "Unsupported source type: $SOURCE_TYPE" >&2; exit 1 ;;
 esac
 
+if [[ -z "${ZOTERO_KEY:-}" ]]; then
 AUTHOR=""; PUBLISHER=""; PUBLISHED_YEAR=""; FORMAT=""
 ISBN=""; DOI=""; ACCESS_URL=""; LOOKUP_FIRST_YEAR=""
 
@@ -310,20 +528,35 @@ else
   PUBLISHED_YEAR=$(read_with_default "Publication year (optional)" "$LOOKUP_PUBLISHED_YEAR")
   ACCESS_URL=$(read_with_default "Access URL (optional)" "$LOOKUP_URL")
 fi
+fi
 
-STATUS=$(read_with_default "Status [read/reading]" "read")
+# `none` writes no status at all, which is what makes a page a bibliography
+# entry rather than a reading event: it keeps its own URL, its backlinks and its
+# subjects, but stays off /reading/, which has no date to file it under. See
+# docs/reading.md. A Zotero import defaults to `none` because the common case
+# there is a work cited in a footnote years ago, not one logged as read today —
+# answer `read` and it joins the ledger like any other.
+STATUS_DEFAULT="read"
+[[ -n "${ZOTERO_KEY:-}" ]] && STATUS_DEFAULT="none"
+STATUS=$(read_with_default "Status [read/reading/none]" "$STATUS_DEFAULT")
 STATUS=$(trim "$STATUS")
 TODAY=$(date +%Y-%m-%d)
 
 STARTED=""; FINISHED=""; READ_YEAR=""
-if [[ "$STATUS" == "reading" ]]; then
-  STARTED=$(read_with_default "Started (YYYY-MM-DD)" "$TODAY")
-else
-  STATUS="read"
-  FINISHED=$(read_with_default "Finished (YYYY-MM-DD, blank if unknown)" "$TODAY")
-  READ_YEAR="${FINISHED%%-*}"
-  READ_YEAR=$(read_with_default "Read year (optional)" "$READ_YEAR")
-fi
+case "$STATUS" in
+  none)
+    STATUS=""
+    ;;
+  reading)
+    STARTED=$(read_with_default "Started (YYYY-MM-DD)" "$TODAY")
+    ;;
+  *)
+    STATUS="read"
+    FINISHED=$(read_with_default "Finished (YYYY-MM-DD, blank if unknown)" "$TODAY")
+    READ_YEAR="${FINISHED%%-*}"
+    READ_YEAR=$(read_with_default "Read year (optional)" "$READ_YEAR")
+    ;;
+esac
 
 NOTES=$(read_optional "Short note (optional)")
 
@@ -331,12 +564,18 @@ NOTES=$(read_optional "Short note (optional)")
 # a citation-style lastname+year rather than a title slug — short enough to type
 # from memory and stable when a subtitle changes. Anything is accepted as long
 # as it urlizes to itself (lowercase, no spaces or underscores).
+LOOKUP_FIRST_YEAR="${LOOKUP_FIRST_YEAR:-}"
 KEY_AUTHOR=$(printf '%s' "$AUTHOR" \
   | sed 's/ and .*//; s/,.*//' \
   | awk '{ for (i = NF; i > 0; i--) if (length($i) > 2 || $i !~ /^[A-Z]\.?$/) { print $i; exit } }' \
   | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z')
 KEY_YEAR="${LOOKUP_FIRST_YEAR:-$PUBLISHED_YEAR}"
 SLUG="${KEY_AUTHOR}${KEY_YEAR}"
+# Zotero already assigned this work a citation key, and docs/reading.md keeps a
+# Zotero-derived source under that key verbatim so the two libraries agree on
+# one name. It is still only a default: an auto-generated key like
+# zotero-item-602 should be fixed in Zotero rather than published as a URL.
+[[ -n "${ZOTERO_KEY:-}" ]] && SLUG="$ZOTERO_KEY"
 [[ -z "$SLUG" ]] && SLUG=$(slugify "$TITLE")
 [[ -z "$SLUG" ]] && SLUG="untitled-source"
 if [[ -n "$LOOKUP_FIRST_YEAR" && "$LOOKUP_FIRST_YEAR" != "$PUBLISHED_YEAR" ]]; then
@@ -378,7 +617,7 @@ mkdir -p "$DEST"
   printf 'title: "%s"\n' "$(yaml_escape "$TITLE")"
   field "author" "$AUTHOR"
   [[ "$SOURCE_TYPE" != "book" ]] && printf 'type: "%s"\n' "$SOURCE_TYPE"
-  printf 'status: "%s"\n' "$STATUS"
+  [[ -n "$STATUS" ]] && printf 'status: "%s"\n' "$STATUS"
   [[ -n "$PUBLISHED_YEAR" ]] && printf 'published_year: %s\n' "$PUBLISHED_YEAR"
   [[ -n "$READ_YEAR" ]] && printf 'read_year: %s\n' "$READ_YEAR"
   field "publisher" "$PUBLISHER"

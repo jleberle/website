@@ -1,5 +1,12 @@
 {{- define "main" }}
 
+{{- /* Sources get a real bibliography rather than the term cloud below: they
+       carry author, publisher and year, and a list of bare titles would waste
+       all of it. Every other taxonomy's terms are single words. */ -}}
+{{- if eq .Data.Singular "source" }}
+{{- partial "source_index.html" . }}
+{{- else }}
+
 {{- $recordContext := partial "record_context.html" . -}}
 
 {{- if .Title }}
@@ -29,4 +36,5 @@
     {{- end }}
 </ul>
 
+{{- end }}
 {{- end }}{{/* end main */ -}}

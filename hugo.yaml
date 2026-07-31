@@ -62,16 +62,16 @@ cascade:
 # already covered by `tags`. `tags` stays: every post footer links to its
 # /tags/<tag>/ pages.
 #
-# `sources` is the reading ledger. Each book is a term page under
+# `sources` is the bibliography. Each work is a term page under
 # content/sources/<slug>/_index.md carrying its own bibliographic frontmatter
 # and notes, so a source is a real URL rather than an anchor in a list. Any
 # page that names a work adds `sources: ["<slug>"]`, and Hugo's reverse index
 # turns that into backlinks on the source page for free — that replaces the
-# cite_key matching the templates used to do by hand. `cite_key` survives on
-# source pages as bibliographic metadata for scripts/cite-refs.sh, but it no
-# longer drives connections, so a source no longer has to exist in Zotero to
-# be linkable. /sources/ itself is suppressed (see content/sources/_index.md);
-# /reading/ is the ledger index.
+# cite_key matching the templates used to do by hand. There is no `cite_key`
+# field at all now: the folder name IS the citation key, so a source no longer
+# has to exist in Zotero to be linkable. /reading/ is the ledger, and holds the
+# subset carrying a `status` — see content/sources/_index.md for why the
+# taxonomy's own listing page is suppressed and what would change that.
 # `tags` and `eras` are two facets, not one vocabulary. A tag names what a
 # piece is ABOUT (American Indian Movement, Rodeo); an era names the period it
 # concerns (1970s, 19th Century). They were one flat list until they were split,

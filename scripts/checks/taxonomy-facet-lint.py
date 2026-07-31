@@ -56,6 +56,7 @@ def values(lines: list[str], key: str) -> list[str]:
 def main() -> int:
     root = Path(sys.argv[1] if len(sys.argv) > 1 else "content")
     misfiled: list[tuple[Path, str]] = []
+    unshaped: list[tuple[Path, str]] = []
 
     for path in sorted(root.rglob("*.md")):
         lines = front_matter(path)
@@ -64,16 +65,41 @@ def main() -> int:
         for value in values(lines, "tags"):
             if PERIOD.match(value):
                 misfiled.append((path, value))
+        for value in values(lines, "eras"):
+            if not PERIOD.match(value):
+                unshaped.append((path, value))
+
+    failed = False
 
     if misfiled:
+        failed = True
         print("Period values found in `tags` — these belong in `eras`:")
         for path, value in misfiled:
             print(f"  {path}: {value!r}")
         print("Move them to an `eras:` list. See docs/workflow.md 'Tags and eras'.")
+
+    # The converse check. Guarding only one direction keeps subjects out of the
+    # period taxonomy by convention alone, and a subject filed under `eras`
+    # fails the same way a period under `tags` does: it publishes a hub at
+    # /eras/<subject>/ that answers the wrong question, and it is the kind of
+    # thing that gets noticed a hundred posts later. The vocabulary is closed by
+    # construction — a decade or a named century — so this is checkable where a
+    # subject vocabulary would not be.
+    if unshaped:
+        failed = True
+        if misfiled:
+            print()
+        print("`eras` values that are not a period — a decade (1970s) or century (19th Century):")
+        for path, value in unshaped:
+            print(f"  {path}: {value!r}")
+        print("A subject belongs in `tags`. See docs/workflow.md 'Tags and eras'.")
+
+    if failed:
         return 1
 
     tagged = sum(1 for p in root.rglob("*.md") if values(front_matter(p), "tags"))
-    print(f"Taxonomy facet lint clean ({tagged} tagged files scanned)")
+    periodised = sum(1 for p in root.rglob("*.md") if values(front_matter(p), "eras"))
+    print(f"Taxonomy facet lint clean ({tagged} tagged, {periodised} dated files scanned)")
     return 0
 
 

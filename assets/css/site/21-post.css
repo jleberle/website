@@ -566,6 +566,24 @@ h1>a>svg {
     padding-block: 0;
 }
 
+/* Same treatment for the "Sources on this subject" list on tag and era pages,
+   for the same reason and with the same WCAG 2.5.8 inline exception. This list
+   is the one place a *source* title is rendered in a standalone connection
+   list, and source titles carry academic subtitles — "The Republic For Which
+   It Stands: The United States During Reconstruction and the Gilded Age,
+   1865-1896" is 101 characters.
+
+   The inline-block did not overflow: it is shrink-to-fit, so its text wrapped
+   inside the column. The problem is that it wraps as one atomic box occupying a
+   single line box, so the following ", Richard White" could not join the
+   title's last line and was pushed onto a line of its own — measured at 375,
+   768 and 1280px. Going inline gives the title real line boxes, the author
+   rejoins the last one, and the row loses ~30px of height. */
+.term-sources .related-posts-list a {
+    display: inline;
+    padding-block: 0;
+}
+
 /* Topics row reuses the grid's kicker, so suppress the standalone
    "Topics" pseudo-label the bare tag list carries on its own. */
 .post-context-grid .post-tags {

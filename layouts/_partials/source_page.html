@@ -112,11 +112,16 @@
   </section>
   {{- end }}
 
-  {{- /* Only ledger sources get the link back: /reading/ does not list a work
-         that was never a reading event, so pointing a cited work at it would
-         send the reader somewhere it cannot be found. Those are reached from
-         the writing that cites them, listed directly above. */ -}}
-  {{- if $p.status }}
-  <p class="source-backlink"><a href="{{ (site.GetPage "/reading").RelPermalink }}">&larr; All sources</a></p>
-  {{- end }}
+  {{- /* Point each source at the index that actually lists it. /reading/ holds
+         only reading events, so a work cited but never read through would send
+         the reader somewhere it cannot be found; the bibliography lists every
+         source and is the right destination for those. Before the bibliography
+         existed they had no backlink at all. */ -}}
+  <p class="source-backlink">
+    {{- if $p.status }}
+    <a href="{{ (site.GetPage "/reading").RelPermalink }}">&larr; The reading ledger</a>
+    {{- else }}
+    <a href="{{ (site.GetPage "/sources").RelPermalink }}">&larr; Bibliography</a>
+    {{- end }}
+  </p>
 </article>

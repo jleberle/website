@@ -1,0 +1,66 @@
+{{- /* The bibliography: every source, ledger and non-ledger alike. This is the
+       taxonomy's own list page, which was suppressed while /reading/ still
+       listed every source and the two would merely have competed. The `status`
+       split ended that — /reading/ is what was read, this is everything cited —
+       so the fifteen non-ledger works that were reachable only from the writing
+       that cites them now have an index of their own.
+
+       Sorted by key rather than by title. A source key is `lastname` + year, so
+       ordering by it is author-surname order for free, which is what a
+       bibliography wants; `author` is a free-text field holding "Paul Chaat
+       Smith and Robert Allen Warrior" and cannot be sorted on without parsing
+       names.
+
+       Deliberately lean markup: no collapsed panels, no catalogue links, no
+       notes. Repeating each source page inline is exactly what put /reading/ on
+       course to fail the page-size lint, and a row here is ~0.2 KiB against
+       that page's 1.68 KiB. See the ceiling documented in docs/reading.md. */ -}}
+{{- $sources := sort (site.GetPage "/sources").Pages ".Name" -}}
+{{- $ledger := where $sources "Params.status" "!=" nil -}}
+{{- $cited := where $sources "Params.status" nil -}}
+{{- $untagged := where $sources "Params.tags" nil -}}
+
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+  {{- with .Description }}
+  <div class="post-description">{{ . }}</div>
+  {{- end }}
+</header>
+
+<p class="bib-summary">
+  {{ len $sources }} works &middot; {{ len $ledger }} read
+  (<a href="{{ (site.GetPage "/reading").RelPermalink }}">the reading ledger</a>)
+  &middot; {{ len $cited }} cited but not read through
+</p>
+
+<ol class="bib-list">
+  {{- range $sources }}
+  {{- $p := .Params }}
+  {{- $meta := slice }}
+  {{- with $p.author }}{{ $meta = $meta | append . }}{{ end }}
+  {{- with $p.publisher }}{{ $meta = $meta | append . }}{{ end }}
+  {{- with $p.published_year }}{{ $meta = $meta | append (string .) }}{{ end }}
+  <li class="bib-entry">
+    <span class="bib-type">{{ $p.type | default "book" | humanize }}</span>
+    <a class="bib-title" href="{{ .RelPermalink }}"><cite>{{ .Title }}</cite></a>
+    {{- with $meta }}<span class="bib-meta">{{ delimit . " · " }}</span>{{ end }}
+    {{- /* "Uncategorized" is derived from the absence of `tags`, never stored.
+           Writing it into front matter would publish a /tags/uncategorized/ hub
+           that answers nothing, put a meaningless word in the Topics row of ten
+           source pages, and — because it is a negation kept as data — have to be
+           remembered and removed the day a real subject is added. Deriving it
+           cannot fall out of step, and it is the affordance a subject filter
+           will need so that untagged works are not structurally invisible. It is
+           deliberately not a link: the real subjects go to hubs, this one has
+           nowhere to go. */ -}}
+    {{- $subjects := .GetTerms "tags" }}
+    <span class="bib-subjects">
+      {{- if $subjects }}
+      {{- range $i, $t := $subjects }}{{ if $i }}, {{ end }}<a href="{{ $t.RelPermalink }}">{{ $t.LinkTitle }}</a>{{ end }}
+      {{- else }}
+      <span class="bib-uncategorized">Uncategorized</span>
+      {{- end }}
+    </span>
+  </li>
+  {{- end }}
+</ol>

@@ -75,9 +75,10 @@ the periods 1910s, 1920s, 20th Century.
 
 ## New source pages (9)
 
-All created without `status`, so none appears in the reading ledger. **None
-carries an ISBN** — ISBNs were not guessed. Run each through `newsource.sh`, or
-add the ISBN by hand, to complete the record.
+All created without `status`, so none appears in the reading ledger. ISBNs were
+not guessed. `scheips2005` and `smith1996` were later backfilled from Zotero and
+now link to catalogues by ISBN; the rest are not in Zotero and fall back to a
+title-and-author query, which works — an ISBN only sharpens it.
 
 Eight were built from complete Chicago footnotes already in the citing
 articles — author, title, publisher and year all present in the text, nothing
@@ -99,31 +100,39 @@ The ninth, `fbi1973banks`, is the Dennis Banks FBI file — an archival source
 
 ## Needs your review
 
-1. **`smith1996` author.** The footnote in `whered-the-death-come-from` reads
-   "Pat Chaat Smith"; the source page records **Paul** Chaat Smith. I am
-   confident that is the correct name, but the article's own text still has the
-   typo, and correcting prose was outside this sweep.
-2. **`smith1996` subtitle.** Recorded verbatim from the footnote as *The Native
-   Rights Movement from Alcatraz to Wounded Knee*. The published subtitle may be
-   *The Indian Movement from Alcatraz to Wounded Knee*. Verify before citing.
-3. **Works cited but not created.** No full citation existed in the text, so no
-   key could be formed honestly: Renée Cramer, *Cash, Color, and Colonialism*
-   (cited in two articles); Jessica Cattelino, *High Stakes*; Brett Fromson,
-   *Hitting the Jackpot*; Kim Eisler, *Revenge of the Pequots*; MaryJo Wagner's
-   1986 dissertation; Brooke Speer Orr's *Kansas History* article. Cramer is the
-   strongest candidate — she is engaged substantively, twice.
+1. ~~**`smith1996` author.**~~ **Resolved 2026-07-31.** The footnote's "Pat Chaat
+   Smith" was a typo; both it and the source page now read Paul Chaat Smith.
+2. ~~**`smith1996` subtitle.**~~ **Resolved 2026-07-31.** The published subtitle
+   is *The Indian Movement from Alcatraz to Wounded Knee*, confirmed against the
+   Zotero record (sourced from WorldCat, OCLC 33897927). The footnote was
+   corrected first; the source page had kept the sweep's *Native Rights
+   Movement* reading and now matches.
+3. ~~**Works cited but not created.**~~ **Resolved 2026-07-31.** Citations were
+   added to Zotero and imported with `newsource.sh zotero`: `cramer2005`,
+   `cattelino2008`, `fromson2004`, `eisler2002`, `orr2006`. All five are
+   bibliography entries (no `status`), wired into
+   `bia-recognition-changes-in-connecticut`, `mary-lease-suffrage-and-prohibition`,
+   and `bob-engelharts-golden-hill-paugussett-cartoon` — the last of which now
+   carries `about: ["cramer2005"]`, since the post exists to chase down a
+   cartoon Cramer mentions in a footnote. The sixth, MaryJo Wagner's 1986
+   dissertation, followed on the same day as `wagner1986` once it had a Zotero
+   record, and is cited from `mary-lease-suffrage-and-prohibition`.
 4. **Subject terms on unread books.** Assignments for the 45 existing sources
    were inferred from title, author and publisher. They are conservative, but
    you have read these books and I have not. `Environment` (8 sources, 1 post)
    and `Fiction`/`Sports`/`Travel` (no posts at all) are the ones most worth a
    glance.
-5. **`about:` is used on exactly one post.** Everything else was recorded as a
-   citation. `bia-recognition-changes-in-connecticut` engages Miller closely
-   enough that `about: ["miller2004"]` may be right.
-6. **Nine bibliography sources have no index page.** They are reachable only
-   from the writing that cites them. `/sources/` is still suppressed because it
-   duplicated `/reading/` — that is no longer true now that the two differ, so
-   un-suppressing it as a full bibliography is worth considering.
+5. ~~**`about:` is used on exactly one post.**~~ **Resolved 2026-07-31.** Now
+   three: `dennis-banks-fbi-file`, `bob-engelharts-golden-hill-paugussett-cartoon`,
+   and `bia-recognition-changes-in-connecticut`, where `about: ["miller2004"]`
+   was confirmed. Everything else remains a citation, which is the expected
+   ratio — most posts cite without being about.
+6. ~~**Nine bibliography sources have no index page.**~~ **Resolved 2026-07-31.**
+   `/sources/` is un-suppressed and renders a full bibliography — all 65 works,
+   sorted by key so they fall in author order, with the 15 non-ledger ones no
+   longer reachable only from the writing that cites them. Sources now link back
+   to whichever index lists them. Measured ceiling and the reasoning for leaving
+   the page unbounded are in [reading.md](reading.md).
 
 ## Deliberately left alone
 
@@ -132,6 +141,16 @@ Seven sources carry no subject tag: `bacon2025`, `elmhirst2025`, `grann2018`,
 quote `let-them-have-cake`. Nothing in the vocabulary fits them, and inventing a
 single-member tag per book is vocabulary sprawl, not a hub. `healey2025` and
 `roosevelt1928` still carry periods.
+
+They show as "Uncategorized" on `/sources/`, derived from the absence of `tags`
+rather than stored, so the label disappears the moment a real subject is added
+and can never contradict the front matter. See [reading.md](reading.md).
+
+Added 2026-07-31: **`Populism`**, covering `clanton1969`, `postel2007`,
+`wagner1986` and `white2017` plus `mary-lease-suffrage-and-prohibition`. The
+first three arrived untagged with the Zotero import; they were never a judgment
+call, only a backlog. The post was tagged at the same time so the hub connects
+writing to works rather than being another subject with sources and no writing.
 
 ## Per-file changes
 

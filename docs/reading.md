@@ -16,8 +16,13 @@ don't, and conflating them is how you end up with `tolkien2012` for a book from
 separately and says so when the two years differ. It is
 short enough to type from memory and does not go stale when a subtitle changes.
 Any name works as long as it urlizes to itself: lowercase, no spaces, no
-underscores. A mismatch does not error, it silently creates a second empty
-source, so `preflight.sh` is what catches a typo.
+underscores. A mismatch does not error: Hugo invents the term, publishing a
+phantom source page at `/sources/<typo>/` with no title, author or year,
+captioned "Book" because that is the template default — and listing it in the
+bibliography — while the post's real connection to the work it meant to cite
+silently does not exist. Nothing in the build notices, because the page renders
+and every link to it resolves. `scripts/checks/connection-lint.py` is what
+catches it, and suggests the near-miss key it probably meant.
 
 When two works by one author share a year, the key collides. The source that
 already exists keeps the bare key — its `/sources/<key>/` URL is published and
@@ -118,6 +123,57 @@ busiest year on record is 10. If that ever changes, the fix is to add
 `reading/<year>/index.html` to `OVERRIDES` in the lint, on the same reasoning
 that granted the index its allowance: this content is intentionally dense.
 
+## The Bibliography Index
+
+`/sources/` lists every source, ledger and non-ledger alike; `/reading/` lists
+only what was read. The taxonomy's own list page was suppressed for as long as
+those were the same set, since two indexes of the same books would merely have
+competed. The `status` split ended that, and the works consulted for a post but
+never read through — 15 of 65 — had no index at all until this page existed.
+
+Entries sort by source key rather than by title. A key is `lastname` + year, so
+sorting on it gives author-surname order for free; `author` is free text holding
+things like "Paul Chaat Smith and Robert Allen Warrior" and cannot be sorted on
+without parsing names.
+
+Each row carries the work's subjects, linked to their hubs. A source with none
+shows a derived, unlinked "Uncategorized" — derived because writing that into
+front matter would publish a `/tags/uncategorized/` hub answering nothing, put a
+meaningless word in the Topics row of every such source page, and, being a
+negation kept as data, have to be remembered and removed the day a real subject
+is added. `where $sources "Params.tags" nil` cannot fall out of step. It is
+deliberately not a link: real subjects go somewhere, this one has nowhere to go.
+
+The markup is otherwise deliberately lean — no collapsed panels, no catalogue
+links, no notes — because repeating each source page inline is exactly what put
+`/reading/` on course to fail the page-size lint. Measured against synthetic
+libraries carrying representative subject counts, a row here costs **444 bytes**
+and the page grows dead linear:
+
+| Sources | `/sources/index.html` |
+|---|---|
+| 65 (today) | 31.0 KiB |
+| 200 | 89.6 KiB |
+| 300 | 132.9 KiB |
+| 400 | 176.3 KiB |
+
+That crosses the lint's 96 KiB soft warning at roughly **215 sources** and its
+128 KiB hard failure at **289**. Displaying subjects is what costs it: the row
+was 321 bytes and the ceiling 294/396 before, since each tag link carries a full
+href. Worth it for a bibliography that shows what its works are about, and it
+means a future filter can read the subjects already in the markup rather than
+adding a parallel set of data attributes. Unlike the ledger, this page is not bounded —
+it grows with the library by design, because a bibliography that hides entries
+behind pagination is worse at the one thing it exists to do. The ceiling is
+distant enough to be worth accepting: the ledger has grown 7–10 a year, and the
+soft warning arrives with about a hundred sources of headroom before anything
+breaks. If it ever fires, `.Paginate` on the term list is the escape hatch, and
+the honest alternative is that this page is doing a job better done by search.
+Filtering and search are deferred deliberately, with the trigger and the design
+decisions recorded under "Known growth limits" in
+[operations.md](operations.md) — including why subject facets are the wrong
+thing to lead with and why they would lower the ceiling above.
+
 ```yaml
 ---
 title: "Clyde Warrior: Tradition, Community, and Red Power"
@@ -138,6 +194,13 @@ Anything below the front matter is shown on the source page as notes.
 
 `access_url` is spelled that way because `url` is reserved by Hugo — setting it
 would move the page.
+
+`type` is one of `book`, `article`, `archive`, `thesis`, or `dissertation`, and
+defaults to `book`. It sets the kicker above the title and decides whether the
+source is offered the catalogue links below — only `book` is, because a library
+search does not help with a journal article, an archival file, or unpublished
+degree work. Nothing else in the templates enumerates the values, so a new kind
+of source costs one word here and one in `newsource.sh`'s accepted list.
 
 ## Connecting Writing to a Source
 
@@ -221,7 +284,61 @@ one file instead of a round trip through Zotero and Obsidian.
 ```sh
 scripts/newsource.sh book "Book Title"
 scripts/newsource.sh article "Article Title"
+scripts/newsource.sh zotero cramer2005          # import from the Zotero library
+scripts/newsource.sh zotero "cramer colonialism" # search when the key is unknown
 ```
+
+### From Zotero
+
+The scholarly half of the library already lives in Zotero, and its records were
+curated when the work was read rather than reconstructed from a catalogue
+afterwards. The import reads the CSL-JSON export — `WEBSITE_BIBLIOGRAPHY`,
+default `~/Documents/Library/Library.json`, the same file `cite-refs.sh` uses —
+and prefills title, author, publisher, year, ISBN, DOI, access URL, and type.
+It is offline and needs no network.
+
+It also supplies the one field no catalogue lookup can: `citation-key`, which
+becomes the source folder name, so importing a work and naming its page are a
+single act. Give it an unknown key and it searches author, title, year and key,
+then asks which one you meant.
+
+Three things it does deliberately:
+
+- **Takes only the first ISBN.** Zotero packs every ISBN an edition ever had
+  into one space-separated field — 39 of 94 entries here do. The templates strip
+  non-alphanumerics to build catalogue links, so passing the field through whole
+  would fuse two ISBNs into a bogus 26-digit number and produce dead links.
+- **Converts the title to title case.** Zotero stores sentence case; every
+  source page here is title case. The conversion only ever raises a word's first
+  letter, so a token already carrying a capital — `Pequots`, `U.S.`,
+  `McKenzie-Jones` — passes through untouched.
+- **Defaults `status` to `none`.** The usual reason to import from Zotero is a
+  work cited in a footnote years ago, which is a bibliography entry, not a
+  reading event. Answer `read` and it joins the ledger like anything else.
+
+Three type mappings are less obvious than the rest:
+
+- **Degree level comes from `genre`, not the CSL type.** CSL has a single
+  `thesis` type for work at every level, and Zotero keeps the level in the
+  item's own Type field, exported as `genre`. A doctoral dissertation is not a
+  master's thesis, and the kicker is the only place the page says which it is,
+  so a `genre` matching dissertation/doctoral/PhD yields `dissertation` and
+  everything else stays `thesis` — which absorbs the several master's spellings
+  in the library (`M.S.`, `Master's Thesis`) without enumerating them.
+- **Some records aren't typed `thesis` at all.** Older and imported ones land on
+  the generic `document` and carry the kind in `genre` alone, where trusting the
+  CSL type would label a dissertation "Archive".
+- **Neither has a publisher.** Zotero files the granting institution under
+  `publisher-place`, read only for those two types, since for anything else that
+  field is a city and would put Boston where the press belongs.
+
+Zotero is a prefill, never a requirement: 23 of 59 sources are in it, and the
+casual reading is not and should not be. That is the whole point of the sources
+taxonomy replacing the old cite-key ledger — a book read on holiday still costs
+one file, with no round trip through Zotero.
+
+An auto-generated key (`zotero-item-602`) is worth fixing in Zotero before
+importing rather than publishing as a permanent URL.
 
 The script prompts for an ISBN first and prefills title, author, publisher, and
 year from Open Library; articles prompt for a DOI and prefill from Crossref. A

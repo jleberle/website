@@ -5,6 +5,7 @@ published_year: 2017
 publisher: "Oxford University Press"
 tags:
 - "Historiography"
+- "Populism"
 eras:
 - "19th Century"
 ---

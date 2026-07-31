@@ -71,20 +71,22 @@ The two new size-oriented checks are intentionally site-specific:
 
 ### Known growth limits
 
-Two pages render every entry into one document, so they have measured ceilings
-rather than open-ended growth. Both numbers come from building synthetic
+Three pages render every entry into one document, so they have measured ceilings
+rather than open-ended growth. All the numbers come from building synthetic
 corpora, not estimates:
 
 | Page | Limit | Headroom |
 |---|---|---|
 | `/reading/<year>/` | ~55 books in one year warns, ~75 fails | busiest year on record is 10 |
 | `/archives/` | ~119 posts warns, ~161 fails | 30 posts, about 2/month |
+| `/sources/` | ~215 sources warns, ~289 fails | 65 sources, 7–10 read a year |
 
 The reading ledger was split by year in 2026-07 precisely because it had no such
-bound — see [reading.md](reading.md). `/archives/` still has none: it is one
-page by design, since its job is filtering and searching across everything, and
-splitting it defeats that. At roughly two posts a month the ceiling is about
-five years out.
+bound — see [reading.md](reading.md). `/archives/` and `/sources/` still have
+none, for the same reason in both cases: each is one page by design, because its
+job is to be scanned or searched across everything, and splitting it defeats
+that. At roughly two posts a month `/archives/` is about five years out;
+`/sources/` is further, since the ceiling is 4.5x the current library.
 
 **Revisit `/archives/` at 100 posts.** The fix is to move the per-entry
 `data-archive-search-text` attribute (32% of each entry's markup) into a fetched
@@ -92,6 +94,40 @@ JSON index and paginate the HTML, with search running against the full index so
 pagination does not break finding things. `connect-src 'self'` in
 `static/_headers` already permits that fetch, so no CSP change is needed. Doing
 it now would mean tuning a search index against 30 entries.
+
+**Revisit `/sources/` at 150 sources.** The trigger is when the bibliography
+stops being scannable in one pass, which arrives well before the size ceiling
+does. The mechanism already exists: `assets/js/archive-filters.js` (116 lines)
+does facet buttons, free-text search, URL state, an `aria-live` count, empty
+state and reset for `/archives/`, and ships `hidden` so the page still works
+without JS. A sources version is close to a copy against a `data-source-tags`
+attribute plus one entry in the bundle list in `layouts/_partials/extend_head.html`.
+
+Three things decided in advance, so they are not re-litigated then:
+
+- **Lead with search over title and author, not subject facets.** You arrive at
+  a bibliography knowing the author. 19 distinct subjects appear on sources
+  against 65 works, so facets are a lot of chrome for not much narrowing — the
+  reverse of `/archives/`, where four section buttons filter thirty posts.
+- **Subject facets structurally cannot show everything.** 7 of 65 sources carry
+  no subject tag, and unlike a post — where `connection-lint.py` requires a
+  source or a tag — an untagged source is legitimate; nothing in the vocabulary
+  fits `bacon2025` or `grann2018`. Any facet UI hides that 11% unless "Untagged"
+  is itself a facet. The bibliography already derives that group
+  (`where $sources "Params.tags" nil`) and labels those rows Uncategorized, so
+  the affordance exists and needs only to be made filterable. Search does not
+  have the problem at all.
+- **If it gets search, it should get the JSON index at the same time.** Search
+  text as a per-row data attribute is what makes `/archives/` expensive, and
+  adding it here would lower the ceiling in the table above rather than raise
+  it. Fetching the index instead removes the ceiling altogether.
+
+Subject browsing already works from the other direction and needs nothing:
+`/tags/<term>/` lists "Sources on this subject" beside the writing on it
+(`layouts/term.html`). What is missing is only narrowing without leaving
+`/sources/`. Filtering needs no new per-row data — the subjects are already
+rendered as links in each row, which is what dropped the ceiling above from
+~294 to ~215 — so the remaining cost is the UI and the script, not the markup.
 
 ## GitHub Actions
 

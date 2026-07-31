@@ -5,9 +5,10 @@ date: 2022-10-11
 draft: false
 description: "An incomplete historical assessment"
 summary: "An incomplete historical assessment of Mary Lease and her involvement in prohibition and women's suffrage"
-sources: ["white2017", "postel2007", "clanton1969"]
+sources: ["white2017", "postel2007", "clanton1969", "orr2006", "wagner1986"]
 tags:
 - "Historiography"
+- "Populism"
 eras:
 - "19th Century"
 ---

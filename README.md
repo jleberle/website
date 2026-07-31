@@ -24,7 +24,7 @@ The site is available at `http://localhost:1313`.
 | Path | Purpose |
 |---|---|
 | `content/` | Published site content |
-| `content/sources/` | One page per cited work, keyed by citation key; the reading ledger and connection hubs |
+| `content/sources/` | One page per cited work, keyed by citation key; the bibliography, reading ledger, and connection hubs |
 | `layouts/` | Hugo templates and shortcodes |
 | `assets/` | CSS and JavaScript |
 | `scripts/` | Authoring, build, and maintenance helpers |
@@ -43,6 +43,7 @@ copy, so edit them there directly.
 scripts/newpost.sh article "Post Title"
 scripts/newpost.sh article --cover "Post Title"
 scripts/newsource.sh book "Book Title"           # prefills from Open Library by ISBN
+scripts/newsource.sh zotero cramer2005           # prefills from the Zotero library, offline
 scripts/finishsource.sh --push egan2023          # mark read, ship, and push
 scripts/publish-draft.sh --push articles/2026-06-24-post-title.md      # no images to add
 scripts/publish-draft.sh --cite reviews/2026-06-24-review-slug.md      # append Works Cited
