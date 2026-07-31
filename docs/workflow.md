@@ -289,8 +289,8 @@ archive links to their own landing page.
 | `scripts/finishsource.sh` | Mark a source read and stamp its finish metadata |
 | `scripts/cite-refs.sh` | Extract citation keys / render a Works Cited list for a draft (used by publish-draft) |
 | `scripts/add-images.sh` | Add bundle images, with cover/body handling |
-| `scripts/preflight.sh` | Local pre-push gate, including published-draft and source-image policy checks |
-| `scripts/ship.sh` | Run preflight, then commit and push in one step (`--push` on publish-draft.sh / finishsource.sh calls this); lists all pending files and asks for confirmation first (`--yes` skips the prompt) |
+| `scripts/preflight.sh` | Deploy gate (drafts, taxonomy, image policy, build, feed/CSP/security.txt, size/display lints); also enforced automatically by the `pre-push` git hook |
+| `scripts/ship.sh` | Stage, commit, and push in one step, confirming the pending-file list first (`--yes` skips it); runs preflight itself so a failure leaves nothing committed, rather than relying on the hook to catch it after a commit exists. Called by `--push` on publish-draft.sh / finishsource.sh |
 | `scripts/lib.sh` | Shared bash helpers (`trim`, `field`, `list_field`, `rfc3339_now`, ...) sourced by the scripts above — not run directly |
 
 Less frequently used maintenance and audit helpers are documented in [operations.md](operations.md) and [maintenance.md](maintenance.md).

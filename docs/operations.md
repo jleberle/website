@@ -11,17 +11,24 @@ git remote -v
 # origin  github:jleberle/website.git (push)
 ```
 
-The normal path is:
+A pre-push hook (`~/.dotfiles/git/hooks/pre-push`, wired in via
+`core.hooksPath`) runs `scripts/preflight.sh` automatically before anything
+leaves this machine, so a bare `git push` is already gated. The normal path is
+still to run preflight explicitly first, so failures are caught before a
+commit exists rather than after:
 
 ```sh
 scripts/preflight.sh && git push
 ```
 
-or, to also stage and commit in the same step:
+or, to also stage, commit, and push in one step — this runs preflight itself
+too, so the hook's run is a fast (~3s) second pass, not meaningful overhead:
 
 ```sh
 scripts/ship.sh "Commit message"
 ```
+
+Bypass the hook deliberately with `git push --no-verify`.
 
 ## Deployment
 
@@ -40,17 +47,21 @@ The default local gate is intentionally narrower than CI. It is meant to answer:
 Default `scripts/preflight.sh` checks:
 
 1. no `draft: true` files in the publishable content tree
-2. no unoptimized JPEG, PNG, or WebP source images outside approved icons and JPEG companions
-3. no EXIF/IPTC/XMP metadata left on a published raster image
-4. Hugo build
-5. content resource references
-6. source junk files
-7. generated junk files
-8. feed lint
-9. CSP hash drift
-10. published-reference scan
-11. page-size lint
-12. image display lint
+2. period values filed under `eras`, not `tags`
+3. every `tags` value is an approved subject term
+4. no orphan posts; `about:` is a subset of `sources:`
+5. no unoptimized JPEG, PNG, or WebP source images outside approved icons and JPEG companions
+6. no EXIF/IPTC/XMP metadata left on a published raster image
+7. Hugo build
+8. content resource references
+9. source junk files
+10. generated junk files
+11. feed lint
+12. CSP hash drift
+13. security.txt clearsignature present, valid, unexpired
+14. published-reference scan
+15. page-size lint
+16. image display lint
 
 Useful modes:
 
