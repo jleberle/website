@@ -7,6 +7,7 @@ isbn: "9780803267459"
 tags:
 - "Native American History"
 - "Tribal Recognition"
+- "Connecticut"
 eras:
 - "1990s"
 ---

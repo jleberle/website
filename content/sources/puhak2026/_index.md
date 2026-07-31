@@ -9,7 +9,6 @@ isbn: "9781639732159"
 started: "2026-06-15"
 tags:
 - "Folklore"
-- "Drinking"
 eras:
 - "17th Century"
 ---

@@ -9,6 +9,7 @@ about: ["cramer2005"]
 tags:
 - "Tribal Recognition"
 - "Native American History"
+- "Connecticut"
 eras:
 - "1990s"
 cover:

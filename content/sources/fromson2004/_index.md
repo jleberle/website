@@ -7,6 +7,7 @@ isbn: "9780786262113"
 tags:
 - "Native American History"
 - "Tribal Recognition"
+- "Connecticut"
 eras:
 - "1990s"
 ---

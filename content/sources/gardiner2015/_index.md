@@ -8,6 +8,5 @@ publisher: "Cambridge University Press"
 format: "Hardcover"
 finished: "2015-11-21"
 tags:
-- "Digital Humanities"
 - "Historiography"
 ---

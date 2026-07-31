@@ -8,4 +8,8 @@ publisher: "Riverhead Books"
 format: "Hardcover"
 isbn: "9780593854280"
 finished: "2025-10-04"
+tags:
+- "Disaster"
+eras:
+- "1970s"
 ---

@@ -8,4 +8,8 @@ publisher: "Liveright Publishing Corporation"
 format: "Hardcover"
 isbn: "9781324094654"
 finished: "2026-01-25"
+tags:
+- "Disaster"
+eras:
+- "1970s"
 ---

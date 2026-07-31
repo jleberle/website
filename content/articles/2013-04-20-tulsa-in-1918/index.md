@@ -13,6 +13,8 @@ cover:
   hiddenInSingle: true
   caption: ""
   relative: true
+eras:
+- "1910s"
 ---
 ![1918 Map of Tulsa](cover.avif)
 {loading="eager" fetchpriority="high"}
