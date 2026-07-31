@@ -66,10 +66,12 @@ scripts/ship.sh "Commit message"                 # preflight, commit, push in on
 
 - [PaperMod](https://github.com/adityatelange/hugo-PaperMod) — origin of the vendored Hugo theme base (MIT licensed)
 - [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — original palette inspiration
-- [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) by Frank Grießhammer / Adobe ([SIL Open Font License](https://openfontlicense.org/))
+- [Charter](https://ctan.org/pkg/xcharter) by Matthew Carter (Bitstream), extended as XCharter by Michael Sharpe ([Bitstream Charter Free font license](static/fonts/charter-LICENSE.txt))
 - [Fraunces](https://fonts.google.com/specimen/Fraunces) by Undercase Type ([SIL Open Font License](https://openfontlicense.org/))
 - [IBM Plex Mono](https://fonts.google.com/specimen/IBM+Plex+Mono) by IBM ([SIL Open Font License](https://openfontlicense.org/))
 
 ## License
 
-Content is licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+- Content (`content/`, images, and site text) is licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) — see [LICENSE](LICENSE).
+- Code (templates, scripts, CSS, JS, and site configuration) is licensed under the [MIT License](LICENSE-CODE), consistent with the vendored [PaperMod](https://github.com/adityatelange/hugo-PaperMod) base it was forked from — see [LICENSE-CODE](LICENSE-CODE).
+- Self-hosted font files under `static/fonts/` retain their own upstream licenses, not this repo's.
