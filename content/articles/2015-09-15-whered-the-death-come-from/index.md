@@ -45,6 +45,6 @@ As a component of History 5073 - Digital Preservation, we're required to edit a 
 
 *This post was a component of my digital preservation class.*
 
-[^1]: Pat Chaat Smith and Robert Allen Warrior, *Like a Hurricane: The Native Rights Movement from Alcatraz to Wounded Knee** (New York: The New Press, 1996), 234.
+[^1]: Paul Chaat Smith and Robert Allen Warrior, *Like a Hurricane: The Indian Movement from Alcatraz to Wounded Knee** (New York: The New Press, 1996), 234.
 [^2]: Prosecution Rests in Trial of 2 Indians Over Wounded Knee, "New York Times," July 25, 1974.
 [^3]: 2026 update: Amazon shut down Alexa site tracking and the statistics are no longer available but Wikipedia has only increased it's standing since this was written.
