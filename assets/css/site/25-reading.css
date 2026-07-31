@@ -472,7 +472,7 @@
     font-size: 0.88rem;
 }
 
-@media (max-width: 560px) {
+@media (width <= 560px) {
     .bib-entry {
         grid-template-columns: 1fr;
         gap: 0.15rem;
@@ -510,7 +510,7 @@
     opacity: 0.75;
 }
 
-@media (max-width: 560px) {
+@media (width <= 560px) {
     .bib-subjects {
         grid-column: auto;
     }
