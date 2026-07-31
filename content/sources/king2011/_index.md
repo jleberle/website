@@ -8,4 +8,8 @@ publisher: "Scribner"
 format: "Paperback"
 isbn: "9781451627299"
 finished: "2025-06-03"
+tags:
+- "Fiction"
+eras:
+- "1960s"
 ---

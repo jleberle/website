@@ -8,4 +8,8 @@ publisher: "Houghton Mifflin Harcourt Publishing Company"
 format: "Ebook"
 isbn: "9781328506474"
 finished: "2024-10-18"
+tags:
+- "Sports"
+eras:
+- "1990s"
 ---

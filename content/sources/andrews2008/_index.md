@@ -8,4 +8,9 @@ publisher: "Harvard University Press"
 format: "Paperback"
 isbn: "9780674031012"
 finished: "2012-02-21"
+tags:
+- "Environment"
+- "Labor"
+eras:
+- "1910s"
 ---

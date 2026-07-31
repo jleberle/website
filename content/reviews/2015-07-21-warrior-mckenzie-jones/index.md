@@ -7,9 +7,11 @@ description: "An assessment of Ponca activist Clyde Warrior's contributions to R
 sources: ["mckenziejones2015"]
 external_url: "https://www.oupress.com/9780806147055/clyde-warrior/"
 tags:
-- "1960s"
 - "American Indian Movement"
 - "Oklahoma"
+- "Native American History"
+eras:
+- "1960s"
 cover:
   image: "cover.avif"
   alt: "Front cover of Clyde Warrior: Tradition, Community, and Red Power"

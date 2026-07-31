@@ -8,4 +8,6 @@ publisher: "Bison Books"
 format: "Hardcover"
 isbn: "9781496220042"
 finished: "2024-06-30"
+tags:
+- "Oklahoma"
 ---

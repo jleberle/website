@@ -8,6 +8,7 @@ sources: ["gardiner2015"]
 external_url: "https://www.cambridge.org/core/books/digital-humanities/E31D46FD97BF94B81B461F7234D29BE4"
 tags:
 - "Historiography"
+- "Digital Humanities"
 cover:
   image: "cover.avif"
   alt: "Front cover of Digital Humanities"

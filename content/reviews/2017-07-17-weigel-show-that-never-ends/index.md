@@ -7,8 +7,9 @@ description: "A nerdy assessment of how prog rock became uncool"
 sources: ["weigel2017"]
 external_url: "https://bookshop.org/p/books/the-show-that-never-ends-the-rise-and-fall-of-prog-rock-david-weigel/c0328b31031f2338"
 tags:
-- "1970s"
 - "Music"
+eras:
+- "1970s"
 cover:
   image: "cover.avif"
   alt: "Front cover of The Show That Never Ends"

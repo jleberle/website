@@ -8,6 +8,11 @@ publisher: "Beacon Press"
 format: "Paperback"
 isbn: "9780807007372"
 finished: "2026-04-14"
+tags:
+- "Native American History"
+- "Oklahoma"
+eras:
+- "1920s"
 ---
 
 Assigned for Oklahoma History, Spring 2026

@@ -8,4 +8,9 @@ publisher: "Little, Brown and Company"
 format: "Hardcover"
 isbn: "9780316381949"
 finished: "2026-05-07"
+tags:
+- "Right-Wing Movements"
+- "Federal Law Enforcement"
+eras:
+- "1990s"
 ---

@@ -4,9 +4,12 @@ slug: "on-abourerzks-ak-47s-at-wounded-knee"
 date: 2012-10-28
 description: "Were there AK-47s at Wounded Knee?"
 summary: "Were there AK-47s at Wounded Knee?"
+sources: ["scheips2005"]
 tags:
-- "1970s"
 - "American Indian Movement"
+- "Native American History"
+eras:
+- "1970s"
 ---
 [Former Senator Jim Abourezk discussing his visit to the occupied town of Wounded Knee in 1973 with the South Dakota CBS affiliate](https://web.archive.org/web/20160611061224/http://www.keloland.com/news/article/news/abourezk-shares-means--mcgovern-memories):
 

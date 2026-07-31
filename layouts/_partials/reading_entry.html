@@ -60,21 +60,25 @@
       {{- else }}
         {{- with $p.finished }}<div><dt>Finished</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end }}
       {{- end }}
-      {{- with $p.isbn }}
+      {{- $catalogues := partial "source_catalogues.html" $entry }}
+      {{- if $p.isbn }}
       <div class="reading-entry-record-item reading-entry-record-item--wide">
         <dt>ISBN</dt>
         <dd>
-          <span>{{ . }}</span>
-          {{- with $isbn }}
+          <span>{{ $p.isbn }}</span>
+          {{- with $catalogues }}
           <span class="reading-entry-access" aria-hidden="true"> · </span>
-          <span class="reading-entry-access">
-            <a href="https://openlibrary.org/isbn/{{ . }}" rel="external noopener" target="_blank">Open Library</a>
-            <span aria-hidden="true"> · </span>
-            <a href="https://search.worldcat.org/isbn/{{ . }}" rel="external noopener" target="_blank">WorldCat</a>
-          </span>
+          <span class="reading-entry-access">{{ . }}</span>
           {{- end }}
         </dd>
       </div>
+      {{- else }}
+      {{- with $catalogues }}
+      <div class="reading-entry-record-item reading-entry-record-item--wide">
+        <dt>Find it</dt>
+        <dd><span class="reading-entry-access">{{ . }}</span></dd>
+      </div>
+      {{- end }}
       {{- end }}
       {{- with $accessURL }}
       <div class="reading-entry-record-item reading-entry-record-item--wide">

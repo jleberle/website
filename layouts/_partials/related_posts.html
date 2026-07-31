@@ -1,6 +1,8 @@
-{{- /* Footer connection blocks. At most two are emitted: single.html adds a
-       "Topics" block alongside, and the grid is capped at three so the
-       apparatus stays shorter than the post it hangs off.
+{{- /* Footer connection blocks. At most two are emitted here. single.html adds
+       "Topics" and "Period" alongside, so a fully connected post now shows up
+       to four rows rather than the three this was originally capped at — the
+       cap moved when articles started carrying `sources:`, and four rows of
+       real connection is the point of the apparatus rather than a regression.
 
        "Elsewhere on this source" used to be built by comparing cite keys
        across every page in the site. The sources taxonomy already maintains
@@ -13,6 +15,26 @@
 {{- $page := . -}}
 {{- $candidates := where site.RegularPages "Type" "in" site.Params.contentSections -}}
 {{- $sources := $page.GetTerms "sources" -}}
+
+{{- /* `about:` names which of the page's sources it is centrally concerned
+       with; the rest are citations. The distinction earns its keep on the
+       source page, which separates "written about" from "cited in" — here it
+       only sets the order, so the work being argued with reads first. */ -}}
+{{- $aboutKeys := $page.Params.about | default slice -}}
+{{- if $aboutKeys -}}
+  {{- $primary := slice -}}
+  {{- $secondary := slice -}}
+  {{- range $sources -}}
+    {{- if in $aboutKeys .Data.Term -}}
+      {{- $primary = $primary | append . -}}
+    {{- else -}}
+      {{- $secondary = $secondary | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- range $secondary -}}{{- $primary = $primary | append . -}}{{- end -}}
+  {{- $sources = $primary -}}
+{{- end -}}
+
 {{- $showSources := and $sources (not (in (slice "reviews" "quotes") $page.Section)) -}}
 
 {{- $sourceMatches := slice -}}

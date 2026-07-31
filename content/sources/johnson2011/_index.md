@@ -8,4 +8,6 @@ publisher: "Picador"
 format: "Paperback"
 isbn: "9781250007650"
 finished: "2026-01-03"
+tags:
+- "Fiction"
 ---

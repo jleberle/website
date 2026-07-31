@@ -4,4 +4,6 @@ author: "Mark Wyman"
 status: "read"
 published_year: 2010
 publisher: "Hill and Wang"
+tags:
+- "Labor"
 ---

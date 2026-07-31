@@ -8,4 +8,9 @@ publisher: "Doubleday"
 format: "Ebook"
 isbn: "9780385534246"
 finished: "2022-02-15"
+tags:
+- "Native American History"
+- "Oklahoma"
+eras:
+- "1920s"
 ---

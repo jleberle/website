@@ -6,6 +6,9 @@ description: "Sometimes the cowboys and Indians were one and the same"
 sources: ["iverson1994"]
 external_url: "https://www.oupress.com/9780806128849/when-indians-became-cowboys/"
 tags:
+- "Native American History"
+- "Rodeo"
+eras:
 - "19th Century"
 cover:
   image: "cover.avif"

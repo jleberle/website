@@ -8,4 +8,8 @@ publisher: "University of California Press"
 format: "Paperback"
 isbn: "9780520239098"
 finished: "2012-09-19"
+tags:
+- "Environment"
+eras:
+- "19th Century"
 ---

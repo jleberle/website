@@ -127,15 +127,66 @@ citation-style keys (`lastname` + `year`); the work's title,
 author, publisher, and year live there and are never retyped on the post. See
 [reading.md](reading.md) for the source format and what the connection produces.
 
+List every work the piece draws on, then name the one it is centrally about:
+
+```yaml
+sources: ["white2017", "postel2007", "clanton1969"]
+about: ["postel2007"]
+```
+
+`about` must be a subset of `sources` — it labels those links rather than
+creating new ones, so a key that appears only in `about` does nothing at all.
+`scripts/checks/connection-lint.py` catches that, and also fails any post
+carrying neither a source nor a subject tag.
+
+The distinction shows up on the source page, which separates "Writing about this
+source" from "Cited in". Without it, an essay citing a book once would be
+indistinguishable from a review of it, and attaching citations to articles would
+mean flooding every cited work with false claims of being written about. A
+review or quote with one source and no `about` is taken to be about it; an
+article gets no such inference, because citing one book is normal there.
+
 `external_url` is optional and points at the specific passage or edition being
 discussed. It renders as a "Read online" link beside the citation; it does not
 turn the post title into an outbound link.
 
-Cross-linking between pages is handled two ways: automatically by shared tags
-(the `Related writing` footer block), and deliberately by research paths. There
-are no `courses`, `people`, or `categories` frontmatter fields — curated
-connections go in a research path, where the reason for the connection can be
-stated in prose.
+## Tags and Eras
+
+Subject and period are two facets, not one list:
+
+```yaml
+tags:
+- "American Indian Movement"
+- "Rodeo"
+eras:
+- "1970s"
+```
+
+`tags` answers *what is this about*; `eras` answers *what period does it
+concern*. They were a single flat vocabulary until 2026-07, when the period
+values (`1970s`, `19th Century`, ...) were moved into their own taxonomy —
+splitting 22 files then rather than several hundred later, and without which a
+subject hub built from a term like `1970s` is really just a date filter.
+Note that an era is the period a piece is *about*, not when it was published;
+`publishDate` already covers that and the archive already sorts by it.
+
+Write a period as a decade (`1970s`) or a named century (`19th Century`).
+`scripts/checks/taxonomy-facet-lint.py` fails the preflight if a period-shaped
+value turns up under `tags`, which is what keeps the two facets from quietly
+merging again. A tag that merely contains a year — `Tulsa in 1918` — is a
+subject and is left alone.
+
+Both render on a post, in separate "Topics" and "Period" rows, and both have
+term pages (`/tags/<term>/`, `/eras/<term>/`). A post may carry only one facet;
+five posts currently carry an era and no subject tag at all.
+
+Cross-linking between pages is handled two ways: automatically by shared terms
+(the `Related writing` footer block), and deliberately by research paths. The
+`related` config in `hugo.yaml` indexes `tags` at weight 100 and `eras` at 20,
+so a shared subject always outranks a shared century, and a post whose only
+term is a period still relates to something. There are no `courses`, `people`,
+or `categories` frontmatter fields — curated connections go in a research path,
+where the reason for the connection can be stated in prose.
 
 ## Research Paths
 

@@ -8,6 +8,12 @@ publisher: "Liveright Publishing Corporation"
 format: "Hardcover"
 isbn: "9781324092094"
 finished: "2025-06-20"
+tags:
+- "Native American History"
+- "Music"
+- "Oklahoma"
+eras:
+- "1970s"
 ---
 
 Read for a Stillwater Library book discussion

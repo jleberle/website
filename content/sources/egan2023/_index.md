@@ -8,4 +8,8 @@ publisher: "Penguin Publishing Group"
 format: "Ebook"
 isbn: "9780735225275"
 finished: "2024-08-28"
+tags:
+- "Right-Wing Movements"
+eras:
+- "1920s"
 ---

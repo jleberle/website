@@ -72,8 +72,15 @@ cascade:
 # longer drives connections, so a source no longer has to exist in Zotero to
 # be linkable. /sources/ itself is suppressed (see content/sources/_index.md);
 # /reading/ is the ledger index.
+# `tags` and `eras` are two facets, not one vocabulary. A tag names what a
+# piece is ABOUT (American Indian Movement, Rodeo); an era names the period it
+# concerns (1970s, 19th Century). They were one flat list until they were split,
+# on the theory that "1970s" and "American Indian Movement" answer different
+# questions and a subject hub built from a period term is just a date filter.
+# scripts/checks/taxonomy-facet-lint.py keeps period values out of `tags`.
 taxonomies:
   tag: tags
+  era: eras
   series: series
   source: sources
 
@@ -82,6 +89,11 @@ taxonomies:
 # proximity, which would surface undated coincidences as "related" with no
 # actual topical overlap. threshold: 0 means any shared tag counts; the
 # template caps the result count, so this doesn't need to do that filtering.
+#
+# `eras` is indexed too, at a low weight: sharing a subject is a real relation,
+# sharing a century is a weak one, so a subject match should always outrank it.
+# Without the era index, posts whose only tag was a period would relate to
+# nothing at all.
 related:
   threshold: 0
   includeNewer: true
@@ -89,6 +101,8 @@ related:
   indices:
     - name: tags
       weight: 100
+    - name: eras
+      weight: 20
 
 menu:
   main:

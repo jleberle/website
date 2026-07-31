@@ -8,6 +8,7 @@ sources: ["zengerle2026"]
 external_url: "https://zandoprojects.com/books/hated-by-all-the-right-people-hardcover"
 tags:
 - "Journalism"
+- "Right-Wing Movements"
 cover:
   image: "cover.avif"
   alt: "Front cover of Hated by All the Right People: Tucker Carlson and the Unraveling of the Conservative Mind"

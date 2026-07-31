@@ -8,4 +8,6 @@ publisher: "Penguin Books"
 format: "Ebook"
 isbn: "9781101980217"
 finished: "2022-07-23"
+tags:
+- "Folklore"
 ---

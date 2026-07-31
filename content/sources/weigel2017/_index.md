@@ -8,4 +8,8 @@ publisher: "W.W. Norton"
 format: "Hardcover"
 isbn: "9780393356021"
 finished: "2017-07-16"
+tags:
+- "Music"
+eras:
+- "1970s"
 ---

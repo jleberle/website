@@ -342,6 +342,28 @@ SLUG="${KEY_AUTHOR}${KEY_YEAR}"
 if [[ -n "$LOOKUP_FIRST_YEAR" && "$LOOKUP_FIRST_YEAR" != "$PUBLISHED_YEAR" ]]; then
   echo "Key uses the work's first publication year ($LOOKUP_FIRST_YEAR), not this edition ($PUBLISHED_YEAR)." >&2
 fi
+
+# Two works by one author in one year collide on lastname+year. The source that
+# was published first keeps the bare key — its /sources/<key>/ URL is already
+# out in the world and renaming it would break that — so later arrivals take a
+# letter suffix, the ordinary citation convention: egan2023, egan2023a. Rare at
+# fifty sources, routine at five hundred, which is why the script proposes the
+# next free suffix instead of leaving it to be improvised each time.
+if [[ -e "$SOURCES_ROOT/$SLUG/_index.md" ]]; then
+  BASE_SLUG="$SLUG"
+  for letter in {a..z}; do
+    if [[ ! -e "$SOURCES_ROOT/${BASE_SLUG}${letter}/_index.md" ]]; then
+      SLUG="${BASE_SLUG}${letter}"
+      break
+    fi
+  done
+  if [[ "$SLUG" == "$BASE_SLUG" ]]; then
+    echo "content/sources/$BASE_SLUG/ exists and so does every a-z suffix; enter a key by hand." >&2
+  else
+    echo "content/sources/$BASE_SLUG/ already exists — proposing $SLUG." >&2
+  fi
+fi
+
 SLUG=$(read_with_default "Key (folder name, referenced as sources: [\"...\"])" "$SLUG")
 
 DEST="$SOURCES_ROOT/$SLUG"

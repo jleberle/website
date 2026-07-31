@@ -8,5 +8,31 @@
 {{- partial "source_page.html" . }}
 {{- else }}
 {{- partial "page_list.html" . }}
+{{- /* A source can carry `tags`/`eras` of its own, so a subject term collects
+       both writing and works — the books on a subject sitting alongside the
+       writing on it is what makes a tag page a hub rather than a post list.
+
+       The sources section is queried directly rather than read off this term's
+       own .Pages. A source is itself a taxonomy term (of `sources`), and while
+       .GetTerms on the source resolves its tags perfectly well, the reverse
+       index here lists only kind=page members, so a term-kind source silently
+       never appears. Filtering the section on the facet param is explicit,
+       gives the same answer for `tags` and `eras`, and does not depend on how
+       Hugo chooses to assemble one taxonomy's terms into another's. */ -}}
+{{- $facet := .Data.Plural }}
+{{- $works := where (site.GetPage "/sources").Pages (printf "Params.%s" $facet) "intersect" (slice .Data.Term) }}
+{{- with $works }}
+<section class="post-context related-posts term-sources" aria-label="Sources on this subject">
+  <span class="post-context-kicker">Sources on this subject</span>
+  <ul class="related-posts-list">
+    {{- range .ByTitle }}
+    <li>
+      <span class="related-post-type">{{ .Params.type | default "book" | humanize }}</span>
+      <span><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Params.author }}, {{ . }}{{ end }}</span>
+    </li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}
 {{- end }}
 {{- end }}{{- /* end main */ -}}

@@ -8,6 +8,11 @@ publisher: "Yale University Press"
 format: "Hardcover"
 isbn: "9780300272413"
 finished: "2026-01-01"
+tags:
+- "Native American History"
+- "Oklahoma"
+eras:
+- "19th Century"
 ---
 
 Assigned for Oklahoma History, Spring 2026

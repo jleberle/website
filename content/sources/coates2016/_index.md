@@ -8,4 +8,6 @@ publisher: "Nicholas Brealey Publishing"
 format: "Ebook"
 isbn: "9781857886337"
 finished: "2022-03-05"
+tags:
+- "Travel"
 ---

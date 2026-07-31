@@ -4,9 +4,12 @@ slug: "thanksgiving-1970"
 date: 2011-11-23
 description: "AIM's 1970 Thanksgiving protest"
 summary: "The American Indian Movement's Thanksgiving anti-commemoration in 1970"
+sources: ["banks2004"]
 tags:
-- "1970s"
 - "American Indian Movement"
+- "Native American History"
+eras:
+- "1970s"
 cover:
   image: "cover.avif"
   alt: "Russell Means in front of the statue of Massasoit"

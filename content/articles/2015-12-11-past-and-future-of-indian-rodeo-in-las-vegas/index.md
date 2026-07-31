@@ -6,6 +6,7 @@ description: "A trip to the Indian National Finals Rodeo"
 summary: "A report on the trip to the Indian National Finals Rodeo in 2015"
 tags:
 - "Rodeo"
+- "Native American History"
 cover:
   image: "cover.avif"
   alt: "40 years of INFR contestants"

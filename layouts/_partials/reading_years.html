@@ -1,0 +1,29 @@
+{{- /* The year index, shared by /reading/ and each /reading/<year>/ page so the
+       ledger can be walked from anywhere in it without going back to the top.
+
+       Pages come from the content adapter, which does not emit one for the
+       current year — /reading/ renders that year in full itself. `current` is
+       the year being viewed (0 on the undated page, absent on the index), used
+       only to mark the active link. */ -}}
+{{- $current := .current | default -1 -}}
+{{- $years := where (site.GetPage "/reading").Pages "Params.year" "!=" nil -}}
+{{- $ledger := where (site.GetPage "/sources").Pages "Params.status" "!=" nil -}}
+{{- $read := where $ledger "Params.status" "ne" "reading" -}}
+
+{{- with $years }}
+<nav class="reading-year-index" aria-label="Reading by year">
+  <h2 class="reading-year-index-title">Earlier years</h2>
+  <ul class="reading-year-index-list">
+    {{- range (sort . "Params.year" "desc") }}
+    {{- $y := .Params.year | int }}
+    {{- $count := len (cond (eq $y 0) (where $read "Params.read_year" nil) (where $read "Params.read_year" $y)) }}
+    <li>
+      <a href="{{ .RelPermalink }}"{{ if eq $y $current }} aria-current="page"{{ end }}>
+        <span class="reading-year-title">{{ cond (eq $y 0) "Undated" (printf "%d" $y) }}</span>
+        <span class="reading-year-count">{{ $count }} {{ cond (eq $count 1) "source" "sources" }}</span>
+      </a>
+    </li>
+    {{- end }}
+  </ul>
+</nav>
+{{- end }}

@@ -8,4 +8,8 @@ publisher: "Penguin Press"
 format: "Hardcover"
 isbn: "9780735217959"
 finished: "2022-11-08"
+tags:
+- "Media"
+eras:
+- "1990s"
 ---

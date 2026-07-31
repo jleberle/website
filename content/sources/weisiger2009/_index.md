@@ -8,4 +8,9 @@ publisher: "University of Washington Press"
 format: "Paperback"
 isbn: "9780295988818"
 finished: "2012-08-13"
+tags:
+- "Native American History"
+- "Environment"
+eras:
+- "1930s"
 ---

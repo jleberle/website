@@ -34,3 +34,13 @@
 /gardner-musto-digital-humanities/                                          /reviews/gardner-musto-digital-humanities/                                         301
 /search/                                                                    /archives/                                                                          301
 /contact/ /about/#contact 301
+/sources/ /media-diet/ 301
+
+# Period terms moved out of `tags` into their own `eras` taxonomy. These six
+# term pages were published under /tags/ before the split.
+/tags/1930s/                                                                /eras/1930s/                                                                       301
+/tags/1960s/                                                                /eras/1960s/                                                                       301
+/tags/1970s/                                                                /eras/1970s/                                                                       301
+/tags/1990s/                                                                /eras/1990s/                                                                       301
+/tags/17th-century/                                                         /eras/17th-century/                                                                301
+/tags/19th-century/                                                         /eras/19th-century/                                                                301

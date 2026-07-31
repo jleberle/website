@@ -80,9 +80,14 @@
     {{- end }}
     {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
     {{- $terms := $.GetTerms $tags }}
+    {{- /* Periods are their own facet (see `taxonomies` in hugo.yaml), so they
+           get their own row rather than sitting under "Topics" — a century is
+           not a subject. Posts that carry only a period show just this row. */ -}}
+    {{- $eras := $.GetTerms "eras" }}
     {{- $relatedOut := partial "related_posts.html" . }}
     {{- $hasRows := false }}
     {{- if $terms }}{{ $hasRows = true }}{{ end }}
+    {{- if $eras }}{{ $hasRows = true }}{{ end }}
     {{- if trim (printf "%s" $relatedOut) " \r\n\t" }}{{ $hasRows = true }}{{ end }}
     {{- if or $foot $hasRows }}
     <div class="post-apparatus">
@@ -91,6 +96,16 @@
         {{- with $terms }}
         <section class="post-context related-posts" aria-label="Topics">
           <span class="post-context-kicker">Topics</span>
+          <ul class="post-tags">
+            {{- range . }}
+            <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+            {{- end }}
+          </ul>
+        </section>
+        {{- end }}
+        {{- with $eras }}
+        <section class="post-context related-posts" aria-label="Period">
+          <span class="post-context-kicker">Period</span>
           <ul class="post-tags">
             {{- range . }}
             <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>

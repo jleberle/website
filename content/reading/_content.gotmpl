@@ -1,0 +1,72 @@
+{{- /* Generates one page per completed reading year: /reading/2024/, and
+       /reading/undated/ when any logged source is missing a read_year.
+
+       Why these pages exist. The ledger used to render every source on
+       /reading/, and each row carries a collapsed panel duplicating the whole
+       source page — 69% of the page's bytes sat inside <details> elements most
+       readers never open. That put the page on track to fail
+       scripts/checks/page-size-lint.py at roughly 96 sources (measured: about
+       1.68 KiB per entry against a 160 KiB ceiling). Splitting by year is the
+       only arrangement that is permanently bounded rather than merely delayed:
+       a year of reading has a natural ceiling, so a year page cannot grow past
+       it however large the library gets. The library grows; the pages do not.
+
+       Why the front matter is read off disk. A content adapter runs before the
+       site is initialized, so site.GetPage is unavailable here — the page
+       collection does not exist yet. Reading each source's own _index.md from
+       content/sources is the only way to learn which years exist at this stage.
+
+       The current year is deliberately skipped: /reading/ still renders it in
+       full, exactly as it always did, and generating a page for it too would
+       publish the same entries at two URLs. It appears here on 1 January when
+       now.Year moves on. */ -}}
+
+{{- $years := slice -}}
+{{- $undated := false -}}
+{{- $thisYear := now.Year -}}
+
+{{- range (os.ReadDir "content/sources") -}}
+  {{- if .IsDir -}}
+    {{- with (os.ReadFile (printf "content/sources/%s/_index.md" .Name)) -}}
+      {{- $parts := split . "---" -}}
+      {{- if ge (len $parts) 2 -}}
+        {{- $fm := index $parts 1 | transform.Unmarshal -}}
+        {{- /* No status means a bibliography entry, not a reading event: it
+               belongs to no year page for the same reason it is absent from
+               the ledger itself. See docs/reading.md. */ -}}
+        {{- if $fm.status -}}
+          {{- with $fm.read_year -}}
+            {{- $y := int . -}}
+            {{- if and (ne $y $thisYear) (not (in $years $y)) -}}
+              {{- $years = $years | append $y -}}
+            {{- end -}}
+          {{- else -}}
+            {{- $undated = true -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range $years }}
+  {{- $.AddPage (dict
+      "path" (printf "%d" .)
+      "title" (printf "Reading in %d" .)
+      "kind" "page"
+      "layout" "reading-year"
+      "description" (printf "Books, articles, and other sources logged in %d." .)
+      "params" (dict "year" . "hideMeta" true)
+  ) }}
+{{- end }}
+
+{{- if $undated }}
+  {{- $.AddPage (dict
+      "path" "undated"
+      "title" "Undated reading"
+      "kind" "page"
+      "layout" "reading-year"
+      "description" "Logged sources with no recorded reading year."
+      "params" (dict "year" 0 "hideMeta" true)
+  ) }}
+{{- end }}

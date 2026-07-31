@@ -5,8 +5,10 @@ date: 2017-08-03
 description: "Native Rock with the Vanishing Americans"
 summary: "Screenshot of Article detailing Native Rock Band"
 tags:
-- "1970s"
 - "Music"
+- "Native American History"
+eras:
+- "1970s"
 cover:
   image: "cover.avif"
   alt: "Front cover of Screenshot of an article on the band the Vanishing Americnas"

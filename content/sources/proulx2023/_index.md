@@ -8,4 +8,6 @@ publisher: "Scribner"
 format: "Paperback"
 isbn: "9781982173357"
 finished: "2025-12-30"
+tags:
+- "Environment"
 ---

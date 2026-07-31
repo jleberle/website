@@ -8,4 +8,9 @@ publisher: "University of Oklahoma Press"
 format: "Paperback"
 isbn: "9780806128849"
 finished: "2015-09-08"
+tags:
+- "Native American History"
+- "Rodeo"
+eras:
+- "20th Century"
 ---

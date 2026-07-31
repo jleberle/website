@@ -8,4 +8,8 @@ publisher: "Simon & Schuster"
 format: "Ebook"
 isbn: "9780743228152"
 finished: "2026-04-19"
+tags:
+- "Music"
+eras:
+- "1960s"
 ---

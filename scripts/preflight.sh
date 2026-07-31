@@ -4,6 +4,8 @@
 #
 # Default local gate:
 #   1. published drafts      — content/ must not contain draft: true
+#   1b. taxonomy facets      — period values must be in `eras`, not `tags`
+#   1c. graph connections    — no orphan posts; `about:` is a subset of `sources:`
 #   2. image policy          — raster sources must be AVIF or allowed companions/icons
 #   2b. image metadata       — no EXIF/IPTC/XMP left on a published raster file
 #   3. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
@@ -62,6 +64,22 @@ if DRAFT_OUT=$(python3 scripts/checks/draft-lint.py content 2>&1); then
 else
   echo "$DRAFT_OUT"
   fail "draft content is present in the publishable content tree"
+fi
+
+step "taxonomy facets"
+if FACET_OUT=$(python3 scripts/checks/taxonomy-facet-lint.py content 2>&1); then
+  pass "$FACET_OUT"
+else
+  echo "$FACET_OUT"
+  fail "period values filed under \`tags\` instead of \`eras\`"
+fi
+
+step "graph connections"
+if CONN_OUT=$(python3 scripts/checks/connection-lint.py content 2>&1); then
+  pass "$CONN_OUT"
+else
+  echo "$CONN_OUT"
+  fail "published writing is detached from the knowledge graph"
 fi
 
 step "source image policy"

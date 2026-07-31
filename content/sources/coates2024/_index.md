@@ -8,4 +8,6 @@ publisher: "One World"
 format: "Ebook"
 isbn: "9780593230398"
 finished: "2024-12-01"
+tags:
+- "Journalism"
 ---

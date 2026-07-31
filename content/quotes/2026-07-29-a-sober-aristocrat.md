@@ -7,8 +7,10 @@ description: "What sobriety meant for 17th century Hungarians"
 sources:
   - "puhak2026"
 tags:
-  - "17th Century"
   - "Drinking"
+  - "Folklore"
+eras:
+  - "17th Century"
 publishDate: "2026-07-29T18:33:39-05:00"
 lastmod: "2026-07-29T18:33:39-05:00"
 ---

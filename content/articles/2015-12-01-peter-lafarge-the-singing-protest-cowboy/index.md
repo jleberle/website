@@ -5,8 +5,10 @@ date: 2015-12-01
 description: "Indigeneity and protestor singers"
 summary: "Peter LaFarge used his western heritage and claims of Indigenous heritage to build credibility in the 1950s folk scene."
 tags:
-- "1960s"
 - "Music"
+- "Native American History"
+eras:
+- "1960s"
 cover:
   image: "cover.avif"
   alt: "Peter LaFarge"

@@ -8,4 +8,8 @@ publisher: "Doubleday"
 format: "Ebook"
 isbn: "9780385550376"
 finished: "2024-12-19"
+tags:
+- "Fiction"
+eras:
+- "19th Century"
 ---

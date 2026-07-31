@@ -8,4 +8,7 @@ publisher: "Liveright Publishing Corporation"
 format: "Ebook"
 isbn: "9781631497506"
 finished: "2023-05-21"
+tags:
+- "Native American History"
+- "Historiography"
 ---

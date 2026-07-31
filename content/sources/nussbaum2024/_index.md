@@ -8,4 +8,6 @@ publisher: "Random House"
 format: "Ebook"
 isbn: "9780525509004"
 finished: "2025-01-05"
+tags:
+- "Media"
 ---

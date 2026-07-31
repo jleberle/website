@@ -8,6 +8,10 @@ publisher: "HarperCollins Publishers"
 format: "Hardcover"
 isbn: "9780063112049"
 finished: "2025-03-24"
+tags:
+- "Native American History"
+- "Tribal Recognition"
+- "Oklahoma"
 ---
 
 Assigned for Oklahoma History, Spring 2025

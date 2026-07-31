@@ -5,6 +5,8 @@ date: 2011-10-04
 description: "Where everybody knows your name in Minnesota"
 summary: "Finding Cheers' opening photos in the archives"
 tags:
+- "Media"
+eras:
 - "1930s"
 cover:
   image: "cover.avif"

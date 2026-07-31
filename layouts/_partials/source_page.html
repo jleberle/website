@@ -34,21 +34,25 @@
     {{- else }}
       {{- with $p.finished }}<div><dt>Finished</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end }}
     {{- end }}
-    {{- with $p.isbn }}
+    {{- $catalogues := partial "source_catalogues.html" . }}
+    {{- if $p.isbn }}
     <div class="reading-entry-record-item reading-entry-record-item--wide">
       <dt>ISBN</dt>
       <dd>
-        <span>{{ . }}</span>
-        {{- with $isbn }}
+        <span>{{ $p.isbn }}</span>
+        {{- with $catalogues }}
         <span class="reading-entry-access" aria-hidden="true"> · </span>
-        <span class="reading-entry-access">
-          <a href="https://openlibrary.org/isbn/{{ . }}" rel="external noopener" target="_blank">Open Library</a>
-          <span aria-hidden="true"> · </span>
-          <a href="https://search.worldcat.org/isbn/{{ . }}" rel="external noopener" target="_blank">WorldCat</a>
-        </span>
+        <span class="reading-entry-access">{{ . }}</span>
         {{- end }}
       </dd>
     </div>
+    {{- else }}
+    {{- with $catalogues }}
+    <div class="reading-entry-record-item reading-entry-record-item--wide">
+      <dt>Find it</dt>
+      <dd><span class="reading-entry-access">{{ . }}</span></dd>
+    </div>
+    {{- end }}
     {{- end }}
     {{- with $accessURL }}
     <div class="reading-entry-record-item reading-entry-record-item--wide">
@@ -62,7 +66,31 @@
   <div class="source-notes md-content">{{ . }}</div>
   {{- end }}
 
-  {{- with .Pages.ByDate.Reverse }}
+  {{- /* Backlinks split by how the writing uses the work. A page names the
+         source it is centrally concerned with in `about:`; everything else in
+         its `sources:` list is a citation. Without that split, an essay that
+         cites a book once would appear here indistinguishable from a review of
+         it, which is the reason articles had no `sources:` at all — attaching
+         them would have flooded every cited work with false claims of being
+         written about. A review or quote with one source and no `about:` is
+         taken to be about it — that is what those sections are — so neither
+         needed changing. An article gets no such benefit of the doubt: citing
+         one book is the common case there, and inferring "about" from it would
+         reintroduce exactly the false claim this split exists to prevent. */ -}}
+  {{- $term := .Data.Term }}
+  {{- $about := slice }}
+  {{- $cites := slice }}
+  {{- range .Pages.ByDate.Reverse }}
+    {{- $keys := .Params.about | default slice }}
+    {{- $implicit := and (not $keys) (eq (len (.GetTerms "sources")) 1) (in (slice "reviews" "quotes") .Section) }}
+    {{- if or (in $keys $term) $implicit }}
+      {{- $about = $about | append . }}
+    {{- else }}
+      {{- $cites = $cites | append . }}
+    {{- end }}
+  {{- end }}
+
+  {{- with $about }}
   <section class="post-context related-posts" aria-label="Writing about this source">
     <span class="post-context-kicker">Writing about this source</span>
     <ul class="related-posts-list">
@@ -73,5 +101,22 @@
   </section>
   {{- end }}
 
+  {{- with $cites }}
+  <section class="post-context related-posts" aria-label="Writing that cites this source">
+    <span class="post-context-kicker">Cited in</span>
+    <ul class="related-posts-list">
+      {{- range . }}
+      {{- partial "templates/_funcs/related_item.html" (dict "page" .) }}
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+
+  {{- /* Only ledger sources get the link back: /reading/ does not list a work
+         that was never a reading event, so pointing a cited work at it would
+         send the reader somewhere it cannot be found. Those are reached from
+         the writing that cites them, listed directly above. */ -}}
+  {{- if $p.status }}
   <p class="source-backlink"><a href="{{ (site.GetPage "/reading").RelPermalink }}">&larr; All sources</a></p>
+  {{- end }}
 </article>

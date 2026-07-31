@@ -8,4 +8,8 @@ publisher: "Texas Tech University Press"
 format: "Hardcover"
 isbn: "9780896726789"
 finished: "2012-03-26"
+tags:
+- "Native American History"
+eras:
+- "20th Century"
 ---

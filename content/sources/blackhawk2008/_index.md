@@ -8,4 +8,8 @@ publisher: "Harvard University Press"
 format: "Paperback"
 isbn: "9780674022904"
 finished: "2012-01-20"
+tags:
+- "Native American History"
+eras:
+- "19th Century"
 ---

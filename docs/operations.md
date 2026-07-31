@@ -69,6 +69,30 @@ The two new size-oriented checks are intentionally site-specific:
 - `reading/index.html` gets a relaxed ceiling because it is intentionally denser
 - image display lint checks generated responsive image candidates against the real slots the theme asks the browser to fill, so it can flag likely soft/blurry images before publish
 
+### Known growth limits
+
+Two pages render every entry into one document, so they have measured ceilings
+rather than open-ended growth. Both numbers come from building synthetic
+corpora, not estimates:
+
+| Page | Limit | Headroom |
+|---|---|---|
+| `/reading/<year>/` | ~55 books in one year warns, ~75 fails | busiest year on record is 10 |
+| `/archives/` | ~119 posts warns, ~161 fails | 30 posts, about 2/month |
+
+The reading ledger was split by year in 2026-07 precisely because it had no such
+bound — see [reading.md](reading.md). `/archives/` still has none: it is one
+page by design, since its job is filtering and searching across everything, and
+splitting it defeats that. At roughly two posts a month the ceiling is about
+five years out.
+
+**Revisit `/archives/` at 100 posts.** The fix is to move the per-entry
+`data-archive-search-text` attribute (32% of each entry's markup) into a fetched
+JSON index and paginate the HTML, with search running against the full index so
+pagination does not break finding things. `connect-src 'self'` in
+`static/_headers` already permits that fetch, so no CSP change is needed. Doing
+it now would mean tuning a search index against 30 entries.
+
 ## GitHub Actions
 
 GitHub Actions runs from `.github/workflows/site-checks.yml` on:

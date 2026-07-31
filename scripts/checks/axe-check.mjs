@@ -14,6 +14,7 @@ const pages = [
   '/courses/1493/',
   '/archives/',
   '/reading/',
+  '/reading/2024/',
   '/sources/mckenziejones2015/',
   '/cv/',
   '/about/',

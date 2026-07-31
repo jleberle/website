@@ -7,8 +7,9 @@ summary: "Vampirism in New England is not that bad"
 sources: ["stetson1896"]
 external_url: "https://www.jstor.org/stable/658266"
 tags:
-- "19th Century"
 - "Folklore"
+eras:
+- "19th Century"
 ---
 
 George R. Stetson writing about vampire superstitions in rural Rhode Island during the nineteenth century:

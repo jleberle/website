@@ -1,0 +1,52 @@
+{{- /* "Find it elsewhere" links for a source, shared by the ledger row and the
+       source page so the two can never drift apart.
+
+       The rule these follow: link to a QUERY, not to a RECORD, unless the
+       identifier is one the service itself issued. An ISBN identifies an
+       edition in the world; it is not a promise that any given catalogue holds
+       a page for it. openlibrary.org/isbn/<isbn> was that kind of promise, and
+       it broke on 4 of 45 books here (~9%) — not because the ISBNs were wrong
+       but because Open Library had not catalogued those printings, which is
+       their business and not something this site can fix or predict. Those
+       404s were real for readers and tripped the scheduled lychee run.
+
+       A search URL cannot 404: the service always has a results page, even an
+       empty one. Measured against Open Library, WorldCat, and a deliberately
+       nonsense ISBN, every query form below returns 200.
+
+       Open Library is queried by ISBN when there is one. Note that this is
+       strictly narrower than a title search — of the 4 books it had no ISBN
+       record for, 2 are in fact present under a different printing and a title
+       query would surface them. Precision is preferred anyway: an ISBN query
+       returns the exact edition read rather than a list of similarly titled
+       works, and a reader who finds nothing has learned something true.
+
+       WorldCat keeps its /isbn/ form: it answers 200 with a "no results" page
+       rather than 404ing, so it was never the durability problem, and the
+       direct form is the better destination.
+
+       Books without an ISBN fall back to a title-and-author query on both,
+       which is why 12 sources that previously offered no way out of this site
+       now do. Only books get these: an archival file or a journal article is
+       not something a library catalogue search helps with, and those carry a
+       DOI or access_url instead. */ -}}
+
+{{- $p := .Params -}}
+{{- $type := $p.type | default "book" -}}
+{{- if eq $type "book" -}}
+  {{- $isbn := "" -}}
+  {{- with $p.isbn }}{{ $isbn = replaceRE "[^0-9Xx]" "" . }}{{ end -}}
+  {{- $query := $isbn -}}
+  {{- if not $query -}}
+    {{- $query = printf "%s %s" .Title ($p.author | default "") | strings.TrimSpace -}}
+  {{- end -}}
+  {{- with $query }}
+  <a href="https://openlibrary.org/search?q={{ . | urlquery }}" rel="external noopener" target="_blank">Open Library</a>
+  <span aria-hidden="true"> · </span>
+  {{- if $isbn }}
+  <a href="https://search.worldcat.org/isbn/{{ $isbn }}" rel="external noopener" target="_blank">WorldCat</a>
+  {{- else }}
+  <a href="https://search.worldcat.org/search?q={{ . | urlquery }}" rel="external noopener" target="_blank">WorldCat</a>
+  {{- end }}
+  {{- end }}
+{{- end -}}

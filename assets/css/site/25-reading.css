@@ -52,13 +52,55 @@
 }
 
 .reading-year-heading,
-.reading-year-summary {
+.reading-year-summary,
+.reading-year-index-list a {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     gap: 0.9rem;
     padding-bottom: 0.45rem;
     border-bottom: 1px solid var(--rule);
+}
+
+/* The year index. Earlier years moved to their own pages once the ledger grew
+   past what one document should carry, so these links stand where the
+   collapsible year groups used to — and are styled as the same row so the
+   ledger still reads as one list of years rather than as navigation. */
+.reading-year-index {
+    margin-top: 2.5rem;
+}
+
+.reading-year-index-title {
+    margin: 0 0 0.75rem;
+    font-size: 0.98rem;
+    font-weight: 400;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+    color: var(--secondary);
+}
+
+.reading-year-index-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.9rem;
+}
+
+.reading-year-index-list a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.reading-year-index-list a:hover .reading-year-title,
+.reading-year-index-list a:focus-visible .reading-year-title {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.reading-year-index-list a[aria-current="page"] {
+    border-bottom-color: var(--primary);
 }
 
 .reading-year-heading {

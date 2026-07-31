@@ -6,8 +6,9 @@ draft: false
 description: "A haunted Louisiana plantation?"
 summary: "Story of a haunted Louisiana Plantation"
 tags:
-- "19th Century"
 - "Folklore"
+eras:
+- "19th Century"
 cover:
   image: "cover.avif"
   alt: "Screenshot of New York Times article on the Johnson Gosset Plantation"
