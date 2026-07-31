@@ -7,7 +7,7 @@ tags:
 - "Native American History"
 - "American Indian Movement"
 - "Oklahoma"
-- "Autobiography"
+- "Life Writing"
 eras:
 - "1970s"
 ---

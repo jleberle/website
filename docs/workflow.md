@@ -201,12 +201,18 @@ because nothing narrower exists for them yet, which is the right outcome;
 inventing a term to satisfy the rule is the sprawl the rule exists to prevent.
 
 A few terms name a work's **form** rather than its subject — `Fiction`,
-`Autobiography` — which the "what is this about" rule does not strictly cover.
+`Life Writing` — which the "what is this about" rule does not strictly cover.
 They are kept deliberately, and only for the reading log: `/reading/` records
 what was read, and "what kind of book was it" is a fair question to ask of a
 reading list even though it is not a research subject. Keep the subset small and
 obvious. A form term that starts collecting *writing* as well as works has
 drifted into being a subject and wants re-examining.
+
+Name a form term for the shelf, not for its commonest member. `Life Writing`
+began as `Autobiography` and was renamed the same day, because the work that
+prompted it — Roosevelt's diaries — is contemporaneous rather than
+retrospective, and so fell outside the narrower word that had been chosen to
+hold it. The umbrella takes diaries, letters and journals without the mismatch.
 
 Place terms (`Oklahoma`, `Connecticut`, `Europe`) sit in `tags` rather than a
 `places` facet of their own. Regional history is a subject, and three terms is

@@ -32,12 +32,19 @@ Guidance for the list, applied 2026-07-31 and not enforceable here:
     rule exists to prevent.
 
 A few terms name a work's FORM rather than its subject — `Fiction`,
-`Autobiography` — which the "what is this about" rule does not strictly cover.
+`Life Writing` — which the "what is this about" rule does not strictly cover.
 They are kept deliberately, and only for the reading log: `/reading/` is a
 record of what was read, and "what kind of book was it" is a real question to
 ask of a reading list even though it is not a research subject. Keep this
 subset small and obvious. A form term that starts collecting writing as well as
 works is a sign it has drifted into being a subject and should be re-examined.
+
+Prefer the term that covers the shelf over the term that names its commonest
+member. `Life Writing` started as `Autobiography` and was renamed within the
+day: the work that prompted it, Roosevelt's `roosevelt1928`, is a
+contemporaneous diary rather than retrospective autobiography, so the narrower
+word excluded its own founding case. The umbrella takes diaries, letters,
+journals and oral histories without that mismatch.
 
 Place terms (`Oklahoma`, `Connecticut`, `Europe`) live here rather than in a
 `places` facet. Regional history is a subject, and a facet with three members is
@@ -58,7 +65,6 @@ from pathlib import Path
 VOCABULARY = {
     "AI",
     "American Indian Movement",
-    "Autobiography",
     "Connecticut",
     "Disaster",
     "Environment",
@@ -69,6 +75,7 @@ VOCABULARY = {
     "Historiography",
     "Journalism",
     "Labor",
+    "Life Writing",
     "Media",
     "Music",
     "Native American History",

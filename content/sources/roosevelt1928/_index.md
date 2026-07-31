@@ -8,5 +8,5 @@ access_url: "https://archive.org/details/diariesofboyhood00roos"
 eras:
 - "19th Century"
 tags:
-- "Autobiography"
+- "Life Writing"
 ---
