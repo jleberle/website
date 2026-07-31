@@ -31,10 +31,13 @@ Guidance for the list, applied 2026-07-31 and not enforceable here:
     correct outcome — inventing a term to satisfy the rule is the sprawl the
     rule exists to prevent.
 
-Place terms (`Oklahoma`, `Connecticut`) live here rather than in a `places`
-facet. Regional history is a subject, and a facet with two members is worse
-than none; the eras split is worth repeating for place only once the place
-terms outnumber that. See docs/workflow.md 'Tags and eras'.
+Place terms (`Oklahoma`, `Connecticut`, `Europe`) live here rather than in a
+`places` facet. Regional history is a subject, and a facet with three members is
+still thinner than the vocabulary it would be carved out of. Note that `Europe`
+is coarser than the other two, so if an `England` term ever appears — three of
+the seven European works are English — the facet inherits the granularity
+problem era_rollup.html solves for centuries, and should be solved the same way
+rather than by storing both terms. See docs/workflow.md 'Tags and eras'.
 """
 
 from __future__ import annotations
@@ -50,6 +53,7 @@ VOCABULARY = {
     "Connecticut",
     "Disaster",
     "Environment",
+    "Europe",
     "Federal Law Enforcement",
     "Fiction",
     "Folklore",
@@ -64,7 +68,6 @@ VOCABULARY = {
     "Right-Wing Movements",
     "Rodeo",
     "Sports",
-    "Travel",
     "Tribal Recognition",
 }
 

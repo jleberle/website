@@ -200,10 +200,16 @@ travels with a narrower term wherever one fits. Two sources carry it alone
 because nothing narrower exists for them yet, which is the right outcome;
 inventing a term to satisfy the rule is the sprawl the rule exists to prevent.
 
-Place terms (`Oklahoma`, `Connecticut`) sit in `tags` rather than a `places`
-facet of their own. Regional history is a subject, and a facet with two members
-is worse than none — the argument that justified the eras split is worth
-repeating for place only once the place terms outnumber that.
+Place terms (`Oklahoma`, `Connecticut`, `Europe`) sit in `tags` rather than a
+`places` facet of their own. Regional history is a subject, and three terms is
+still thinner than the vocabulary a facet would be carved out of.
+
+`Europe` is coarser than the other two, which is worth watching. Three of its
+seven works are English, so an `England` term is the plausible next addition —
+and the moment one exists, place inherits exactly the granularity problem
+centuries have with decades. Solve it the way `era_rollup.html` does, by
+deriving the wider term at render time, rather than by writing both into front
+matter. That is also the point at which a `places` facet earns a second look.
 
 Both render on a post, in separate "Topics" and "Period" rows, and both have
 term pages (`/tags/<term>/`, `/eras/<term>/`). A post may carry only one facet;

@@ -8,6 +8,4 @@ publisher: "Metropolitan Books"
 format: "Hardcover"
 isbn: "9780805092295"
 finished: "2016-08-13"
-tags:
-- "Travel"
 ---

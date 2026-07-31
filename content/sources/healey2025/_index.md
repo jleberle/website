@@ -10,4 +10,6 @@ isbn: "9780593803080"
 finished: "2026-01-24"
 eras:
 - "17th Century"
+tags:
+- "Europe"
 ---

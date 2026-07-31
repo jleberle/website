@@ -10,4 +10,5 @@ isbn: "9781786697363"
 finished: "2023-12-23"
 tags:
 - "Sports"
+- "Europe"
 ---

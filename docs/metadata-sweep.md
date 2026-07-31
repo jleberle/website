@@ -357,14 +357,57 @@ the present. Introducing `2010s`/`2020s` would put an era on nearly every new
 post and say nothing. `hoboes-tramps-and-bums` is a definition with no period,
 and `grann2018` braids Shackleton's expedition with a 2015 one.
 
+### `Travel` retired into `Europe` — 2026-07-31
+
+The audit flagged `Travel` as misnamed: none of its three works is travel
+writing. Binelli had moved back to his hometown Detroit, Coates had settled in
+the Netherlands, and Kerr's book is a polemic about Japanese infrastructure.
+The shelf did not match its label.
+
+The fix was not a rename of the genre but a place term, which fits the model
+`Oklahoma` and `Connecticut` already follow rather than opening a second axis:
+
+| Work | Was | Now |
+|---|---|---|
+| `coates2016` Why the Dutch are Different | Travel | Europe |
+| `puhak2026` The Blood Countess | Folklore | Folklore, Europe |
+| `healey2025` Blood in Winter | *(untagged)* | Europe |
+| `raddenkeefe2026` London Falling | *(untagged)* | Europe |
+| `jones2019` Ultra | Sports | Sports, Europe |
+| `winner2005` Those Feet | Sports | Sports, Europe |
+| `clegg2018` Club | Sports | Sports, Europe |
+| `kerr2002` Dogs and Demons | Travel | Environment |
+| `binelli2012` Detroit City Is the Place to Be | Travel | *(untagged)* |
+
+`clegg2018` was not on the original list but is English football by the same
+criterion as `winner2005` and `jones2019`. `kerr2002` moved to `Environment`
+because that is what the book argues — its core chapters are dam-building,
+river concreting and forestry monoculture — which also gives `Environment` a
+member outside American history.
+
+Two consequences worth naming. `healey2025` and `raddenkeefe2026` had been in
+the deliberately-untagged set since the July sweep; `Europe` is the first term
+that fits either. And `binelli2012` took their place there: with Travel retired
+nothing in the vocabulary describes a book about post-industrial Detroit.
+`Labor` is arguable — it is fundamentally a book about what happened to a union
+auto town — but that is a reading of a book this pass has not read, so it was
+left for the person who has.
+
+`Travel` is gone from `VOCABULARY`; the lint's orphan check would have caught
+it otherwise.
+
 ### Still open
 
-`Fiction` (4), `Sports` (3) and `Travel` (3) carry **no writing at all** — they
-describe the reading log, not the research, so `/tags/` holds two kinds of term.
-That is legitimate and they stay, but `Travel` is misnamed: Detroit City, Why
-the Dutch Are Different and Dogs and Demons are place portraits, not travel
-writing. `Place Portraits` or similar would be more accurate, and renaming costs
-three files plus the lint entry whenever you want it.
+`Fiction` (4) and `Sports` (3) carry **no writing at all** — they describe the
+reading log, not the research, so `/tags/` holds two kinds of term. That is
+legitimate and they stay.
+
+`Europe` is coarser than the other place terms. Three of its seven works are
+English, so `England` is the plausible next addition, and it would bring the
+same granularity problem centuries have with decades — to be solved by deriving
+the wider term at render time, as `era_rollup.html` does, not by storing both.
 
 `AI` remains at one member. It is the first part of a running series, so it is
 expected to grow rather than be retired; if the series stalls it should go.
+
+`binelli2012` is untagged pending a call on whether `Labor` fits.
