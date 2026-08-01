@@ -30,7 +30,7 @@ FILE="$2"
 [[ -f "$FILE" ]] || { echo "File not found: $FILE" >&2; exit 1; }
 
 BIB="${WEBSITE_BIBLIOGRAPHY:-$HOME/Documents/Library/Library.json}"
-CSL="${WEBSITE_CSL:-$HOME/.dotfiles/writing/pandoc/chicago-notes-bibliography-18th-edition.csl}"
+CSL="${WEBSITE_CSL:-$HOME/git/dotfiles/writing/pandoc/chicago-notes-bibliography-18th-edition.csl}"
 PANDOC="${PANDOC:-pandoc}"
 
 case "$MODE" in

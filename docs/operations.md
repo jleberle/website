@@ -12,7 +12,7 @@ git remote -v
 # origin  github:jleberle/website.git (push)
 ```
 
-A pre-push hook (`~/.dotfiles/git/hooks/pre-push`, wired in via
+A pre-push hook (`~/git/dotfiles/git/hooks/pre-push`, wired in via
 `core.hooksPath`) runs `scripts/preflight.sh` automatically before anything
 leaves this machine, so a bare `git push` is already gated. The normal path is
 still to run preflight explicitly first, so failures are caught before a
