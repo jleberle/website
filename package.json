@@ -12,9 +12,9 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
-    "html-validate": "^11.5.5",
-    "playwright": "^1.61.1",
-    "stylelint": "^17.14.0",
+    "html-validate": "^11.6.0",
+    "playwright": "^1.62.0",
+    "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0"
   }
 }
