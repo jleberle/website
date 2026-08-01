@@ -62,7 +62,8 @@ BASE="$TODAY-$SLUG"
 DESCRIPTION=$(read_optional "Description (optional)")
 SUMMARY=$(read_optional "Summary override (optional)")
 SERIES=$(read_optional 'Series name, for multi-part posts (optional; same name on every part, e.g. "My Summer With Claude")')
-TAGS=$(read_optional "Tags, comma-separated (optional)")
+TAGS=$(read_optional "Tags, comma-separated (optional; reuse existing tags; new tag only if a second post will share it)")
+ERAS=$(read_optional "Eras, comma-separated (optional; a decade like 1970s or a century like 19th Century — reuse existing eras)")
 
 URL=""
 # The work a post is about is named once, by its source key — the directory name
@@ -71,6 +72,11 @@ URL=""
 # no page yet is fine: create content/sources/<key>/_index.md and the connection
 # starts working.
 SOURCES=$(read_optional "Source key(s), comma-separated, e.g. mckenziejones2015 (optional)")
+# Must be a subset of SOURCES — labels which of those links the piece is
+# centrally about rather than merely cites. A review or quote with exactly one
+# source is taken to be about it without this; an article gets no such
+# inference, since citing one book in passing is normal there.
+ABOUT=$(read_optional "About: which source key(s) this piece is centrally about, comma-separated, subset of the above (optional)")
 
 if [[ "$KIND" == "review" ]]; then
   URL=$(read_optional "Reviewed work URL (optional)")
@@ -142,7 +148,9 @@ EOF
       field "summary" "$SUMMARY"
       field "series" "$SERIES"
       list_field "sources" "$SOURCES"
+      list_field "about" "$ABOUT"
       list_field "tags" "$TAGS"
+      list_field "eras" "$ERAS"
       $ADD_COVER && cover_block false
       printf -- '---\n\n<!-- more -->\n'
     } > "$FILE"
@@ -162,8 +170,10 @@ EOF
       field "summary" "$SUMMARY"
       field "series" "$SERIES"
       list_field "sources" "$SOURCES"
+      list_field "about" "$ABOUT"
       field "external_url" "$URL"
       list_field "tags" "$TAGS"
+      list_field "eras" "$ERAS"
       $ADD_COVER && cover_block true
       printf -- '---\n\n<!-- more -->\n'
     } > "$FILE"
@@ -183,8 +193,10 @@ EOF
       field "summary" "$SUMMARY"
       field "series" "$SERIES"
       list_field "sources" "$SOURCES"
+      list_field "about" "$ABOUT"
       field "external_url" "$URL"
       list_field "tags" "$TAGS"
+      list_field "eras" "$ERAS"
       printf -- '---\n\n<!-- more -->\n'
     } > "$FILE"
     ;;
