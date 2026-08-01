@@ -1,7 +1,7 @@
 ---
 title: "The Blood Countess: Murder, Betrayal, and the Making of a Monster"
 author: "Shelley Puhak"
-status: "reading"
+status: "read"
 published_year: 2026
 publisher: "Bloomsbury"
 format: "Hardcover"
@@ -12,4 +12,7 @@ tags:
 - "Europe"
 eras:
 - "17th Century"
+read_year: 2026
+finished: "2026-08-01"
+finished_announced: "2026-08-01T17:37:42-05:00"
 ---
