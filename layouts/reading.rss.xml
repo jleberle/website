@@ -17,13 +17,28 @@
        folder slug, so renaming THOSE still re-imports — same old risk, now
        scoped to a known-small set instead of every source.
 
-       <link> points at the source's own page, suffixed with #started or
-       #finished. Micro.blog's importer appears to dedupe on <link> rather
-       than <guid>: when The Blood Countess got both a started and a finished
-       event (2026-06/2026-08), sharing one <link> across the two, only the
-       first ever imported — the second was silently dropped even though the
-       feed and the WebSub/ping delivery were both confirmed correct. The
-       fragment keeps every event's <link> distinct so this can't recur. */ -}}
+       <link> points at the source's own page. Micro.blog's importer appears
+       to dedupe on <link> rather than <guid>: when The Blood Countess got
+       both a started and a finished event (2026-06/2026-08), sharing one
+       <link> across the two, only the first ever imported — the second was
+       silently dropped even though the feed and the WebSub/ping delivery
+       were both confirmed correct.
+
+       The fix is asymmetric, not "suffix whichever events currently
+       collide": a started event gets #started unconditionally, the moment
+       `started` exists, whether or not `finished` has been added yet. A
+       finished event gets #finished only when that source also has
+       `started` set. Conditioning on "do both exist right now" instead would
+       mean a book's started link is bare while only-started, then changes
+       out from under an already-imported post the day `finished` is added —
+       recreating this exact bug, forever, once per book. Anchoring #started
+       to `started` alone means that link is fixed for good the moment it is
+       first published. `started` is also a new, rare field (2 of ~60
+       sources), so this costs at most one small, one-time reimport per
+       newly-tracked "currently reading" book, not the 20-item-window mass
+       reimport that suffixing every finished event unconditionally would
+       cause — nearly every past source is finished-only and would otherwise
+       all appear to change at once. */ -}}
 {{- $authorName := site.Params.author }}
 
 {{- $events := slice -}}
@@ -55,14 +70,18 @@
           "event_type" "started"
           "announced_at" $announcedAt
           "sort_key" (printf "%s-0-%s-%s" $announcedAt $type $slug)
+          "linkSuffix" "started"
         )) -}}
     {{- end }}
     {{- with $p.finished }}
       {{- $announcedAt := $p.finished_announced | default . -}}
+      {{- $finishedSuffix := "" -}}
+      {{- with $p.started }}{{ $finishedSuffix = "finished" }}{{ end -}}
       {{- $events = $events | append (merge $record (dict
           "event_type" "finished"
           "announced_at" $announcedAt
           "sort_key" (printf "%s-1-%s-%s" $announcedAt $type $slug)
+          "linkSuffix" $finishedSuffix
         )) -}}
     {{- end }}
 {{- end }}
@@ -118,7 +137,7 @@
     {{- with .notes }}{{- $htmlBody = printf "%s %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
     {{- $content := printf "<p>%s</p>" $htmlBody -}}
     <item>
-      <link>{{ .permalink }}#{{ .event_type }}</link>
+      <link>{{ .permalink }}{{ with .linkSuffix }}#{{ . }}{{ end }}</link>
       <pubDate>{{ (time.AsTime .announced_at).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorName }}<dc:creator>{{ . }}</dc:creator>{{ end }}
       <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s:%s" .type .key .event_type }}</guid>
