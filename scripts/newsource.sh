@@ -558,6 +558,9 @@ case "$STATUS" in
     ;;
 esac
 
+TAGS=$(read_optional "Tags, comma-separated (optional; reuse existing tags; new tag only if a second source will share it)")
+ERAS=$(read_optional "Eras, comma-separated (optional; a decade like 1970s or a century like 19th Century — reuse existing eras)")
+
 NOTES=$(read_optional "Short note (optional)")
 
 # The folder name IS the key a post references in `sources:`, so it defaults to
@@ -627,6 +630,8 @@ mkdir -p "$DEST"
   field "access_url" "$ACCESS_URL"
   field "started" "$STARTED"
   field "finished" "$FINISHED"
+  list_field "tags" "$TAGS"
+  list_field "eras" "$ERAS"
   printf -- '---\n\n'
   [[ -n "$NOTES" ]] && printf '%s\n' "$NOTES"
 } > "$DEST/_index.md"
