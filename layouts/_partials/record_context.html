@@ -1,3 +1,16 @@
+{{- /* Every branch below must be reachable by an actual page, and every page
+       kind on the site must reach a branch — the final `else` fails the build
+       rather than let a page silently render with no type label anywhere
+       (breadcrumb, kicker, related-post chip). Two things follow from that:
+
+       Standalone leaf-bundle pages directly under content/ (about, cv,
+       colophon, ...) have an empty .Section — Hugo has nothing to derive a
+       section name from when there's no sibling content and no _index.md —
+       so they fall back to .Type, which is the generic "page" for all of
+       them alike. `eq $section "cv"` / `"about"` therefore never matched
+       either real page; both branches were dead code with no page reaching
+       them, exactly the class of silent gap this file exists to prevent. Only
+       `.Path`, which Hugo does derive per-file, tells these pages apart. */ -}}
 {{- $group := "" -}}
 {{- $entry := "" -}}
 {{- $collection := "" -}}
@@ -37,12 +50,17 @@
 {{- else if eq $section "reading" -}}
   {{- $group = "Notebook" -}}
   {{- $collection = "Reading" -}}
-{{- else if eq $section "cv" -}}
+{{- else if eq .Path "/cv" -}}
   {{- $group = "Reference" -}}
   {{- $collection = "Curriculum vitae" -}}
-{{- else if eq $section "about" -}}
+{{- else if eq .Path "/about" -}}
   {{- $group = "Reference" -}}
   {{- $collection = "About" -}}
+{{- else if in (slice "/colophon" "/privacy" "/media-diet" "/studenthours" "/terms") .Path -}}
+  {{- /* Legal/meta pages with no type in the site's own model — intentionally
+         unlabeled, not an oversight. */ -}}
+{{- else -}}
+  {{- errorf "record_context.html: no branch for section %q / kind %q / path %q (page %s) — add one (or an explicit no-label exemption like the legal/meta pages above) before this page can render its type label anywhere" $section .Kind .Path .RelPermalink -}}
 {{- end -}}
 
 {{- return (dict "group" $group "entry" $entry "collection" $collection) -}}
