@@ -5,10 +5,27 @@
 {{- $writing := where site.RegularPages "Section" "in" (slice "articles" "reviews") -}}
 {{- $writing = first 3 $writing.ByPublishDate.Reverse -}}
 {{- $notebook := first 1 ((where site.RegularPages "Section" "quotes").ByPublishDate.Reverse) -}}
-{{- $courses := first 4 ((where site.RegularPages "Section" "courses").ByTitle) -}}
+{{- /* .ByWeight falls back to Hugo's default page ordering when no course
+       sets `weight`, which today sorts these four alphabetically by title —
+       harmless while "first 4" is also "all of them", but a course added
+       later with a later-alphabet title would never displace an earlier one
+       here no matter how current it is. Set `weight` on a course's front
+       matter (lower shows first) once that stops being true. */ -}}
+{{- $courses := first 4 ((where site.RegularPages "Section" "courses").ByWeight) -}}
 {{- $featuredCourses := where (where site.RegularPages "Section" "courses") "Params.home_feature" true -}}
+{{- if gt (len $featuredCourses) 1 -}}
+  {{- $featuredPaths := slice -}}
+  {{- range $featuredCourses }}{{ $featuredPaths = $featuredPaths | append .RelPermalink }}{{ end -}}
+  {{- errorf "home_sections.html: %d course pages set home_feature: true (%s) — only one can be featured on the homepage" (len $featuredCourses) (delimit $featuredPaths ", ") -}}
+{{- end -}}
 {{- $sources := (site.GetPage "/sources").Pages -}}
-{{- $currentReading := first 1 (where $sources "Params.status" "reading").ByTitle -}}
+{{- /* .ByParam "started" rather than .ByTitle: picks whichever book was
+       actually started most recently if more than one is ever marked
+       `status: reading` at once (reading fiction and nonfiction in parallel
+       is normal), not whichever title sorts first alphabetically. Mirrors
+       the fix applied to reading.html/reading-year.html for the same
+       alphabetical-instead-of-chronological bug. */ -}}
+{{- $currentReading := first 1 ((where $sources "Params.status" "reading").ByParam "started").Reverse -}}
 {{- $recentReading := first 1 ((where $sources "Params.status" "ne" "reading").ByParam "finished").Reverse -}}
 
 <div class="home-frontpage h-feed">
