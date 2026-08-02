@@ -603,8 +603,23 @@ if [[ -e "$SOURCES_ROOT/$SLUG/_index.md" ]]; then
       break
     fi
   done
+  # a-z is 26 slots — comfortably more than the two-authors-one-year collision
+  # this exists for will ever need, but it is still a hard ceiling with no
+  # check on it, so fall through to aa-zz (676 more) before asking for a
+  # manual key, on the same reasoning that made a-z automatic instead of
+  # manual: the script proposing the next free suffix beats improvising one.
   if [[ "$SLUG" == "$BASE_SLUG" ]]; then
-    echo "content/sources/$BASE_SLUG/ exists and so does every a-z suffix; enter a key by hand." >&2
+    for l1 in {a..z}; do
+      for l2 in {a..z}; do
+        if [[ ! -e "$SOURCES_ROOT/${BASE_SLUG}${l1}${l2}/_index.md" ]]; then
+          SLUG="${BASE_SLUG}${l1}${l2}"
+          break 2
+        fi
+      done
+    done
+  fi
+  if [[ "$SLUG" == "$BASE_SLUG" ]]; then
+    echo "content/sources/$BASE_SLUG/ exists and so does every a-z/aa-zz suffix; enter a key by hand." >&2
   else
     echo "content/sources/$BASE_SLUG/ already exists — proposing $SLUG." >&2
   fi
