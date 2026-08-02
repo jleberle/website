@@ -15,8 +15,15 @@
        identifier means a rename is guid-invisible for any source that has one.
        Only the ~2 sources with none of isbn/doi/access_url fall back to the
        folder slug, so renaming THOSE still re-imports — same old risk, now
-       scoped to a known-small set instead of every source. <link> points at
-       the source's own page. */ -}}
+       scoped to a known-small set instead of every source.
+
+       <link> points at the source's own page, suffixed with #started or
+       #finished. Micro.blog's importer appears to dedupe on <link> rather
+       than <guid>: when The Blood Countess got both a started and a finished
+       event (2026-06/2026-08), sharing one <link> across the two, only the
+       first ever imported — the second was silently dropped even though the
+       feed and the WebSub/ping delivery were both confirmed correct. The
+       fragment keeps every event's <link> distinct so this can't recur. */ -}}
 {{- $authorName := site.Params.author }}
 
 {{- $events := slice -}}
@@ -111,7 +118,7 @@
     {{- with .notes }}{{- $htmlBody = printf "%s %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
     {{- $content := printf "<p>%s</p>" $htmlBody -}}
     <item>
-      <link>{{ .permalink }}</link>
+      <link>{{ .permalink }}#{{ .event_type }}</link>
       <pubDate>{{ (time.AsTime .announced_at).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorName }}<dc:creator>{{ . }}</dc:creator>{{ end }}
       <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s:%s" .type .key .event_type }}</guid>
