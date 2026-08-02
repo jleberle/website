@@ -1,5 +1,17 @@
 {{- define "main" }}
 
+{{- /* Built once per research-path page rather than inside the items loop
+       below: with the lookup inline there, resolving a `page:` reference
+       re-scanned all of site.RegularPages once per item, so a page's total
+       cost was items × site pages rather than items + site pages. Only
+       matters once both research paths and the site's page count grow, but
+       it's the same "nested range over a site-wide collection" shape as the
+       thing it replaces, at no extra cost to build it up front instead. */ -}}
+{{- $pagesByPermalink := collections.NewScratch }}
+{{- range site.RegularPages }}
+  {{- $pagesByPermalink.Set .RelPermalink . }}
+{{- end }}
+
 <article class="research-path">
   <header class="page-header research-path-header">
     <p class="page-kicker"><a href="{{ (site.GetPage "/research").RelPermalink }}">Research path</a></p>
@@ -15,9 +27,10 @@
       {{- if not $note }}{{ errorf "research path %s contains an item without an editorial note" $.RelPermalink }}{{ end -}}
       {{- if .page -}}
         {{- $path := printf "/%s/" (strings.Trim (strings.TrimSpace .page) "/") -}}
-        {{- $matches := where site.RegularPages "RelPermalink" $path -}}
-        {{- if ne (len $matches) 1 }}{{ errorf "research path %s must resolve page URL %q exactly once (found %d)" $.RelPermalink .page (len $matches) }}{{ end -}}
-        {{- $target := index $matches 0 -}}
+        {{- $target := $pagesByPermalink.Get $path -}}
+        {{- if not $target -}}
+          {{- errorf "research path %s must resolve page URL %q to exactly one page (found none)" $.RelPermalink .page -}}
+        {{- else -}}
         {{- $context := partial "record_context.html" $target -}}
         <li class="research-path-stop">
           <p class="research-path-type">{{ index $context "entry" | default ($target.Section | title) }}</p>
@@ -25,9 +38,12 @@
           {{- with $note }}<p class="research-path-note">{{ . }}</p>{{ end }}
           <p class="research-path-meta"><time datetime="{{ $target.Date.Format "2006-01-02" }}">{{ partial "templates/_funcs/format_date" $target.Date }}</time></p>
         </li>
+        {{- end -}}
       {{- else if .source -}}
         {{- $source := site.GetPage (printf "/sources/%s" .source) -}}
-        {{- if not $source }}{{ errorf "research path %s references source %q, which has no page under content/sources/" $.RelPermalink .source }}{{ end -}}
+        {{- if not $source -}}
+          {{- errorf "research path %s references source %q, which has no page under content/sources/" $.RelPermalink .source -}}
+        {{- else -}}
         <li class="research-path-stop">
           <p class="research-path-type">Source</p>
           <h2><a href="{{ $source.RelPermalink }}">{{ $source.Title }}</a></h2>
@@ -38,6 +54,7 @@
             {{- with $source.Params.published_year }}{{ . }}{{ end -}}
           </p>
         </li>
+        {{- end -}}
       {{- else -}}
         {{- errorf "research path %s contains an item without page or source" $.RelPermalink -}}
       {{- end }}
