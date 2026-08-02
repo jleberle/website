@@ -542,13 +542,17 @@ STATUS=$(read_with_default "Status [read/reading/none]" "$STATUS_DEFAULT")
 STATUS=$(trim "$STATUS")
 TODAY=$(date +%Y-%m-%d)
 
-STARTED=""; FINISHED=""; READ_YEAR=""
+STARTED=""; STARTED_ANNOUNCED=""; FINISHED=""; READ_YEAR=""
 case "$STATUS" in
   none)
     STATUS=""
     ;;
   reading)
     STARTED=$(read_with_default "Started (YYYY-MM-DD)" "$TODAY")
+    # Stamped unconditionally, same as finishsource.sh does for
+    # finished_announced: the reading feed's pubDate should read as "just
+    # announced" rather than midnight on whatever date was entered above.
+    STARTED_ANNOUNCED=$(rfc3339_now)
     ;;
   *)
     STATUS="read"
@@ -629,6 +633,7 @@ mkdir -p "$DEST"
   field "doi" "$DOI"
   field "access_url" "$ACCESS_URL"
   field "started" "$STARTED"
+  field "started_announced" "$STARTED_ANNOUNCED"
   field "finished" "$FINISHED"
   list_field "tags" "$TAGS"
   list_field "eras" "$ERAS"
