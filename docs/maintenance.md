@@ -8,10 +8,10 @@ When local Hugo changes, run:
 scripts/sync-hugo-version.sh
 ```
 
-That updates the Hugo versions referenced in:
-
-- `statichost.yml`
-- `.github/workflows/site-checks.yml`
+That updates the Hugo version pinned in `statichost.yml`. CI needs no separate
+update: `.github/workflows/site-checks.yml` derives its own Hugo version from
+`statichost.yml`'s image line at run time, so it can't drift from what this
+script just set.
 
 After a Hugo upgrade, also verify CSP hashes:
 

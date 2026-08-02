@@ -6,9 +6,8 @@
        with nothing written about it still gets this page; that is the normal
        case for most of the ledger. */ -}}
 {{- $p := .Params -}}
-{{- $typeLabel := $p.type | default "book" | humanize -}}
-{{- $isbn := "" -}}
-{{- with $p.isbn }}{{ $isbn = replaceRE "[^0-9Xx]" "" . }}{{ end -}}
+{{- $type := $p.type | default "book" -}}
+{{- $typeLabel := $type | humanize -}}
 {{- $accessURL := $p.access_url | default "" -}}
 {{- if and (not $accessURL) $p.doi }}{{ $accessURL = printf "https://doi.org/%s" $p.doi }}{{ end -}}
 
@@ -27,33 +26,7 @@
   </header>
 
   <dl class="reading-entry-record source-record">
-    {{- with $p.publisher }}<div><dt>Press</dt><dd>{{ . }}</dd></div>{{ end }}
-    {{- with $p.format }}<div><dt>Format</dt><dd>{{ . }}</dd></div>{{ end }}
-    {{- if eq $p.status "reading" }}
-      {{- with $p.started }}<div><dt>Started</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end }}
-    {{- else }}
-      {{- with $p.finished }}<div><dt>Finished</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end }}
-    {{- end }}
-    {{- $catalogues := partial "source_catalogues.html" . }}
-    {{- if $p.isbn }}
-    <div class="reading-entry-record-item reading-entry-record-item--wide">
-      <dt>ISBN</dt>
-      <dd>
-        <span>{{ $p.isbn }}</span>
-        {{- with $catalogues }}
-        <span class="reading-entry-access" aria-hidden="true"> · </span>
-        <span class="reading-entry-access">{{ . }}</span>
-        {{- end }}
-      </dd>
-    </div>
-    {{- else }}
-    {{- with $catalogues }}
-    <div class="reading-entry-record-item reading-entry-record-item--wide">
-      <dt>Find it</dt>
-      <dd><span class="reading-entry-access">{{ . }}</span></dd>
-    </div>
-    {{- end }}
-    {{- end }}
+    {{- partial "source_record_rows.html" (dict "page" . "type" $type "isCurrentReading" (eq $p.status "reading")) }}
     {{- with $accessURL }}
     <div class="reading-entry-record-item reading-entry-record-item--wide">
       <dt>{{ if $p.doi }}DOI{{ else }}Access{{ end }}</dt>

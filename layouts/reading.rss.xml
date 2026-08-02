@@ -146,7 +146,11 @@
       <category>sources</category>
       <category>{{ .type }}</category>
       <category>{{ printf "%s-reading" .event_type }}</category>
-      <content:encoded>{{ (printf "<![CDATA[%s]]>" $content) | safeHTML }}</content:encoded>
+      {{- /* $htmlBody's title/author/notes are htmlEscape'd, but the <a href>
+             built above from .url/.doi is not — a literal "]]>" reaching this
+             CDATA from an access_url or DOI would still close it early. Same
+             CDATA-safe escape as the main feed (layouts/rss.xml). */ -}}
+      <content:encoded>{{ (printf "<![CDATA[%s]]>" (replace $content "]]>" "]]]]><![CDATA[>")) | safeHTML }}</content:encoded>
     </item>
     {{- end }}
   </channel>

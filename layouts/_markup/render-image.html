@@ -51,7 +51,14 @@
     {{- /* alt is emitted even when empty: a missing alt makes screen readers
            announce the filename, and the lightbox needs a nameable element. */ -}}
     {{- if or $v (eq $k "alt") -}}
-      {{- printf " %s=%q" $k $v | safeHTMLAttr -}}
+      {{- /* $v can carry a raw, author-typed Markdown attribute-list value
+             (.Attributes, merged in above) — %q is Go string-quoting, not
+             HTML-attribute escaping, so a literal `"` in $v wouldn't be
+             neutralized for the browser's parser. transform.HTMLEscape is
+             the encoder that's actually correct here (it's already used
+             above for the default `title` value); build the quotes by hand
+             around it rather than through %q. */ -}}
+      {{- printf " %s=\"%s\"" $k ($v | transform.HTMLEscape) | safeHTMLAttr -}}
     {{- end -}}
   {{- end -}}>
 {{- /**/ -}}

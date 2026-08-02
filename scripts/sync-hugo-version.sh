@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# Sync the Hugo version pinned in CI and statichost.yml to match local Hugo —
-# but only once the matching Docker image and GitHub release actually exist.
-# Bumping early 404s StaticHost's image pull and CI's .deb download (see
-# .github/workflows/site-checks.yml and statichost.yml).
+# Sync the Hugo version pinned in statichost.yml to match local Hugo — but
+# only once the matching Docker image and GitHub release actually exist.
+# Bumping early 404s StaticHost's image pull (see statichost.yml). CI needs no
+# separate sync: .github/workflows/site-checks.yml derives its own Hugo
+# version from statichost.yml's image line at run time, so it can never drift
+# from what this script updates here.
 #
 # Usage:
 #   scripts/sync-hugo-version.sh            # check and update if available
@@ -11,7 +13,6 @@
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-GITHUB_WORKFLOW="$REPO_ROOT/.github/workflows/site-checks.yml"
 STATICHOST="$REPO_ROOT/statichost.yml"
 DRY_RUN=false
 
@@ -52,12 +53,11 @@ HUGO_DIGEST=$(curl -fsS -D - -o /dev/null \
 echo "Resolved hugomods/hugo:${DOCKER_TAG} -> ${HUGO_DIGEST}"
 
 if $DRY_RUN; then
-  echo "Dry run — would update $GITHUB_WORKFLOW and $STATICHOST to Hugo $LOCAL_VERSION."
+  echo "Dry run — would update $STATICHOST to Hugo $LOCAL_VERSION."
   exit 0
 fi
 
 # -i.bak is portable across BSD and GNU sed (only a bare -i differs between them).
-sed -i.bak -E "s/HUGO_VERSION: \"[0-9]+\.[0-9]+\.[0-9]+\"/HUGO_VERSION: \"${LOCAL_VERSION}\"/" "$GITHUB_WORKFLOW" && rm -f "$GITHUB_WORKFLOW.bak"
 sed -i.bak -E "s|hugomods/hugo:[a-z-]+[0-9]+\.[0-9]+\.[0-9]+(@sha256:[a-f0-9]+)?|hugomods/hugo:${DOCKER_TAG}@${HUGO_DIGEST}|" "$STATICHOST" && rm -f "$STATICHOST.bak"
 
-echo "Updated (or already current). Review with: git diff $GITHUB_WORKFLOW $STATICHOST"
+echo "Updated (or already current). Review with: git diff $STATICHOST"

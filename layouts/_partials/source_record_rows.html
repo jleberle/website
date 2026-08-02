@@ -1,0 +1,48 @@
+{{- /* Bibliographic <dl> rows shared by the reading-ledger row
+       (reading_entry.html) and a source's own page (source_page.html), so
+       the two can't drift apart — same reasoning as source_catalogues.html,
+       which this calls.
+
+       Covers: publisher, format, started/finished date, and the ISBN/"find
+       it" line. Each caller keeps its own Published row and DOI/access row
+       outside this partial: whether "Published" would duplicate the page's
+       own byline, and how a DOI reads next to an access link, are decisions
+       specific to where the record is shown, not the part that's identical
+       between the two.
+
+       Params (dict):
+         page              the source page (.Params supplies the fields;
+                            also passed straight through to
+                            source_catalogues.html)
+         type       string  $p.type with its "book" default already applied
+         isCurrentReading bool  true shows "Started", false shows "Finished" */ -}}
+{{- $page := .page -}}
+{{- $type := .type -}}
+{{- $p := $page.Params -}}
+{{- with $p.publisher }}<div><dt>{{ if eq $type "book" }}Press{{ else }}Publication{{ end }}</dt><dd>{{ . }}</dd></div>{{ end -}}
+{{- with $p.format }}<div><dt>Format</dt><dd>{{ . }}</dd></div>{{ end -}}
+{{- if .isCurrentReading -}}
+  {{- with $p.started }}<div><dt>Started</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end -}}
+{{- else -}}
+  {{- with $p.finished }}<div><dt>Finished</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end -}}
+{{- end -}}
+{{- $catalogues := partial "source_catalogues.html" $page -}}
+{{- if $p.isbn -}}
+<div class="reading-entry-record-item reading-entry-record-item--wide">
+  <dt>ISBN</dt>
+  <dd>
+    <span>{{ $p.isbn }}</span>
+    {{- with $catalogues }}
+    <span class="reading-entry-access" aria-hidden="true"> · </span>
+    <span class="reading-entry-access">{{ . }}</span>
+    {{- end }}
+  </dd>
+</div>
+{{- else -}}
+{{- with $catalogues }}
+<div class="reading-entry-record-item reading-entry-record-item--wide">
+  <dt>Find it</dt>
+  <dd><span class="reading-entry-access">{{ . }}</span></dd>
+</div>
+{{- end -}}
+{{- end -}}

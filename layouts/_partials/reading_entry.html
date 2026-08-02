@@ -17,8 +17,6 @@
 {{- $typeLabel := $type | humanize -}}
 {{- $slug := path.Base $entry.RelPermalink -}}
 {{- $connected := $entry.Pages.ByDate.Reverse -}}
-{{- $isbn := "" -}}
-{{- with $p.isbn }}{{ $isbn = replaceRE "[^0-9Xx]" "" . }}{{ end -}}
 {{- $accessURL := $p.access_url | default "" -}}
 {{- if and (not $accessURL) $p.doi }}{{ $accessURL = printf "https://doi.org/%s" $p.doi }}{{ end -}}
 
@@ -53,33 +51,7 @@
   <div class="reading-entry-details">
     <dl class="reading-entry-record">
       {{- with $p.published_year }}<div><dt>Published</dt><dd>{{ . }}</dd></div>{{ end }}
-      {{- with $p.publisher }}<div><dt>{{ if eq $type "book" }}Press{{ else }}Publication{{ end }}</dt><dd>{{ . }}</dd></div>{{ end }}
-      {{- with $p.format }}<div><dt>Format</dt><dd>{{ . }}</dd></div>{{ end }}
-      {{- if eq $mode "current" }}
-        {{- with $p.started }}<div><dt>Started</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end }}
-      {{- else }}
-        {{- with $p.finished }}<div><dt>Finished</dt><dd>{{ time.AsTime . | time.Format ":date_long" }}</dd></div>{{ end }}
-      {{- end }}
-      {{- $catalogues := partial "source_catalogues.html" $entry }}
-      {{- if $p.isbn }}
-      <div class="reading-entry-record-item reading-entry-record-item--wide">
-        <dt>ISBN</dt>
-        <dd>
-          <span>{{ $p.isbn }}</span>
-          {{- with $catalogues }}
-          <span class="reading-entry-access" aria-hidden="true"> · </span>
-          <span class="reading-entry-access">{{ . }}</span>
-          {{- end }}
-        </dd>
-      </div>
-      {{- else }}
-      {{- with $catalogues }}
-      <div class="reading-entry-record-item reading-entry-record-item--wide">
-        <dt>Find it</dt>
-        <dd><span class="reading-entry-access">{{ . }}</span></dd>
-      </div>
-      {{- end }}
-      {{- end }}
+      {{- partial "source_record_rows.html" (dict "page" $entry "type" $type "isCurrentReading" (eq $mode "current")) }}
       {{- with $accessURL }}
       <div class="reading-entry-record-item reading-entry-record-item--wide">
         <dt>{{ if $p.doi }}DOI{{ else }}Access{{ end }}</dt>

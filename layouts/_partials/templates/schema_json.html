@@ -63,7 +63,14 @@
     {{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
     {{- end }}
   ],
-  "articleBody": {{ .Content | safeJS | htmlUnescape | plainify }},
+  {{- /* No safeJS here: this stays a plain string, and Go's html/template
+         contextual auto-escaper is what correctly quotes and escapes a plain
+         string landing inside this <script type="application/ld+json">
+         block. Marking it safeJS wouldn't survive htmlUnescape/plainify
+         anyway (both return plain strings), but if a future edit ever left
+         a "safe" type as the last stage in this pipe, that auto-escaping
+         would be suppressed instead of applied. */ -}}
+  "articleBody": {{ .Content | htmlUnescape | plainify }},
   "wordCount" : "{{ .WordCount }}",
   "inLanguage": {{ .Language.Lang | default "en-us" }},
   {{ if .Params.cover.image -}}

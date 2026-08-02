@@ -40,7 +40,12 @@
       </media:content>
       {{- end }}
       {{- if and site.Params.rssFullContent .Content }}
-      <content:encoded>{{ (printf "<![CDATA[%s]]>" $feedItem.content) | safeHTML }}</content:encoded>
+      {{- /* A literal "]]>" inside the content would close this CDATA section
+             early, leaving the rest of $feedItem.content to reach the parser
+             as unescaped raw markup. Split it instead of stripping it: this
+             is the standard CDATA-safe escape, closing the section and
+             reopening a new one across the boundary. */ -}}
+      <content:encoded>{{ (printf "<![CDATA[%s]]>" (replace $feedItem.content "]]>" "]]]]><![CDATA[>")) | safeHTML }}</content:encoded>
       {{- end }}
     </item>
     {{- end }}
