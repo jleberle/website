@@ -768,8 +768,12 @@ h1>a>svg {
 }
 
 
-/* Compact editorial outline for long, well-sectioned articles. */
-details.toc {
+/* Compact editorial outline for long, well-sectioned articles. Shared with
+   details.series-nav-details (series_nav.html), which collapses a long
+   series' full part list behind the same progressive-disclosure look rather
+   than always printing a wall of links. */
+details.toc,
+details.series-nav-details {
     margin-bottom: var(--content-gap);
     background: color-mix(in sRGB, var(--entry), transparent 58%);
     border: 1px solid var(--rule);
@@ -777,7 +781,8 @@ details.toc {
     border-radius: 4px;
 }
 
-details.toc summary {
+details.toc summary,
+details.series-nav-details summary {
     padding: 0.6rem 0.85rem;
     border-radius: 3px;
     font-family: var(--meta-font);
@@ -787,11 +792,13 @@ details.toc summary {
     text-transform: lowercase;
 }
 
-details.toc summary::marker {
+details.toc summary::marker,
+details.series-nav-details summary::marker {
     color: var(--accent);
 }
 
-details.toc[open] summary {
+details.toc[open] summary,
+details.series-nav-details[open] summary {
     border-bottom: 1px solid color-mix(in sRGB, var(--rule), transparent 35%);
     border-end-start-radius: 0;
     border-end-end-radius: 0;
@@ -800,6 +807,10 @@ details.toc[open] summary {
 details.toc summary .title {
     color: var(--primary);
     font-weight: 600;
+}
+
+details.series-nav-details .series-nav-list {
+    margin: 0.6rem 0.85rem 0.85rem;
 }
 
 .toc .inner a {

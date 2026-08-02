@@ -83,6 +83,14 @@ else
   fail "a subject tag is outside the approved vocabulary"
 fi
 
+step "series naming"
+if SERIES_OUT=$(python3 scripts/checks/series-lint.py content 2>&1); then
+  pass "$SERIES_OUT"
+else
+  echo "$SERIES_OUT"
+  fail "a series is spelled more than one way across its parts"
+fi
+
 step "graph connections"
 if CONN_OUT=$(python3 scripts/checks/connection-lint.py content 2>&1); then
   pass "$CONN_OUT"

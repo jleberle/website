@@ -12,8 +12,22 @@
 {{- $currentNum := 0 }}
 {{- $page := $ }}
 {{- range $i, $p := $siblings }}{{ if eq $p.RelPermalink $page.RelPermalink }}{{ $currentNum = add $i 1 }}{{ end }}{{ end }}
+{{- /* Every part renders here, unlike related_posts.html's explicit 2-3 item
+       cap, because this is wayfinding through a specific known list rather
+       than a discovery aid — truncating it would mean a reader on part 12
+       could no longer jump to part 3. Past a handful of parts a flat list
+       becomes a wall of links on every single page in the series, so a long
+       run collapses behind the same <details> progressive-disclosure pattern
+       already used for the table of contents (toc.html): the current part
+       stays visible in the kicker either way, and the full list opens on
+       demand instead of always being on the page. */ -}}
+{{- $long := gt $total 8 }}
 <section class="post-context series-nav" aria-label="Series navigation">
   <span class="post-context-kicker">Part {{ $currentNum }} of {{ $total }} in this series</span>
+  {{- if $long }}
+  <details class="series-nav-details">
+    <summary>All {{ $total }} parts</summary>
+  {{- end }}
   <ol class="series-nav-list">
     {{- range $siblings }}
     <li{{ if eq .RelPermalink $page.RelPermalink }} class="current" aria-current="page"{{ end }}>
@@ -25,6 +39,9 @@
     </li>
     {{- end }}
   </ol>
+  {{- if $long }}
+  </details>
+  {{- end }}
 </section>
 {{- end }}
 {{- end }}

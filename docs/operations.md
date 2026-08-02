@@ -52,19 +52,20 @@ Default `scripts/preflight.sh` checks:
 1. no `draft: true` files in the publishable content tree
 2. period values filed under `eras`, not `tags`
 3. every `tags` value is an approved subject term
-4. no orphan posts; `about:` is a subset of `sources:`
-5. no unoptimized JPEG, PNG, or WebP source images outside approved icons and JPEG companions
-6. no EXIF/IPTC/XMP metadata left on a published raster image
-7. Hugo build
-8. content resource references
-9. source junk files
-10. generated junk files
-11. feed lint
-12. CSP hash drift
-13. security.txt clearsignature present, valid, unexpired
-14. published-reference scan
-15. page-size lint
-16. image display lint
+4. every part of a `series` spells its name identically
+5. no orphan posts; `about:` is a subset of `sources:`
+6. no unoptimized JPEG, PNG, or WebP source images outside approved icons and JPEG companions
+7. no EXIF/IPTC/XMP metadata left on a published raster image
+8. Hugo build
+9. content resource references
+10. source junk files
+11. generated junk files
+12. feed lint
+13. CSP hash drift
+14. security.txt clearsignature present, valid, unexpired
+15. published-reference scan
+16. page-size lint
+17. image display lint
 
 Useful modes:
 
