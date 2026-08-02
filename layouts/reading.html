@@ -69,7 +69,7 @@
          permanently: a year of reading has a ceiling, so a year page has one
          too, however large the library gets. */ -}}
   {{- if $read }}
-  {{- $yearEntries := (where $read "Params.read_year" $currentYear).ByTitle -}}
+  {{- $yearEntries := ((where $read "Params.read_year" $currentYear).ByParam "finished").Reverse -}}
   {{- if $yearEntries }}
   {{- $displayedCurrentYear = true -}}
   <section class="reading-year-group" aria-labelledby="reading-year-{{ $currentYear }}">

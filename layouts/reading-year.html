@@ -25,7 +25,7 @@
 </header>
 
 <section class="reading-ledger" aria-label="Sources logged">
-  {{- with $entries.ByTitle }}
+  {{- with ($entries.ByParam "finished").Reverse }}
   <div class="reading-list">
     {{- range . }}{{ partial "reading_entry.html" (dict "entry" . "mode" "read") }}{{- end }}
   </div>
