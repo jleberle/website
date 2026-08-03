@@ -1,0 +1,49 @@
+name: CodeQL
+
+# Scans the Node/Python tooling in scripts/ and the Playwright/axe check —
+# there's no shipped application code, but these scripts do file I/O,
+# subprocess calls, and network fetches (webmentions, websub) worth covering.
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+      - "docs/**"
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+      - "docs/**"
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [javascript-typescript, python]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@d1ba80a13dd99fba24a470575428917156a28b43 # v4.37.5
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@d1ba80a13dd99fba24a470575428917156a28b43 # v4.37.5
+        with:
+          category: "/language:${{ matrix.language }}"
