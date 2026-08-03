@@ -128,4 +128,17 @@ body,
                 var(--theme) 13rem
             );
     }
+
+    /* Same reasoning as above: mixing toward white blows the header
+       gradient out of proportion on a dark page, since --entry sits far
+       from white here. Blend the tokens directly instead, matching the
+       light theme's minimal contrast. */
+    .header {
+        background:
+            linear-gradient(
+                180deg,
+                var(--entry) 0,
+                var(--theme) 100%
+            );
+    }
 }
