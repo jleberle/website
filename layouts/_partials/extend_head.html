@@ -1,5 +1,11 @@
 <link type="text/plain" rel="author" href="{{ "humans.txt" | relURL }}">
 <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
+{{- /* Receiving endpoint for inbound webmentions, hosted by webmention.io.
+       scripts/fetch-webmentions.py pulls what it's collected on its own
+       schedule (.github/workflows/webmentions.yml) and bakes it into
+       data/webmentions.json -- there's no client-side widget here, so this
+       tag is the only thing that needs to exist for senders to find us. */}}
+<link rel="webmention" href="https://webmention.io/jaredeberle.org/webmention">
 {{- /* Registered link relations (WHATWG link types) so browsers, extensions and
        crawlers can find the policy/terms from any page. Each points at its own
        dedicated page (content/privacy.md, content/terms.md). */}}

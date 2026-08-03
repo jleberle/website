@@ -1,0 +1,46 @@
+name: Fetch webmentions
+
+# Pulls received webmentions from webmention.io on its own schedule, decoupled
+# from publishing — a post's mentions can arrive years after it goes up. If
+# anything changed, the commit here is pushed like any other; StaticHost
+# deploys on every push regardless of source, so no separate deploy hook is
+# needed (see docs/operations.md).
+on:
+  schedule:
+    - cron: "5 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: webmentions
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    name: Fetch and commit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Fetch webmentions
+        env:
+          WEBMENTION_IO_TOKEN: ${{ secrets.WEBMENTION_IO_TOKEN }}
+        run: python3 scripts/fetch-webmentions.py --token "$WEBMENTION_IO_TOKEN"
+
+      - name: Commit and push if changed
+        run: |
+          set -euo pipefail
+          if [[ -z "$(git status --porcelain -- data/webmentions.json)" ]]; then
+            echo "No new webmentions."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/webmentions.json
+          git commit -m "Update webmentions"
+          git push

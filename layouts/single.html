@@ -85,10 +85,12 @@
            not a subject. Posts that carry only a period show just this row. */ -}}
     {{- $eras := $.GetTerms "eras" }}
     {{- $relatedOut := partial "related_posts.html" . }}
+    {{- $webmentionsOut := partial "webmentions.html" . }}
     {{- $hasRows := false }}
     {{- if $terms }}{{ $hasRows = true }}{{ end }}
     {{- if $eras }}{{ $hasRows = true }}{{ end }}
     {{- if trim (printf "%s" $relatedOut) " \r\n\t" }}{{ $hasRows = true }}{{ end }}
+    {{- if trim (printf "%s" $webmentionsOut) " \r\n\t" }}{{ $hasRows = true }}{{ end }}
     {{- if or $foot $hasRows }}
     <div class="post-apparatus">
       {{- if $hasRows }}
@@ -114,6 +116,7 @@
         </section>
         {{- end }}
         {{ $relatedOut }}
+        {{ $webmentionsOut }}
       </div>
       {{- end }}
       {{- with $foot }}

@@ -63,6 +63,12 @@ jobs:
     name: Build, validate, and audit
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    # Only the two webmention steps at the end need to push (a data-file
+    # commit recording which outbound links have already been notified);
+    # everything else here — installing deps, running Playwright, shelling
+    # out to lychee's Docker image — has no business holding a write token.
+    permissions:
+      contents: write
 
     steps:
       - name: Check out repository
@@ -151,6 +157,36 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         continue-on-error: true
         run: python3 scripts/notify-websub.py --wait 300 public/index.xml public/reading/index.xml public/feed.json
+
+      - name: Send outbound webmentions
+        # Runs after the WebSub step above has confirmed the live site
+        # matches this build, so a receiver that fetches the source URL to
+        # verify the link finds it there. State-cached (see
+        # scripts/send-webmentions.py), so only links introduced or edited
+        # since the last successful run are attempted.
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: |
+          python3 scripts/send-webmentions.py public/articles public/reviews public/quotes \
+            --public-root public --base-url https://jaredeberle.org
+
+      - name: Commit outbound webmention state
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$(git status --porcelain -- data/webmentions-sent.json)" ]]; then
+            echo "No new outbound webmention attempts to record."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/webmentions-sent.json
+          git commit -m "Record outbound webmention attempts"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
+          git push
 
       - name: Run external link check
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'

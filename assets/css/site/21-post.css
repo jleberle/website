@@ -496,6 +496,11 @@ h1>a>svg {
     color: var(--secondary);
 }
 
+.webmention-excerpt {
+    color: var(--secondary);
+    font-style: italic;
+}
+
 
 /* ------------------------------------------------------------
    Post footer (single pages): metadata apparatus and tags.

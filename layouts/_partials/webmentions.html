@@ -1,0 +1,25 @@
+{{- /* Webmentions received for this page (data/webmentions.json), fetched on
+       its own schedule by scripts/fetch-webmentions.py rather than a
+       client-side widget against webmention.io -- keeps the strict CSP
+       intact (no third-party connect-src/img-src) and needs no JS. Author
+       photos aren't rendered for the same reason: they're remote images the
+       CSP's img-src 'self' data: would block. See
+       .github/workflows/webmentions.yml. */ -}}
+{{- $byPath := hugo.Data.webmentions | default dict -}}
+{{- $mentions := index $byPath .RelPermalink -}}
+{{- with $mentions }}
+<section class="post-context related-posts" aria-label="Webmentions">
+  <span class="post-context-kicker">Webmentions</span>
+  <ul class="related-posts-list">
+    {{- range . }}
+    <li>
+      <span class="related-post-type">{{- if eq .type "like-of" }}liked{{- else if eq .type "repost-of" }}reposted{{- else if eq .type "in-reply-to" }}replied{{- else }}mentioned{{- end }}</span>
+      <span>
+        <a href="{{ .url }}" rel="external noopener" target="_blank">{{ .author.name | default "Someone" }}</a>
+        {{- with .content }} &mdash; <q class="webmention-excerpt">{{ . }}</q>{{ end }}
+      </span>
+    </li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}
