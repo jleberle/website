@@ -16,5 +16,8 @@
     "playwright": "^1.62.0",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0"
+  },
+  "overrides": {
+    "fast-uri": "^3.1.5"
   }
 }
