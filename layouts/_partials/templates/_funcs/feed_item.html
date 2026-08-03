@@ -16,17 +16,19 @@
       | replaceRE `\s+(srcset|sizes|data-lightbox-src|loading|decoding)="[^"]*"` ""
       | replaceRE `href="#([^"]*)"` (printf `href="%s#$1"` $page.Permalink)
       | replaceRE `(src|href)="(/[^"]*)"` (printf `$1="%s$2"` $base) -}}
+{{- $coverImg := "" -}}
 {{- with $cover -}}
   {{- $stem := strings.TrimSuffix (path.Ext $page.Params.cover.image) (path.Base $page.Params.cover.image) -}}
   {{- if not (or (strings.Contains $c (printf "/%s." $stem)) (strings.Contains $c (printf "/%s_" $stem))) -}}
     {{- $alt := $page.Params.cover.alt | default $page.Title -}}
-    {{- $c = printf "<img src=%q alt=%q style=%q>\n%s" $cover $alt "max-width:100%;height:auto;" $c -}}
+    {{- $coverImg = printf "<img src=%q alt=%q style=%q>\n" $cover $alt "max-width:100%;height:auto;" -}}
   {{- end -}}
 {{- end -}}
 {{- /* Feed readers don't load the site stylesheet, so the review's source
        citation (normally .post-context, styled via CSS) is rebuilt here with
        inline styles and prepended to the body, mirroring single.html's
-       placement of post_context.html above the content. */ -}}
+       placement of post_context.html above the content. It's inserted after
+       the cover image (rather than above it) so the photo leads the item. */ -}}
 {{- if eq $page.Section "reviews" -}}
   {{- with $page.GetTerms "sources" -}}
     {{- $source := index . 0 -}}
@@ -46,6 +48,7 @@
     {{- $c = printf "%s\n%s" $citation $c -}}
   {{- end -}}
 {{- end -}}
+{{- $c = printf "%s%s" $coverImg $c -}}
 {{- $email := site.Params.email -}}
 {{- $mailto := printf "mailto:%s?subject=%s" $email (urlquery (printf "Re: %s" $page.Title)) -}}
 {{- $license := site.Copyright | markdownify -}}
