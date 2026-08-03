@@ -48,8 +48,10 @@ jobs:
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
         env:
-          # No GITHUB_TOKEN: gitleaks-action's own docs say it exists solely
-          # to call the GitHub API for PR comments, which is disabled below.
+          # v3 now requires GITHUB_TOKEN to scan pull requests even with
+          # comments disabled below (previously optional, docs said it was
+          # only used for PR comments). See gitleaks/gitleaks-action#ANNOUNCEMENT.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_ENABLE_COMMENTS: "false"
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
           # Pinned past 8.24.3: that version silently ignores the top-level
