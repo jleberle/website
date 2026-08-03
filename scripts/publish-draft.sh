@@ -144,11 +144,16 @@ mkdir -p "$TARGET_DIR"
 mv "$TMP_FILE" "$TARGET_PATH"
 rm "$DRAFT_PATH"
 
+TITLE="$(sed -n 's/^title: *"\(.*\)"[[:space:]]*$/\1/p' "$TARGET_PATH" | head -1)"
+SLUG="$(sed -n 's/^slug: *"\(.*\)"[[:space:]]*$/\1/p' "$TARGET_PATH" | head -1)"
+BASE_URL="$(sed -n 's/^baseURL: *//p' "$REPO_ROOT/hugo.yaml" | head -1)"
+FALLBACK_SLUG="$(basename "$DRAFT_PATH" .md)"
+POST_URL="${BASE_URL%/}/$SECTION/${SLUG:-$FALLBACK_SLUG}/"
+
 echo "Published $SECTION draft:"
 echo "  $DRAFT_INPUT"
 echo "  -> ${TARGET_PATH#$REPO_ROOT/}"
-
-TITLE="$(sed -n 's/^title: *"\(.*\)"[[:space:]]*$/\1/p' "$TARGET_PATH" | head -1)"
+echo "  $POST_URL"
 
 # Log the publish event to today's Obsidian Status note. Best-effort: the
 # draft has already left the vault by this point (moved into content/ above),
@@ -156,7 +161,7 @@ TITLE="$(sed -n 's/^title: *"\(.*\)"[[:space:]]*$/\1/p' "$TARGET_PATH" | head -1
 # closest equivalent, a breadcrumb in the daily note. Requires the Advanced
 # URI plugin and the core Daily Notes plugin pointed at a real folder (see
 # .obsidian/daily-notes.json); silently no-ops if Obsidian isn't running.
-LOG_LINE="Published: \"${TITLE:-$SECTION post}\" ($SECTION)"
+LOG_LINE="[Published: \"${TITLE:-$SECTION post}\"]($POST_URL) ($SECTION)"
 ENCODED_DATA="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))' "$LOG_LINE")"
 open "obsidian://advanced-uri?vault=Notes&daily=true&data=${ENCODED_DATA}&mode=append&openmode=silent" 2>/dev/null || true
 
