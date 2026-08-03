@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { createReadStream, existsSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
-import { extname, join, normalize, resolve, sep } from 'node:path';
+import { extname, isAbsolute, join, relative, resolve } from 'node:path';
 import AxeBuilder from '@axe-core/playwright';
 import { chromium } from 'playwright';
 
@@ -40,11 +40,14 @@ const mimeTypes = new Map([
 
 function resolveRequest(urlPath) {
   const decoded = decodeURIComponent(urlPath.split('?')[0]);
-  const relative = decoded === '/' ? 'index.html' : decoded.replace(/^\/+/, '');
-  const candidate = normalize(join(root, relative));
-  if (!(candidate === root || candidate.startsWith(root + sep))) return null;
+  const relativePath = decoded === '/' ? 'index.html' : decoded.replace(/^\/+/, '');
+  const candidate = resolve(root, relativePath);
+  const candidateRel = relative(root, candidate);
+  if (candidateRel.startsWith('..') || isAbsolute(candidateRel)) return null;
   if (existsSync(candidate) && statSync(candidate).isFile()) return candidate;
   const index = join(candidate, 'index.html');
+  const indexRel = relative(root, index);
+  if (indexRel.startsWith('..') || isAbsolute(indexRel)) return null;
   if (existsSync(index) && statSync(index).isFile()) return index;
   return null;
 }
@@ -65,7 +68,8 @@ if (missingPages.length > 0) {
 
 const server = createServer((req, res) => {
   const file = resolveRequest(req.url || '/');
-  if (!file) {
+  const fileRel = file && relative(root, file);
+  if (!file || fileRel.startsWith('..') || isAbsolute(fileRel)) {
     res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' });
     res.end('Not found');
     return;
