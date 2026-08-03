@@ -148,6 +148,18 @@ echo "Published $SECTION draft:"
 echo "  $DRAFT_INPUT"
 echo "  -> ${TARGET_PATH#$REPO_ROOT/}"
 
+TITLE="$(sed -n 's/^title: *"\(.*\)"[[:space:]]*$/\1/p' "$TARGET_PATH" | head -1)"
+
+# Log the publish event to today's Obsidian Status note. Best-effort: the
+# draft has already left the vault by this point (moved into content/ above),
+# so there's no Obsidian-side file left to flag draft:false on -- this is the
+# closest equivalent, a breadcrumb in the daily note. Requires the Advanced
+# URI plugin and the core Daily Notes plugin pointed at a real folder (see
+# .obsidian/daily-notes.json); silently no-ops if Obsidian isn't running.
+LOG_LINE="Published: \"${TITLE:-$SECTION post}\" ($SECTION)"
+ENCODED_DATA="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))' "$LOG_LINE")"
+open "obsidian://advanced-uri?vault=Notes&daily=true&data=${ENCODED_DATA}&mode=append&openmode=silent" 2>/dev/null || true
+
 # With --cite, append a rendered Chicago "Works Cited" list to prose posts.
 if $CITE; then
   case "$SECTION" in
@@ -167,6 +179,5 @@ if $CITE; then
 fi
 
 if $PUSH; then
-  TITLE="$(sed -n 's/^title: *"\(.*\)"[[:space:]]*$/\1/p' "$TARGET_PATH" | head -1)"
   "$SCRIPT_DIR/ship.sh" "Publish: ${TITLE:-$SECTION post}"
 fi
