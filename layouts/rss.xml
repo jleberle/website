@@ -29,6 +29,10 @@
       <title>{{ .Title }}</title>
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      {{- with partial "latest_revision.html" . }}
+      {{- $revised := time.AsTime .date }}
+      <atom:updated>{{ $revised.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}</atom:updated>
+      {{- end }}
       {{- with partial "author.html" . }}<dc:creator>{{ . | plainify }}</dc:creator>{{ end }}
       <guid isPermaLink="true">{{ .Permalink }}</guid>
       <description>{{ partial "page_summary.html" . | html }}</description>
