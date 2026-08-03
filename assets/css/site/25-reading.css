@@ -103,6 +103,16 @@
     border-bottom-color: var(--primary);
 }
 
+/* Forced colours mode recolours every border to the same system colour, so
+   the current-year row and every other row become indistinguishable by
+   colour alone. A wider border keeps the distinction without relying on
+   colour. */
+@media (forced-colors: active) {
+    .reading-year-index-list a[aria-current="page"] {
+        border-bottom-width: 3px;
+    }
+}
+
 .reading-year-heading {
     margin-bottom: 0.25rem;
 }

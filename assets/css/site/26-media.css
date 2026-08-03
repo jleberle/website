@@ -111,6 +111,21 @@
     background: var(--primary);
 }
 
+/* Forced colours mode flattens --rule and --primary to the same system
+   colour, so the active dot stops standing out from the rest. System colour
+   keywords repair the distinction using the user's own palette instead of
+   fighting it. */
+@media (forced-colors: active) {
+    .carousel-dot::before {
+        border: 1px solid CanvasText;
+    }
+
+    .carousel-dot.active::before {
+        background: Highlight;
+        border-color: Highlight;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .carousel-btn,
     .carousel-dot::before {
@@ -196,7 +211,12 @@
 .pdf-embed iframe {
     display: block;
     width: 100%;
+    /* svh, not dvh: this sits in normal document flow, so a live-updating
+       height would reflow the iframe (and everything after it) as the
+       mobile toolbar collapses mid-scroll. svh is a fixed, conservative
+       value that never overflows. */
     height: 80vh;
+    height: 80svh;
     border: 1px solid var(--border);
     border-radius: 8px;
 }
@@ -232,6 +252,7 @@
 #lightbox-img {
     max-width: 90vw;
     max-height: 90vh;
+    max-height: 90dvh;
     object-fit: contain;
     border-radius: 2px;
     cursor: default;

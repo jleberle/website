@@ -229,6 +229,7 @@ h1>a>svg {
     z-index: 50;
     width: min(90vw, 30em);
     max-height: 60vh;
+    max-height: 60dvh;
     overflow-y: auto;
     background: var(--entry);
     color: var(--content);

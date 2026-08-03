@@ -9,6 +9,7 @@
   Cross-Origin-Resource-Policy: same-site
   X-Permitted-Cross-Domain-Policies: none
   X-Robots-Tag: noai, noimageai
+  Link: </sitemap.xml>; rel="sitemap"; type="application/xml", </index.xml>; rel="alternate"; type="application/rss+xml"; title="RSS", </feed.json>; rel="alternate"; type="application/feed+json"; title="JSON Feed", </.well-known/security.txt>; rel="security"
 
 /assets/*
 /js/*
@@ -44,3 +45,9 @@
 /key.asc
 /.well-known/*
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+# Raw Markdown source endpoints (spec: markdown-source-endpoints). Hugo emits
+# these as plain .md files; the host needs to be told the content type since
+# it can't infer text/markdown from the extension the way it does text/html.
+/*.md
+  Content-Type: text/markdown; charset=utf-8

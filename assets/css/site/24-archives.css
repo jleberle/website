@@ -82,6 +82,17 @@
     outline-offset: 2px;
 }
 
+/* Forced colours mode flattens the is-active background/border-color pair
+   these buttons otherwise rely on, so the pressed filter and the rest become
+   visually identical. aria-pressed already carries the state to assistive
+   tech; this restores it for sighted forced-colours users too. */
+@media (forced-colors: active) {
+    .archive-filter.is-active {
+        border-width: 2px;
+        text-decoration: underline;
+    }
+}
+
 .archive-entry.is-hidden {
     display: none;
 }

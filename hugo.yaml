@@ -137,6 +137,9 @@ mediaTypes:
   application/manifest+json:
     suffixes:
       - webmanifest
+  text/markdown:
+    suffixes:
+      - md
 
 outputFormats:
   jsonfeed:
@@ -149,6 +152,10 @@ outputFormats:
     baseName: site # /site.webmanifest
     isPlainText: true
     notAlternative: true # linked explicitly in head, not treated as feed alternate
+  markdown:
+    mediaType: text/markdown
+    isPlainText: true
+    notAlternative: false # advertised as <link rel="alternate"> via head.html's AlternativeOutputFormats loop
 
 outputs:
   home:
@@ -162,6 +169,9 @@ outputs:
     - HTML
   term:
     - HTML
+  page:
+    - HTML
+    - markdown
 
 # ------------------------------------------------------------
 # Markdown and syntax highlighting

@@ -40,6 +40,17 @@
     });
   }
 
+  // Marks every other top-level body element inert (or not) while the
+  // overlay is open, so background content is unreachable to keyboard and
+  // screen-reader users, not just visually dimmed. The manual Tab trap above
+  // stays as a fallback for the rare browser without inert support.
+  function setBackgroundInert(state) {
+    Array.prototype.forEach.call(document.body.children, function (el) {
+      if (el === overlay) return;
+      el.inert = state;
+    });
+  }
+
   // Accepts either an <img> (covers, content images) or an <a> (a prose link
   // pointing at an image, tagged data-lightbox-src by render-link.html).
   function openLightbox(el) {
@@ -48,12 +59,14 @@
     overlayImg.alt = el.alt || el.getAttribute('aria-label') || (el.textContent || '').trim();
     overlay.classList.add('is-open');
     document.body.style.overflow = 'hidden';
+    setBackgroundInert(true);
     overlayClose.focus();
   }
 
   function closeLightbox() {
     overlay.classList.remove('is-open');
     document.body.style.overflow = '';
+    setBackgroundInert(false);
     if (lastFocused) {
       lastFocused.focus();
       lastFocused = null;
