@@ -23,4 +23,8 @@
     {{- $c = printf "<img src=%q alt=%q>\n%s" $cover $alt $c -}}
   {{- end -}}
 {{- end -}}
+{{- $email := site.Params.email -}}
+{{- $mailto := printf "mailto:%s?subject=%s" $email (urlquery (printf "Re: %s" $page.Title)) -}}
+{{- $license := site.Copyright | markdownify -}}
+{{- $c = printf "%s\n<p>Originally published at <a href=%q>%s</a>.</p>\n<p><a href=%q>Reply by email</a> · © %d %s. Licensed under %s.</p>" $c $page.Permalink $page.Permalink $mailto $page.Date.Year site.Params.author $license -}}
 {{- return (dict "content" $c "cover" $cover) -}}
