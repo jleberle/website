@@ -45,21 +45,25 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Install gitleaks
+        # Direct binary install instead of gitleaks/gitleaks-action: this job
+        # already clones full history and runs a full scan, and the PR-comment
+        # / artifact-upload features gitleaks-action adds were disabled anyway
+        # (see git history), so the action bought nothing but a Docker pull
+        # and a GITHUB_TOKEN requirement.
+        run: |
+          curl -fsSLO https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  gitleaks_8.30.1_linux_x64.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks_8.30.1_linux_x64.tar.gz gitleaks
+          sudo mv gitleaks /usr/local/bin/gitleaks
+
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
-        env:
-          # v3 now requires GITHUB_TOKEN to scan pull requests even with
-          # comments disabled below (previously optional, docs said it was
-          # only used for PR comments). See gitleaks/gitleaks-action#ANNOUNCEMENT.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_ENABLE_COMMENTS: "false"
-          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
-          # Pinned past 8.24.3: that version silently ignores the top-level
-          # [[allowlists]] entry in .gitleaks.toml when a rule is also
-          # extended from the default config, so the cite_key allowlist
-          # never suppressed the generic-api-key false positive it targets.
-          # Verified fixed as of 8.30.1.
-          GITLEAKS_VERSION: "8.30.1"
+        # Pinned past 8.24.3: that version silently ignores the top-level
+        # [[allowlists]] entry in .gitleaks.toml when a rule is also
+        # extended from the default config, so the cite_key allowlist
+        # never suppressed the generic-api-key false positive it targets.
+        # Verified fixed as of 8.30.1.
+        run: gitleaks git --no-banner
 
   verify:
     name: Build, validate, and audit
