@@ -9,14 +9,14 @@
 | `content/quotes/` | Quote posts, flat files |
 | `content/cv/` | CV page |
 | `content/courses/` | Course pages |
-| `~/Notes/04 Blog/Drafts/` | Obsidian vault drafts (outside the repo) |
+| `~/Notes/07 Blog/Drafts/` | Obsidian vault drafts (outside the repo) |
 
 Published posts follow `YYYY-MM-DD-slug/` page-bundle naming for articles and reviews, and dated flat files for quotes. Draft front matter is stamped in the site's local timezone (`America/Chicago`) so feeds sort correctly.
 
 ## Draft and Publish Flow
 
-Obsidian drafts live in the main `~/Notes` vault under `04 Blog/Drafts/articles/`,
-`04 Blog/Drafts/reviews/`, and `04 Blog/Drafts/quotes/`. Keeping them in the vault
+Obsidian drafts live in the main `~/Notes` vault under `07 Blog/Drafts/articles/`,
+`07 Blog/Drafts/reviews/`, and `07 Blog/Drafts/quotes/`. Keeping them in the vault
 rather than the repo means drafting happens alongside the reading notes, Zotero
 citations, and research library, and Obsidian Sync carries them between machines
 without unpublished work ever entering Git. Override the location with

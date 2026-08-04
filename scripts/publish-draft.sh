@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Publish an Obsidian draft into the Hugo content tree.
 #
-# Drafts live in the Obsidian vault (~/Notes/04 Blog/Drafts by default), outside
+# Drafts live in the Obsidian vault (~/Notes/07 Blog/Drafts by default), outside
 # the repo. Override with WEBSITE_DRAFTS_DIR. Draft layout:
 #   <drafts>/articles/YYYY-MM-DD-slug.md -> content/articles/YYYY-MM-DD-slug/index.md
 #   <drafts>/reviews/YYYY-MM-DD-slug.md  -> content/reviews/YYYY-MM-DD-slug/index.md
@@ -48,7 +48,7 @@ REPO_ROOT="$( cd "$SCRIPT_DIR/.." >/dev/null 2>&1 && pwd )"
 source "$SCRIPT_DIR/lib.sh"
 
 # Drafts live in the Obsidian vault, outside the repo. Override with WEBSITE_DRAFTS_DIR.
-DRAFTS_ROOT="${WEBSITE_DRAFTS_DIR:-$HOME/Notes/04 Blog/Drafts}"
+DRAFTS_ROOT="${WEBSITE_DRAFTS_DIR:-$HOME/Notes/07 Blog/Drafts}"
 
 DRAFT_INPUT="${ARGS[0]}"
 case "$DRAFT_INPUT" in

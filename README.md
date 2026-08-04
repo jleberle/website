@@ -31,7 +31,7 @@ The site is available at `http://localhost:1313`.
 | `docs/` | Operational and workflow documentation |
 
 Obsidian only runs against the `~/Notes` vault, synced via Obsidian Sync — this
-repo has no `.obsidian/` setup of its own. Drafts live at `~/Notes/04 Blog/Drafts/`
+repo has no `.obsidian/` setup of its own. Drafts live at `~/Notes/07 Blog/Drafts/`
 (override with `WEBSITE_DRAFTS_DIR`), outside the repo, until
 `scripts/publish-draft.sh` moves them into `content/`. The Templater draft
 templates live solely at `~/Notes/Meta/templates/Website/`; there is no repo

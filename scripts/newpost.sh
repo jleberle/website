@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Scaffold an Obsidian-compatible draft matching the site's conventions.
-# Drafts live in the Obsidian vault (~/Notes/04 Blog/Drafts by default), outside
+# Drafts live in the Obsidian vault (~/Notes/07 Blog/Drafts by default), outside
 # the repo, until scripts/publish-draft.sh moves them into Hugo content. Articles
 # and reviews publish as page bundles; quotes publish as flat files.
 # Override the draft location with WEBSITE_DRAFTS_DIR.
@@ -21,7 +21,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "$SCRIPT_DIR/lib.sh"
 
 # Drafts live in the Obsidian vault, outside the repo. Override with WEBSITE_DRAFTS_DIR.
-DRAFTS_ROOT="${WEBSITE_DRAFTS_DIR:-$HOME/Notes/04 Blog/Drafts}"
+DRAFTS_ROOT="${WEBSITE_DRAFTS_DIR:-$HOME/Notes/07 Blog/Drafts}"
 
 COVER=false
 TITLE=""
