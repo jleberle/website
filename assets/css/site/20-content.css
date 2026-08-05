@@ -476,12 +476,12 @@ b {
 /* Same complete-shorthand fix as the base h2/h3 rule above — margin-top
    alone left bottom/left/right leaking in from .md-content's shorthand. */
 .has-prose-typography .post-content h2 {
-    margin: 1.9em 0 24px;
+    margin: 1.9em 0 0.8em;   /* = 24px at 1.875rem */
     font-size: 1.875rem;
 }
 
 .has-prose-typography .post-content h3 {
-    margin: 1.65em 0 16px;
+    margin: 1.65em 0 0.7273em;   /* = 16px at 1.375rem */
     font-size: 1.375rem;
 }
 
@@ -559,15 +559,21 @@ b {
    18 above) set margin via shorthand too, and overriding only margin-top
    left bottom/left/right silently inherited from that older rule — an
    accidental mix of this rule's em-based top with the other rule's px-based
-   bottom that nobody actually decided on. Values below reproduce exactly
-   what was already rendering (24px / 16px bottom), just as an explicit,
-   self-contained declaration instead of a cross-rule accident. */
+   bottom that nobody actually decided on.
+
+   Now decided: both sides are em. A frozen px bottom against an em top
+   meant that as a reader scaled text up, the space above a heading grew
+   while the space below stayed put — so the heading drifted toward the
+   text it introduces and away from nothing in particular, inverting the
+   proximity it should have (a heading belongs to what follows it). The
+   em values are exact equivalents of the previous pixels at each rule's
+   own heading size, so nothing moves at the default setting. */
 .post-content h2 {
-    margin: 1.8em 0 24px;
+    margin: 1.8em 0 0.75em;   /* 0.75em = 24px at this rule's 2rem heading */
 }
 
 .post-content h3 {
-    margin: 1.55em 0 16px;
+    margin: 1.55em 0 0.6667em;   /* = 16px at this rule's 1.5rem heading */
 }
 
 .post-content blockquote {
