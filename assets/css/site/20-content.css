@@ -199,26 +199,6 @@ mark {
     padding: 0 2px;
 }
 
-audio {
-    display: block;
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    height: 2.5rem;
-    margin-bottom: var(--content-gap);
-}
-
-audio::-webkit-media-controls-enclosure {
-    border-radius: 0;
-}
-
-video {
-    border: 1px solid var(--code-bg);
-    border-radius: var(--radius);
-    max-width: 100%;
-}
-
 
 /* ------------------------------------------------------------
    Metadata typography. Small-caps/lowercase treatment for
