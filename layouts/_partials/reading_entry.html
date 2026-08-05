@@ -27,7 +27,11 @@
 >
   <summary class="reading-entry-summary">
     <span class="reading-entry-main">
-      <span class="reading-entry-kicker">{{ $typeLabel }}</span>
+      {{- /* Label the exception, not the rule — see related_posts.html. On
+             this page the label is even emptier than elsewhere: every entry
+             in the ledger is currently a book, so it printed the identical
+             word above all twelve titles. */ -}}
+      {{- if ne $type "book" }}<span class="reading-entry-kicker">{{ $typeLabel }}</span>{{ end }}
       <span class="reading-entry-title-line">
         <span class="reading-entry-title">{{ $entry.Title }}</span>
         <span class="reading-entry-years">

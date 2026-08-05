@@ -37,11 +37,20 @@
   {{- range $sources }}
   {{- $p := .Params }}
   {{- $meta := slice }}
+  {{- /* Label the exception, not the rule: 62 of the 66 works cited are
+         books. A reserved type column printed that same word down almost
+         the whole page and, once emptied for books, left 7.5rem of unused
+         indent on every row it no longer filled. The four non-books carry
+         their type at the head of the citation line instead — where a
+         reader scanning a bibliography expects to find it, and at no cost
+         in layout to the other sixty-two. */ -}}
+  {{- $type := $p.type | default "book" }}
+  {{- if ne $type "book" }}{{ $meta = $meta | append ($type | humanize) }}{{ end }}
   {{- with $p.author }}{{ $meta = $meta | append . }}{{ end }}
   {{- with $p.publisher }}{{ $meta = $meta | append . }}{{ end }}
   {{- with $p.published_year }}{{ $meta = $meta | append (string .) }}{{ end }}
+  {{- $type := $p.type | default "book" }}
   <li class="bib-entry">
-    <span class="bib-type">{{ $p.type | default "book" | humanize }}</span>
     <a class="bib-title" href="{{ .RelPermalink }}"><cite>{{ .Title }}</cite></a>
     {{- with $meta }}<span class="bib-meta">{{ delimit . " · " }}</span>{{ end }}
     {{- /* "Uncategorized" is derived from the absence of `tags`, never stored.
