@@ -211,6 +211,7 @@
 .pdf-embed iframe {
     display: block;
     width: 100%;
+
     /* svh, not dvh: this sits in normal document flow, so a live-updating
        height would reflow the iframe (and everything after it) as the
        mobile toolbar collapses mid-scroll. svh is a fixed, conservative

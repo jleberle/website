@@ -1,5 +1,6 @@
 .main {
     position: relative;
+
     /* svh (not dvh): this only needs to be tall enough to pin the footer to
        the bottom on short pages, and svh's fixed "chrome fully shown" height
        avoids the live reflow dvh would cause as the mobile toolbar collapses

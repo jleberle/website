@@ -207,4 +207,5 @@ jobs:
           name: site-checks-failure-${{ github.run_id }}-${{ github.run_attempt }}
           retention-days: 3
           if-no-files-found: warn
+          include-hidden-files: true
           path: .ci-artifacts/
