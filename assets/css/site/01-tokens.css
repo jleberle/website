@@ -2,6 +2,24 @@
    Northeaster — a restrained editorial palette: warmed gray paper,
    blue-black ink, weathered slate, and deep maritime blue as the
    accent note. Scholarly and historical without looking vintage.
+
+   Paper is deliberately neutral-to-cool, not warm. An earlier
+   incarnation of this site ran a warm "prairie" palette (paper
+   #f6edd8, clay/rust/ochre accents); commits 27ce5c2 and f3ecdaf
+   moved it to neutral grays and stripped the remaining earthy
+   elements on purpose. Don't drift the paper back toward parchment
+   — the cool page is the point, and it is what makes the maritime
+   blue read as the only colour on the page.
+
+   The accent (--tide) is pinned to the hue of the *sea* in the
+   painting, not its sky. Sampling Northeaster by region in LCH puts
+   the sea at hue 207-226 carrying by far the most chroma (avg 10.9,
+   against 7.1 for sky, 7.3 for foam, 3.8 for rock) — it is the
+   chromatic heart of the canvas. The page is already the fog and
+   sky (near-zero chroma), so letting the accent be the water splits
+   the painting between surface and ink instead of quoting the same
+   element twice. Shifting hue while holding L and C fixed leaves
+   contrast untouched, so keep any future tuning on that axis.
    ============================================================ */
 :root {
     --gap:           1.75rem;
@@ -16,11 +34,11 @@
     --fog-slate:     #20292e;   /* headings — blue-black ink         */
     --fog-deepwater: #384348;   /* body text — softened ink          */
     --fog-driftgray: #585f65;   /* meta/muted text — darkened for AA */
-    --fog-haze:      #9da5a5;   /* rules — weathered slate           */
-    --fog-pale-haze: #c7cac6;   /* borders — quiet paper edge        */
+    --fog-haze:      #9ba5ab;   /* rules — weathered slate           */
+    --fog-pale-haze: #c5c9cd;   /* borders — quiet paper edge        */
     --driftwood:     #5d6f76;   /* blockquote/source rule            */
-    --tide:          #24566a;   /* links — deep maritime blue        */
-    --tide-deep:     #173f50;   /* link hover — darker undertow      */
+    --tide:          #1c5863;   /* links — deep maritime blue        */
+    --tide-deep:     #0e414a;   /* link hover — darker undertow      */
     --theme:         var(--fog-mist);
     --entry:         var(--fog-granite);
     --primary:       var(--fog-slate);
@@ -64,8 +82,8 @@
         --fog-haze:      #4a5459;   /* rules — a step lighter than the page    */
         --fog-pale-haze: #363e42;   /* borders — quiet dark edge               */
         --driftwood:     #7a8a90;   /* blockquote/source rule                  */
-        --tide:          #6fa8c0;   /* links — lightened for dark contrast     */
-        --tide-deep:     #96cbe0;   /* link hover — brighter undertow          */
+        --tide:          #69aab9;   /* links — lightened for dark contrast     */
+        --tide-deep:     #92ccda;   /* link hover — brighter undertow          */
         --code-bg:       var(--fog-granite);
 
         color-scheme: dark;
