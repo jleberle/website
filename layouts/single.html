@@ -66,7 +66,13 @@
   {{- end }}
 
   {{- if $hasSourceContext }}
-  {{- partial "post_context.html" (dict "page" . "kind" "quote") }}
+  {{- /* kind "source", not "quote": the emitted class is post-context-<kind>,
+         and 21-post.css styles .post-context-source — which the whole rest of
+         this path already assumes ($hasSourceContext above, the "Source"
+         kicker and aria-label in the partial). Passing "quote" produced
+         .post-context-quote, which nothing styles, so the block rendered
+         with no rule, padding or top margin on every notebook entry. */ -}}
+  {{- partial "post_context.html" (dict "page" . "kind" "source") }}
   {{- end }}
 
   <footer class="post-footer">
