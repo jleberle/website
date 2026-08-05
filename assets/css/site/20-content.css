@@ -641,8 +641,19 @@ select {
    figures so numeric columns line up (the system-sans body stack
    otherwise uses proportional figures). Chroma runs with noClasses and
    no line numbers, so code never renders as a table — these rules
-   only ever hit real content tables.
+   only ever hit real content tables. render-table.html wraps every
+   table in .table-scroll so one wider than the reading measure scrolls
+   horizontally as a focusable region instead of overflowing.
    ------------------------------------------------------------ */
+.table-scroll {
+    overflow-x: auto;
+}
+
+.table-scroll:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 .post-content table {
     border-collapse: collapse;
     width: 100%;

@@ -1,27 +1,42 @@
 {{- /* Render Markdown table column alignment as CSS classes instead of
        Goldmark's default inline style="text-align:…", which the site CSP
        (style-src has no 'unsafe-inline') silently blocks. See
-       assets/css/site/20-content.css for the .align-* rules. */ -}}
+       assets/css/site/20-content.css for the .align-* rules.
+
+       A trailing attribute list (parser.attribute.block is on) can carry
+       {caption="…"} — pull that out as a real <caption> element rather
+       than letting it fall through to an invalid table="…" HTML
+       attribute, so authors have a way to give a table its accessible
+       name (WCAG 1.3.1) when one isn't obvious from context. */ -}}
 {{- $alignClass := dict "left" "align-left" "center" "align-center" "right" "align-right" -}}
-<table
-  {{- range $k, $v := .Attributes }}{{ with $v }} {{ $k }}="{{ . }}"{{ end }}{{ end -}}
->
-  <thead>
-    {{- range .THead }}
-    <tr>
-      {{- range . }}
-      <th{{ with index $alignClass .Alignment }} class="{{ . }}"{{ end }}>{{ .Text }}</th>
-      {{- end }}
-    </tr>
+{{- $caption := "" -}}
+{{- $attrs := slice -}}
+{{- range $k, $v := .Attributes }}{{ if eq $k "caption" }}{{ $caption = $v }}{{ else }}{{ with $v }}{{ $attrs = $attrs | append (printf "%s=%q" $k .) }}{{ end }}{{ end }}{{ end -}}
+{{- /* Wrapped in a focusable, horizontally scrollable region so a table
+       wider than the reading measure stays reachable by keyboard on
+       narrow screens instead of silently overflowing (WCAG 2.1.1). */ -}}
+<div class="table-scroll" tabindex="0">
+  <table{{ range $attrs }} {{ . }}{{ end }}>
+    {{- with $caption }}
+    <caption>{{ . }}</caption>
     {{- end }}
-  </thead>
-  <tbody>
-    {{- range .TBody }}
-    <tr>
-      {{- range . }}
-      <td{{ with index $alignClass .Alignment }} class="{{ . }}"{{ end }}>{{ .Text }}</td>
+    <thead>
+      {{- range .THead }}
+      <tr>
+        {{- range . }}
+        <th scope="col"{{ with index $alignClass .Alignment }} class="{{ . }}"{{ end }}>{{ .Text }}</th>
+        {{- end }}
+      </tr>
       {{- end }}
-    </tr>
-    {{- end }}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {{- range .TBody }}
+      <tr>
+        {{- range . }}
+        <td{{ with index $alignClass .Alignment }} class="{{ . }}"{{ end }}>{{ .Text }}</td>
+        {{- end }}
+      </tr>
+      {{- end }}
+    </tbody>
+  </table>
+</div>

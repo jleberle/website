@@ -1,6 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-{{- if hugo.IsProduction }}
+{{- if eq .Kind "404" }}
+<meta name="robots" content="noindex, nofollow">
+{{- else if hugo.IsProduction }}
 <meta name="robots" content="index, follow">
 {{- else }}
 <meta name="robots" content="noindex, nofollow">
@@ -21,11 +23,13 @@
     {{- .Summary | default (printf "%s - %s" .Title  site.Title) }}{{- else }}
     {{- with site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end -}}">
 <meta name="author" content="{{ (partial "author.html" . ) }}">
+{{- if ne .Kind "404" }}
 {{- $canonical := .Permalink }}
 {{- with .Store.Get "listPaginator" }}
 {{- if gt .PageNumber 1 }}{{ $canonical = .URL | absURL }}{{ end }}
 {{- end }}
 <link rel="canonical" href="{{ $canonical }}">
+{{- end }}
 {{- with .Store.Get "listPaginator" }}
 {{- if .HasPrev }}
 <link rel="prev" href="{{ .Prev.URL | absURL }}">
