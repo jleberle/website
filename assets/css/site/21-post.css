@@ -1,6 +1,9 @@
 .page-header,
 .post-header {
-    margin: 24px auto var(--content-gap) auto;
+    /* Was 24px top against a rem bottom in the same shorthand — the same
+       mixed-unit accident the heading rules carried. 1.5rem is the exact
+       equivalent. */
+    margin: 1.5rem auto var(--content-gap) auto;
 }
 
 .post-meta {

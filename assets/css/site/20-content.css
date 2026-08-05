@@ -280,7 +280,12 @@ code, pre, kbd, samp, tt {
    ------------------------------------------------------------ */
 .md-content hr {
     height: 0;
-    margin: 30px 0;
+
+    /* em, not rem: this is a scene break inside the text, and 1.5625em of
+       the prose's own 1.2rem size is almost exactly one line-height. Tying
+       it to the prose keeps the break worth one blank line whatever size
+       the reader sets, which rem would not. */
+    margin: 1.5625em 0;
     border: 0;
     text-align: center;
 }
@@ -549,7 +554,10 @@ b {
    to maintain here — only the measure and leading change with the
    viewport. */
 .post-content {
-    margin: 30px 0;
+    /* rem, not em: this is the gap between page regions (header / prose /
+       footer), not rhythm inside the prose, so it belongs on the same
+       root-relative scale as --gap and --content-gap around it. */
+    margin: 1.875rem 0;
     color: color-mix(in sRGB, var(--content), var(--primary) 24%);
     hanging-punctuation: first;
     font-variant-numeric: oldstyle-nums proportional-nums;
