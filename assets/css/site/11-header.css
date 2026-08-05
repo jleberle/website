@@ -40,21 +40,23 @@
     max-width: var(--nav-width);
     margin-inline: auto;
     line-height: 1.2;
-    padding: 1.05rem var(--gap) 0.85rem;
-    gap: 0.55rem var(--gap);
+    padding: 0.9rem var(--gap) 0.8rem;
+    gap: 0.45rem var(--gap);
 }
 
 .menu {
     width: 100%;
     list-style: none;
     word-break: keep-all;
-    overflow-x: auto;
-    white-space: nowrap;
+    overflow-x: visible;
+    white-space: normal;
     font-family: var(--meta-font);
     justify-content: center;
-    column-gap: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
     align-items: center;
-    padding-top: 0.3rem;
+    padding-top: 0.2rem;
+    max-width: 17rem;
 }
 
 .menu a {
@@ -89,12 +91,12 @@
 /* Logo in Fraunces to match the heading face — ties the wordmark
    to the editorial identity of the headings rather than the system sans. */
 .logo {
-    width: min(100%, 32rem);
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: 0.7rem;
 }
 
 .logo::before,
@@ -120,30 +122,32 @@
     color: var(--accent);
 }
 
-@media (width <= 720px) {
-    .header-nav {
-        row-gap: 0.45rem;
-        padding-top: 0.9rem;
-        padding-bottom: 0.8rem;
-    }
-
-    .logo {
-        width: 100%;
-        gap: 0.7rem;
-    }
-
+/* Mobile-first: unconditioned rules above are the narrow-screen (<=360px)
+   defaults. This tier widens the menu's stack width and row-gap back to
+   the 361-720px look before the desktop tier below undoes the wrap. */
+@media (width >= 361px) {
     .menu {
-        flex-wrap: wrap;
-        overflow-x: visible;
-        white-space: normal;
+        max-width: none;
         gap: 0.2rem 1rem;
-        padding-top: 0.2rem;
     }
 }
 
-@media (width <= 360px) {
+@media (width >= 721px) {
+    .header-nav {
+        padding: 1.05rem var(--gap) 0.85rem;
+        gap: 0.55rem var(--gap);
+    }
+
+    .logo {
+        width: min(100%, 32rem);
+        gap: 1rem;
+    }
+
     .menu {
-        max-width: 17rem;
-        row-gap: 0.4rem;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap;
+        column-gap: 1.25rem;
+        padding-top: 0.3rem;
     }
 }

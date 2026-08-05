@@ -1,7 +1,7 @@
 
 /* Compact footer: identity, contact/social links, and feeds. */
 .site-footer {
-    margin-top: 4rem;
+    margin-top: 2.5rem;
     color: color-mix(in sRGB, var(--content) 68%, var(--secondary));
     background: var(--entry);
     border-top: 1px solid var(--rule);
@@ -12,11 +12,16 @@
 
 .footer-inner {
     display: grid;
-    grid-template-columns: minmax(18rem, 1.8fr) minmax(12rem, 1fr) minmax(7rem, 0.6fr);
-    gap: 2rem clamp(2rem, 5vw, 4rem);
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
     max-width: var(--nav-width);
     margin-inline: auto;
-    padding: 2.1rem var(--gap);
+    padding-block: 1.8rem;
+    padding-inline: var(--gap);
+}
+
+.footer-identity {
+    grid-column: auto;
 }
 
 .footer-name,
@@ -119,9 +124,15 @@
     margin-bottom: 0;
 }
 
-@media (width <= 760px) {
+@media (width >= 521px) {
+    .site-footer {
+        margin-top: 4rem;
+    }
+
     .footer-inner {
         grid-template-columns: 1fr 1fr;
+        gap: 2rem clamp(2rem, 5vw, 4rem);
+        padding-block: 2.1rem;
     }
 
     .footer-identity {
@@ -129,15 +140,9 @@
     }
 }
 
-@media (width <= 520px) {
-    .site-footer {
-        margin-top: 2.5rem;
-    }
-
+@media (width >= 761px) {
     .footer-inner {
-        grid-template-columns: 1fr;
-        gap: 1.4rem;
-        padding-block: 1.8rem;
+        grid-template-columns: minmax(18rem, 1.8fr) minmax(12rem, 1fr) minmax(7rem, 0.6fr);
     }
 
     .footer-identity {

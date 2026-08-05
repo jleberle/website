@@ -1,39 +1,50 @@
-@media screen and (width <= 768px) {
-    /* theme-vars */
-    :root {
-        --gap: 1.125rem;
-    }
-
-    /* post-entry */
-    .first-entry {
-        min-height: 260px;
-    }
-
-    /* The phone column runs edge-to-edge, far narrower than the 640px capped
-       measure above this breakpoint, so a fixed 1.2rem would drop the line to
-       ~34 characters on a 360px phone — roughly half the ~66ch the desktop
-       measure targets. Leading tightens here; the two steps below ease the
-       prose size down on the narrowest widths to recover characters-per-line,
-       never enlarging past the tuned 1.2rem desktop size. Kept in rem (no vw)
-       so body text still scales fully with browser zoom. */
-    .post-content {
-        line-height: 1.58;
-    }
+/* theme-vars */
+:root {
+    --gap: 1.125rem;
 }
 
-/* Narrow-phone reading steps. ~18px holds roughly 40-50 characters per line
-   across the 380-520px band; ~17px keeps the smallest phones near ~38 cpl.
-   Overlapping max-width ranges resolve by source order, so the 380px step
-   must stay after the 520px one to win where both match. */
-@media screen and (width <= 520px) {
+/* post-entry */
+.first-entry {
+    min-height: 260px;
+}
+
+/* The phone column runs edge-to-edge, far narrower than the 640px capped
+   measure used from 769px up, so a fixed 1.2rem would drop the line to
+   ~34 characters on a 360px phone — roughly half the ~66ch the desktop
+   measure targets. Leading tightens here; the two min-width steps below
+   ease the prose size up as width grows, never enlarging past the tuned
+   1.2rem desktop size. Kept in rem (no vw) so body text still scales fully
+   with browser zoom. ~17px (this default) holds the smallest phones near
+   ~38 characters per line; ~18px (381-520px) holds roughly 40-50 across
+   that band. */
+.post-content {
+    line-height: 1.58;
+    font-size: 1.0625rem;
+}
+
+@media screen and (width >= 381px) {
     .post-content {
         font-size: 1.125rem;
     }
 }
 
-@media screen and (width <= 380px) {
+@media screen and (width >= 521px) {
     .post-content {
-        font-size: 1.0625rem;
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (width >= 769px) {
+    :root {
+        --gap: 1.75rem;
+    }
+
+    .first-entry {
+        min-height: 320px;
+    }
+
+    .post-content {
+        line-height: 1.6;
     }
 }
 

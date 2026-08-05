@@ -536,8 +536,8 @@ h1>a>svg {
 
 .post-context-grid > .post-context {
     display: grid;
-    grid-template-columns: var(--pc-label) minmax(0, 1fr);
-    gap: 0.3rem 1.1rem;
+    grid-template-columns: 1fr;
+    gap: 0.12rem;
 
     /* Top-align, not baseline: when either the label or the content wraps
        to multiple lines, baseline alignment drops the label to a lower
@@ -600,13 +600,18 @@ h1>a>svg {
     content: none;
 }
 
-/* A lone end-matter row (e.g. a post whose only apparatus is Topics, or
-   only related posts) has nothing to align against, so the fixed 8.5rem
-   label column just opens an awkward gap before a short value like a
-   single tag. When the row is the sole child, let the label hug its
-   content instead. Scoped above the phone breakpoint so the stacked
-   layout below still wins on narrow screens. */
+/* Mobile-first: the unconditioned rule above stacks label over content on
+   narrow phones. Above the phone breakpoint, restore the two-column label
+   grid, and — for a lone end-matter row (e.g. a post whose only apparatus
+   is Topics, or only related posts) that has nothing to align against —
+   let the label hug its content instead of opening an awkward gap before
+   the fixed 8.5rem label column. */
 @media (width > 640px) {
+    .post-context-grid > .post-context {
+        grid-template-columns: var(--pc-label) minmax(0, 1fr);
+        gap: 0.3rem 1.1rem;
+    }
+
     .post-context-grid > .post-context:only-child {
         grid-template-columns: max-content minmax(0, 1fr);
 
@@ -616,15 +621,6 @@ h1>a>svg {
            the serif value carry different line-heights, so start-alignment
            would otherwise leave them visibly off the same line. */
         align-items: baseline;
-    }
-}
-
-/* Stack label over content on narrow phones. */
-@media (width <= 640px) {
-    .post-context-grid > .post-context {
-        grid-template-columns: 1fr;
-        gap: 0.12rem;
-        padding: 0.4rem 0;
     }
 }
 
@@ -716,7 +712,7 @@ h1>a>svg {
 
 .post-kicker {
     grid-area: kicker;
-    margin: 0.1rem 0 0.05rem;
+    margin: 0;
 }
 
 .post-title {
@@ -767,9 +763,9 @@ h1>a>svg {
     margin: 1rem 0 0;
 }
 
-@media (width <= 720px) {
+@media (width >= 721px) {
     .post-kicker {
-        margin: 0;
+        margin: 0.1rem 0 0.05rem;
     }
 }
 

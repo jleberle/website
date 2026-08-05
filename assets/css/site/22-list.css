@@ -110,10 +110,10 @@
    The cover figure sits just before .post-content, which has no block
    formatting context of its own, so the review text wraps around the float. */
 .post-single .entry-cover {
-    float: right;
-    width: 235px;
-    max-width: 40%;
-    margin: 0.1rem 0 1.05rem 1.55rem;
+    float: none;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto var(--content-gap);
 }
 
 .post-single .entry-cover img {
@@ -140,13 +140,15 @@
     clear: both;
 }
 
-/* On narrow screens, unfloat and center the cover above the text. */
-@media (width <= 640px) {
+/* Mobile-first: the unconditioned rule above unfloats and centers the
+   cover above the text on narrow screens. Above the breakpoint, float it
+   beside the text as a book-review style image. */
+@media (width >= 641px) {
     .post-single .entry-cover {
-        float: none;
-        width: auto;
-        max-width: 100%;
-        margin: 0 auto var(--content-gap);
+        float: right;
+        width: 235px;
+        max-width: 40%;
+        margin: 0.1rem 0 1.05rem 1.55rem;
     }
 }
 
@@ -193,7 +195,7 @@ body.list:not(.home) .post-entry {
         "meta"
         "cover";
     gap: 0;
-    padding: 1.05rem 0;
+    padding: 0.95rem 0;
     margin-bottom: 0;
     background: transparent;
     border: 0;
@@ -245,7 +247,7 @@ body.list:not(.home) .entry-header {
 }
 
 body.list:not(.home) .entry-header h2 {
-    font-size: 1.42rem;
+    font-size: 1.28rem;
     line-height: 1.25;
     margin-bottom: 0.12rem;
 }
@@ -294,12 +296,12 @@ body.list:not(.home) .entry-link {
     border-radius: 0;
 }
 
-@media (width <= 520px) {
+@media (width >= 521px) {
     body.list:not(.home) .post-entry {
-        padding: 0.95rem 0;
+        padding: 1.05rem 0;
     }
 
     body.list:not(.home) .entry-header h2 {
-        font-size: 1.28rem;
+        font-size: 1.42rem;
     }
 }
