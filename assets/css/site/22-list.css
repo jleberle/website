@@ -146,7 +146,15 @@
 @media (width >= 641px) {
     .post-single .entry-cover {
         float: right;
-        width: 235px;
+
+        /* 190px, not the 235px this floated at before: the jacket sits
+           beside the opening of the review, and at 235px the eight lines
+           that wrap past it ran ~380px against the ~557px the other fifty
+           lines get — roughly 41 characters per line, under the ~45 floor
+           where short lines start costing reading speed, on precisely the
+           passage that decides whether a reader continues. 190px puts the
+           wrapped lines at ~45 and leaves the jacket perfectly legible. */
+        width: 190px;
         max-width: 40%;
         margin: 0.1rem 0 1.05rem 1.55rem;
     }

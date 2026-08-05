@@ -57,7 +57,7 @@
                 src="{{ $imgdl }}"
                 {{- /* Match the actual rendered slot so the browser doesn't
                        fetch a 720w candidate (or the original) for a small box.
-                       Single covers float at 220px (22-list.css), unfloating to
+                       Single covers float at 190px (22-list.css), unfloating to
                        full width at <=640px; the unfloated image paints ~38px
                        narrower than the viewport (page gutters + the 4px frame
                        padding + 1px border). List covers are min(100%, 520px),
@@ -66,7 +66,7 @@
                        + card gutters + 1px border). Declaring the content width
                        (not 100vw) keeps the mobile candidate at ~650/660w
                        instead of forcing the original. */}}
-                sizes="{{ if $.sizes }}{{ $.sizes }}{{ else if $.IsSingle }}(max-width: 640px) calc(100vw - 38px), 220px{{ else }}(max-width: 560px) calc(100vw - 44px), 520px{{ end }}"
+                sizes="{{ if $.sizes }}{{ $.sizes }}{{ else if $.IsSingle }}(max-width: 640px) calc(100vw - 38px), 180px{{ else }}(max-width: 560px) calc(100vw - 44px), 520px{{ end }}"
                 width="{{ $cover.Width }}" height="{{ $cover.Height }}"
                 data-lightbox-src="{{ $imgdl }}"
                 alt="{{ $alt }}">

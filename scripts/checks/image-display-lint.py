@@ -18,7 +18,7 @@ from pathlib import Path
 SIZE_REQUIREMENTS = {
     "(max-width: 768px) 100vw, 680px": 680,
     "(max-width: 560px) calc(100vw - 44px), 520px": 520,
-    "(max-width: 640px) calc(100vw - 38px), 220px": 360,
+    "(max-width: 640px) calc(100vw - 38px), 180px": 360,
     "(max-width: 768px) calc(100vw - 28px), (max-width: 1080px) calc(100vw - 56px), 1024px": 1024,
     # Home "Selected writing" lead feature thumbnail (home_sections.html):
     # a fixed column beside the title (23-home.css .home-feature-cover),
