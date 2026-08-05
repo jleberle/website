@@ -23,7 +23,24 @@ pagination:
 
 services:
   rss:
-    limit: 20
+    # Bounds how many reading events layouts/reading.rss.xml offers Micro.blog,
+    # which imports them as posts on eberle.blog. This number is a BLAST RADIUS,
+    # not a display preference: Micro.blog dedupes imported items on <link>, so
+    # any change to a published link creates a brand-new post for every item
+    # still inside this window (the 2026-07 and 2026-08 duplicate cleanups were
+    # both this). Lowered 20 -> 10 on 2026-08-05.
+    #
+    # The floor is set by delivery, not by tidiness. The feed is the only path
+    # to Micro.blog, so anything that scrolls out before being fetched is never
+    # imported at all, silently. At the current rate — 1 event per 30 days,
+    # measured over the last 20 — 10 items is about 6 months of slack. It also
+    # has to be at least as large as the biggest one-time backfill you intend,
+    # since a burst of N events with only 10 slots means the oldest never get
+    # offered. Don't drop this below ~8 without checking both numbers again.
+    #
+    # Shrinking is always safe in itself: removing an item from the feed never
+    # creates or deletes a post, it only stops offering it.
+    limit: 10
 
 minify:
   disableXML: true

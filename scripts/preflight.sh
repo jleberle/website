@@ -14,7 +14,8 @@
 #   4b. cite-key cross-ref   — advisory: cite keys missing from Zotero / without a vault note
 #   5. source junk files     — fail if OS/editor metadata sits in Hugo inputs
 #   6. generated junk files  — fail if OS/editor metadata lands in public/
-#   7. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs
+#   7. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs, and
+#                               reading-feed <link> stability (duplicate-post guard)
 #   8. csp-hashes.sh --check — CSP hash drift against the fresh build
 #   8b. security.txt sig     — RFC 9116 clearsignature present, valid, unexpired
 #   9. published references  — every internal src/href/srcset/feed URL in the

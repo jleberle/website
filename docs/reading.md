@@ -259,10 +259,53 @@ a rename for any source that has one of those three fields (nearly all of
 them; `newsource.sh` records an ISBN for most books automatically). Only a
 source with none of the three falls back to the folder slug, in which case a
 rename still rewrites its guids and Micro.blog will re-import any event still
-inside the 20-item feed window — that is the real cost of renaming a key
+inside the feed window — that is the real cost of renaming a key
 after it has been published, now scoped to that small remainder instead of
 every source. (This replaced a slug-only guid in 2026-07 after renames had
 produced ~45 groups of duplicate imported posts on eberle.blog.)
+
+### Published links are immutable
+
+**Micro.blog decides whether a feed item is new by its `<link>`, not its
+`<guid>`.** The 2026-07 guid fix above was necessary but not sufficient: a
+stable guid does not stop a duplicate if the link moves. Established twice —
+once when a started and a finished event sharing one link caused the second to
+be silently dropped, and again in 2026-08 when 15 duplicate posts turned out to
+carry three different Micro.blog slug generations for the same book, one per
+historical URL scheme.
+
+Two consequences worth internalising:
+
+1. **Once an item has gone out in the feed, its `<link>` can never change.**
+   Change it and every affected item still inside the window is imported again
+   as a brand-new post. A folder rename, a permalink restructure, or adding or
+   removing a `#started` / `#finished` suffix all count.
+2. **Deleting an imported post does not stick while its item is still in the
+   feed.** Micro.blog re-creates any item it cannot find a post for, so a
+   deletion only holds once the item has aged out of the window. Check before
+   cleaning up duplicates: if it is still in `/reading/index.xml`, it will come
+   back.
+
+`scripts/checks/feed-lint.py` enforces the first point.
+`scripts/checks/reading-feed-links.json` records the link each event has been
+published with; the lint fails when one changes, naming each affected event and
+stating how many duplicate posts the change would create. It records links only
+as they appear in the built feed — an event that has never been inside the
+window has never been offered to Micro.blog, so its link carries no history to
+protect — and never prunes, so an event that ages out and later returns is
+still checked against what it was first published with.
+
+If a link change is deliberate and the duplicates are acceptable:
+
+```sh
+hugo --gc --minify
+python3 scripts/checks/feed-lint.py public --update   # re-record
+git add scripts/checks/reading-feed-links.json
+```
+
+The window size (`services.rss.limit` in `hugo.yaml`, currently 10) is the blast
+radius for all of this — see the comment there before changing it, since it is
+also the delivery slack and the ceiling on a one-time backfill.
 
 ## Cite Keys
 

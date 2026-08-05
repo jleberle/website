@@ -4,6 +4,9 @@
 This intentionally avoids network validators. It catches the feed portability
 issues most likely to regress locally: malformed XML/JSON, localhost URLs, and
 relative URLs inside syndicated HTML content.
+
+It also guards READING-FEED LINK STABILITY — see check_reading_link_stability.
+Run with --update after a deliberate link change to re-record the snapshot.
 """
 
 from __future__ import annotations
@@ -37,6 +40,11 @@ READING_EVENT_PREFIXES = {
     "started-reading": "Started reading: ",
     "finished-reading": "Finished reading: ",
 }
+
+# Path of the reading feed within public/, and the committed record of which
+# <link> each reading event has already been published with.
+READING_FEED_REL = "reading/index.xml"
+LINK_SNAPSHOT_PATH = Path(__file__).resolve().parent / "reading-feed-links.json"
 
 
 @dataclass(frozen=True)
@@ -183,6 +191,112 @@ def check_rss(path: Path, public_dir: Path) -> list[Problem]:
     return problems
 
 
+def read_reading_events(public_dir: Path) -> dict[str, str]:
+    """Map guid -> <link> for every item in the built reading feed."""
+    path = public_dir / READING_FEED_REL
+    if not path.is_file():
+        return {}
+    try:
+        root = ET.parse(path).getroot()
+    except ET.ParseError:
+        return {}  # malformed XML is already reported by check_rss
+    channel = root.find("channel")
+    if channel is None:
+        return {}
+    events: dict[str, str] = {}
+    for item in channel.findall("item"):
+        guid = text_of(item.find("guid"))
+        link = text_of(item.find("link"))
+        if guid and link:
+            events[guid] = link
+    return events
+
+
+def load_link_snapshot() -> dict[str, str]:
+    if not LINK_SNAPSHOT_PATH.is_file():
+        return {}
+    try:
+        data = json.loads(LINK_SNAPSHOT_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    return dict(data.get("links", {}))
+
+
+def write_link_snapshot(links: dict[str, str]) -> None:
+    payload = {
+        "_comment": (
+            "guid -> the <link> that reading event has been published with. "
+            "Micro.blog dedupes imported items on <link>, not <guid>, so changing "
+            "a published link creates a duplicate post on eberle.blog. Maintained "
+            "by scripts/checks/feed-lint.py; re-record with --update only when a "
+            "link change is deliberate and the duplicate cost is accepted."
+        ),
+        "links": dict(sorted(links.items())),
+    }
+    LINK_SNAPSHOT_PATH.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+
+
+def check_reading_link_stability(public_dir: Path) -> list[Problem]:
+    """Fail when a reading event's <link> changes after it has been published.
+
+    Micro.blog imports this feed as posts on eberle.blog and decides whether an
+    item is new by its <link>, NOT its <guid> (established when a started and a
+    finished event sharing one link caused the second to be silently dropped).
+    So a link that has already gone out is effectively immutable: change it and
+    every affected item still inside the feed window is imported AGAIN as a new
+    post. That is what produced both the 2026-07 (~60 posts) and 2026-08 (15
+    posts) duplicate cleanups on eberle.blog.
+
+    The snapshot deliberately records links only as they appear in the BUILT
+    feed, which is capped by services.rss.limit in hugo.yaml. That is the
+    correct scope, not a shortcut: an event that has never been inside the
+    window has never been offered to Micro.blog, so its link carries no history
+    to protect. Entries are never pruned, so an event that ages out and later
+    returns (a bumped *_announced date) is still checked against what it was
+    published with the first time.
+    """
+    current = read_reading_events(public_dir)
+    if not current:
+        return []
+
+    recorded = load_link_snapshot()
+    if not recorded:
+        return [Problem(
+            READING_FEED_REL,
+            "reading-feed link snapshot is missing or empty — seed it with "
+            "`python3 scripts/checks/feed-lint.py public --update`",
+        )]
+
+    changed = [
+        (guid, recorded[guid], link)
+        for guid, link in current.items()
+        if guid in recorded and recorded[guid] != link
+    ]
+    if not changed:
+        return []
+
+    problems = [Problem(
+        READING_FEED_REL,
+        f"{len(changed)} published reading link(s) changed — Micro.blog will import "
+        f"{len(changed)} DUPLICATE post(s) on eberle.blog, one per item below, because "
+        "it dedupes on <link>. Every one of these is inside the current feed window, "
+        "so the cost is immediate, not theoretical.",
+    )]
+    for guid, was, now in sorted(changed):
+        problems.append(Problem(f"{READING_FEED_REL} :: {guid}", f"was  {was}"))
+        problems.append(Problem(f"{READING_FEED_REL} :: {guid}", f"now  {now}"))
+    problems.append(Problem(
+        READING_FEED_REL,
+        "If the change is deliberate and the duplicates are acceptable, re-record with "
+        "`python3 scripts/checks/feed-lint.py public --update` and commit the snapshot. "
+        "If not, restore the old link — for a source with an isbn/doi/access_url the "
+        "usual cause is a renamed content/sources/<slug>/ folder.",
+    ))
+    return problems
+
+
 def check_json_feed(path: Path, public_dir: Path) -> list[Problem]:
     rel = str(path.relative_to(public_dir))
     try:
@@ -217,10 +331,31 @@ def check_json_feed(path: Path, public_dir: Path) -> list[Problem]:
 
 
 def main() -> int:
-    public_dir = Path(sys.argv[1] if len(sys.argv) > 1 else "public")
+    args = [a for a in sys.argv[1:] if a != "--update"]
+    update = "--update" in sys.argv[1:]
+    public_dir = Path(args[0] if args else "public")
     if not public_dir.is_dir():
         print(f"feed-lint: generated public directory not found: {public_dir}", file=sys.stderr)
         return 2
+
+    # --update re-records the reading-link snapshot from the current build and
+    # exits. Deliberately a separate mode: it is the switch that says "yes, I
+    # accept the duplicate posts this link change will create on eberle.blog".
+    if update:
+        current = read_reading_events(public_dir)
+        if not current:
+            print(f"feed-lint: no reading events found in {public_dir / READING_FEED_REL}", file=sys.stderr)
+            return 2
+        merged = load_link_snapshot()
+        added = {g: l for g, l in current.items() if g not in merged}
+        rewritten = {g: (merged[g], l) for g, l in current.items() if g in merged and merged[g] != l}
+        merged.update(current)
+        write_link_snapshot(merged)
+        print(f"Recorded {len(merged)} reading link(s) in {LINK_SNAPSHOT_PATH.name} "
+              f"({len(added)} new, {len(rewritten)} rewritten)")
+        for guid, (was, now) in sorted(rewritten.items()):
+            print(f"  rewritten {guid}\n    was {was}\n    now {now}")
+        return 0
 
     problems: list[Problem] = []
     rss_count = 0
@@ -234,12 +369,16 @@ def main() -> int:
     else:
         problems.append(Problem("feed.json", "JSON Feed file is missing"))
 
+    problems.extend(check_reading_link_stability(public_dir))
+
     if problems:
         for problem in problems:
             print(f"{problem.source}: {problem.message}")
         return 1
 
-    print(f"Feed lint clean ({rss_count} RSS feeds + feed.json)")
+    tracked = len(load_link_snapshot())
+    print(f"Feed lint clean ({rss_count} RSS feeds + feed.json; "
+          f"{tracked} reading link(s) stable)")
     return 0
 
 

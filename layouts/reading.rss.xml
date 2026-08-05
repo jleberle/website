@@ -10,12 +10,22 @@
        STABLE identifier for the work — isbn, then doi, then access_url — NOT
        the source's folder name. Renaming a source folder used to rewrite every
        guid it had ever emitted, and Micro.blog would re-import any event still
-       inside the 20-item feed window as if it were new (root cause of the
+       inside the feed window as if it were new (root cause of the
        2026-07 duplicate-post cleanup on eberle.blog). Keying on the work's own
        identifier means a rename is guid-invisible for any source that has one.
        Only the ~2 sources with none of isbn/doi/access_url fall back to the
        folder slug, so renaming THOSE still re-imports — same old risk, now
        scoped to a known-small set instead of every source.
+
+       THE <link> IS THE ONE THAT ACTUALLY CONTROLS DUPLICATION, not the guid
+       (see the next paragraph). Once an item has gone out, treat its <link> as
+       immutable: scripts/checks/feed-lint.py fails the build if a published one
+       changes, and scripts/checks/reading-feed-links.json is the record of what
+       has been published. The feed window (services.rss.limit in hugo.yaml,
+       currently 10, was 20) is the blast radius — it bounds how many duplicate
+       posts a slipped link change can create, and how long a deleted post stays
+       deleted, since Micro.blog re-creates any item it still sees with no
+       matching post. docs/reading.md has the full workflow.
 
        <link> points at the source's own page. Micro.blog's importer appears
        to dedupe on <link> rather than <guid>: when The Blood Countess got
@@ -35,7 +45,7 @@
        to `started` alone means that link is fixed for good the moment it is
        first published. `started` is also a new, rare field (2 of ~60
        sources), so this costs at most one small, one-time reimport per
-       newly-tracked "currently reading" book, not the 20-item-window mass
+       newly-tracked "currently reading" book, not the whole-window mass
        reimport that suffixing every finished event unconditionally would
        cause — nearly every past source is finished-only and would otherwise
        all appear to change at once. */ -}}

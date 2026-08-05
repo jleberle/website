@@ -1,0 +1,25 @@
+{
+  "_comment": "guid -> the <link> that reading event has been published with. Micro.blog dedupes imported items on <link>, not <guid>, so changing a published link creates a duplicate post on eberle.blog. Maintained by scripts/checks/feed-lint.py; re-record with --update only when a link change is deliberate and the duplicate cost is accepted.",
+  "links": {
+    "urn:reading-event:book:isbn-9780063112049:finished": "https://jaredeberle.org/sources/nagle2024/",
+    "urn:reading-event:book:isbn-9780099268703:finished": "https://jaredeberle.org/sources/kurlansky1999/",
+    "urn:reading-event:book:isbn-9780300272413:finished": "https://jaredeberle.org/sources/fixico2025/",
+    "urn:reading-event:book:isbn-9780316381949:finished": "https://jaredeberle.org/sources/jennings2026/",
+    "urn:reading-event:book:isbn-9780385548533:finished": "https://jaredeberle.org/sources/raddenkeefe2026/",
+    "urn:reading-event:book:isbn-9780525509004:finished": "https://jaredeberle.org/sources/nussbaum2024/",
+    "urn:reading-event:book:isbn-9780593803080:finished": "https://jaredeberle.org/sources/healey2025/",
+    "urn:reading-event:book:isbn-9780593833995:started": "https://jaredeberle.org/sources/marx2025/#started",
+    "urn:reading-event:book:isbn-9780593854280:finished": "https://jaredeberle.org/sources/elmhirst2025/",
+    "urn:reading-event:book:isbn-9780743228152:finished": "https://jaredeberle.org/sources/dylan2004/",
+    "urn:reading-event:book:isbn-9780807007372:finished": "https://jaredeberle.org/sources/cobb2024/",
+    "urn:reading-event:book:isbn-9780812253030:finished": "https://jaredeberle.org/sources/roberts2021/",
+    "urn:reading-event:book:isbn-9781250007650:finished": "https://jaredeberle.org/sources/johnson2011/",
+    "urn:reading-event:book:isbn-9781324092094:finished": "https://jaredeberle.org/sources/miller2024/",
+    "urn:reading-event:book:isbn-9781324094654:finished": "https://jaredeberle.org/sources/bacon2025/",
+    "urn:reading-event:book:isbn-9781451627299:finished": "https://jaredeberle.org/sources/king2011/",
+    "urn:reading-event:book:isbn-9781638932932:finished": "https://jaredeberle.org/sources/zengerle2026/",
+    "urn:reading-event:book:isbn-9781639732159:finished": "https://jaredeberle.org/sources/puhak2026/#finished",
+    "urn:reading-event:book:isbn-9781639732159:started": "https://jaredeberle.org/sources/puhak2026/#started",
+    "urn:reading-event:book:isbn-9781982173357:finished": "https://jaredeberle.org/sources/proulx2023/"
+  }
+}
