@@ -1,6 +1,6 @@
 {{- with .cxt}} {{/* Apply proper context from dict */}}
 {{- if (and .Params.cover.image (not $.isHidden)) }}
-<figure class="entry-cover">
+<figure class="{{ $.class | default "entry-cover" }}">
     {{- /* The LCP image gets eager loading + high fetchpriority: single-page
            covers, and the first cover on a list/category page (isFirst, passed
            by list.html). Every other list cover stays lazy. */}}
@@ -66,7 +66,7 @@
                        + card gutters + 1px border). Declaring the content width
                        (not 100vw) keeps the mobile candidate at ~650/660w
                        instead of forcing the original. */}}
-                sizes="{{ if $.IsSingle }}(max-width: 640px) calc(100vw - 38px), 220px{{ else }}(max-width: 560px) calc(100vw - 44px), 520px{{ end }}"
+                sizes="{{ if $.sizes }}{{ $.sizes }}{{ else if $.IsSingle }}(max-width: 640px) calc(100vw - 38px), 220px{{ else }}(max-width: 560px) calc(100vw - 44px), 520px{{ end }}"
                 width="{{ $cover.Width }}" height="{{ $cover.Height }}"
                 data-lightbox-src="{{ $imgdl }}"
                 alt="{{ $alt }}">

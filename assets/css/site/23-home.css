@@ -221,6 +221,39 @@ body.home .home-info {
     border-right: 1px solid var(--border);
 }
 
+/* Cover thumbnail beside the lead feature's title/summary, rather than a
+   full-width hero above them: reviews' book jackets run as narrow as ~334px
+   natively (see each review's cover image under content/reviews), so a wide
+   hero treatment would upscale one past its real resolution and look soft
+   (image-display-lint.py would flag exactly that). A fixed 140px column
+   (200px from 901px up — see the width >= 901px block below) stays well
+   under that ceiling for every cover, book jacket or article still alike,
+   and leaves the rest of the lead's width to the text, which is most of
+   it. */
+.home-feature-row {
+    display: flex;
+    gap: 1.1rem;
+    align-items: start;
+}
+
+.home-feature-cover {
+    flex: 0 0 140px;
+    margin: 0;
+}
+
+.home-feature-cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+.home-feature-body {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
 .home-feature-title {
     margin: 0 0 0.2rem;
     font-family: Fraunces, 'Fraunces Fallback', Georgia, serif;
@@ -319,6 +352,29 @@ body.home .home-info {
 
 .home-list-title a {
     color: var(--content);
+}
+
+/* Same "from <book>" line as .entry-source (22-list.css), sized for the
+   home page's tighter secondary column. */
+.home-list-source {
+    margin: 0.12rem 0 0;
+    color: var(--secondary);
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.home-list-source cite {
+    font-style: italic;
+}
+
+.home-list-source a {
+    color: inherit;
+}
+
+.home-list-source a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
 }
 
 .home-list-date {
@@ -428,5 +484,12 @@ body.home .home-info {
 
     .home-selected-entry--lead::after {
         content: "";
+    }
+
+    /* Fills more of the vertical room grid-row: span 2 (above) stretches the
+       lead cell to, without approaching the ~334px sharpness ceiling (see
+       the comment on .home-feature-cover). */
+    .home-feature-cover {
+        flex-basis: 200px;
     }
 }

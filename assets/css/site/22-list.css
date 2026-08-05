@@ -246,6 +246,30 @@ body.list:not(.home) .entry-header {
     text-transform: lowercase;
 }
 
+/* Quiet "from <book>" line under a Notebook entry's title — enough to browse
+   a growing list of short notes by source at a glance without repeating the
+   fuller bibliographic block reviews get (post_context.html). */
+.entry-source {
+    margin: 0.12rem 0 0;
+    color: var(--secondary);
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.entry-source cite {
+    font-style: italic;
+}
+
+.entry-source a {
+    color: inherit;
+}
+
+.entry-source a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
 body.list:not(.home) .entry-header h2 {
     font-size: 1.28rem;
     line-height: 1.25;

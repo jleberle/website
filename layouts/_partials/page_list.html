@@ -67,6 +67,12 @@
     <h2 class="p-name">
       {{- .Title }}
     </h2>
+    {{- if eq .Section "quotes" }}
+    {{- with .GetTerms "sources" }}
+    {{- $source := index . 0 }}
+    <p class="entry-source">from <cite><a href="{{ $source.RelPermalink }}">{{ $source.Title }}</a></cite></p>
+    {{- end }}
+    {{- end }}
   </header>
   {{- $summary := partial "page_summary.html" . }}
   {{- $usesAutoSummary := not (or .Params.summary .Description) }}

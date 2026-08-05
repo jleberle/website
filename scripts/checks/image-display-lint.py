@@ -20,6 +20,11 @@ SIZE_REQUIREMENTS = {
     "(max-width: 560px) calc(100vw - 44px), 520px": 520,
     "(max-width: 640px) calc(100vw - 38px), 220px": 360,
     "(max-width: 768px) calc(100vw - 28px), (max-width: 1080px) calc(100vw - 56px), 1024px": 1024,
+    # Home "Selected writing" lead feature thumbnail (home_sections.html):
+    # a fixed column beside the title (23-home.css .home-feature-cover),
+    # 140px below 901px and 200px from 901px up — not scaled to the
+    # viewport, so the required width is just the wider of the two slots.
+    "(min-width: 901px) 200px, 140px": 200,
 }
 
 SRCSET_W_RE = re.compile(r"\s+(\d+)w$")

@@ -89,6 +89,34 @@
             {{- range $index, $page := $writing }}
             {{- $context := partial "record_context.html" $page }}
             <article class="home-selected-entry h-entry{{ if eq $index 0 }} home-selected-entry--lead{{ end }}">
+                {{- if eq $index 0 }}
+                {{- /* The lead slot is a single curated feature, not a repeated
+                       list row — cover.hiddenInList exists to keep a review's
+                       book jacket out of dense list/tag rows, not out of this
+                       one prominent placement, so it's deliberately ignored
+                       here (isHidden false) rather than reused from list.html.
+                       A fixed thumbnail (not the column's full width) keeps
+                       every cover sharp — reviews' book jackets run as narrow
+                       as ~334px natively (see each review's cover image under
+                       content/reviews), so filling the ~660px lead column
+                       would upscale them past their real resolution. 200px
+                       from 901px up (23-home.css) uses the extra vertical
+                       room the lead cell already gets stretched to (matching
+                       the two secondary entries beside it) without
+                       approaching that ~334px sharpness ceiling. */}}
+                <div class="home-feature-row">
+                    {{- partial "cover.html" (dict "cxt" $page "IsSingle" false "isHidden" false "class" "home-feature-cover" "sizes" "(min-width: 901px) 200px, 140px") }}
+                    <div class="home-feature-body">
+                        <p class="home-context-kicker">{{ index $context "entry" }}</p>
+                        <h3 class="home-feature-title"><a class="u-url p-name" href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h3>
+                        {{- $summary := partial "page_summary.html" $page }}
+                        {{- if $summary }}
+                        <p class="home-feature-summary p-summary">{{ $summary | plainify | htmlUnescape }}</p>
+                        {{- end }}
+                        <time datetime="{{ $page.Date.Format "2006-01-02" }}" class="home-feature-date dt-published">{{ partial "templates/_funcs/format_date" $page.Date }}</time>
+                    </div>
+                </div>
+                {{- else }}
                 <p class="home-context-kicker">{{ index $context "entry" }}</p>
                 <h3 class="home-feature-title"><a class="u-url p-name" href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h3>
                 {{- $summary := partial "page_summary.html" $page }}
@@ -96,6 +124,7 @@
                 <p class="home-feature-summary p-summary">{{ $summary | plainify | htmlUnescape }}</p>
                 {{- end }}
                 <time datetime="{{ $page.Date.Format "2006-01-02" }}" class="home-feature-date dt-published">{{ partial "templates/_funcs/format_date" $page.Date }}</time>
+                {{- end }}
             </article>
             {{- end }}
         </div>
@@ -120,6 +149,10 @@
                 </header>
                 <article class="home-context-entry h-entry">
                     <h4 class="home-list-title"><a class="u-url p-name" href="{{ .RelPermalink }}">{{ .Title }}</a></h4>
+                    {{- with .GetTerms "sources" }}
+                    {{- $source := index . 0 }}
+                    <p class="home-list-source">from <cite><a href="{{ $source.RelPermalink }}">{{ $source.Title }}</a></cite></p>
+                    {{- end }}
                     <time datetime="{{ .Date.Format "2006-01-02" }}" class="home-list-date dt-published">{{ partial "templates/_funcs/format_date" .Date }}</time>
                 </article>
                 <a class="home-section-all" href="{{ $quotesPage.RelPermalink }}">Open the notebook &rarr;</a>
