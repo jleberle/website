@@ -52,7 +52,6 @@
 }
 
 .reading-year-heading,
-.reading-year-summary,
 .reading-year-index-list a {
     display: flex;
     justify-content: space-between;
@@ -132,19 +131,6 @@
     margin: 0;
     color: var(--secondary);
     font-size: 0.76rem;
-}
-
-.reading-year-summary {
-    list-style: none;
-    cursor: pointer;
-}
-
-.reading-year-summary::-webkit-details-marker {
-    display: none;
-}
-
-.reading-year-summary::marker {
-    content: "";
 }
 
 .reading-year-group > .reading-list {
@@ -229,10 +215,6 @@
     color: color-mix(in sRGB, var(--content) 68%, var(--secondary));
     font-size: 0.88rem;
     line-height: 1.45;
-}
-
-.reading-entry-container {
-    font-style: italic;
 }
 
 .reading-entry-published {
