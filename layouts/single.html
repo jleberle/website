@@ -12,8 +12,14 @@
 {{- $showToc := and (eq .Section "articles") (ge .WordCount 1200) (ge (len $tocHeadings) 3) -}}
 {{- $hasMarginRail := or (strings.Contains $pageContent "class=\"footnotes\"") (strings.Contains $pageContent "margin-figure") -}}
 {{- $isProse := in (slice "articles" "reviews") .Section -}}
+{{- /* On a notebook entry the blockquote is not an aside inside an essay —
+       it is the whole post (the passage runs 90-100% of the body text on
+       every entry currently published). Flag it so the passage can be set
+       for sustained reading rather than for brief contrast; see
+       .is-passage in 20-content.css. */ -}}
+{{- $isPassage := eq .Section "quotes" -}}
 
-<article class="post-single h-entry{{ if $hasMarginRail }} has-margin-rail{{ end }}{{ if eq .File.Path "about/index.md" }} uses-page{{ end }}{{ if $isProse }} has-prose-typography{{ end }}">
+<article class="post-single h-entry{{ if $hasMarginRail }} has-margin-rail{{ end }}{{ if eq .File.Path "about/index.md" }} uses-page{{ end }}{{ if $isProse }} has-prose-typography{{ end }}{{ if $isPassage }} is-passage{{ end }}">
   <a class="u-url" href="{{ .RelPermalink }}" hidden></a>
   <header class="post-header">
     {{- with index $recordContext "entry" }}

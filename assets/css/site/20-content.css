@@ -298,6 +298,25 @@ code, pre, kbd, samp, tt {
     font-style: italic;
 }
 
+/* Notebook entries (.is-passage, set in single.html): the quoted passage is
+   the entire post, not an aside within an essay. Italic exists to mark a
+   short excerpt as *different from the roman text around it* — on these
+   pages there is no surrounding text for it to contrast against, so the
+   slant buys nothing and costs real legibility across a passage running
+   nine or more lines. Roman instead — at the same size, since e7a93d8
+   deliberately unified body text at ~19px rather than scaling it per
+   context. Dropping the slant also fixes the measure on its own: italic
+   Charter packs noticeably more characters into the same column (~70 per
+   line here against the ~66 the reading column is tuned for), and that
+   denser, more uniform texture is part of why extended italic is tiring
+   in the first place. The rule on the inline edge and the Source block
+   below carry the "these are someone else's words" signal without it.
+   Blockquotes inside articles and reviews are genuine asides and keep
+   the italic. */
+.is-passage .post-content blockquote {
+    font-style: normal;
+}
+
 .md-content blockquote p {
     margin: 0.45rem 0;
 }
