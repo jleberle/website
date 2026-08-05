@@ -222,7 +222,7 @@
     text-align: left;
 }
 
-@media (width >= 521px) {
+@media (width > 32.5em) {
     .cv-letterhead {
         flex-direction: row;
         gap: 1rem;
@@ -288,7 +288,7 @@
     padding-inline-start: 1.1rem;
 }
 
-@media (width >= 641px) {
+@media (width > 40em) {
     .post-content:has(.cv-letterhead) dl {
         grid-template-columns: 8rem 1fr;
         gap: normal 1.5rem;

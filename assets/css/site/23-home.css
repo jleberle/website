@@ -226,7 +226,7 @@ body.home .home-info {
    natively (see each review's cover image under content/reviews), so a wide
    hero treatment would upscale one past its real resolution and look soft
    (image-display-lint.py would flag exactly that). A fixed 140px column
-   (200px from 901px up — see the width >= 901px block below) stays well
+   (200px from the 56.25em / 900px tier up — see the block below) stays well
    under that ceiling for every cover, book jacket or article still alike,
    and leaves the rest of the lead's width to the text, which is most of
    it. */
@@ -422,7 +422,7 @@ body.home .home-info {
     text-underline-offset: 0.25rem;
 }
 
-@media (width >= 421px) {
+@media (width > 26.25em) {
     .home-info.first-entry {
         margin-bottom: 1.65rem;
     }
@@ -432,7 +432,7 @@ body.home .home-info {
     }
 }
 
-@media (width >= 601px) {
+@media (width > 37.5em) {
     body.home .home-info {
         flex-direction: row;
         padding: clamp(1.35rem, 2.8vw, 1.8rem) 0;
@@ -468,7 +468,7 @@ body.home .home-info {
     }
 }
 
-@media (width >= 901px) {
+@media (width > 56.25em) {
     .home-course-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }

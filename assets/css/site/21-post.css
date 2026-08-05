@@ -266,7 +266,7 @@ h1>a>svg {
    untouched; notes and explicitly marked figures borrow otherwise empty space
    to its right. At narrower widths these rules do not apply, so footnotes use
    the popover/bottom-list presentation and margin figures return to the flow. */
-@media (width >= 1280px) {
+@media (width >= 80em) {
     .post-content.sidenotes-active {
         position: relative;
     }
@@ -618,7 +618,7 @@ h1>a>svg {
    is Topics, or only related posts) that has nothing to align against —
    let the label hug its content instead of opening an awkward gap before
    the fixed 8.5rem label column. */
-@media (width > 640px) {
+@media (width > 40em) {
     .post-context-grid > .post-context {
         grid-template-columns: var(--pc-label) minmax(0, 1fr);
         gap: 0.3rem 1.1rem;
@@ -775,7 +775,7 @@ h1>a>svg {
     margin: 1rem 0 0;
 }
 
-@media (width >= 721px) {
+@media (width > 45em) {
     .post-kicker {
         margin: 0.1rem 0 0.05rem;
     }

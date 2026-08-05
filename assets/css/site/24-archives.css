@@ -177,7 +177,7 @@
     outline-offset: -2px;
 }
 
-@media (width >= 521px) {
+@media (width > 32.5em) {
     .archive-tools {
         align-items: center;
         flex-direction: row;

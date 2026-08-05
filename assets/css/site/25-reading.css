@@ -378,7 +378,7 @@
     padding: 1rem 0 0.2rem;
 }
 
-@media (width >= 641px) {
+@media (width > 40em) {
     .reading-section-heading {
         display: flex;
     }

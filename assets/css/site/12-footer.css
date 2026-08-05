@@ -124,7 +124,7 @@
     margin-bottom: 0;
 }
 
-@media (width >= 521px) {
+@media (width > 32.5em) {
     .site-footer {
         margin-top: 4rem;
     }
@@ -140,7 +140,7 @@
     }
 }
 
-@media (width >= 761px) {
+@media (width > 47.5em) {
     .footer-inner {
         grid-template-columns: minmax(18rem, 1.8fr) minmax(12rem, 1fr) minmax(7rem, 0.6fr);
     }

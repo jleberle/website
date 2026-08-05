@@ -143,7 +143,7 @@
 /* Mobile-first: the unconditioned rule above unfloats and centers the
    cover above the text on narrow screens. Above the breakpoint, float it
    beside the text as a book-review style image. */
-@media (width >= 641px) {
+@media (width > 40em) {
     .post-single .entry-cover {
         float: right;
 
@@ -328,7 +328,7 @@ body.list:not(.home) .entry-link {
     border-radius: 0;
 }
 
-@media (width >= 521px) {
+@media (width > 32.5em) {
     body.list:not(.home) .post-entry {
         padding: 1.05rem 0;
     }

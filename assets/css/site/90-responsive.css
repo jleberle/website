@@ -1,3 +1,20 @@
+/* ------------------------------------------------------------
+   Breakpoint units. Every media query on the site is expressed in em,
+   not px. Inside a media query em resolves against the *initial* font
+   size — the reader's own browser setting — and deliberately ignores
+   any font-size an author puts on :root. That makes it the one unit
+   that tracks a stated reading preference, which matters here because
+   the layout tokens are all rem: type and column scale together with
+   that preference, so the breakpoints have to move with them or the
+   site keeps applying a wide-screen tier to someone whose text no
+   longer fits it.
+
+   Values divide by the 16px initial default, and the range syntax lets
+   "wider than N px" stay exact without fractions: 640px -> width > 40em.
+   At the default setting each tier therefore fires at precisely the
+   pixel width it always did.
+   ------------------------------------------------------------ */
+
 /* theme-vars */
 :root {
     --gap: 1.125rem;
@@ -22,19 +39,19 @@
     font-size: 1.0625rem;
 }
 
-@media screen and (width >= 381px) {
+@media screen and (width > 23.75em) {
     .post-content {
         font-size: 1.125rem;
     }
 }
 
-@media screen and (width >= 521px) {
+@media screen and (width > 32.5em) {
     .post-content {
         font-size: 1.2rem;
     }
 }
 
-@media screen and (width >= 769px) {
+@media screen and (width > 48em) {
     :root {
         --gap: 1.75rem;
     }
