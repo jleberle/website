@@ -1,33 +1,35 @@
-.md-content h3,
-.md-content h4,
-.md-content h5,
-.md-content h6 {
-    margin: 24px 0 16px;
-}
-
+/* Heading margins are em, not px: these font-sizes are rem, so the type
+   scales with the reader's browser setting and the spacing has to scale
+   with it. h3-h6 previously shared one 24/16px rule regardless of their
+   own size; each is now the exact em equivalent at that level's size, so
+   nothing moves at the default setting. */
 .md-content h1 {
-    margin: 40px auto 32px;
+    margin: 1em auto 0.8em;   /* = 40/32px at 2.5rem */
     font-size: 2.5rem;
 }
 
 .md-content h2 {
-    margin: 32px auto 24px;
+    margin: 1em auto 0.75em;   /* = 32/24px at 2rem */
     font-size: 2rem;
 }
 
 .md-content h3 {
+    margin: 1em 0 0.6667em;   /* = 24/16px at 1.5rem */
     font-size: 1.5rem;
 }
 
 .md-content h4 {
+    margin: 1.5em 0 1em;   /* = 24/16px at 1rem */
     font-size: 1rem;
 }
 
 .md-content h5 {
+    margin: 1.7143em 0 1.1429em;   /* = 24/16px at 0.875rem */
     font-size: 0.875rem;
 }
 
 .md-content h6 {
+    margin: 2em 0 1.3333em;   /* = 24/16px at 0.75rem */
     font-size: 0.75rem;
 }
 
