@@ -64,8 +64,16 @@
   <span class="post-context-kicker">{{ cond (eq (len $sources) 1) "The source" "Sources" }}</span>
   <ul class="related-posts-list">
     {{- range $sources }}
+    {{- /* Label the exception, not the rule: 62 of the 66 works currently
+           cited are books, so printing "Book" on every row spends the
+           leading position on a word that carries no information and
+           leaves the genuinely notable sources — an archive, a
+           dissertation — looking identical to everything else. Emitting
+           it only for non-books makes those stand out and lets the title
+           start the line. */ -}}
+    {{- $type := .Params.type | default "book" -}}
     <li>
-      <span class="related-post-type">{{ .Params.type | default "book" | humanize }}</span>
+      {{- if ne $type "book" }}<span class="related-post-type">{{ $type | humanize }}</span>{{ end }}
       <span><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Params.author }}, {{ . }}{{ end }}</span>
     </li>
     {{- end }}

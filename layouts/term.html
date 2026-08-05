@@ -29,8 +29,12 @@
   <span class="post-context-kicker">Sources on this subject</span>
   <ul class="related-posts-list">
     {{- range .ByTitle }}
+    {{- /* Type shown only when it is not a book — see the same reasoning in
+           related_posts.html. Nearly every cited work is a book, so the
+           label earns its place only on the exceptions. */ -}}
+    {{- $type := .Params.type | default "book" -}}
     <li>
-      <span class="related-post-type">{{ .Params.type | default "book" | humanize }}</span>
+      {{- if ne $type "book" }}<span class="related-post-type">{{ $type | humanize }}</span>{{ end }}
       <span><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Params.author }}, {{ . }}{{ end }}</span>
     </li>
     {{- end }}

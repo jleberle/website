@@ -473,6 +473,18 @@ h1>a>svg {
     gap: 0.45rem;
 }
 
+/* The row is a flex container holding [type chip][title + author]. Without
+   this, the second item is atomic: as soon as it cannot fit beside the chip
+   it wraps whole, stranding the chip alone on its own line with the title
+   starting flush left below it — every row on a phone, and the long
+   academic titles even at 1280px. Letting it shrink past its content width
+   makes it wrap its own text instead, so the chip keeps the first line and
+   continuation lines hang under the title. */
+.related-posts-list li > span:last-child {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
 .related-post-type {
     color: var(--secondary);
     font-family: var(--meta-font);
