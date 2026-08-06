@@ -366,8 +366,10 @@ content would arrive as Markdown rather than the HTML blob the RSS import
 produces. The reason not to is that it does **not** fix the thing that has
 actually cost the most — duplicate book records — and the docs implied it might.
 
-`scripts/micropub-probe.py` settled it against the live API. Three drafts, each
-created and deleted, `read-of` carrying `name` + `uid`:
+A throwaway probe settled it against the live API — three drafts, each created
+and deleted, `read-of` carrying `name` + `uid`. The script is not kept, since
+its answer is below and it would never run again; recover it from git history
+(`git log --diff-filter=D -- scripts/micropub-probe.py`) if this is revisited.
 
 | Variant | Result |
 |---|---|
