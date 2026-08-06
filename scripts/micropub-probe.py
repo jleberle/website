@@ -26,12 +26,10 @@ WHAT IT DOES
 Read-only by default. It reports the Micropub config and the token's scopes,
 which is enough to confirm the channel works at all.
 
-With --post it creates ONE real post, inspects what Micro.blog made of it, and
-deletes it again. That sequence is the actual experiment: the question is what
-the platform does with read-of, and nothing short of a live post answers it.
-Micro.blog's Micropub does not reliably support draft status for this, so the
-post is briefly public — run it when a stray post for a few seconds is
-acceptable, and check the output before assuming the delete succeeded.
+With --post it creates ONE post as a DRAFT, inspects what Micro.blog made of
+it, and deletes it again. The q=config probe confirmed `post-status` is a
+supported property of the note type, so the experiment never publishes
+anything. Check the output before assuming the delete succeeded.
 
 USAGE
 -----
@@ -87,13 +85,29 @@ def probe_config(token: str) -> None:
         show(f"q={query}", status, body)
 
 
+def bookshelf_snapshot(token: str) -> str:
+    """Books currently on every shelf, as a comparable blob."""
+    status, _, body = request("https://micro.blog/books/bookshelves", token)
+    if status != 200:
+        return f"(bookshelves unavailable — HTTP {status})"
+    return body.decode("utf-8", "replace")
+
+
 def probe_post(token: str) -> None:
-    """Create one post with read-of, inspect it, then delete it."""
+    """Create one draft with read-of, inspect it, then delete it."""
+    # Captured first so a new book record is visible as a DIFFERENCE rather
+    # than guessed at from the after-state alone. Whether read-of shelves the
+    # book is the question that decides the whole migration.
+    before = bookshelf_snapshot(token)
+
     payload = json.dumps({
         "type": ["h-entry"],
         "properties": {
             "content": ["Micropub probe — verifying read-of handling. "
-                        "This post is deleted automatically."],
+                        "Draft; deleted automatically."],
+            # q=config lists post-status among the note type's properties, so
+            # the probe never publishes.
+            "post-status": ["draft"],
             "read-of": [{
                 "type": ["h-cite"],
                 "properties": {
@@ -118,20 +132,27 @@ def probe_post(token: str) -> None:
 
     # Give the platform a moment to render and associate before reading back.
     time.sleep(5)
+
+    # A draft has no public URL, so a 404 here is expected and not a failure.
     try:
         with urllib.request.urlopen(location, timeout=TIMEOUT) as response:
             html = response.read().decode("utf-8", "replace")
         print(f"\n--- rendered post ({len(html)} bytes)")
-        marker = f"/books/{PROBE_ISBN}"
-        print(f"links to /books/{PROBE_ISBN}: {marker in html}")
-        idx = html.find("read-of")
-        print(f"'read-of' present in markup: {idx != -1}")
+        print(f"links to /books/{PROBE_ISBN}: {f'/books/{PROBE_ISBN}' in html}")
     except (urllib.error.URLError, OSError) as exc:
-        print(f"\nCould not fetch the created post: {exc}")
+        print(f"\nCreated post not publicly fetchable ({exc}) — expected for a draft.")
 
-    # Did a book record / bookshelf entry appear?
-    status, _, body = request("https://micro.blog/books/bookshelves", token)
-    show("bookshelves after posting", status, body)
+    # What the post itself became: does the ISBN survive as an association?
+    status, _, body = request(f"{MICROPUB}?q=source&url={urllib.parse.quote(location)}", token)
+    show("q=source for the probe post", status, body)
+
+    # THE decisive comparison: did read-of create a book record / shelf entry?
+    after = bookshelf_snapshot(token)
+    print("\n--- bookshelves")
+    print("changed by this post: "
+          f"{'YES — read-of shelves the book' if after != before else 'no — read-of does not shelve'}")
+    if after != before:
+        show("bookshelves after", 200, after.encode())
 
     delete = urllib.parse.urlencode({"action": "delete", "url": location}).encode()
     status, _, body = request(MICROPUB, token, delete,
