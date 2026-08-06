@@ -256,6 +256,17 @@ def check_reading_link_stability(public_dir: Path) -> list[Problem]:
     to protect. Entries are never pruned, so an event that ages out and later
     returns (a bumped *_announced date) is still checked against what it was
     published with the first time.
+
+    GUID CHURN is the second failure mode, and it is why the guid alone cannot
+    carry this record. The guid is derived from the work's isbn/doi/access_url,
+    so CORRECTING AN ISBN gives the same event a new guid. The link does not
+    move, so no duplicate is created — but the snapshot's entry orphans under
+    the old guid and the new one matches nothing, which silently leaves that
+    event UNPROTECTED. A folder rename afterwards would then change its link
+    with no recorded value to compare against, and the duplicate would land
+    unannounced. That is the exact sequence three ISBN corrections put us one
+    step into on 2026-08-06. Churn is therefore reported and must be re-recorded
+    rather than passed over: re-keying restores the guard.
     """
     current = read_reading_events(public_dir)
     if not current:
@@ -274,26 +285,61 @@ def check_reading_link_stability(public_dir: Path) -> list[Problem]:
         for guid, link in current.items()
         if guid in recorded and recorded[guid] != link
     ]
-    if not changed:
+
+    # A link already published under a DIFFERENT guid that is no longer in the
+    # feed: same event, re-identified. Matching on the link is what makes this
+    # visible at all, since neither guid can be compared to the other.
+    published_links = {link: guid for guid, link in recorded.items()}
+    churned = [
+        (guid, link, published_links[link])
+        for guid, link in current.items()
+        if guid not in recorded
+        and link in published_links
+        and published_links[link] not in current
+    ]
+
+    if not changed and not churned:
         return []
 
-    problems = [Problem(
-        READING_FEED_REL,
-        f"{len(changed)} published reading link(s) changed — Micro.blog will import "
-        f"{len(changed)} DUPLICATE post(s) on eberle.blog, one per item below, because "
-        "it dedupes on <link>. Every one of these is inside the current feed window, "
-        "so the cost is immediate, not theoretical.",
-    )]
-    for guid, was, now in sorted(changed):
-        problems.append(Problem(f"{READING_FEED_REL} :: {guid}", f"was  {was}"))
-        problems.append(Problem(f"{READING_FEED_REL} :: {guid}", f"now  {now}"))
-    problems.append(Problem(
-        READING_FEED_REL,
-        "If the change is deliberate and the duplicates are acceptable, re-record with "
-        "`python3 scripts/checks/feed-lint.py public --update` and commit the snapshot. "
-        "If not, restore the old link — for a source with an isbn/doi/access_url the "
-        "usual cause is a renamed content/sources/<slug>/ folder.",
-    ))
+    problems: list[Problem] = []
+
+    if changed:
+        problems.append(Problem(
+            READING_FEED_REL,
+            f"{len(changed)} published reading link(s) changed — Micro.blog will import "
+            f"{len(changed)} DUPLICATE post(s) on eberle.blog, one per item below, because "
+            "it dedupes on <link>. Every one of these is inside the current feed window, "
+            "so the cost is immediate, not theoretical.",
+        ))
+        for guid, was, now in sorted(changed):
+            problems.append(Problem(f"{READING_FEED_REL} :: {guid}", f"was  {was}"))
+            problems.append(Problem(f"{READING_FEED_REL} :: {guid}", f"now  {now}"))
+        problems.append(Problem(
+            READING_FEED_REL,
+            "If the change is deliberate and the duplicates are acceptable, re-record with "
+            "`python3 scripts/checks/feed-lint.py public --update` and commit the snapshot. "
+            "If not, restore the old link — for a source with an isbn/doi/access_url the "
+            "usual cause is a renamed content/sources/<slug>/ folder.",
+        ))
+
+    if churned:
+        problems.append(Problem(
+            READING_FEED_REL,
+            f"{len(churned)} reading event(s) kept their <link> but changed <guid> — no "
+            "duplicate post is created by this, but each is now unprotected against a "
+            "later link change until the snapshot is re-recorded. The usual cause is a "
+            "corrected isbn/doi/access_url, which the guid is derived from.",
+        ))
+        for guid, link, old_guid in sorted(churned):
+            problems.append(Problem(f"{READING_FEED_REL} :: {link}", f"was  {old_guid}"))
+            problems.append(Problem(f"{READING_FEED_REL} :: {link}", f"now  {guid}"))
+        problems.append(Problem(
+            READING_FEED_REL,
+            "Re-record with `python3 scripts/checks/feed-lint.py public --update` and "
+            "commit the snapshot. This is safe here — the link, which is what Micro.blog "
+            "actually dedupes on, has not moved.",
+        ))
+
     return problems
 
 
@@ -347,14 +393,25 @@ def main() -> int:
             print(f"feed-lint: no reading events found in {public_dir / READING_FEED_REL}", file=sys.stderr)
             return 2
         merged = load_link_snapshot()
+        by_link = {link: guid for guid, link in merged.items()}
         added = {g: l for g, l in current.items() if g not in merged}
         rewritten = {g: (merged[g], l) for g, l in current.items() if g in merged and merged[g] != l}
+        # Same link, new guid — an isbn/doi/access_url correction. Reported so a
+        # re-key is never silent. The superseded entry is kept rather than
+        # pruned: it costs a line, and a guid that has been published once may
+        # still be out in Micro.blog's copy of the feed.
+        rekeyed = {
+            g: (by_link[l], l) for g, l in added.items()
+            if l in by_link and by_link[l] not in current
+        }
         merged.update(current)
         write_link_snapshot(merged)
         print(f"Recorded {len(merged)} reading link(s) in {LINK_SNAPSHOT_PATH.name} "
-              f"({len(added)} new, {len(rewritten)} rewritten)")
+              f"({len(added)} new, {len(rewritten)} rewritten, {len(rekeyed)} re-keyed)")
         for guid, (was, now) in sorted(rewritten.items()):
             print(f"  rewritten {guid}\n    was {was}\n    now {now}")
+        for guid, (old_guid, link) in sorted(rekeyed.items()):
+            print(f"  re-keyed  {link}\n    was {old_guid}\n    now {guid}")
         return 0
 
     problems: list[Problem] = []

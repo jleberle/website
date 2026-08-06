@@ -62,6 +62,15 @@
     {{- if not $rawKey }}{{ with $p.access_url }}{{ $rawKey = printf "url-%s" . }}{{ end }}{{ end -}}
     {{- if not $rawKey }}{{ $rawKey = printf "slug-%s" $slug }}{{ end -}}
     {{- $stableKey := trim (lower (replaceRE `[^a-zA-Z0-9]+` "-" $rawKey)) "-" -}}
+    {{- /* The note becomes the BODY of an imported post on eberle.blog, so its
+           length is a publishing decision rather than a display one — and
+           $source.Plain is the whole source page, unbounded. Truncated on a word
+           boundary so a long note cannot quietly turn a reading event into a
+           wall of text over there. Nothing is lost: every item links back to the
+           source page, which carries the full note.
+           (Note for editors: this comment cannot live inside the dict literal
+           below — a template comment between its arguments is a parse error.) */ -}}
+    {{- $notes := truncate 400 ($source.Plain | plainify | chomp) -}}
     {{- $record := dict
         "slug" $slug
         "key" $stableKey
@@ -71,7 +80,7 @@
         "isbn" ($p.isbn | default "")
         "doi" ($p.doi | default "")
         "url" ($p.access_url | default "")
-        "notes" ($source.Plain | plainify | chomp)
+        "notes" $notes
         "permalink" $source.Permalink
       -}}
     {{- with $p.started }}

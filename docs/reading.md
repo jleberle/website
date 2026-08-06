@@ -314,9 +314,19 @@ Two consequences worth internalising:
    removing a `#started` / `#finished` suffix all count.
 2. **Deleting an imported post does not stick while its item is still in the
    feed.** Micro.blog re-creates any item it cannot find a post for, so a
-   deletion only holds once the item has aged out of the window. Check before
-   cleaning up duplicates: if it is still in `/reading/index.xml`, it will come
-   back.
+   deletion only holds once the item has aged out of the window. Ask before
+   cleaning up duplicates:
+
+   ```sh
+   python3 scripts/reading-window.py
+   ```
+
+   It reads the **live** feed — what Micro.blog can actually see, which a local
+   build may be ahead of — and lists every event currently inside the window.
+   Anything listed will come back if you delete its post; anything absent is
+   safe to delete. This is the check that was missing during the 2026-08
+   cleanup, where 15 deletions held only because those events happened to have
+   aged out already.
 
 `scripts/checks/feed-lint.py` enforces the first point.
 `scripts/checks/reading-feed-links.json` records the link each event has been
@@ -326,6 +336,15 @@ as they appear in the built feed — an event that has never been inside the
 window has never been offered to Micro.blog, so its link carries no history to
 protect — and never prunes, so an event that ages out and later returns is
 still checked against what it was first published with.
+
+It also catches **guid churn**, which is why the guid alone cannot carry this
+record. A guid is derived from the work's `isbn`/`doi`/`access_url`, so
+correcting an ISBN gives the same event a new one. The link does not move, so no
+duplicate is created — but the recorded entry orphans under the old guid and the
+new guid matches nothing, silently leaving that event unprotected against a
+*later* link change. The lint matches on the link to spot this and asks for a
+re-record, which restores the guard. Three ISBN corrections on 2026-08-06 put us
+one step into exactly that sequence.
 
 If a link change is deliberate and the duplicates are acceptable:
 
