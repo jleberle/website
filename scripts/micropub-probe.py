@@ -85,6 +85,37 @@ def probe_config(token: str) -> None:
         show(f"q={query}", status, body)
 
 
+def created_url(headers: dict, body: bytes) -> str | None:
+    """The URL of a just-created post.
+
+    The Micropub spec says a server returns 201 with a Location header.
+    Micro.blog returns 202 with NO Location and the URL in a JSON body
+    ({"url": ..., "preview": ..., "edit": ...}) — verified against the live
+    endpoint on 2026-08-06. Reading only the header made this probe report
+    "nothing was created" while a draft had in fact been created and left
+    behind, so both are checked.
+    """
+    if headers.get("Location"):
+        return headers["Location"]
+    try:
+        payload = json.loads(body.decode("utf-8", "replace"))
+    except ValueError:
+        return None
+    url = payload.get("url") if isinstance(payload, dict) else None
+    return url if isinstance(url, str) and url.startswith("http") else None
+
+
+def delete_post(token: str, url: str) -> bool:
+    form = urllib.parse.urlencode({"action": "delete", "url": url}).encode()
+    status, _, body = request(MICROPUB, token, form,
+                              "application/x-www-form-urlencoded")
+    show(f"DELETE {url}", status, body)
+    if status not in (200, 202, 204):
+        print(f"\n!! DELETE FAILED — remove {url} by hand at micro.blog/account/posts.")
+        return False
+    return True
+
+
 def bookshelf_snapshot(token: str) -> str:
     """Books currently on every shelf, as a comparable blob."""
     status, _, body = request("https://micro.blog/books/bookshelves", token)
@@ -124,9 +155,11 @@ def probe_post(token: str) -> None:
     status, headers, body = request(MICROPUB, token, payload, "application/json")
     show("POST h-entry with read-of", status, body)
 
-    location = headers.get("Location")
+    location = created_url(headers, body)
     if not location:
-        print("\nNo Location header — nothing was created, so nothing to clean up.")
+        print("\nNo post URL in the Location header OR the response body. If the "
+              "status above was 2xx a post may still exist — check "
+              "micro.blog/account/posts before re-running.")
         return
     print(f"\nCreated: {location}")
 
@@ -154,12 +187,7 @@ def probe_post(token: str) -> None:
     if after != before:
         show("bookshelves after", 200, after.encode())
 
-    delete = urllib.parse.urlencode({"action": "delete", "url": location}).encode()
-    status, _, body = request(MICROPUB, token, delete,
-                              "application/x-www-form-urlencoded")
-    show("DELETE the probe post", status, body)
-    if status not in (200, 202, 204):
-        print(f"\n!! DELETE FAILED — remove {location} by hand.")
+    delete_post(token, location)
 
 
 def main() -> int:
@@ -169,9 +197,22 @@ def main() -> int:
               file=sys.stderr)
         return 2
 
+    args = sys.argv[1:]
+
+    # Clean up a probe post left behind by an earlier run, without creating a
+    # new one. Needed because the first live run reported "nothing was created"
+    # when a draft had been — see created_url().
+    if "--delete" in args:
+        try:
+            url = args[args.index("--delete") + 1]
+        except IndexError:
+            print("--delete needs the post URL to remove.", file=sys.stderr)
+            return 2
+        return 0 if delete_post(token, url) else 1
+
     probe_config(token)
 
-    if "--post" in sys.argv[1:]:
+    if "--post" in args:
         probe_post(token)
     else:
         print("\nRead-only probe complete. Re-run with --post to create, inspect "
