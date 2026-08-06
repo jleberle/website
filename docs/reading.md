@@ -358,6 +358,47 @@ The window size (`services.rss.limit` in `hugo.yaml`, currently 10) is the blast
 radius for all of this — see the comment there before changing it, since it is
 also the delivery slack and the ceiling on a one-time backfill.
 
+### Why not Micropub — settled by experiment, 2026-08-06
+
+Posting to Micro.blog directly over Micropub would remove the whole class of
+problem above: deletions would stick, links would stop being immutable, and
+content would arrive as Markdown rather than the HTML blob the RSS import
+produces. The reason not to is that it does **not** fix the thing that has
+actually cost the most — duplicate book records — and the docs implied it might.
+
+`scripts/micropub-probe.py` settled it against the live API. Three drafts, each
+created and deleted, `read-of` carrying `name` + `uid`:
+
+| Variant | Result |
+|---|---|
+| content supplied, `uid` = `micro.blog/books/<isbn>` | our text verbatim + 📚, `category: ["Books"]`, **no** link inserted, **no** shelf change |
+| content omitted | **HTTP 400** — `"No content or photo or summary."` |
+| `uid` = bare ISBN | identical to the first |
+
+Two conclusions follow:
+
+1. **`read-of` cannot generate a post body.** help.micro.blog says Micro.blog
+   "will format the blog post with a Markdown link to the book" given `name` and
+   `uid`; the omitted-content variant proves there is no such mode — content is
+   mandatory. In practice `read-of` contributes a 📚 and the `Books` category
+   and nothing else. The `uid` form is irrelevant.
+2. **Book association is driven by the post TEXT, not by `read-of`.** A
+   `https://micro.blog/books/<isbn>` link in the body is what associates a post
+   with a book record, and the `Finished reading:` prefix is what earns the
+   `Finished Reading` category — the probe posts carried neither and got
+   neither, while the RSS-imported posts carry both and get both.
+
+Since the reading feed already emits exactly that text, Micropub would deliver
+the same body through a different door, at the cost of a token, a post-state
+ledger, and retry handling. The duplicate-book-record fix stays where it was:
+matching each source's `isbn` to the edition Micro.blog holds, which
+`scripts/checks/book-cover-lint.py` now guards.
+
+Caveat worth keeping: all three probes were **drafts**, so it remains formally
+possible that association only fires on publish. Nothing observed suggests it —
+association is link-parsing, and drafts render — but re-run the probe against a
+published post before reversing this decision.
+
 ## Cite Keys
 
 There is no `cite_key` field: the folder name is the citation key, so the fact is
