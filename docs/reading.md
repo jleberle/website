@@ -264,6 +264,38 @@ after it has been published, now scoped to that small remainder instead of
 every source. (This replaced a slug-only guid in 2026-07 after renames had
 produced ~45 groups of duplicate imported posts on eberle.blog.)
 
+### The ISBN has to be one Micro.blog can resolve
+
+Because a book event's title links to `https://micro.blog/books/<isbn>`,
+Micro.blog builds the book record behind eberle.blog's `/reading/` page and its
+reading goals from that ISBN. An ISBN it cannot resolve produces a placeholder
+cover over there and no signal at all here — nothing on this site looks wrong.
+
+The two ledgers do **not** have to agree on the ISBN. Micro.blog creates its
+record from whatever this feed publishes, so this repo stays the source of
+truth. Duplicate book records only appear when the same work is *also* added by
+hand in Epilogue under a different edition's ISBN; leaving RSS-imported books
+off the Finished Reading shelf avoids that entirely.
+
+What does have to hold is that the ISBN resolves to real cover art, and that is
+checkable from here without visiting Micro.blog:
+
+```sh
+python3 scripts/checks/book-cover-lint.py content
+```
+
+`https://cdn.micro.blog/books/<isbn>/cover.jpg` answers unauthenticated, in
+three shapes: an ~81-byte stub (unknown ISBN), a 6287-byte placeholder image
+(known ISBN, no cover art), or the cover itself. `newsource.sh` runs the same
+check the moment an ISBN is typed and offers to take another edition's; the lint
+sweeps the whole ledger, caching successes in `scripts/checks/book-covers.json`
+so repeat runs only probe what is new or still failing.
+
+This is cover availability, not correctness — the catalogue returns *some* image
+for a well-formed but wrong number, so a pass means "this will look right", not
+"this is the edition you read". It is also the only check here that needs the
+network, which is why it stays out of `preflight.sh`.
+
 ### Published links are immutable
 
 **Micro.blog decides whether a feed item is new by its `<link>`, not its

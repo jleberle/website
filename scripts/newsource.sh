@@ -57,6 +57,79 @@ normalize_doi() {
   printf '%s' "$doi"
 }
 
+# The ISBN entered here is not just local metadata: the reading feed publishes
+# it as https://micro.blog/books/<isbn>, and Micro.blog builds the book record
+# behind /reading/ and its reading goals from that link. An ISBN it cannot
+# resolve produces a placeholder cover over there and no signal at all here.
+#
+# cdn.micro.blog answers unauthenticated, so the ISBN can be checked at the
+# moment it is typed rather than by going to Micro.blog to look one up — which
+# would defeat entering a work once, in this repo. See
+# scripts/checks/book-cover-lint.py for the same check over the whole ledger and
+# for what the three response shapes mean.
+#
+# Best-effort, exactly like the Open Library and Crossref lookups above: a
+# network failure warns and gets out of the way rather than blocking the entry.
+microblog_cover_state() {
+  local isbn="$1" body size
+
+  command -v curl >/dev/null 2>&1 || return 1
+
+  body=$(mktemp)
+  if ! curl --silent --location --max-time 15 --output "$body" \
+       "https://cdn.micro.blog/books/${isbn}/cover.jpg" 2>/dev/null; then
+    rm -f "$body"
+    return 1
+  fi
+
+  size=$(wc -c < "$body" | tr -d '[:space:]')
+  if [[ "$size" -lt 1000 ]]; then
+    rm -f "$body"
+    printf 'unknown-isbn'
+    return 0
+  fi
+  if [[ "$(md5 -q "$body" 2>/dev/null || md5sum "$body" | cut -d' ' -f1)" \
+        == "15677f7d458bc161a2b3a8597e290f39" ]]; then
+    rm -f "$body"
+    printf 'no-cover'
+    return 0
+  fi
+  rm -f "$body"
+  printf 'ok'
+}
+
+# Echoes the ISBN to keep (possibly re-entered) on stdout; everything else goes
+# to stderr so this can be used inline in an assignment.
+confirm_isbn_cover() {
+  local isbn="$1" state
+
+  while [[ -n "$isbn" ]]; do
+    if ! state=$(microblog_cover_state "$isbn"); then
+      echo "Could not reach cdn.micro.blog to check ISBN $isbn; continuing." >&2
+      break
+    fi
+    case "$state" in
+      ok)
+        break
+        ;;
+      no-cover)
+        echo "Micro.blog knows ISBN $isbn but has no cover art for it." >&2
+        ;;
+      unknown-isbn)
+        echo "Micro.blog cannot resolve ISBN $isbn at all." >&2
+        ;;
+    esac
+    echo "Another edition's ISBN will render a cover on /reading/ and in reading goals." >&2
+    local retry
+    retry=$(read_optional "ISBN (blank to keep $isbn)")
+    retry=$(normalize_isbn "$retry")
+    [[ -z "$retry" || "$retry" == "$isbn" ]] && break
+    isbn="$retry"
+  done
+
+  printf '%s' "$isbn"
+}
+
 lookup_openlibrary() {
   local isbn="$1" response lookup
 
@@ -448,6 +521,9 @@ if [[ "$SOURCE_TYPE" == "zotero" ]]; then
   FORMAT=""
   ISBN=$(read_with_default "ISBN (optional)" "$ZISBN")
   ISBN=$(normalize_isbn "$ISBN")
+  # Zotero carries whichever ISBN was recorded when the work was catalogued,
+  # which is no more likely to be one Micro.blog can resolve than a typed one.
+  ISBN=$(confirm_isbn_cover "$ISBN")
   DOI=$(normalize_doi "$(read_with_default "DOI (optional)" "$ZDOI")")
   ACCESS_URL=$(read_with_default "Access URL (optional)" "$ZURL")
   ZOTERO_KEY="$ZKEY_FIELD"
@@ -472,6 +548,9 @@ if [[ "$SOURCE_TYPE" == "book" ]]; then
 
   ISBN_INPUT=$(read_optional "ISBN (optional, used for Open Library lookup)")
   ISBN=$(normalize_isbn "$ISBN_INPUT")
+  # Checked before the Open Library lookup so a re-entered ISBN is the one that
+  # prefills the metadata below.
+  ISBN=$(confirm_isbn_cover "$ISBN")
   if [[ -n "$ISBN" ]]; then
     if lookup_data=$(lookup_openlibrary "$ISBN"); then
       while IFS=$'\t' read -r key value; do
