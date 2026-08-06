@@ -35,7 +35,8 @@ USAGE
 -----
     export MICROBLOG_TOKEN=...        # micro.blog/account/apps → new token
     python3 scripts/micropub-probe.py              # read-only
-    python3 scripts/micropub-probe.py --post       # the live experiment
+    python3 scripts/micropub-probe.py --post       # three draft variants
+    python3 scripts/micropub-probe.py --delete URL # remove a stray probe post
 """
 
 from __future__ import annotations
@@ -124,36 +125,53 @@ def bookshelf_snapshot(token: str) -> str:
     return body.decode("utf-8", "replace")
 
 
-def probe_post(token: str) -> None:
-    """Create one draft with read-of, inspect it, then delete it."""
+def probe_post(token: str, variant: str = "supplied") -> None:
+    """Create one draft with read-of, inspect it, then delete it.
+
+    `variant` selects which open question this run answers:
+
+      "supplied"  content we wrote + read-of. The first live run (2026-08-06)
+                  returned our text verbatim with a 📚 appended and category
+                  ["Books"] — recognised as a book post, but NO Markdown link
+                  and no shelf change.
+      "empty"     read-of with NO content. help.micro.blog says Micro.blog
+                  "will format the blog post with a Markdown link to the book",
+                  which the supplied-content run did not do — the likeliest
+                  reading is that it only GENERATES that text when there is
+                  nothing to overwrite. This is the test of that.
+      "isbn"      uid as a bare ISBN rather than a micro.blog URL. The docs
+                  never say which form uid takes.
+    """
     # Captured first so a new book record is visible as a DIFFERENCE rather
     # than guessed at from the after-state alone. Whether read-of shelves the
     # book is the question that decides the whole migration.
     before = bookshelf_snapshot(token)
 
-    payload = json.dumps({
-        "type": ["h-entry"],
-        "properties": {
-            "content": ["Micropub probe — verifying read-of handling. "
-                        "Draft; deleted automatically."],
-            # q=config lists post-status among the note type's properties, so
-            # the probe never publishes.
-            "post-status": ["draft"],
-            "read-of": [{
-                "type": ["h-cite"],
-                "properties": {
-                    "name": [PROBE_NAME],
-                    # The open question. If Micro.blog wants a bare ISBN this
-                    # will read wrong in the output and we will see it.
-                    "uid": [f"https://micro.blog/books/{PROBE_ISBN}"],
-                },
-            }],
-            "read-status": ["finished"],
-        },
-    }).encode("utf-8")
+    properties = {
+        # q=config lists post-status among the note type's properties, so the
+        # probe never publishes. NOTE: association may not fire until publish;
+        # a negative result here is not proof it fails for a published post.
+        "post-status": ["draft"],
+        "read-of": [{
+            "type": ["h-cite"],
+            "properties": {
+                "name": [PROBE_NAME],
+                "uid": [PROBE_ISBN if variant == "isbn"
+                        else f"https://micro.blog/books/{PROBE_ISBN}"],
+            },
+        }],
+        "read-status": ["finished"],
+    }
+    if variant != "empty":
+        properties["content"] = [
+            f"Micropub probe ({variant}) — verifying read-of handling. "
+            "Draft; deleted automatically."
+        ]
+
+    payload = json.dumps({"type": ["h-entry"], "properties": properties}).encode("utf-8")
 
     status, headers, body = request(MICROPUB, token, payload, "application/json")
-    show("POST h-entry with read-of", status, body)
+    show(f"POST h-entry with read-of [{variant}]", status, body)
 
     location = created_url(headers, body)
     if not location:
@@ -213,7 +231,11 @@ def main() -> int:
     probe_config(token)
 
     if "--post" in args:
-        probe_post(token)
+        # Each variant is one draft, created and deleted in turn. Running them
+        # together matters: the answers only mean something side by side.
+        for variant in ("supplied", "empty", "isbn"):
+            print(f"\n{'=' * 70}\n=== variant: {variant}\n{'=' * 70}")
+            probe_post(token, variant)
     else:
         print("\nRead-only probe complete. Re-run with --post to create, inspect "
               "and delete one real post — the only way to see what Micro.blog "
