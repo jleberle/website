@@ -4,10 +4,45 @@
        intact (no third-party connect-src/img-src) and needs no JS. Author
        photos aren't rendered for the same reason: they're remote images the
        CSP's img-src 'self' data: would block. See
-       .github/workflows/webmentions.yml. */ -}}
+       .github/workflows/webmentions.yml.
+
+       In-reply-to mentions that carry actual content are split into their
+       own "Replies" block, styled like a quoted excerpt rather than folded
+       into the compact type-chip list -- a reply someone wrote in response
+       is a different kind of thing than a bare like/repost/mention. Replies
+       without content (the sending platform didn't expose the text) stay in
+       the general list below since there's nothing to quote. */ -}}
 {{- $byPath := hugo.Data.webmentions | default dict -}}
 {{- $mentions := index $byPath .RelPermalink -}}
-{{- with $mentions }}
+{{- $replies := slice -}}
+{{- $others := slice -}}
+{{- range $mentions }}
+  {{- if and (eq .type "in-reply-to") .content }}
+    {{- $replies = $replies | append . }}
+  {{- else }}
+    {{- $others = $others | append . }}
+  {{- end }}
+{{- end }}
+{{- with $replies }}
+<section class="post-context replies" aria-label="Replies">
+  <span class="post-context-kicker">Replies</span>
+  <ul class="replies-list">
+    {{- range . }}
+    <li class="reply-entry">
+      <p class="reply-content">&ldquo;{{ .content }}&rdquo;</p>
+      <p class="post-context-entry reply-byline">
+        <a href="{{ .url }}" rel="external noopener" target="_blank">{{ .author.name | default "Someone" }}</a>
+        {{- with .published }}
+          {{- $parsed := try (time.AsTime .) }}
+          {{- if not $parsed.Err }} &middot; <time datetime="{{ $parsed.Value.Format "2006-01-02" }}">{{ partial "templates/_funcs/format_date" $parsed.Value }}</time>{{ end }}
+        {{- end }}
+      </p>
+    </li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}
+{{- with $others }}
 <section class="post-context related-posts" aria-label="Webmentions">
   <span class="post-context-kicker">Webmentions</span>
   <ul class="related-posts-list">
