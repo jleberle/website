@@ -2,13 +2,13 @@
 title: "Curriculum Vitae"
 description: "Summer 2026"
 summary: "Curriculum vitae of Jared L. Eberle, historian of 20th century Native American activism. Updated Summer 2026."
-date: 2026-07-08
+date: 2026-08-07
 hideMeta: true
 ---
 
 [Download the PDF version](cv.pdf)
 
-{{< cv_letterhead
+{{< cv-letterhead
     address1="154 Social Sciences and Humanities"
     address2="Stillwater, OK 74078"
     email="jared.eberle@okstate.edu"
@@ -49,17 +49,29 @@ hideMeta: true
 
 ## Publications
 
-Review, Clyde Bellecourt with Jon Lurie, *The Thunder Before The Storm:
-The Autobiography of Clyde Bellecourt*. *Native American and Indigenous
-Studies* 5.1 (Spring 2018), 211-212.
+### Book Reviews
 
-Review, Alison K. Brown, *First Nations, Museums, Narrations: Stories of
-the 1929 Franklin Motor Expedition to the Canadian Prairies*. *Native
-American and Indigenous Studies* 3.2 (2016), 130-131.
+Eberle, Jared L. Review of *The Thunder Before the Storm: The
+Autobiography of Clyde Bellecourt*, by Clyde Bellecourt with Jon Lurie.
+*Native American and Indigenous Studies* 5, no. 1 (2018): 211–12.
 
-Review, Susan Sleeper, et al., ed. *Why You Can’t Teach United States
-History without American Indians*. *Chronicles of Oklahoma* 93 (Fall
-2015), 359-361.
+Eberle, Jared L. Review of *American Indian Treaties: A Guide to
+Ratified and Unratified Colonial, United States, State, Foreign, and
+Intertribal Treaties and Agreements, 1607-1911*, by David H. DeJong.
+*Chronicles of Oklahoma* 95 (2017): 104–5.
+
+Eberle, Jared L. Review of *First Nations, Museums, Narrations: Stories
+of the 1929 Franklin Motor Expedition to the Canadian Prairies*, by
+Alison K. Brown. *Native American and Indigenous Studies* 3, no. 2
+(2016): 130–31.
+
+Eberle, Jared L. Review of *Why You Can’t Teach United States History
+Without American Indians*, by Susan Sleeper-Smith, et al. *Chronicles of
+Oklahoma* 93 (2015): 359–61.
+
+Eberle, Jared L. Review of *The Only One Living to Tell: The
+Autobiography of a Yavapai Indian, Ed. Gregory McNamee*, by Mike Burns.
+*Chronicles of Oklahoma* 92 (2014): 369–70.
 
 ## Conference Papers
 
