@@ -1,0 +1,65 @@
+{{- /* Builds the full, sorted (desc) list of reading events — one per
+       started/finished field on each source under content/sources/ — shared
+       by reading.rss.xml and reading.jsonfeed.json so both feeds compute the
+       same guid/key/link inputs from one place. Returns the FULL list,
+       unlimited: each output format applies its own window afterward, since
+       the two feeds deliberately use different window sizes (see
+       reading.jsonfeed.json for why). Guid/link derivation rules (stable
+       key precedence, #started/#finished suffix logic) are load-bearing for
+       Micro.blog dedup — see reading.rss.xml's header comment before
+       touching them; this partial only relocates that logic, it doesn't
+       change it. */ -}}
+{{- $events := slice -}}
+{{- range $source := (site.GetPage "/sources").Pages }}
+    {{- $p := $source.Params -}}
+    {{- $slug := path.Base $source.RelPermalink -}}
+    {{- $type := $p.type | default "book" -}}
+    {{- $rawKey := "" -}}
+    {{- with $p.isbn }}{{ $rawKey = printf "isbn-%s" . }}{{ end -}}
+    {{- if not $rawKey }}{{ with $p.doi }}{{ $rawKey = printf "doi-%s" . }}{{ end }}{{ end -}}
+    {{- if not $rawKey }}{{ with $p.access_url }}{{ $rawKey = printf "url-%s" . }}{{ end }}{{ end -}}
+    {{- if not $rawKey }}{{ $rawKey = printf "slug-%s" $slug }}{{ end -}}
+    {{- $stableKey := trim (lower (replaceRE `[^a-zA-Z0-9]+` "-" $rawKey)) "-" -}}
+    {{- /* The note becomes the BODY of an imported post on eberle.blog, so its
+           length is a publishing decision rather than a display one — and
+           $source.Plain is the whole source page, unbounded. Truncated on a word
+           boundary so a long note cannot quietly turn a reading event into a
+           wall of text over there. Nothing is lost: every item links back to the
+           source page, which carries the full note.
+           (Note for editors: this comment cannot live inside the dict literal
+           below — a template comment between its arguments is a parse error.) */ -}}
+    {{- $notes := truncate 400 ($source.Plain | plainify | chomp) -}}
+    {{- $record := dict
+        "slug" $slug
+        "key" $stableKey
+        "type" $type
+        "title" $source.Title
+        "author" ($p.author | default "")
+        "isbn" ($p.isbn | default "")
+        "doi" ($p.doi | default "")
+        "url" ($p.access_url | default "")
+        "notes" $notes
+        "permalink" $source.Permalink
+      -}}
+    {{- with $p.started }}
+      {{- $announcedAt := $p.started_announced | default . -}}
+      {{- $events = $events | append (merge $record (dict
+          "event_type" "started"
+          "announced_at" $announcedAt
+          "sort_key" (printf "%s-0-%s-%s" $announcedAt $type $slug)
+          "linkSuffix" "started"
+        )) -}}
+    {{- end }}
+    {{- with $p.finished }}
+      {{- $announcedAt := $p.finished_announced | default . -}}
+      {{- $finishedSuffix := "" -}}
+      {{- with $p.started }}{{ $finishedSuffix = "finished" }}{{ end -}}
+      {{- $events = $events | append (merge $record (dict
+          "event_type" "finished"
+          "announced_at" $announcedAt
+          "sort_key" (printf "%s-1-%s-%s" $announcedAt $type $slug)
+          "linkSuffix" $finishedSuffix
+        )) -}}
+    {{- end }}
+{{- end }}
+{{- return (sort $events "sort_key" "desc") -}}

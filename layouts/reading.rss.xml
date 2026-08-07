@@ -51,68 +51,14 @@
        all appear to change at once. */ -}}
 {{- $authorName := site.Params.author }}
 
-{{- $events := slice -}}
-{{- range $source := (site.GetPage "/sources").Pages }}
-    {{- $p := $source.Params -}}
-    {{- $slug := path.Base $source.RelPermalink -}}
-    {{- $type := $p.type | default "book" -}}
-    {{- $rawKey := "" -}}
-    {{- with $p.isbn }}{{ $rawKey = printf "isbn-%s" . }}{{ end -}}
-    {{- if not $rawKey }}{{ with $p.doi }}{{ $rawKey = printf "doi-%s" . }}{{ end }}{{ end -}}
-    {{- if not $rawKey }}{{ with $p.access_url }}{{ $rawKey = printf "url-%s" . }}{{ end }}{{ end -}}
-    {{- if not $rawKey }}{{ $rawKey = printf "slug-%s" $slug }}{{ end -}}
-    {{- $stableKey := trim (lower (replaceRE `[^a-zA-Z0-9]+` "-" $rawKey)) "-" -}}
-    {{- /* The note becomes the BODY of an imported post on eberle.blog, so its
-           length is a publishing decision rather than a display one — and
-           $source.Plain is the whole source page, unbounded. Truncated on a word
-           boundary so a long note cannot quietly turn a reading event into a
-           wall of text over there. Nothing is lost: every item links back to the
-           source page, which carries the full note.
-           (Note for editors: this comment cannot live inside the dict literal
-           below — a template comment between its arguments is a parse error.) */ -}}
-    {{- $notes := truncate 400 ($source.Plain | plainify | chomp) -}}
-    {{- $record := dict
-        "slug" $slug
-        "key" $stableKey
-        "type" $type
-        "title" $source.Title
-        "author" ($p.author | default "")
-        "isbn" ($p.isbn | default "")
-        "doi" ($p.doi | default "")
-        "url" ($p.access_url | default "")
-        "notes" $notes
-        "permalink" $source.Permalink
-      -}}
-    {{- with $p.started }}
-      {{- $announcedAt := $p.started_announced | default . -}}
-      {{- $events = $events | append (merge $record (dict
-          "event_type" "started"
-          "announced_at" $announcedAt
-          "sort_key" (printf "%s-0-%s-%s" $announcedAt $type $slug)
-          "linkSuffix" "started"
-        )) -}}
-    {{- end }}
-    {{- with $p.finished }}
-      {{- $announcedAt := $p.finished_announced | default . -}}
-      {{- $finishedSuffix := "" -}}
-      {{- with $p.started }}{{ $finishedSuffix = "finished" }}{{ end -}}
-      {{- $events = $events | append (merge $record (dict
-          "event_type" "finished"
-          "announced_at" $announcedAt
-          "sort_key" (printf "%s-1-%s-%s" $announcedAt $type $slug)
-          "linkSuffix" $finishedSuffix
-        )) -}}
-    {{- end }}
-{{- end }}
-
-{{- $events = sort $events "sort_key" "desc" -}}
+{{- $events := partial "templates/_funcs/reading_events.html" . -}}
 {{- $limit := site.Config.Services.RSS.Limit -}}
 {{- if ge $limit 1 }}
   {{- $events = first $limit $events -}}
 {{- end }}
 
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:source="https://source.scripting.com/">
   <channel>
     <title>{{ .Title }} | {{ site.Title }}</title>
     <link>{{ .Permalink }}</link>
@@ -137,39 +83,30 @@
     {{ printf "<atom:link href=%q rel=\"hub\" />" . | safeHTML }}
     {{- end }}
     {{- range $events }}
-    {{- $action := cond (eq .event_type "started") "Started reading" "Finished reading" -}}
-    {{- $plainBody := printf "%s: %s" $action .title -}}
-    {{- with .author }}{{- $plainBody = printf "%s by %s" $plainBody . -}}{{- end -}}
-    {{- $plainBody = printf "%s. 📚" $plainBody -}}
-    {{- with .notes }}{{- $plainBody = printf "%s %s" $plainBody . -}}{{- end -}}
-    {{- $linkedTitle := .title | htmlEscape -}}
-    {{- if and (eq .type "book") .isbn }}
-      {{- $linkedTitle = printf "<a href=%q>%s</a>" (printf "https://micro.blog/books/%s" .isbn) $linkedTitle -}}
-    {{- else if .url }}
-      {{- $linkedTitle = printf "<a href=%q>%s</a>" .url $linkedTitle -}}
-    {{- else if .doi }}
-      {{- $linkedTitle = printf "<a href=%q>%s</a>" (printf "https://doi.org/%s" .doi) $linkedTitle -}}
-    {{- end -}}
-    {{- $htmlBody := printf "%s: %s" $action $linkedTitle -}}
-    {{- with .author }}{{- $htmlBody = printf "%s by %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
-    {{- $htmlBody = printf "%s. 📚" $htmlBody -}}
-    {{- with .notes }}{{- $htmlBody = printf "%s %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
-    {{- $content := printf "<p>%s</p>" $htmlBody -}}
+    {{- $body := partial "templates/_funcs/reading_item_body.html" . -}}
     <item>
       <link>{{ .permalink }}{{ with .linkSuffix }}#{{ . }}{{ end }}</link>
       <pubDate>{{ (time.AsTime .announced_at).Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorName }}<dc:creator>{{ . }}</dc:creator>{{ end }}
       <guid isPermaLink="false">{{ printf "urn:reading-event:%s:%s:%s" .type .key .event_type }}</guid>
-      <description>{{ $plainBody }}</description>
+      <description>{{ $body.plain }}</description>
       <category>reading</category>
       <category>sources</category>
       <category>{{ .type }}</category>
       <category>{{ printf "%s-reading" .event_type }}</category>
-      {{- /* $htmlBody's title/author/notes are htmlEscape'd, but the <a href>
-             built above from .url/.doi is not — a literal "]]>" reaching this
-             CDATA from an access_url or DOI would still close it early. Same
-             CDATA-safe escape as the main feed (layouts/rss.xml). */ -}}
-      <content:encoded>{{ (printf "<![CDATA[%s]]>" (replace $content "]]>" "]]]]><![CDATA[>")) | safeHTML }}</content:encoded>
+      {{- /* $body.html's title/author/notes are htmlEscape'd, but the <a href>
+             built from .url/.doi inside reading_item_body.html is not — a
+             literal "]]>" reaching this CDATA from an access_url or DOI would
+             still close it early. Same CDATA-safe escape as the main feed
+             (layouts/rss.xml). */ -}}
+      <content:encoded>{{ (printf "<![CDATA[%s]]>" (replace $body.html "]]>" "]]]]><![CDATA[>")) | safeHTML }}</content:encoded>
+      {{- /* source:markdown (source.scripting.com), supported by Micro.blog's
+             importer: the same body as $body.html, as Markdown instead of
+             HTML, so the import doesn't have to reverse-parse HTML back into
+             Markdown. Untested against a real import as of 2026-08 — plain
+             text per spec, no CDATA, so normal XML auto-escaping is enough.
+             See layouts/reading.jsonfeed.json for the parallel test path. */ -}}
+      <source:markdown>{{ $body.markdown }}</source:markdown>
     </item>
     {{- end }}
   </channel>

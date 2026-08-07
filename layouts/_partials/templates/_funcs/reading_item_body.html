@@ -1,0 +1,42 @@
+{{- /* Renders one reading event (from reading_events.html) into the three
+       body variants reading.rss.xml and reading.jsonfeed.json both need:
+       plain (for <description>/summary), html (for <content:encoded>/
+       content_html), and markdown (for source:markdown/content_text — see
+       reading.rss.xml's source:markdown comment). Takes the event dict as
+       context, returns dict(action, plain, html, markdown). */ -}}
+{{- $e := . -}}
+{{- $action := cond (eq $e.event_type "started") "Started reading" "Finished reading" -}}
+
+{{- $plainBody := printf "%s: %s" $action $e.title -}}
+{{- with $e.author }}{{- $plainBody = printf "%s by %s" $plainBody . -}}{{- end -}}
+{{- $plainBody = printf "%s. 📚" $plainBody -}}
+{{- with $e.notes }}{{- $plainBody = printf "%s %s" $plainBody . -}}{{- end -}}
+
+{{- $linkedTitle := $e.title | htmlEscape -}}
+{{- if and (eq $e.type "book") $e.isbn }}
+  {{- $linkedTitle = printf "<a href=%q>%s</a>" (printf "https://micro.blog/books/%s" $e.isbn) $linkedTitle -}}
+{{- else if $e.url }}
+  {{- $linkedTitle = printf "<a href=%q>%s</a>" $e.url $linkedTitle -}}
+{{- else if $e.doi }}
+  {{- $linkedTitle = printf "<a href=%q>%s</a>" (printf "https://doi.org/%s" $e.doi) $linkedTitle -}}
+{{- end -}}
+{{- $htmlBody := printf "%s: %s" $action $linkedTitle -}}
+{{- with $e.author }}{{- $htmlBody = printf "%s by %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
+{{- $htmlBody = printf "%s. 📚" $htmlBody -}}
+{{- with $e.notes }}{{- $htmlBody = printf "%s %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
+{{- $html := printf "<p>%s</p>" $htmlBody -}}
+
+{{- $mdLinkedTitle := $e.title -}}
+{{- if and (eq $e.type "book") $e.isbn }}
+  {{- $mdLinkedTitle = printf "[%s](%s)" $e.title (printf "https://micro.blog/books/%s" $e.isbn) -}}
+{{- else if $e.url }}
+  {{- $mdLinkedTitle = printf "[%s](%s)" $e.title $e.url -}}
+{{- else if $e.doi }}
+  {{- $mdLinkedTitle = printf "[%s](%s)" $e.title (printf "https://doi.org/%s" $e.doi) -}}
+{{- end -}}
+{{- $markdown := printf "%s: %s" $action $mdLinkedTitle -}}
+{{- with $e.author }}{{- $markdown = printf "%s by %s" $markdown . -}}{{- end -}}
+{{- $markdown = printf "%s. 📚" $markdown -}}
+{{- with $e.notes }}{{- $markdown = printf "%s %s" $markdown . -}}{{- end -}}
+
+{{- return (dict "action" $action "plain" $plainBody "html" $html "markdown" $markdown) -}}
