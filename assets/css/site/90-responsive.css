@@ -75,4 +75,12 @@
     .post-entry:active {
         transform: none;
     }
+
+    /* Cross-document view transition (10-layout.css): swap instantly
+       instead of cross-fading for readers who asked for less motion. */
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
 }

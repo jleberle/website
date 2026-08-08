@@ -1,3 +1,11 @@
+/* Cross-document view transitions: opt every navigation on the site into
+   the browser's built-in cross-fade between pages. No JS, no dependency —
+   see spec/performance/view-transitions. Reduced-motion override lives
+   alongside the other shared reduced-motion rules in 90-responsive.css. */
+@view-transition {
+    navigation: auto;
+}
+
 .main {
     position: relative;
 

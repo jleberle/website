@@ -230,27 +230,28 @@
 
 
 /* ------------------------------------------------------------
-   Image lightbox (assets/js/lightbox.js). Click a content image
-   to open it full-screen on a dimmed overlay; click anywhere or
-   the close button to dismiss. Progressive enhancement — without
-   JS images just render inline.
+   Image lightbox (assets/js/lightbox.js), built on <dialog>. Click a
+   content image to open it full-screen on a dimmed ::backdrop; click
+   anywhere or the close button to dismiss. Progressive enhancement —
+   without JS images just render inline. Native dialog centering
+   (UA default: position fixed, inset-block-start 0, margin auto) does
+   the layout work the old div needed flex + inset:0 for, so this is
+   just resets plus the dim backdrop.
    ------------------------------------------------------------ */
 #lightbox-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: rgb(0 0 0 / 85%);
-    align-items: center;
-    justify-content: center;
+    border: none;
+    margin: auto;
+    padding: 0;
+    background: transparent;
     cursor: zoom-out;
 }
 
-#lightbox-overlay.is-open {
-    display: flex;
+#lightbox-overlay::backdrop {
+    background: rgb(0 0 0 / 85%);
 }
 
 #lightbox-img {
+    display: block;
     max-width: 90vw;
     max-height: 90vh;
     max-height: 90dvh;

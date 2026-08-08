@@ -176,6 +176,14 @@ else
   fail "CSP hash drift — run scripts/csp-hashes.sh and update static/_headers"
 fi
 
+step "Content-Digest headers"
+if DIGEST_OUT=$(bash scripts/digest-fields.sh --no-build 2>&1); then
+  pass "$DIGEST_OUT"
+else
+  echo "$DIGEST_OUT"
+  fail "could not write Content-Digest headers for the feed endpoints"
+fi
+
 step "security.txt signature"
 if SEC_OUT=$(scripts/sign-security-txt.sh --check 2>&1); then
   pass "security.txt $SEC_OUT"

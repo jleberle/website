@@ -2,10 +2,15 @@
 # delimiters are live even inside comment lines.
 
 # ----------------------------------------------------------------------
-# Ordinary crawlers: welcome. Nothing here is disallowed.
+# Ordinary crawlers: welcome. Nothing here is disallowed. Content-Signal
+# (IETF aipref / IAB Tech Lab draft) states the same policy as ai.txt in
+# the emerging structured vocabulary: fine for search indexing, not for
+# AI retrieval or training. Complementary to, not a substitute for, the
+# per-bot Disallow blocks below — see spec/agent-readiness/content-signals.
 # ----------------------------------------------------------------------
 User-agent: *
 Allow: /
+Content-Signal: search=yes, ai-input=no, ai-train=no
 
 Sitemap: {{ "sitemap.xml" | absURL }}
 License: {{ "license.xml" | absURL }}

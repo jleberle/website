@@ -1,3 +1,3 @@
 image: hugomods/hugo:debian-git-0.164.0@sha256:286c09e6942e2b3cd58c9734e25f0fd538e607b2228fecc7a3989159f8da263a
-command: hugo --minify
+command: hugo --minify && scripts/digest-fields.sh --no-build
 public: public

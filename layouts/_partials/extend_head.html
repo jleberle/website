@@ -31,3 +31,28 @@
 {{- $bundle := . | resources.Concat "js/bundle.js" | minify | fingerprint }}
 <script defer src="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous"></script>
 {{- end }}
+{{- /* Speculation Rules API (spec: performance/speculation-rules): prerender
+       same-origin links so the View Transition (10-layout.css) has an
+       already-rendered page to cross-fade into. "conservative" eagerness
+       fires only on pointerdown/mousedown — the same "wait for actual
+       intent" signal as a click itself, not a hover guess — which fits this
+       site's minimal-footprint stance (see /colophon) better than the
+       "moderate" default that speculatively fetches on hover. Ignored
+       outright by browsers without support; PDFs and external/download
+       links are excluded since they were never candidates to render. */}}
+<script type="speculationrules">
+{
+  "prerender": [
+    {
+      "where": {
+        "and": [
+          { "href_matches": "/*" },
+          { "not": { "href_matches": "/*.pdf" } },
+          { "not": { "selector_matches": "[rel~=nofollow], [download], [target=_blank]" } }
+        ]
+      },
+      "eagerness": "conservative"
+    }
+  ]
+}
+</script>

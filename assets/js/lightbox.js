@@ -1,11 +1,14 @@
 (function () {
   var overlay, overlayImg, overlayClose, lastFocused;
 
+  // <dialog>.showModal() gives us all of this for free: an implicit
+  // role="dialog"/aria-modal="true", a focus trap (Tab can't escape to the
+  // page behind it), Escape-to-close, and every other top-level element
+  // made inert to keyboard/AT automatically. None of that needs hand-rolling
+  // the way it did for the old plain-<div> overlay.
   function createOverlay() {
-    overlay = document.createElement('div');
+    overlay = document.createElement('dialog');
     overlay.id = 'lightbox-overlay';
-    overlay.setAttribute('role', 'dialog');
-    overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-label', 'Image lightbox');
 
     overlayImg = document.createElement('img');
@@ -14,6 +17,7 @@
 
     overlayClose = document.createElement('button');
     overlayClose.id = 'lightbox-close';
+    overlayClose.type = 'button';
     overlayClose.setAttribute('aria-label', 'Close lightbox');
     overlayClose.textContent = '×';
 
@@ -21,33 +25,23 @@
     overlay.appendChild(overlayClose);
     document.body.appendChild(overlay);
 
+    // A click that lands on the dialog element itself (not overlayImg or
+    // overlayClose) landed on the ::backdrop area — the same "click outside
+    // to dismiss" gesture the old overlay div handled explicitly.
     overlay.addEventListener('click', function (e) {
       if (e.target === overlay || e.target === overlayClose) {
-        closeLightbox();
+        overlay.close();
       }
     });
 
-    document.addEventListener('keydown', function (e) {
-      if (!overlay.classList.contains('is-open')) return;
-      if (e.key === 'Escape') {
-        closeLightbox();
-      } else if (e.key === 'Tab') {
-        // The close button is the only focusable control in the overlay, so
-        // trap Tab on it — focus can't escape to the page behind the modal.
-        e.preventDefault();
-        overlayClose.focus();
+    // Fires on every close path — Escape, backdrop click, or the close
+    // button — so cleanup lives in exactly one place.
+    overlay.addEventListener('close', function () {
+      document.body.style.overflow = '';
+      if (lastFocused) {
+        lastFocused.focus();
+        lastFocused = null;
       }
-    });
-  }
-
-  // Marks every other top-level body element inert (or not) while the
-  // overlay is open, so background content is unreachable to keyboard and
-  // screen-reader users, not just visually dimmed. The manual Tab trap above
-  // stays as a fallback for the rare browser without inert support.
-  function setBackgroundInert(state) {
-    Array.prototype.forEach.call(document.body.children, function (el) {
-      if (el === overlay) return;
-      el.inert = state;
     });
   }
 
@@ -57,20 +51,9 @@
     lastFocused = el;
     overlayImg.src = el.dataset.lightboxSrc || el.src || el.getAttribute('href');
     overlayImg.alt = el.alt || el.getAttribute('aria-label') || (el.textContent || '').trim();
-    overlay.classList.add('is-open');
     document.body.style.overflow = 'hidden';
-    setBackgroundInert(true);
+    overlay.showModal();
     overlayClose.focus();
-  }
-
-  function closeLightbox() {
-    overlay.classList.remove('is-open');
-    document.body.style.overflow = '';
-    setBackgroundInert(false);
-    if (lastFocused) {
-      lastFocused.focus();
-      lastFocused = null;
-    }
   }
 
   document.addEventListener('DOMContentLoaded', function () {
