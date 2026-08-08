@@ -1,6 +1,6 @@
 {{- $pages := partial "templates/_funcs/feed_pages.html" . }}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:rsl="https://rslstandard.org/rsl">
   <channel>
     <title>{{ site.Title }}</title>
     <link>{{ .Permalink }}</link>
@@ -22,6 +22,7 @@
     {{- with site.Params.websubHub }}
     {{ printf "<atom:link href=%q rel=\"hub\" />" . | safeHTML }}
     {{- end }}
+    {{ printf "<atom:link href=%q rel=\"license\" type=\"text/plain\" />" ("license.txt" | absURL) | safeHTML }}
     {{- range $pages }}
     {{- $page := . }}
     {{- $feedItem := partial "templates/_funcs/feed_item.html" $page }}
@@ -34,6 +35,19 @@
       <atom:updated>{{ $revised.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}</atom:updated>
       {{- end }}
       {{- with partial "author.html" . }}<dc:creator>{{ . | plainify }}</dc:creator>{{ end }}
+      <rsl:content url="{{ .Permalink }}">
+        <rsl:license>
+          <rsl:prohibits type="usage">ai-train ai-input ai-index</rsl:prohibits>
+          <rsl:payment type="attribution">
+            <rsl:standard>https://creativecommons.org/licenses/by-nc-sa/4.0/</rsl:standard>
+          </rsl:payment>
+          <rsl:copyright type="person" contactEmail="jared@jaredeberle.org" contactUrl="https://jaredeberle.org/about/#contact">Jared L. Eberle</rsl:copyright>
+          <rsl:legal type="contact">jared@jaredeberle.org</rsl:legal>
+          <rsl:terms>https://jaredeberle.org/terms/</rsl:terms>
+          <rsl:legal type="disclaimer">as-is no-warranty no-liability</rsl:legal>
+          <rsl:legal type="warranty">ownership authority no-infringement</rsl:legal>
+        </rsl:license>
+      </rsl:content>
       <guid isPermaLink="true">{{ .Permalink }}</guid>
       <description>{{ partial "page_summary.html" . | html }}</description>
       {{- range (.Params.tags | default (slice)) }}<category>{{ . }}</category>{{ end }}

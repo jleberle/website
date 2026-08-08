@@ -1,0 +1,17 @@
+License — jaredeberle.org
+
+All original content on this site is offered under a Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International license (CC BY-NC-SA 4.0).
+
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+Any use of the original content must be appropriately attributed, for
+non-commercial use, and shared under the same license.
+
+This license does not apply to commercial AI training or answers. As
+defined by this site's robots.txt, ai.txt, and X-Robots-Tag: noai header,
+AI agents are not permitted to scrape, retrieve, or otherwise use content
+on this site. This is an express reservation of rights under Article 4 of
+EU Directive 2019/790.
+
+Full terms: https://jaredeberle.org/terms/

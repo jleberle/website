@@ -30,6 +30,7 @@
 {{- end }}
 <link rel="canonical" href="{{ $canonical }}">
 {{- end }}
+<link rel="license" href="{{ "license.txt" | absURL }}">
 {{- with .Store.Get "listPaginator" }}
 {{- if .HasPrev }}
 <link rel="prev" href="{{ .Prev.URL | absURL }}">

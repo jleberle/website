@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Machine-readable rights declaration per the RSL standard (https://rslstandard.org/rsl).
+     Human-readable terms: https://jaredeberle.org/license.txt and https://jaredeberle.org/terms/ -->
+<rsl xmlns="https://rslstandard.org/rsl">
+  <content url="https://jaredeberle.org/">
+    <license>
+      <prohibits type="usage">ai-train ai-input ai-index</prohibits>
+      <payment type="attribution">
+        <standard>https://creativecommons.org/licenses/by-nc-sa/4.0/</standard>
+      </payment>
+      <copyright type="person" contactEmail="jared@jaredeberle.org" contactUrl="https://jaredeberle.org/about/#contact">Jared L. Eberle</copyright>
+      <legal type="contact">jared@jaredeberle.org</legal>
+      <terms>https://jaredeberle.org/terms/</terms>
+      <legal type="disclaimer">as-is no-warranty no-liability</legal>
+      <legal type="warranty">ownership authority no-infringement</legal>
+    </license>
+  </content>
+</rsl>

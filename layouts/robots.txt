@@ -8,6 +8,7 @@ User-agent: *
 Allow: /
 
 Sitemap: {{ "sitemap.xml" | absURL }}
+License: {{ "license.xml" | absURL }}
 
 # ----------------------------------------------------------------------
 # AI crawlers: blocked. Two distinct categories, both blocked here per
