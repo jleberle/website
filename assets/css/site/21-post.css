@@ -225,11 +225,17 @@ h1>a>svg {
     border-radius: 3px;
 }
 
-/* JS popover. Progressive enhancement: without JS, references still jump to
-   the rendered .footnotes list at the foot of the article. */
+/* JS popover, built on the popover="manual" attribute (footnotes.js) purely
+   for its top-layer promotion -- no more z-index tuning against whatever
+   else is on the page. Positioning stays our own: reset the UA popover
+   stylesheet's inset/margin defaults so the JS-set top/left (place() in
+   footnotes.js) still place it exactly as a plain position: absolute box
+   would. Progressive enhancement: without JS, references still jump to the
+   rendered .footnotes list at the foot of the article. */
 .fn-popover {
     position: absolute;
-    z-index: 50;
+    inset: auto;
+    margin: 0;
     width: min(90vw, 30em);
     max-height: 60vh;
     max-height: 60dvh;
@@ -242,11 +248,6 @@ h1>a>svg {
     font-size: 0.9rem;
     line-height: 1.6;
     box-shadow: 0 4px 18px rgb(0 0 0 / 18%);
-    display: none;
-}
-
-.fn-popover.is-open {
-    display: block;
 }
 
 .fn-popover p {

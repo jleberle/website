@@ -12,6 +12,12 @@
   pop.className = 'fn-popover';
   pop.id = 'fn-popover';
   pop.setAttribute('role', 'note');
+  // "manual" promotes the popover to the top layer (no more z-index
+  // tuning against whatever else is on the page) without taking on
+  // native light-dismiss: that fires on pointerdown, one event ahead of
+  // the click-based open/close toggle below, and would race it into a
+  // close-then-reopen flicker on a second click of the same reference.
+  pop.setAttribute('popover', 'manual');
   document.body.appendChild(pop);
 
   var current = null; // the reference that opened the popover, or null
@@ -135,7 +141,7 @@
     pop.textContent = '';
     moveChildren(pop, noteBody);
     if (current) current.setAttribute('aria-expanded', 'false');
-    pop.classList.add('is-open');
+    if (!pop.matches(':popover-open')) pop.showPopover();
     place(ref);
     ref.setAttribute('aria-expanded', 'true');
     current = ref;
@@ -143,7 +149,7 @@
 
   function close(focusRef) {
     if (!current) return;
-    pop.classList.remove('is-open');
+    if (pop.matches(':popover-open')) pop.hidePopover();
     current.setAttribute('aria-expanded', 'false');
     if (focusRef) current.focus();
     current = null;

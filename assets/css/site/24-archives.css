@@ -14,6 +14,17 @@
     border-bottom: 1px solid var(--border);
     border-radius: var(--radius);
     transition: background-color 0.15s ease;
+
+    /* This list can run to hundreds of rows (every post, unpaginated, for
+       archive-filters.js to search/filter client-side). content-visibility
+       skips layout/paint for rows currently off-screen; contain-intrinsic-size
+       gives the scrollbar a placeholder height for rows never yet rendered,
+       which the "auto" keyword replaces with the real measured height the
+       first time each row scrolls into view. Filtering itself still works
+       off-screen since it only ever toggles the .is-hidden class below, never
+       reads layout geometry. */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 70px;
 }
 
 .archive-entry-title {

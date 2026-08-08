@@ -211,6 +211,14 @@ body.list:not(.home) .post-entry {
     border-radius: 0;
     box-shadow: none;
     transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    /* Skip layout/paint for entries off-screen -- these pages paginate, but a
+       full tag/section list can still run long. contain-intrinsic-size gives
+       a placeholder height for never-yet-rendered rows; "auto" swaps in the
+       real measured height (title + summary + optional cover vary a lot row
+       to row) the first time each one scrolls into view. */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 220px;
 }
 
 body.list:not(.home) .post-entry:last-of-type {
