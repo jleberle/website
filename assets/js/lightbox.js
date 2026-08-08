@@ -15,6 +15,15 @@
     overlayImg.id = 'lightbox-img';
     overlayImg.alt = '';
 
+    // Swapping .src on an <img> that's still showing a previously decoded
+    // photo leaves that photo on screen until the new one finishes loading,
+    // which reads as a flash of the wrong image rather than a load
+    // transition. Hide it the moment a new src is assigned (openLightbox
+    // below) and reveal again once the new image is actually ready.
+    function reveal() { overlayImg.style.visibility = ''; }
+    overlayImg.addEventListener('load', reveal);
+    overlayImg.addEventListener('error', reveal);
+
     overlayClose = document.createElement('button');
     overlayClose.id = 'lightbox-close';
     overlayClose.type = 'button';
@@ -49,6 +58,7 @@
   // pointing at an image, tagged data-lightbox-src by render-link.html).
   function openLightbox(el) {
     lastFocused = el;
+    overlayImg.style.visibility = 'hidden';
     overlayImg.src = el.dataset.lightboxSrc || el.src || el.getAttribute('href');
     overlayImg.alt = el.alt || el.getAttribute('aria-label') || (el.textContent || '').trim();
     document.body.style.overflow = 'hidden';
