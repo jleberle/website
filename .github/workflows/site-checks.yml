@@ -200,6 +200,33 @@ jobs:
           mkdir -p .ci-artifacts
           bash -o pipefail -c 'docker run --rm -v "$PWD":/work -w /work "$LYCHEE_IMAGE" --no-progress --config lychee.toml public/ 2>&1 | tee .ci-artifacts/external-links.log'
 
+      - name: Rewrite dead links to Wayback snapshots
+        # Runs its own liveness check independently of the lychee step above
+        # (that's how scripts/archive-links.sh works standalone) rather than
+        # consuming its log — the point is closing the loop on the SAME
+        # schedule as the check above, not reusing its output.
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        continue-on-error: true
+        run: scripts/archive-links.sh --all
+
+      - name: Commit archived link rewrites
+        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$(git status --porcelain -- content/)" ]]; then
+            echo "No dead links rewritten to archive snapshots."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/
+          git commit -m "Rewrite dead citation links to Wayback Machine snapshots"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
+          git push
+
       - name: Upload failure artifacts
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
