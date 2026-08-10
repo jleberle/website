@@ -4,20 +4,108 @@ Source for [jaredeberle.org](https://jaredeberle.org), the personal and academic
 
 Built with [Hugo](https://gohugo.io). The site began as a PaperMod fork but is now a fully local theme: templates, styles, scripts, and publishing workflow all live in this repo.
 
-## Prerequisites
-
-- [Hugo](https://gohugo.io/installation/) extended edition
-- [ImageMagick](https://imagemagick.org/) (`magick`) for image helpers
-- [Node.js](https://nodejs.org/) / npm for HTML/CSS/accessibility checks
-- [Lychee](https://lychee.cli.rs/) for optional link checking
-
-## Local Development
+## Setup
 
 ```sh
-hugo server
+scripts/doctor.sh
 ```
 
-The site is available at `http://localhost:1313`.
+That checks every program the site needs, says what each one is needed *for*,
+and prints the exact install command for anything missing. It exits non-zero
+only when something genuinely blocks publishing — most of what it can report is
+optional.
+
+Four things are required: [Hugo](https://gohugo.io/installation/) (extended),
+Python 3, Git, and [ImageMagick](https://imagemagick.org/). Node and
+[Lychee](https://lychee.cli.rs/) are needed only for `preflight --full`, which
+CI runs anyway, and GnuPG only for re-signing `security.txt` about once a year.
+
+## Publishing a post
+
+The whole cycle, in order. Every step is one command.
+
+**1. Start a draft.** It is created in the Obsidian vault, outside this repo.
+
+```sh
+scripts/newpost.sh article "Post Title"
+scripts/newpost.sh article --cover "Post Title"
+```
+
+**2. Write it.** In the vault, not here. Nothing in this repo changes yet.
+
+**3. Preview as you go.**
+
+```sh
+hugo server           # http://localhost:1313
+```
+
+**4. Move it into the site**, adding images and a Works Cited list if it needs them.
+
+```sh
+scripts/publish-draft.sh articles/2026-06-24-post-title.md
+scripts/publish-draft.sh --cite reviews/2026-06-24-review-slug.md
+scripts/add-images.sh content/articles/<dir> --cover photo.jpg
+```
+
+**5. Ship it.** This runs the checks, commits everything, and pushes. Pushing is
+what deploys — StaticHost builds from the push, so there is no separate deploy
+step.
+
+```sh
+scripts/ship.sh "Commit message"
+```
+
+Steps 4 and 5 collapse into one with `--push`:
+
+```sh
+scripts/publish-draft.sh --push articles/2026-06-24-post-title.md
+```
+
+## When a check fails
+
+`scripts/ship.sh` refuses to commit anything if the checks fail, so a failure
+leaves your work exactly where it was. Every failure prints a **Fix:** line
+naming the file and what to do.
+
+Two kinds of result, and the difference matters:
+
+| | Meaning | What to do |
+|---|---|---|
+| `✗` red | **Blocking.** Pushing this would break the live site or do something that cannot be undone — a broken image, GPS coordinates in a photo, duplicate posts on eberle.blog. | Fix it before pushing. The Fix: line says how. |
+| `⚠` yellow | **Advisory.** Real, but a later commit fixes it completely and nothing breaks meanwhile — a misspelled tag, an oversized page. | You can push now. Clear it soon; CI fails on it. |
+
+To see everything CI will say before pushing:
+
+```sh
+scripts/preflight.sh --full
+```
+
+[operations.md](docs/operations.md) explains how the line between the two is
+drawn, and why each check sits on the side it does.
+
+## Reading and sources
+
+The bibliography is one page per cited work under `content/sources/`, keyed by
+citation key. The reading ledger is the subset with a reading status.
+
+```sh
+scripts/newsource.sh book "Book Title"       # prefills from Open Library by ISBN
+scripts/newsource.sh zotero cramer2005       # prefills from Zotero, offline
+scripts/finishsource.sh --push egan2023      # mark read, ship, and push
+```
+
+## Other commands
+
+```sh
+scripts/log-writing.sh          # end of a writing session: count the vault, publish the log
+scripts/doctor.sh               # check this machine is set up
+scripts/preflight.sh            # run the checks without committing anything
+```
+
+If you use the `site` fish function, every command above is available from any
+directory — `site doctor`, `site new article "Title"`, `site ship "Message"` —
+and `site` on its own lists them, grouped by task. The scripts here stay
+canonical; `site` only removes the `cd`.
 
 ## Repo Layout
 
@@ -36,21 +124,6 @@ repo has no `.obsidian/` setup of its own. Drafts live at `~/Notes/07 Blog/Draft
 `scripts/publish-draft.sh` moves them into `content/`. The Templater draft
 templates live solely at `~/Notes/Meta/templates/Website/`; there is no repo
 copy, so edit them there directly.
-
-## Daily Commands
-
-```sh
-scripts/newpost.sh article "Post Title"
-scripts/newpost.sh article --cover "Post Title"
-scripts/newsource.sh book "Book Title"           # prefills from Open Library by ISBN
-scripts/newsource.sh zotero cramer2005           # prefills from the Zotero library, offline
-scripts/finishsource.sh --push egan2023          # mark read, ship, and push
-scripts/publish-draft.sh --push articles/2026-06-24-post-title.md      # no images to add
-scripts/publish-draft.sh --cite reviews/2026-06-24-review-slug.md      # append Works Cited
-scripts/add-images.sh content/articles/<dir> --cover photo.jpg
-scripts/ship.sh "Commit message"                 # preflight, commit, push in one step
-scripts/log-writing.sh                           # end of a writing session: count the vault, publish the log
-```
 
 ## Documentation
 
