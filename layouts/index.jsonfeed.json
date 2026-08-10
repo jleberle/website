@@ -32,6 +32,9 @@
       "summary": {{ partial "page_summary.html" $page | plainify | jsonify }},
       {{- $feedItem := partial "templates/_funcs/feed_item.html" $page -}}
       "content_html": {{ $feedItem.content | jsonify }},
+      {{- with $feedItem.markdown }}
+      "content_text": {{ . | jsonify }},
+      {{- end }}
       "license": {{ ("license.txt" | absURL) | jsonify }},
       "date_published": {{ $page.PublishDate.Format "2006-01-02T15:04:05Z07:00" | jsonify }}
       {{- with partial "latest_revision.html" $page -}}
