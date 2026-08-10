@@ -58,7 +58,7 @@
 {{- end }}
 
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:source="https://source.scripting.com/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>{{ .Title }} | {{ site.Title }}</title>
     <link>{{ .Permalink }}</link>
@@ -100,13 +100,6 @@
              still close it early. Same CDATA-safe escape as the main feed
              (layouts/rss.xml). */ -}}
       <content:encoded>{{ (printf "<![CDATA[%s]]>" (replace $body.html "]]>" "]]]]><![CDATA[>")) | safeHTML }}</content:encoded>
-      {{- /* source:markdown (source.scripting.com), supported by Micro.blog's
-             importer: the same body as $body.html, as Markdown instead of
-             HTML, so the import doesn't have to reverse-parse HTML back into
-             Markdown. Untested against a real import as of 2026-08 — plain
-             text per spec, no CDATA, so normal XML auto-escaping is enough.
-             See layouts/reading.jsonfeed.json for the parallel test path. */ -}}
-      <source:markdown>{{ $body.markdown }}</source:markdown>
     </item>
     {{- end }}
   </channel>

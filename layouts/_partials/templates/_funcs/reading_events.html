@@ -1,14 +1,11 @@
 {{- /* Builds the full, sorted (desc) list of reading events — one per
-       started/finished field on each source under content/sources/ — shared
-       by reading.rss.xml and reading.jsonfeed.json so both feeds compute the
-       same guid/key/link inputs from one place. Returns the FULL list,
-       unlimited: each output format applies its own window afterward, since
-       the two feeds deliberately use different window sizes (see
-       reading.jsonfeed.json for why). Guid/link derivation rules (stable
-       key precedence, #started/#finished suffix logic) are load-bearing for
-       Micro.blog dedup — see reading.rss.xml's header comment before
-       touching them; this partial only relocates that logic, it doesn't
-       change it. */ -}}
+       started/finished field on each source under content/sources/ — used
+       by reading.rss.xml. Returns the FULL list, unlimited: reading.rss.xml
+       applies its own window (services.rss.limit) afterward. Guid/link
+       derivation rules (stable key precedence, #started/#finished suffix
+       logic) are load-bearing for Micro.blog dedup — see reading.rss.xml's
+       header comment before touching them; this partial only relocates that
+       logic, it doesn't change it. */ -}}
 {{- $events := slice -}}
 {{- range $source := (site.GetPage "/sources").Pages }}
     {{- $p := $source.Params -}}

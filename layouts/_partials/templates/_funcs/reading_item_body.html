@@ -1,9 +1,7 @@
-{{- /* Renders one reading event (from reading_events.html) into the three
-       body variants reading.rss.xml and reading.jsonfeed.json both need:
-       plain (for <description>/summary), html (for <content:encoded>/
-       content_html), and markdown (for source:markdown/content_text — see
-       reading.rss.xml's source:markdown comment). Takes the event dict as
-       context, returns dict(action, plain, html, markdown). */ -}}
+{{- /* Renders one reading event (from reading_events.html) into the body
+       variants reading.rss.xml needs: plain (for <description>) and html
+       (for <content:encoded>). Takes the event dict as context, returns
+       dict(action, plain, html). */ -}}
 {{- $e := . -}}
 {{- $action := cond (eq $e.event_type "started") "Started reading" "Finished reading" -}}
 
@@ -26,17 +24,4 @@
 {{- with $e.notes }}{{- $htmlBody = printf "%s %s" $htmlBody (. | htmlEscape) -}}{{- end -}}
 {{- $html := printf "<p>%s</p>" $htmlBody -}}
 
-{{- $mdLinkedTitle := $e.title -}}
-{{- if and (eq $e.type "book") $e.isbn }}
-  {{- $mdLinkedTitle = printf "[%s](%s)" $e.title (printf "https://micro.blog/books/%s" $e.isbn) -}}
-{{- else if $e.url }}
-  {{- $mdLinkedTitle = printf "[%s](%s)" $e.title $e.url -}}
-{{- else if $e.doi }}
-  {{- $mdLinkedTitle = printf "[%s](%s)" $e.title (printf "https://doi.org/%s" $e.doi) -}}
-{{- end -}}
-{{- $markdown := printf "%s: %s" $action $mdLinkedTitle -}}
-{{- with $e.author }}{{- $markdown = printf "%s by %s" $markdown . -}}{{- end -}}
-{{- $markdown = printf "%s. 📚" $markdown -}}
-{{- with $e.notes }}{{- $markdown = printf "%s %s" $markdown . -}}{{- end -}}
-
-{{- return (dict "action" $action "plain" $plainBody "html" $html "markdown" $markdown) -}}
+{{- return (dict "action" $action "plain" $plainBody "html" $html) -}}

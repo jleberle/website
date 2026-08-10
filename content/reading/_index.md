@@ -6,5 +6,4 @@ description: "A list of books, articles, and other resources I've read over the 
 outputs:
   - HTML
   - RSS
-  - jsonfeed
 ---
