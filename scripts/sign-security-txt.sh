@@ -8,10 +8,19 @@
 #   scripts/sign-security-txt.sh          # clearsign in place (needs the private key)
 #   scripts/sign-security-txt.sh --check  # verify signature + expiry only; exit 1
 #                                          # if unsigned, tampered, or expired
+#   scripts/sign-security-txt.sh --check --days 60   # also fail once expiry is
+#                                          # less than 60 days out
 #
 # --check imports only the published public key (static/key.asc) into a throwaway
 # keyring, so it runs in CI without the private key and without touching the
 # user's real GnuPG keyring.
+#
+# This is NOT part of the pre-push gate. Nothing about a content commit can
+# invalidate this signature — only the calendar can — so blocking a push on it
+# stops the wrong person at the wrong moment: a writer without the private key
+# cannot fix it and cannot publish. It runs on the weekly schedule in
+# .github/workflows/site-checks.yml instead, with --days lead time, so re-signing
+# is a task you get two months of notice on rather than a wall on push day.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -20,12 +29,20 @@ PUBKEY="static/key.asc"
 SIGNER="jared@jaredeberle.org"
 
 CHECK=false
-for arg in "$@"; do
-  case "$arg" in
+DAYS=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
     --check) CHECK=true ;;
-    *) echo "Unknown option: $arg" >&2; exit 2 ;;
+    --days)
+      shift
+      [[ ${1:-} =~ ^[0-9]+$ ]] || { echo "--days needs a whole number of days." >&2; exit 2; }
+      DAYS="$1"
+      ;;
+    *) echo "Unknown option: $1" >&2; exit 2 ;;
   esac
+  shift
 done
+$CHECK || [[ $DAYS -eq 0 ]] || { echo "--days only applies with --check." >&2; exit 2; }
 
 command -v gpg >/dev/null || { echo "Error: gpg not found." >&2; exit 2; }
 [[ -f "$FILE" ]]   || { echo "Error: $FILE not found." >&2; exit 2; }
@@ -35,9 +52,10 @@ command -v gpg >/dev/null || { echo "Error: gpg not found." >&2; exit 2; }
 # unparseable, or in the past. Uses python3 for cross-platform date handling
 # (BSD/macOS `date` and GNU `date` disagree on parsing flags).
 check_expiry() {
-  python3 - "$FILE" <<'PY'
+  python3 - "$FILE" "$DAYS" <<'PY'
 import re, sys, datetime
 text = open(sys.argv[1]).read()
+lead = int(sys.argv[2])
 m = re.search(r'^Expires:\s*(\S+)', text, re.M)
 if not m:
     print("security.txt has no Expires field"); sys.exit(1)
@@ -49,7 +67,12 @@ except ValueError:
 now = datetime.datetime.now(datetime.timezone.utc)
 if exp <= now:
     print(f"security.txt Expires {exp.isoformat()} is in the past"); sys.exit(1)
-print(f"signed, verifies against key.asc, Expires {exp.date()}")
+left = (exp - now).days
+if lead and left < lead:
+    print(f"security.txt expires in {left} day(s), on {exp.date()} — "
+          f"re-sign it with a later Expires: scripts/sign-security-txt.sh")
+    sys.exit(1)
+print(f"signed, verifies against key.asc, Expires {exp.date()} ({left} day(s) left)")
 PY
 }
 

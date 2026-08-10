@@ -75,6 +75,15 @@ def main(argv):
 
     if total:
         print(f"\na11y-lint: {total} issue(s) found")
+        print(
+            "\nThese are the pages a screen-reader user cannot navigate.\n"
+            "  missing alt  — describe what the image SHOWS, in the Markdown:\n"
+            "                 ![A crowd outside the courthouse](photo.avif)\n"
+            "                 If the image is purely decorative, alt=\"\" is correct.\n"
+            "  heading skip — do not jump from ## straight to ####. Headings are\n"
+            "                 how screen readers build a table of contents, so a\n"
+            "                 skipped level reads as a missing section."
+        )
         return 1
     print(f"a11y-lint: clean ({len(files)} pages)")
     return 0

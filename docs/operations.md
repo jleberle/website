@@ -43,46 +43,115 @@ Deployment is handled by [statichost.eu](https://statichost.eu) via `statichost.
 
 ## Local Preflight
 
-The default local gate is intentionally narrower than CI. It is meant to answer:
+`scripts/preflight.sh` splits its checks by one question:
 
-> will this site build and publish correctly right now?
+> if this reaches the live site wrong, can it be taken back?
 
-Default `scripts/preflight.sh` checks:
+That question, and not check runtime, is what decides the tiers. The whole
+default gate runs in about 7 seconds, so speed was never the constraint. What
+matters is that **StaticHost deploys on every push, independently of GitHub
+Actions, and `public/` is untracked** — CI is not a gate, it is a report that
+arrives after the site is already live. So a check only earns the right to stop
+a push if pushing past it does damage a follow-up commit cannot undo.
 
-1. no `draft: true` files in the publishable content tree
-2. period values filed under `eras`, not `tags`
-3. every `tags` value is an approved subject term
-4. every part of a `series` spells its name identically
-5. no orphan posts; `about:` is a subset of `sources:`
-6. no unoptimized JPEG, PNG, or WebP source images outside approved icons and JPEG companions
-7. no EXIF/IPTC/XMP metadata left on a published raster image
-8. Hugo build
-9. content resource references
-10. source junk files
-11. generated junk files
-12. feed lint
-13. CSP hash drift
-14. security.txt clearsignature present, valid, unexpired
-15. published-reference scan
-16. page-size lint
-17. image display lint
+### Blocking — a push cannot proceed
 
-Useful modes:
+| Check | Why it can't be walked back |
+|---|---|
+| published drafts | a post you believe is live and isn't; fails silently by nature |
+| image metadata | EXIF/IPTC/XMP (incl. GPS) on a published raster is scraped, syndicated and archived the moment it is served |
+| `hugo --minify` | a build error means StaticHost publishes nothing |
+| content resources | cover blocks pointing at files that don't exist |
+| source junk files | `Thumbs.db`/`desktop.ini` in Hugo inputs get copied into the build |
+| feed lint | the sharpest one — Micro.blog dedupes on `<link>`, so a changed link creates duplicate posts on eberle.blog that must be deleted by hand (see `services.rss` in `hugo.yaml`) |
+| published-reference scan | dangling internal URLs; guards the `build.publishResources=false` pattern |
 
-```sh
-scripts/preflight.sh
-scripts/preflight.sh --strict
-scripts/preflight.sh --full
-```
+### Regenerated, not checked
 
-- `--strict` fails on Hugo warnings
-- `--full` adds the slower CI-grade checks
+The correct value is fully determined by the build that just ran, so producing
+it beats failing and making a human retype it. `ship.sh` commits with
+`git add -A`, so the refreshed files ride along with the push:
 
-The two new size-oriented checks are intentionally site-specific:
+- `data/writing-log.json` — `writing-log.py`
+- `static/_headers` CSP hashes — `csp-hashes.sh --write`
+- `public/_headers` Content-Digest — `digest-fields.sh`
+
+CSP drift is live-breaking (a stale hash means the browser blocks a real inline
+script in production), so it can't be an advisory — but it also can't justify
+blocking, since the script already knows the answer. Writing it keeps the push
+unblocked *and* production correct, which checking could only do one of.
+`--write` prints every hash it adds or removes alongside the source that
+produced it, so a newly introduced inline script still surfaces in the output
+rather than being blessed silently.
+
+### Advisory — printed, never blocking
+
+Taxonomy facets, tag vocabulary, series naming, graph connections, image
+policy, page size, and image display are all real defects that a follow-up
+commit fixes with no trace. They print as `⚠` and do not affect the exit code.
+
+They are deferred, not forgiven: `--full` promotes every advisory to a
+failure, and that is what CI runs. Running `--full` locally therefore answers
+"what will CI say about this?" without pushing.
 
 - page size lint warns once a normal HTML page exceeds `96 KiB` raw and fails at `128 KiB`
 - `reading/index.html` gets a relaxed ceiling because it is intentionally denser
 - image display lint checks generated responsive image candidates against the real slots the theme asks the browser to fill, so it can flag likely soft/blurry images before publish
+
+### Not on the push path at all
+
+The **security.txt clearsignature** is verified in CI, not preflight. Nothing
+in a commit can invalidate it — only the calendar — so gating a push on it
+stops the wrong person at the wrong moment: a writer without the private key
+can neither fix it nor publish around it. Every CI run verifies the signature
+against the published `static/key.asc`; the weekly schedule adds
+`--days 60`, so "re-sign this" arrives with two months of lead time instead of
+on the morning it expires. Current expiry: **2027-05-26**.
+
+```sh
+scripts/sign-security-txt.sh --check            # signed, unexpired?
+scripts/sign-security-txt.sh --check --days 60  # what the weekly schedule runs
+scripts/sign-security-txt.sh                    # re-sign (needs the private key)
+```
+
+Two checks were removed rather than retiered. The `public/` junk-file scan
+could not detect anything that could reach the live site: `public/` is
+untracked and StaticHost builds from a fresh clone in a clean container. The
+`.DS_Store` half of the source junk scan was equally unreachable — it is in
+`.gitignore`, so it cannot be committed. `Thumbs.db` and `desktop.ini` are not
+gitignored, so those remain checked.
+
+### Modes
+
+```sh
+scripts/preflight.sh            # blocking tier + advisories
+scripts/preflight.sh --strict   # also fail on Hugo WARN lines
+scripts/preflight.sh --full     # the CI gate: advisories become failures
+```
+
+### Failure messages
+
+Every result in `preflight.sh` carries a fix line, and this is enforced by the
+shape of the helper rather than by discipline — `fail` and `warn` both take two
+arguments:
+
+```sh
+fail "what is wrong, in plain words"  "what to do about it"
+```
+
+A check's own output already names the files. What it cannot say is what the
+person reading it should do next, and a diagnosis with no next step is the same
+as no message at all for anyone who did not write the check. Because the fix
+line is a positional argument, a new check cannot be added without answering
+that question.
+
+The wording rules that follow from it: say what is wrong and what it costs
+before naming the mechanism; assume the reader is a writer, not the person who
+wrote the linter; and never make the fix "read the source of the check." The
+reading-link stability failure in `scripts/checks/feed-lint.py` is the model —
+it states the consequence in posts-created-on-eberle.blog, names the usual
+cause (a renamed `content/sources/<slug>/` folder), and gives the command for
+each of the two cases.
 
 ### Known growth limits
 

@@ -8,19 +8,35 @@
 # Usage:
 #   scripts/csp-hashes.sh              # print current hashes for copy-paste into _headers
 #   scripts/csp-hashes.sh --check      # diff against static/_headers; exit 1 on drift
+#   scripts/csp-hashes.sh --write      # rewrite static/_headers to match the build
 #   scripts/csp-hashes.sh --check --no-build   # reuse an existing public/ (e.g. in CI)
+#
+# --write is what preflight runs. Regenerating rather than failing is safe for
+# the property CSP actually provides: the hash list pins which inline scripts a
+# BROWSER may run, and it is generated from the same build that ships, so the
+# pin stays exact. It was never a tamper check against this repo — anyone who
+# can edit a template can edit static/_headers in the same commit. What it does
+# guard is drift, where an edited inline script silently stops matching its hash
+# and the feature dies in production only.
+#
+# It is deliberately loud, not silent: every hash added or removed is printed
+# with the source preview that produced it, so a new inline script can't get
+# blessed without appearing in the preflight output.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 CHECK=false
+WRITE=false
 NO_BUILD=false
 for arg in "$@"; do
   case "$arg" in
     --check)    CHECK=true ;;
+    --write)    WRITE=true ;;
     --no-build) NO_BUILD=true ;;
     *) echo "Unknown option: $arg" >&2; exit 2 ;;
   esac
 done
+$CHECK && $WRITE && { echo "Use --check or --write, not both." >&2; exit 2; }
 
 if $NO_BUILD; then
   # Reuse the public/ a prior build produced (CI build step does `hugo --minify`).
@@ -31,7 +47,7 @@ else
   hugo --quiet
 fi
 
-CHECK="$CHECK" python3 - <<'PY'
+CHECK="$CHECK" WRITE="$WRITE" python3 - <<'PY'
 import re, pathlib, hashlib, base64, os, sys
 
 def b64(s): return "sha256-" + base64.b64encode(hashlib.sha256(s.encode()).digest()).decode()
@@ -48,6 +64,41 @@ for p in pathlib.Path('public').rglob('*.html'):
     for m in script_re.finditer(html):
         b = m.group(1)
         if b.strip(): scripts.setdefault(b64(b), b[:60])
+
+HEADERS = pathlib.Path('static/_headers')
+
+if os.environ.get("WRITE") == "true":
+    hdr = HEADERS.read_text()
+    changed, report = False, []
+
+    for name, comp in (("style-src", styles), ("script-src", scripts)):
+        def rewrite(m, name=name, comp=comp):
+            global changed
+            body = m.group(1)
+            old = set(re.findall(r"sha256-[A-Za-z0-9+/=]+", body))
+            new = set(comp)
+            if old == new:
+                return m.group(0)
+            changed = True
+            for h in sorted(new - old):
+                report.append(f"  + {name} {h}  <- {comp[h]!r}")
+            for h in sorted(old - new):
+                report.append(f"  - {name} {h}  (no longer in the build)")
+            # Keep the directive's non-hash sources ('self', scheme sources) in
+            # their original order; replace only the hash-source tokens.
+            keep = [t for t in body.split() if "sha256-" not in t]
+            return name + " " + " ".join(keep + [f"'{h}'" for h in sorted(new)]) + ";"
+
+        hdr = re.sub(re.escape(name) + r' ([^;]+);', rewrite, hdr)
+
+    if changed:
+        HEADERS.write_text(hdr)
+        print(f"Updated {HEADERS} ({len(report)} hash change(s)):")
+        print("\n".join(report))
+    else:
+        total = len(styles) + len(scripts)
+        print(f"CSP hashes already match the build ({total} inline block(s))")
+    sys.exit(0)
 
 if os.environ.get("CHECK") != "true":
     for name, d in (("style-src", styles), ("script-src", scripts)):

@@ -13,7 +13,8 @@ update: `.github/workflows/site-checks.yml` derives its own Hugo version from
 `statichost.yml`'s image line at run time, so it can't drift from what this
 script just set.
 
-After a Hugo upgrade, also verify CSP hashes:
+After a Hugo upgrade, also verify CSP hashes — a changed minifier is one of the
+two ways they drift:
 
 ```sh
 scripts/csp-hashes.sh --check
@@ -31,16 +32,25 @@ That means hashes can drift when:
 Commands:
 
 ```sh
-scripts/csp-hashes.sh
-scripts/csp-hashes.sh --check
-scripts/csp-hashes.sh --check --no-build
+scripts/csp-hashes.sh                       # print hashes for copy-paste
+scripts/csp-hashes.sh --check               # diff against static/_headers
+scripts/csp-hashes.sh --write               # rewrite static/_headers to match
+scripts/csp-hashes.sh --check --no-build    # reuse an existing public/
 ```
 
-When drift appears:
+Drift normally resolves itself: `scripts/preflight.sh` runs `--write` on every
+run, so an edited inline script updates `static/_headers` in place and the
+change is committed with the rest of the push. `--write` prints every hash it
+adds or removes next to the source that produced it, so a newly introduced
+inline script appears in the preflight output rather than being blessed
+silently.
 
-1. run `scripts/csp-hashes.sh`
-2. update both CSP blocks in `static/_headers`
-3. commit the result
+This is safe for the property CSP actually provides: the hash list pins which
+inline scripts a *browser* may run, and it is generated from the same build
+that ships, so the pin stays exact. It was never a tamper check against this
+repo — anyone who can edit a template can edit `static/_headers` in the same
+commit. What it guards is drift, where an edited inline script silently stops
+matching its hash and the feature dies in production only.
 
 ## Trusted Types
 
@@ -71,5 +81,5 @@ Dead compatibility shims and unused PaperMod pieces were deliberately removed ra
 
 - StaticHost deploys independently of GitHub Actions, so local preflight remains the real pre-push gate.
 - Secret scanning is the global Git pre-commit hook's only responsibility. The repository preflight owns publish policy, including draft and source-image checks, without modifying the Git index.
-- If macOS metadata files ever reappear, `scripts/preflight.sh` now checks both Hugo source directories and generated output for `.DS_Store` and similar junk.
-- Preflight also includes site-specific growth guards: oversized built HTML pages and responsive image candidates that are too small for the slots the theme renders.
+- `scripts/preflight.sh` scans Hugo source directories for `Thumbs.db` and `desktop.ini`. It no longer scans for `.DS_Store` (in `.gitignore`, so it cannot be committed) or scans `public/` at all (untracked, and StaticHost builds from a fresh clone) — neither could detect anything that could reach the live site. See [operations.md](operations.md).
+- Preflight also includes site-specific growth guards: oversized built HTML pages and responsive image candidates that are too small for the slots the theme renders. Both are advisories — they print but do not block a push, and CI fails on them.

@@ -174,9 +174,9 @@ Note that an era is the period a piece is *about*, not when it was published;
 `publishDate` already covers that and the archive already sorts by it.
 
 Write a period as a decade (`1970s`) or a named century (`19th Century`).
-`scripts/checks/taxonomy-facet-lint.py` fails the preflight if a period-shaped
-value turns up under `tags`, or if an `eras` value is not period-shaped —
-guarding both directions, since a subject filed under `eras` builds a
+`scripts/checks/taxonomy-facet-lint.py` flags a period-shaped value under
+`tags`, or an `eras` value that is not period-shaped — guarding both
+directions, since a subject filed under `eras` builds a
 `/eras/<subject>/` hub that answers the wrong question just as surely. Together
 they are what keeps the two facets from quietly merging again. A tag that merely
 contains a year — `Tulsa in 1918` — is a subject and is left alone.
@@ -184,11 +184,16 @@ contains a year — `Tulsa in 1918` — is a subject and is left alone.
 The period vocabulary is closed by construction, which is why a regex can check
 it. The subject vocabulary has no shape to check against, so as of 2026-07-31 it
 is closed by list instead: `scripts/checks/tag-vocabulary-lint.py` holds the 22
-approved terms and fails the preflight on anything else. Adding a subject is a
-two-line commit — the term in the lint, the term in the front matter — which is
+approved terms and flags anything else. Adding a subject is a two-line commit — the term in the lint, the term in the front matter — which is
 the point, since a new hub should be a decision rather than a side effect of
 typing `rodeo` for `Rodeo`. The lint also fails when an approved term falls out
 of use, so retiring a tag means retiring it from the list in the same commit.
+
+Both lints are preflight *advisories*: they print before a push but do not stop
+one, because a vocabulary slip is fully fixed by a follow-up commit and nothing
+about the live site breaks in the meantime. CI fails on them, so they still have
+to be cleared — just not at the moment you are trying to publish. See
+[operations.md](operations.md#local-preflight) for how the tiers are drawn.
 
 Three rules govern what belongs on that list. A term wants **three or more
 members** — below that the hub returns roughly what the page linking to it
@@ -289,7 +294,7 @@ archive links to their own landing page.
 | `scripts/finishsource.sh` | Mark a source read and stamp its finish metadata |
 | `scripts/cite-refs.sh` | Extract citation keys / render a Works Cited list for a draft (used by publish-draft) |
 | `scripts/add-images.sh` | Add bundle images, with cover/body handling |
-| `scripts/preflight.sh` | Deploy gate (drafts, taxonomy, image policy, build, feed/CSP/security.txt, size/display lints); also enforced automatically by the `pre-push` git hook |
+| `scripts/preflight.sh` | Deploy gate. Blocks only on what a follow-up commit cannot undo (drafts, image metadata, build, content resources, feeds, published references); taxonomy, image policy and size/display lints print as advisories and are enforced by CI. Also run automatically by the `pre-push` git hook — see [operations.md](operations.md) |
 | `scripts/ship.sh` | Stage, commit, and push in one step, confirming the pending-file list first (`--yes` skips it); runs preflight itself so a failure leaves nothing committed, rather than relying on the hook to catch it after a commit exists. Called by `--push` on publish-draft.sh / finishsource.sh |
 | `scripts/lib.sh` | Shared bash helpers (`trim`, `field`, `list_field`, `rfc3339_now`, ...) sourced by the scripts above — not run directly |
 

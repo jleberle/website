@@ -1,44 +1,63 @@
 #!/usr/bin/env bash
-# Pre-push gate for the deploy-critical checks you want locally before a push.
-# CI runs `--full` for the slower structural and accessibility checks.
+# Pre-push gate. Two tiers, split by ONE question:
 #
-# Default local gate:
-#   1. published drafts      — content/ must not contain draft: true
-#   1b. taxonomy facets      — period values must be in `eras`, not `tags`
-#   1c. tag vocabulary       — every `tags` value is an approved subject term
-#   1d. graph connections    — no orphan posts; `about:` is a subset of `sources:`
-#   2. image policy          — raster sources must be AVIF or allowed companions/icons
-#   2b. image metadata       — no EXIF/IPTC/XMP left on a published raster file
-#   2c. writing log          — regenerate data/writing-log.json from git history
-#                               (skipped when the Obsidian vault isn't present)
-#   3. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
-#   4. content resources     — source Markdown cover blocks point at real files
-#   4b. cite-key cross-ref   — advisory: cite keys missing from Zotero / without a vault note
-#   5. source junk files     — fail if OS/editor metadata sits in Hugo inputs
-#   6. generated junk files  — fail if OS/editor metadata lands in public/
-#   7. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs, and
-#                               reading-feed <link> stability (duplicate-post guard)
-#   8. csp-hashes.sh --check — CSP hash drift against the fresh build
-#   8b. security.txt sig     — RFC 9116 clearsignature present, valid, unexpired
-#   9. published references  — every internal src/href/srcset/feed URL in the
+#   if this reaches the live site wrong, can it be taken back?
+#
+# StaticHost deploys on every push, independently of GitHub Actions, and
+# public/ is untracked — so CI is not a gate, it is a report that arrives after
+# the site is already live. That is what makes the tiers mean something. A
+# BLOCKING failure is one where the push itself does damage that a follow-up
+# commit cannot undo (or where the site simply fails to build). Everything else
+# is an ADVISORY: printed locally so it can be fixed before pushing, but never
+# a reason to stop, because a second commit fixes it completely.
+#
+# Advisories are not optional, they are deferred: `--full` (what CI runs)
+# promotes every advisory to a failure. So locally `--full` also answers "what
+# will CI say about this?" without pushing.
+#
+# BLOCKING — cannot be walked back:
+#   1. published drafts      — content/ must not contain draft: true (a post you
+#                               believe is live and isn't; silent by nature)
+#   2. image metadata        — EXIF/IPTC/XMP (incl. GPS) on a published raster;
+#                               once served it is scraped, syndicated, archived
+#   3. hugo --minify         — fails on ERROR, surfaces WARN; a build error means
+#                               StaticHost publishes nothing
+#   4. content resources     — cover blocks pointing at files that don't exist
+#   5. source junk files     — Thumbs.db/desktop.ini in Hugo inputs get copied
+#                               into the build (.DS_Store is in .gitignore, so it
+#                               cannot be committed and is not checked here)
+#   6. checks/feed-lint.py   — RSS/JSON Feed well-formedness + absolute URLs, and
+#                               reading-feed <link> stability. THE sharpest one:
+#                               Micro.blog dedupes on <link>, so a changed link
+#                               creates duplicate posts on eberle.blog that must
+#                               be deleted by hand (see hugo.yaml `services.rss`)
+#   7. published references  — every internal src/href/srcset/feed URL in the
 #                               output must resolve to a published file; guards
 #                               the build.publishResources=false resource pattern
-#   10. page-size-lint.py    — oversized HTML pages relative to this site's norms
-#   11. image-display-lint.py — image candidates too small for their rendered slot
 #
-# Full mode adds:
-#   12. html-validate        — HTML5 validation of every page
-#   13. stylelint            — CSS lint (rules tuned in .stylelintrc.json)
-#   14. checks/a11y-lint.py  — content images without alt + heading-level skips
-#   15. lychee --offline     — internal links/files in public/
+# REGENERATED, not checked — the answer is mechanical, so producing it beats
+# failing and making a human retype it. ship.sh commits with `git add -A`, so
+# the refreshed files ride along with the push:
+#   - data/writing-log.json   (writing-log.py)
+#   - static/_headers CSP     (csp-hashes.sh --write; prints every hash it moves)
+#   - public/_headers digests (digest-fields.sh)
 #
-# StaticHost deploys on push independently of GitHub Actions, so the default
-# gate stays focused on "will this build and publish correctly right now?"
+# ADVISORY — real, but a follow-up commit fixes them with no trace:
+#   taxonomy facets, tag vocabulary, series naming, graph connections,
+#   image policy, page size, image display
+#
+# Full mode (CI) adds, and promotes all advisories to failures:
+#   html-validate, stylelint, checks/a11y-lint.py, lychee --offline
+#
+# NOT here at all: the security.txt signature. Nothing in a commit can
+# invalidate it — only the calendar — so it belongs on the weekly CI schedule
+# with lead time, not on the push path where it can wall off a writer who
+# doesn't hold the key. See .github/workflows/site-checks.yml.
 #
 # Usage:
-#   scripts/preflight.sh              # local deploy gate
+#   scripts/preflight.sh              # blocking tier + advisories
 #   scripts/preflight.sh --strict     # fail on Hugo WARN lines too
-#   scripts/preflight.sh --full       # add the slower CI-grade checks
+#   scripts/preflight.sh --full       # the CI gate: advisories become failures
 
 set -uo pipefail
 
@@ -58,16 +77,46 @@ while [[ $# -gt 0 ]]; do
 done
 
 FAILURES=0
+ADVISORIES=0
 step() { printf '\n\033[1m== %s\033[0m\n' "$1"; }
 pass() { printf '\033[32m✓ %s\033[0m\n' "$1"; }
-fail() { printf '\033[31m✗ %s\033[0m\n' "$1"; FAILURES=$((FAILURES + 1)); }
+
+# Every failure takes two arguments, and the second is not optional:
+#
+#   fail "what is wrong, in plain words"  "what to do about it"
+#
+# The check's own output above already names the files. What it cannot say is
+# what the person reading it should do next, and "preflight failed" with no
+# next step is the same as no message at all for anyone who did not write the
+# check. Requiring the fix line as an argument is what keeps it that way —
+# a new check cannot be added without answering the question.
+fail() {
+  printf '\033[31m✗ %s\033[0m\n' "$1"
+  printf '   \033[1mFix:\033[0m %s\n' "$2"
+  FAILURES=$((FAILURES + 1))
+}
+
+# An advisory is a real defect that a follow-up commit fixes completely, so it
+# does not stop a push. Under --full (the CI gate) it is a failure like any
+# other — deferred, not forgiven.
+warn() {
+  if $FULL; then
+    fail "$1" "$2"
+  else
+    printf '\033[33m⚠ %s\033[0m\n' "$1"
+    printf '   \033[1mFix:\033[0m %s\n' "$2"
+    printf '   \033[2mNot blocking — you can push now. CI will fail on it.\033[0m\n'
+    ADVISORIES=$((ADVISORIES + 1))
+  fi
+}
 
 step "published drafts"
 if DRAFT_OUT=$(python3 scripts/checks/draft-lint.py content 2>&1); then
   pass "$DRAFT_OUT"
 else
   echo "$DRAFT_OUT"
-  fail "draft content is present in the publishable content tree"
+  fail "A post marked \`draft: true\` is sitting in content/, so it will NOT appear on the site." \
+       "Either finish it and remove the \`draft: true\` line, or move it back out to your drafts folder. Listed above."
 fi
 
 step "taxonomy facets"
@@ -75,7 +124,8 @@ if FACET_OUT=$(python3 scripts/checks/taxonomy-facet-lint.py content 2>&1); then
   pass "$FACET_OUT"
 else
   echo "$FACET_OUT"
-  fail "period values filed under \`tags\` instead of \`eras\`"
+  warn "A time period (like 1970s) is filed under \`tags:\`, which is for subjects." \
+       "Move that value into the \`eras:\` list in the post front matter. Tags say what a piece is ABOUT; eras say what period it covers."
 fi
 
 step "tag vocabulary"
@@ -83,7 +133,8 @@ if VOCAB_OUT=$(python3 scripts/checks/tag-vocabulary-lint.py content 2>&1); then
   pass "$VOCAB_OUT"
 else
   echo "$VOCAB_OUT"
-  fail "a subject tag is outside the approved vocabulary"
+  warn "A tag is not on the approved subject list, so it would create a new topic page nobody links to." \
+       "Either correct the spelling to match an existing tag, or — if it is genuinely a new subject — add it to VOCABULARY in scripts/checks/tag-vocabulary-lint.py in the same commit."
 fi
 
 step "series naming"
@@ -91,7 +142,8 @@ if SERIES_OUT=$(python3 scripts/checks/series-lint.py content 2>&1); then
   pass "$SERIES_OUT"
 else
   echo "$SERIES_OUT"
-  fail "a series is spelled more than one way across its parts"
+  warn "One series is spelled two different ways, so its parts would split into two separate series." \
+       "Pick one spelling and use it in the \`series:\` line of every part. The variants are listed above."
 fi
 
 step "graph connections"
@@ -99,7 +151,8 @@ if CONN_OUT=$(python3 scripts/checks/connection-lint.py content 2>&1); then
   pass "$CONN_OUT"
 else
   echo "$CONN_OUT"
-  fail "published writing is detached from the knowledge graph"
+  warn "A post is not connected to anything — no tags and no sources — so nothing on the site links to it." \
+       "Add at least one \`tags:\` or \`sources:\` entry so it appears on a topic or bibliography page. The message above says which post and which field."
 fi
 
 step "source image policy"
@@ -107,7 +160,8 @@ if IMAGE_OUT=$(python3 scripts/checks/image-policy-lint.py assets content static
   pass "$IMAGE_OUT"
 else
   echo "$IMAGE_OUT"
-  fail "unoptimized raster sources (use the image helper before publishing)"
+  warn "Image(s) are in a heavy format (JPEG/PNG/WebP) instead of AVIF, so pages load slower than they need to." \
+       "Run scripts/to-avif.sh --replace on the files listed above, or add them with scripts/add-images.sh, which converts automatically."
 fi
 
 step "image metadata"
@@ -115,7 +169,8 @@ if META_OUT=$(python3 scripts/checks/image-metadata-lint.py assets content stati
   pass "$META_OUT"
 else
   echo "$META_OUT"
-  fail "raster file(s) still carry EXIF/IPTC/XMP metadata"
+  fail "Image(s) still carry hidden camera data — which can include the GPS coordinates of where the photo was taken." \
+       "Strip it by re-running the image through scripts/to-avif.sh --replace, or scripts/add-images.sh. Once published this data is copied by scrapers and archives and cannot be recalled."
 fi
 
 step "writing log"
@@ -140,7 +195,8 @@ set -e
 case $WLOG_RC in
   0) pass "$WLOG_OUT" ;;
   3) pass "$WLOG_OUT" ;;
-  *) echo "$WLOG_OUT"; fail "writing log could not be regenerated" ;;
+  *) echo "$WLOG_OUT"; fail "The writing log (data/writing-log.json) could not be rebuilt from git history." \
+       "Read the error above — this is a bug in scripts/writing-log.py or a damaged git checkout, not something you did wrong in a post." ;;
 esac
 
 step "hugo build"
@@ -149,11 +205,13 @@ BUILD_RC=$?
 WARNINGS=$(grep -c '^WARN' <<<"$BUILD_OUT" || true)
 if [[ $BUILD_RC -ne 0 ]]; then
   grep -E '^(ERROR|Error)' <<<"$BUILD_OUT" | head -10
-  fail "build failed"
+  fail "Hugo could not build the site. Nothing would be published at all." \
+       "The first error above names the file and line. A missing closing shortcode tag or a broken front-matter line is the usual cause."
 elif [[ $WARNINGS -gt 0 ]]; then
   grep '^WARN' <<<"$BUILD_OUT"
   if $STRICT; then
-    fail "build passed with $WARNINGS warning(s) (--strict)"
+    fail "The site built, but with $WARNINGS warning(s), and --strict treats those as errors." \
+       "Each WARN line above names its file. Missing image alt text is the most common one."
   else
     pass "build passed ($WARNINGS warning(s) above)"
   fi
@@ -166,25 +224,25 @@ if RESOURCE_OUT=$(python3 scripts/checks/content-resource-lint.py content 2>&1);
   pass "$RESOURCE_OUT"
 else
   echo "$RESOURCE_OUT"
-  fail "content resource issues (e.g. cover block references a missing file)"
+  fail "A post points at an image file that is not there, so it would publish with a broken image." \
+       "Check the filename in the post front matter against the files actually in its folder — usually a typo or an image that was never copied in. Listed above."
 fi
 
 step "source junk files"
-SOURCE_JUNK_OUT=$(find assets content data layouts static -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -name 'desktop.ini' \) -print 2>/dev/null)
+# Only the two files that can actually reach the live site. `.DS_Store` used to
+# be checked here and no longer is: it's in .gitignore, so it cannot be
+# committed, and StaticHost builds from a fresh clone that never contains one.
+# The matching scan of public/ is gone for the same reason — public/ is
+# untracked and rebuilt in a clean container, so anything found there was a
+# local artifact that was never going to ship. Thumbs.db and desktop.ini are
+# NOT gitignored, so on a Windows machine they remain committable and real.
+SOURCE_JUNK_OUT=$(find assets content data layouts static -type f \( -name 'Thumbs.db' -o -name 'desktop.ini' \) -print 2>/dev/null)
 if [[ -z "$SOURCE_JUNK_OUT" ]]; then
-  pass "no OS/editor metadata in Hugo source directories"
+  pass "no committable OS/editor metadata in Hugo source directories"
 else
   echo "$SOURCE_JUNK_OUT"
-  fail "source tree contains OS/editor metadata (these can be copied into public/ on build)"
-fi
-
-step "generated junk files"
-JUNK_OUT=$(find public -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -name 'desktop.ini' \) -print)
-if [[ -z "$JUNK_OUT" ]]; then
-  pass "no OS/editor metadata in public/"
-else
-  echo "$JUNK_OUT"
-  fail "generated output contains OS/editor metadata"
+  fail "Windows junk files (Thumbs.db / desktop.ini) are sitting in the site source and would be copied onto the live site." \
+       "Delete the files listed above; nothing needs them."
 fi
 
 step "feed lint"
@@ -192,15 +250,24 @@ if FEED_OUT=$(python3 scripts/checks/feed-lint.py public 2>&1); then
   pass "$FEED_OUT"
 else
   echo "$FEED_OUT" | head -20
-  fail "feed validation issues"
+  fail "Something is wrong with the RSS/JSON feeds." \
+       "Read the message above — it explains the specific problem and what to do. If it mentions changed reading links, take it seriously: that creates duplicate posts on eberle.blog that have to be deleted by hand."
 fi
 
 step "CSP hashes"
-if bash scripts/csp-hashes.sh --check --no-build >/dev/null 2>&1; then
-  pass "CSP hashes match static/_headers"
+# Regenerated, not checked. Drift here is live-breaking (a stale hash means the
+# browser blocks a real inline script in production), but the correct value is
+# fully determined by the build that just ran — so failing only made a human
+# copy-paste a hash that the script already knew. Writing it keeps the push
+# unblocked AND keeps production correct, which checking could only do one of.
+# csp-hashes.sh --write prints every hash it adds or removes with the source
+# that produced it, so a newly introduced inline script still shows up here.
+if CSP_OUT=$(bash scripts/csp-hashes.sh --write --no-build 2>&1); then
+  pass "$CSP_OUT"
 else
-  bash scripts/csp-hashes.sh --check --no-build 2>&1 | tail -5
-  fail "CSP hash drift — run scripts/csp-hashes.sh and update static/_headers"
+  echo "$CSP_OUT"
+  fail "The security header in static/_headers could not be updated to match this build." \
+       "Read the error above. Until this is resolved, scripts on the live site may be blocked by the browser."
 fi
 
 step "Content-Digest headers"
@@ -208,15 +275,8 @@ if DIGEST_OUT=$(bash scripts/digest-fields.sh --no-build 2>&1); then
   pass "$DIGEST_OUT"
 else
   echo "$DIGEST_OUT"
-  fail "could not write Content-Digest headers for the feed endpoints"
-fi
-
-step "security.txt signature"
-if SEC_OUT=$(scripts/sign-security-txt.sh --check 2>&1); then
-  pass "security.txt $SEC_OUT"
-else
-  echo "$SEC_OUT"
-  fail "security.txt unsigned/tampered/expired — run scripts/sign-security-txt.sh"
+  fail "Could not write the Content-Digest headers for the feeds." \
+       "Read the error above — this is a problem in scripts/digest-fields.sh, not in your writing."
 fi
 
 step "published-reference scan"
@@ -224,7 +284,8 @@ if SCAN_OUT=$(python3 scripts/checks/published-reference-lint.py public 2>&1); t
   pass "$SCAN_OUT"
 else
   echo "$SCAN_OUT" | head -20
-  fail "dangling references (a template likely builds a URL by string instead of invoking the resource)"
+  fail "The built site links to file(s) that were never published — visitors would get a 404 or a broken image." \
+       "Each line above shows which page links to which missing file. If it is an image in a post, the template needs to reference it as a Hugo resource rather than writing out the path by hand (see docs/images.md)."
 fi
 
 step "page size lint"
@@ -232,7 +293,8 @@ if PAGE_OUT=$(python3 scripts/checks/page-size-lint.py public 2>&1); then
   pass "$PAGE_OUT"
 else
   echo "$PAGE_OUT"
-  fail "oversized HTML pages"
+  warn "A page has grown past the size limit set for this site." \
+       "See the Known growth limits table in docs/operations.md — this usually means a list page needs splitting or paginating, not that a single post is too long."
 fi
 
 step "image display lint"
@@ -240,7 +302,8 @@ if DISPLAY_OUT=$(python3 scripts/checks/image-display-lint.py public 2>&1); then
   pass "$DISPLAY_OUT"
 else
   echo "$DISPLAY_OUT"
-  fail "images likely to render soft or blurry on site"
+  warn "Image(s) are too small for the space the design puts them in, so they will look soft or blurry." \
+       "Re-add them from a higher-resolution original with scripts/add-images.sh. Each line above gives the size available and the size supplied."
 fi
 
 if $FULL; then
@@ -260,7 +323,8 @@ if $FULL; then
       pass "html-validate clean"
     else
       tail -20 <<<"$HV_OUT"
-      fail "html-validate errors (rules tuned in .htmlvalidate.json)"
+      fail "The generated HTML is invalid." \
+       "The output above gives the file, line, and rule. This nearly always comes from a template or a raw HTML block in a post, not from ordinary Markdown."
     fi
   else
     echo "node/npx not found — skipping html-validate (npm ci); CI still runs it"
@@ -282,7 +346,8 @@ if $FULL; then
       pass "stylelint clean"
     else
       tail -20 <<<"$SL_OUT"
-      fail "stylelint errors (rules tuned in .stylelintrc.json)"
+      fail "The CSS has lint errors." \
+       "The output above gives the file, line, and rule. Run: npx stylelint --fix \"assets/css/**/*.css\" to fix the mechanical ones automatically."
     fi
   else
     echo "node/npx not found — skipping stylelint (npm ci); CI still runs it"
@@ -293,7 +358,8 @@ if $FULL; then
     pass "content a11y lint clean"
   else
     tail -20 <<<"$A11Y_OUT"
-    fail "content a11y issues (missing alt / heading skips)"
+    fail "Accessibility problems in the published pages — images without alt text, or headings that skip a level." \
+       "Add alt text to the images listed above. For headings, do not jump from ## straight to ####; screen-reader users navigate by that structure."
   fi
 
   step "internal links (lychee --offline)"
@@ -302,7 +368,8 @@ if $FULL; then
       pass "internal links resolve"
     else
       tail -15 <<<"$LYCHEE_OUT"
-      fail "broken internal links"
+      fail "Link(s) inside the site point at pages that do not exist." \
+       "Each broken link is listed above with the page it appears on. A renamed or deleted post is the usual cause."
     fi
   else
     echo "lychee not installed — skipping (brew install lychee); CI still runs it"
@@ -310,9 +377,19 @@ if $FULL; then
 fi
 
 echo
-if [[ $FAILURES -eq 0 ]]; then
-  printf '\033[32mPreflight passed — safe to push.\033[0m\n'
-else
-  printf '\033[31mPreflight failed: %d issue(s).\033[0m\n' "$FAILURES"
+if [[ $FAILURES -gt 0 ]]; then
+  printf '\033[31mPreflight failed: %d blocking issue(s).\033[0m\n' "$FAILURES"
+  if [[ $ADVISORIES -gt 0 ]]; then
+    printf '\033[33m%d advisory(ies) above as well.\033[0m\n' "$ADVISORIES"
+  fi
+  printf 'Nothing was pushed. Each ✗ above names the file and the fix.\n'
   exit 1
+fi
+
+if [[ $ADVISORIES -gt 0 ]]; then
+  printf '\033[32mPreflight passed — safe to push.\033[0m\n'
+  printf '\033[33m%d advisory(ies) above: not blocking, because a follow-up commit\n' "$ADVISORIES"
+  printf 'fixes them completely. CI will fail on them, so clear them soon.\033[0m\n'
+else
+  printf '\033[32mPreflight passed — safe to push.\033[0m\n'
 fi

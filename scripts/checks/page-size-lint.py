@@ -71,6 +71,13 @@ def main() -> int:
         for path in top:
             rel = path.relative_to(public_dir).as_posix()
             print(f"  - {rel}: {fmt_bytes(path.stat().st_size)}")
+        print(
+            "\nThis is almost never one long post. It is a list page that renders "
+            "every\nentry into a single document and has finally outgrown it — "
+            "/archives/,\n/sources/ or a /reading/<year>/ page. The fix is to "
+            "paginate or split that\npage, and the decisions have already been "
+            "worked out: see 'Known growth\nlimits' in docs/operations.md."
+        )
         return 1
 
     largest_rel = largest.relative_to(public_dir).as_posix()

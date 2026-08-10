@@ -89,6 +89,12 @@ def main() -> int:
 
     missing = missing_references(public_dir)
     if missing:
+        print(
+            f"{len(missing)} link(s) in the built site point at files that were "
+            "never published.\nA visitor following these would get a broken image "
+            "or a 404.\n"
+        )
+        print("  page that links it  ->  file it wants (missing)")
         for source, url in missing:
             print(f"  {source}  ->  {url}")
         return 1

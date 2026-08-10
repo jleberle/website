@@ -154,6 +154,24 @@ jobs:
           mkdir -p .ci-artifacts
           bash -o pipefail -c 'scripts/preflight.sh --strict --full 2>&1 | tee .ci-artifacts/preflight.log'
 
+      - name: Verify security.txt signature and expiry
+        # Deliberately NOT in scripts/preflight.sh. Nothing in a commit can
+        # invalidate this signature — only the calendar can — so gating a push
+        # on it stops the wrong person at the wrong moment: a writer without
+        # the private key can neither fix it nor publish around it.
+        #
+        # Every run verifies the clearsignature against the published key
+        # (static/key.asc; no private key needed). The weekly schedule adds
+        # --days 60, so the "re-sign this" failure arrives with two months of
+        # lead time instead of on the morning it expires. Bump the Expires
+        # field and re-run scripts/sign-security-txt.sh to clear it.
+        run: |
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            scripts/sign-security-txt.sh --check --days 60
+          else
+            scripts/sign-security-txt.sh --check
+          fi
+
       - name: Run axe accessibility checks
         run: |
           mkdir -p .ci-artifacts
