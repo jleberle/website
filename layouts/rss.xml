@@ -1,6 +1,6 @@
 {{- $pages := partial "templates/_funcs/feed_pages.html" . }}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:rsl="https://rslstandard.org/rsl">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:rsl="https://rslstandard.org/rsl" xmlns:source="https://source.scripting.com/">
   <channel>
     <title>{{ site.Title }}</title>
     <link>{{ .Permalink }}</link>
@@ -64,6 +64,9 @@
              is the standard CDATA-safe escape, closing the section and
              reopening a new one across the boundary. */ -}}
       <content:encoded>{{ (printf "<![CDATA[%s]]>" (replace $feedItem.content "]]>" "]]]]><![CDATA[>")) | safeHTML }}</content:encoded>
+      {{- end }}
+      {{- with $feedItem.markdown }}
+      <source:markdown>{{ . }}</source:markdown>
       {{- end }}
     </item>
     {{- end }}
