@@ -49,6 +49,7 @@ scripts/publish-draft.sh --push articles/2026-06-24-post-title.md      # no imag
 scripts/publish-draft.sh --cite reviews/2026-06-24-review-slug.md      # append Works Cited
 scripts/add-images.sh content/articles/<dir> --cover photo.jpg
 scripts/ship.sh "Commit message"                 # preflight, commit, push in one step
+scripts/log-writing.sh                           # end of a writing session: count the vault, publish the log
 ```
 
 ## Documentation
@@ -59,6 +60,7 @@ scripts/ship.sh "Commit message"                 # preflight, commit, push in on
 | [docs/images.md](docs/images.md) | Image authoring, responsive output, figure/carousel behavior |
 | [docs/reading.md](docs/reading.md) | Reading/source ledger schema, scripts, RSS syndication behavior |
 | [docs/metadata-sweep.md](docs/metadata-sweep.md) | The 2026-07 front-matter restructure: schema, vocabulary, per-file record |
+| [docs/writing-log.md](docs/writing-log.md) | The public writing log: `scripts/log-writing.sh`, how words are counted from git history, and the multi-machine vault census |
 | [docs/operations.md](docs/operations.md) | Remotes, CI, deployment, checks, failure behavior |
 | [docs/maintenance.md](docs/maintenance.md) | Hugo upgrades, CSP hashes, theme history, repo-specific upkeep |
 

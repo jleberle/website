@@ -1,0 +1,271 @@
+/* ------------------------------------------------------------
+   Writing log (/writing-log, layouts/writing-log.html).
+   Data: data/writing-log.json via scripts/writing-log.py.
+   ------------------------------------------------------------ */
+
+.wl-tiles {
+    display: grid;
+
+    /* 8.5rem lets all four tiles sit on one row at the 40rem content width and
+       fall to a 2x2 block on a phone, rather than wrapping 3+1 and leaving an
+       orphan tile on its own line. */
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    gap: 0.75rem;
+    margin-block: 1.5rem 2rem;
+}
+
+.wl-tile {
+    padding: 0.9rem 1rem;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.wl-tile-label {
+    margin: 0;
+    font-family: var(--meta-font);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--secondary);
+}
+
+/* Stat-tile values: sans semibold, tabular so a column of tiles aligns. */
+.wl-tile-value {
+    margin: 0.15rem 0 0;
+    font-family: var(--meta-font);
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.wl-tile-unit {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--secondary);
+}
+
+.wl-tile-note {
+    margin: 0.25rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    color: var(--secondary);
+}
+
+.wl-latest {
+    margin-block: 0 2rem;
+    padding-inline-start: 0.75rem;
+    border-inline-start: 3px solid var(--quote-rule);
+    font-size: 1.02rem;
+}
+
+/* Tabs stay hidden until writing-log.js reveals them; without JS every panel
+   is simply visible under its own heading. */
+.wl-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-block: 1.5rem 1rem;
+}
+
+.wl-tabs[hidden] { display: none; }
+
+.wl-tab {
+    padding: 0.35rem 0.8rem;
+    font-family: var(--meta-font);
+    font-size: 0.85rem;
+    color: var(--secondary);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.wl-tab:hover {
+    color: var(--primary);
+    background: var(--entry);
+}
+
+.wl-tab.is-active {
+    color: var(--theme);
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* 02-reset.css sets `section { display: block }`, and an author rule beats the
+   user-agent's `[hidden] { display: none }`. Without this the tabs toggle the
+   hidden attribute correctly and every panel stays on screen anyway. */
+.wl-panel[hidden] {
+    display: none;
+}
+
+.wl-panel-heading {
+    margin-block: 2rem 0.5rem;
+    font-size: 1.15rem;
+}
+
+/* Once tabs are live the headings are redundant with the active tab. */
+.wl-tabs-active .wl-panel-heading { display: none; }
+
+/* Wide tables scroll in their own box rather than pushing the page sideways. */
+.wl-table-scroll {
+    overflow-x: auto;
+}
+
+.wl-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.wl-table th,
+.wl-table td {
+    padding: 0.45rem 0.6rem;
+    text-align: start;
+    border-bottom: 1px solid var(--border);
+}
+
+.wl-table thead th {
+    font-family: var(--meta-font);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    white-space: nowrap;
+    border-bottom-color: var(--rule);
+}
+
+.wl-table tbody th {
+    font-weight: 500;
+    color: var(--primary);
+    white-space: nowrap;
+}
+
+.wl-num {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Sortable headers become buttons only when JS is present. */
+.wl-table thead th[data-wl-sortable-active] {
+    cursor: pointer;
+    user-select: none;
+}
+
+.wl-table thead th[data-wl-sortable-active]:hover { color: var(--primary); }
+
+.wl-table thead th[aria-sort="ascending"]::after  { content: " \2191"; }
+.wl-table thead th[aria-sort="descending"]::after { content: " \2193"; }
+
+/* The magnitude bar. One series, one hue, so no legend -- the value sits in
+   the same cell as its own direct label. The bar is a recessive backdrop to
+   the number, not a competing element: 4px rounded data-end, square against
+   the baseline it grows from (the inline-start edge of the cell). */
+.wl-bar-cell {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 7.5rem;
+    padding: 0.15rem 0.4rem;
+}
+
+.wl-bar {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    background: color-mix(in sRGB, var(--tide) 22%, transparent);
+    border-start-end-radius: 4px;
+    border-end-end-radius: 4px;
+    pointer-events: none;
+}
+
+.wl-bar-value {
+    position: relative;
+    color: var(--primary);
+}
+
+.wl-note {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--secondary);
+}
+
+.wl-method {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.92rem;
+    color: var(--content);
+}
+
+.wl-method h2 { font-size: 1.05rem; }
+
+@media (width <= 30rem) {
+    .wl-tile-value { font-size: 1.4rem; }
+    .wl-table { font-size: 0.85rem; }
+    .wl-bar-cell { min-width: 5.5rem; }
+}
+
+/* Bar widths as classes, not inline styles.
+   The site ships `style-src 'self'` with no 'unsafe-inline' and no
+   style-src-attr escape hatch, so a style="width:42%" attribute is blocked by
+   the CSP and the bar renders at zero width -- silently, with nothing in the
+   console but a policy violation. These 51 classes are the 0-100% range in 2%
+   steps; writing-log.html rounds each value onto that grid. Generated by hand
+   once; there is nothing to regenerate unless the step size changes. */
+.wl-w-0 { inline-size: 0%; }
+.wl-w-1 { inline-size: 2%; }
+.wl-w-2 { inline-size: 4%; }
+.wl-w-3 { inline-size: 6%; }
+.wl-w-4 { inline-size: 8%; }
+.wl-w-5 { inline-size: 10%; }
+.wl-w-6 { inline-size: 12%; }
+.wl-w-7 { inline-size: 14%; }
+.wl-w-8 { inline-size: 16%; }
+.wl-w-9 { inline-size: 18%; }
+.wl-w-10 { inline-size: 20%; }
+.wl-w-11 { inline-size: 22%; }
+.wl-w-12 { inline-size: 24%; }
+.wl-w-13 { inline-size: 26%; }
+.wl-w-14 { inline-size: 28%; }
+.wl-w-15 { inline-size: 30%; }
+.wl-w-16 { inline-size: 32%; }
+.wl-w-17 { inline-size: 34%; }
+.wl-w-18 { inline-size: 36%; }
+.wl-w-19 { inline-size: 38%; }
+.wl-w-20 { inline-size: 40%; }
+.wl-w-21 { inline-size: 42%; }
+.wl-w-22 { inline-size: 44%; }
+.wl-w-23 { inline-size: 46%; }
+.wl-w-24 { inline-size: 48%; }
+.wl-w-25 { inline-size: 50%; }
+.wl-w-26 { inline-size: 52%; }
+.wl-w-27 { inline-size: 54%; }
+.wl-w-28 { inline-size: 56%; }
+.wl-w-29 { inline-size: 58%; }
+.wl-w-30 { inline-size: 60%; }
+.wl-w-31 { inline-size: 62%; }
+.wl-w-32 { inline-size: 64%; }
+.wl-w-33 { inline-size: 66%; }
+.wl-w-34 { inline-size: 68%; }
+.wl-w-35 { inline-size: 70%; }
+.wl-w-36 { inline-size: 72%; }
+.wl-w-37 { inline-size: 74%; }
+.wl-w-38 { inline-size: 76%; }
+.wl-w-39 { inline-size: 78%; }
+.wl-w-40 { inline-size: 80%; }
+.wl-w-41 { inline-size: 82%; }
+.wl-w-42 { inline-size: 84%; }
+.wl-w-43 { inline-size: 86%; }
+.wl-w-44 { inline-size: 88%; }
+.wl-w-45 { inline-size: 90%; }
+.wl-w-46 { inline-size: 92%; }
+.wl-w-47 { inline-size: 94%; }
+.wl-w-48 { inline-size: 96%; }
+.wl-w-49 { inline-size: 98%; }
+.wl-w-50 { inline-size: 100%; }

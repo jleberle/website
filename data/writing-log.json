@@ -1,0 +1,872 @@
+{
+  "generated": "2026-08-09T03:06:04+00:00",
+  "sources": [
+    {
+      "name": "blog",
+      "label": "Blog",
+      "words": 28340
+    },
+    {
+      "name": "notes",
+      "label": "Notes",
+      "words": 0
+    }
+  ],
+  "totals": {
+    "words": 28340,
+    "days": 35,
+    "first": "2011-02-14",
+    "last": "2026-08-03",
+    "average": 810,
+    "best_day": {
+      "date": "2026-05-18",
+      "words": 7654,
+      "net": 7647,
+      "files": 4,
+      "sources": {
+        "blog": 7654
+      }
+    },
+    "streak": {
+      "length": 2,
+      "start": "2026-05-26",
+      "end": "2026-05-27"
+    }
+  },
+  "days": [
+    {
+      "date": "2026-08-03",
+      "words": 583,
+      "net": 583,
+      "files": 1,
+      "sources": {
+        "blog": 583
+      }
+    },
+    {
+      "date": "2026-07-03",
+      "words": 8,
+      "net": 8,
+      "files": 1,
+      "sources": {
+        "blog": 8
+      }
+    },
+    {
+      "date": "2026-06-29",
+      "words": 50,
+      "net": 50,
+      "files": 2,
+      "sources": {
+        "blog": 50
+      }
+    },
+    {
+      "date": "2026-06-27",
+      "words": 12,
+      "net": 12,
+      "files": 3,
+      "sources": {
+        "blog": 12
+      }
+    },
+    {
+      "date": "2026-06-26",
+      "words": 59,
+      "net": 0,
+      "files": 1,
+      "sources": {
+        "blog": 59
+      }
+    },
+    {
+      "date": "2026-06-24",
+      "words": 2637,
+      "net": 2616,
+      "files": 2,
+      "sources": {
+        "blog": 2637
+      }
+    },
+    {
+      "date": "2026-06-10",
+      "words": 32,
+      "net": 32,
+      "files": 1,
+      "sources": {
+        "blog": 32
+      }
+    },
+    {
+      "date": "2026-06-07",
+      "words": 35,
+      "net": -69,
+      "files": 4,
+      "sources": {
+        "blog": 35
+      }
+    },
+    {
+      "date": "2026-06-03",
+      "words": 1821,
+      "net": -587,
+      "files": 3,
+      "sources": {
+        "blog": 1821
+      }
+    },
+    {
+      "date": "2026-06-01",
+      "words": 473,
+      "net": 473,
+      "files": 1,
+      "sources": {
+        "blog": 473
+      }
+    },
+    {
+      "date": "2026-05-31",
+      "words": 80,
+      "net": 80,
+      "files": 1,
+      "sources": {
+        "blog": 80
+      }
+    },
+    {
+      "date": "2026-05-27",
+      "words": 606,
+      "net": 603,
+      "files": 3,
+      "sources": {
+        "blog": 606
+      }
+    },
+    {
+      "date": "2026-05-26",
+      "words": 21,
+      "net": 21,
+      "files": 1,
+      "sources": {
+        "blog": 21
+      }
+    },
+    {
+      "date": "2026-05-21",
+      "words": 32,
+      "net": 12,
+      "files": 1,
+      "sources": {
+        "blog": 32
+      }
+    },
+    {
+      "date": "2026-05-18",
+      "words": 7654,
+      "net": 7647,
+      "files": 4,
+      "sources": {
+        "blog": 7654
+      }
+    },
+    {
+      "date": "2026-05-12",
+      "words": 578,
+      "net": 578,
+      "files": 1,
+      "sources": {
+        "blog": 578
+      }
+    },
+    {
+      "date": "2026-05-07",
+      "words": 1058,
+      "net": 1058,
+      "files": 1,
+      "sources": {
+        "blog": 1058
+      }
+    },
+    {
+      "date": "2022-10-11",
+      "words": 850,
+      "net": 850,
+      "files": 1,
+      "sources": {
+        "blog": 850
+      }
+    },
+    {
+      "date": "2021-11-23",
+      "words": 295,
+      "net": 295,
+      "files": 1,
+      "sources": {
+        "blog": 295
+      }
+    },
+    {
+      "date": "2020-09-17",
+      "words": 1146,
+      "net": 1146,
+      "files": 1,
+      "sources": {
+        "blog": 1146
+      }
+    },
+    {
+      "date": "2020-05-21",
+      "words": 464,
+      "net": 464,
+      "files": 1,
+      "sources": {
+        "blog": 464
+      }
+    },
+    {
+      "date": "2017-08-03",
+      "words": 124,
+      "net": 124,
+      "files": 1,
+      "sources": {
+        "blog": 124
+      }
+    },
+    {
+      "date": "2016-10-19",
+      "words": 344,
+      "net": 344,
+      "files": 1,
+      "sources": {
+        "blog": 344
+      }
+    },
+    {
+      "date": "2015-12-11",
+      "words": 1541,
+      "net": 1541,
+      "files": 1,
+      "sources": {
+        "blog": 1541
+      }
+    },
+    {
+      "date": "2015-12-01",
+      "words": 769,
+      "net": 769,
+      "files": 1,
+      "sources": {
+        "blog": 769
+      }
+    },
+    {
+      "date": "2015-09-15",
+      "words": 1263,
+      "net": 1263,
+      "files": 1,
+      "sources": {
+        "blog": 1263
+      }
+    },
+    {
+      "date": "2015-09-09",
+      "words": 1410,
+      "net": 1410,
+      "files": 1,
+      "sources": {
+        "blog": 1410
+      }
+    },
+    {
+      "date": "2015-09-03",
+      "words": 423,
+      "net": 423,
+      "files": 1,
+      "sources": {
+        "blog": 423
+      }
+    },
+    {
+      "date": "2014-07-24",
+      "words": 455,
+      "net": 455,
+      "files": 1,
+      "sources": {
+        "blog": 455
+      }
+    },
+    {
+      "date": "2014-03-11",
+      "words": 1657,
+      "net": 1657,
+      "files": 1,
+      "sources": {
+        "blog": 1657
+      }
+    },
+    {
+      "date": "2013-04-20",
+      "words": 132,
+      "net": 132,
+      "files": 1,
+      "sources": {
+        "blog": 132
+      }
+    },
+    {
+      "date": "2012-10-28",
+      "words": 593,
+      "net": 593,
+      "files": 1,
+      "sources": {
+        "blog": 593
+      }
+    },
+    {
+      "date": "2011-11-23",
+      "words": 395,
+      "net": 395,
+      "files": 1,
+      "sources": {
+        "blog": 395
+      }
+    },
+    {
+      "date": "2011-10-04",
+      "words": 83,
+      "net": 83,
+      "files": 1,
+      "sources": {
+        "blog": 83
+      }
+    },
+    {
+      "date": "2011-02-14",
+      "words": 657,
+      "net": 657,
+      "files": 1,
+      "sources": {
+        "blog": 657
+      }
+    }
+  ],
+  "weeks": [
+    {
+      "key": "2026-08-03",
+      "label": "Week of Aug 3, 2026",
+      "words": 583,
+      "days": 1,
+      "start": "2026-08-03",
+      "end": "2026-08-03",
+      "average": 583
+    },
+    {
+      "key": "2026-06-29",
+      "label": "Week of Jun 29, 2026",
+      "words": 58,
+      "days": 2,
+      "start": "2026-06-29",
+      "end": "2026-07-03",
+      "average": 29
+    },
+    {
+      "key": "2026-06-22",
+      "label": "Week of Jun 24, 2026",
+      "words": 2708,
+      "days": 3,
+      "start": "2026-06-24",
+      "end": "2026-06-27",
+      "average": 903
+    },
+    {
+      "key": "2026-06-08",
+      "label": "Week of Jun 10, 2026",
+      "words": 32,
+      "days": 1,
+      "start": "2026-06-10",
+      "end": "2026-06-10",
+      "average": 32
+    },
+    {
+      "key": "2026-06-01",
+      "label": "Week of Jun 1, 2026",
+      "words": 2329,
+      "days": 3,
+      "start": "2026-06-01",
+      "end": "2026-06-07",
+      "average": 776
+    },
+    {
+      "key": "2026-05-25",
+      "label": "Week of May 26, 2026",
+      "words": 707,
+      "days": 3,
+      "start": "2026-05-26",
+      "end": "2026-05-31",
+      "average": 236
+    },
+    {
+      "key": "2026-05-18",
+      "label": "Week of May 18, 2026",
+      "words": 7686,
+      "days": 2,
+      "start": "2026-05-18",
+      "end": "2026-05-21",
+      "average": 3843
+    },
+    {
+      "key": "2026-05-11",
+      "label": "Week of May 12, 2026",
+      "words": 578,
+      "days": 1,
+      "start": "2026-05-12",
+      "end": "2026-05-12",
+      "average": 578
+    },
+    {
+      "key": "2026-05-04",
+      "label": "Week of May 7, 2026",
+      "words": 1058,
+      "days": 1,
+      "start": "2026-05-07",
+      "end": "2026-05-07",
+      "average": 1058
+    },
+    {
+      "key": "2022-10-10",
+      "label": "Week of Oct 11, 2022",
+      "words": 850,
+      "days": 1,
+      "start": "2022-10-11",
+      "end": "2022-10-11",
+      "average": 850
+    },
+    {
+      "key": "2021-11-22",
+      "label": "Week of Nov 23, 2021",
+      "words": 295,
+      "days": 1,
+      "start": "2021-11-23",
+      "end": "2021-11-23",
+      "average": 295
+    },
+    {
+      "key": "2020-09-14",
+      "label": "Week of Sep 17, 2020",
+      "words": 1146,
+      "days": 1,
+      "start": "2020-09-17",
+      "end": "2020-09-17",
+      "average": 1146
+    },
+    {
+      "key": "2020-05-18",
+      "label": "Week of May 21, 2020",
+      "words": 464,
+      "days": 1,
+      "start": "2020-05-21",
+      "end": "2020-05-21",
+      "average": 464
+    },
+    {
+      "key": "2017-07-31",
+      "label": "Week of Aug 3, 2017",
+      "words": 124,
+      "days": 1,
+      "start": "2017-08-03",
+      "end": "2017-08-03",
+      "average": 124
+    },
+    {
+      "key": "2016-10-17",
+      "label": "Week of Oct 19, 2016",
+      "words": 344,
+      "days": 1,
+      "start": "2016-10-19",
+      "end": "2016-10-19",
+      "average": 344
+    },
+    {
+      "key": "2015-12-07",
+      "label": "Week of Dec 11, 2015",
+      "words": 1541,
+      "days": 1,
+      "start": "2015-12-11",
+      "end": "2015-12-11",
+      "average": 1541
+    },
+    {
+      "key": "2015-11-30",
+      "label": "Week of Dec 1, 2015",
+      "words": 769,
+      "days": 1,
+      "start": "2015-12-01",
+      "end": "2015-12-01",
+      "average": 769
+    },
+    {
+      "key": "2015-09-14",
+      "label": "Week of Sep 15, 2015",
+      "words": 1263,
+      "days": 1,
+      "start": "2015-09-15",
+      "end": "2015-09-15",
+      "average": 1263
+    },
+    {
+      "key": "2015-09-07",
+      "label": "Week of Sep 9, 2015",
+      "words": 1410,
+      "days": 1,
+      "start": "2015-09-09",
+      "end": "2015-09-09",
+      "average": 1410
+    },
+    {
+      "key": "2015-08-31",
+      "label": "Week of Sep 3, 2015",
+      "words": 423,
+      "days": 1,
+      "start": "2015-09-03",
+      "end": "2015-09-03",
+      "average": 423
+    },
+    {
+      "key": "2014-07-21",
+      "label": "Week of Jul 24, 2014",
+      "words": 455,
+      "days": 1,
+      "start": "2014-07-24",
+      "end": "2014-07-24",
+      "average": 455
+    },
+    {
+      "key": "2014-03-10",
+      "label": "Week of Mar 11, 2014",
+      "words": 1657,
+      "days": 1,
+      "start": "2014-03-11",
+      "end": "2014-03-11",
+      "average": 1657
+    },
+    {
+      "key": "2013-04-15",
+      "label": "Week of Apr 20, 2013",
+      "words": 132,
+      "days": 1,
+      "start": "2013-04-20",
+      "end": "2013-04-20",
+      "average": 132
+    },
+    {
+      "key": "2012-10-22",
+      "label": "Week of Oct 28, 2012",
+      "words": 593,
+      "days": 1,
+      "start": "2012-10-28",
+      "end": "2012-10-28",
+      "average": 593
+    },
+    {
+      "key": "2011-11-21",
+      "label": "Week of Nov 23, 2011",
+      "words": 395,
+      "days": 1,
+      "start": "2011-11-23",
+      "end": "2011-11-23",
+      "average": 395
+    },
+    {
+      "key": "2011-10-03",
+      "label": "Week of Oct 4, 2011",
+      "words": 83,
+      "days": 1,
+      "start": "2011-10-04",
+      "end": "2011-10-04",
+      "average": 83
+    },
+    {
+      "key": "2011-02-14",
+      "label": "Week of Feb 14, 2011",
+      "words": 657,
+      "days": 1,
+      "start": "2011-02-14",
+      "end": "2011-02-14",
+      "average": 657
+    }
+  ],
+  "months": [
+    {
+      "key": "2026-08",
+      "label": "August 2026",
+      "words": 583,
+      "days": 1,
+      "start": "2026-08-03",
+      "end": "2026-08-03",
+      "average": 583
+    },
+    {
+      "key": "2026-07",
+      "label": "July 2026",
+      "words": 8,
+      "days": 1,
+      "start": "2026-07-03",
+      "end": "2026-07-03",
+      "average": 8
+    },
+    {
+      "key": "2026-06",
+      "label": "June 2026",
+      "words": 5119,
+      "days": 8,
+      "start": "2026-06-01",
+      "end": "2026-06-29",
+      "average": 640
+    },
+    {
+      "key": "2026-05",
+      "label": "May 2026",
+      "words": 10029,
+      "days": 7,
+      "start": "2026-05-07",
+      "end": "2026-05-31",
+      "average": 1433
+    },
+    {
+      "key": "2022-10",
+      "label": "October 2022",
+      "words": 850,
+      "days": 1,
+      "start": "2022-10-11",
+      "end": "2022-10-11",
+      "average": 850
+    },
+    {
+      "key": "2021-11",
+      "label": "November 2021",
+      "words": 295,
+      "days": 1,
+      "start": "2021-11-23",
+      "end": "2021-11-23",
+      "average": 295
+    },
+    {
+      "key": "2020-09",
+      "label": "September 2020",
+      "words": 1146,
+      "days": 1,
+      "start": "2020-09-17",
+      "end": "2020-09-17",
+      "average": 1146
+    },
+    {
+      "key": "2020-05",
+      "label": "May 2020",
+      "words": 464,
+      "days": 1,
+      "start": "2020-05-21",
+      "end": "2020-05-21",
+      "average": 464
+    },
+    {
+      "key": "2017-08",
+      "label": "August 2017",
+      "words": 124,
+      "days": 1,
+      "start": "2017-08-03",
+      "end": "2017-08-03",
+      "average": 124
+    },
+    {
+      "key": "2016-10",
+      "label": "October 2016",
+      "words": 344,
+      "days": 1,
+      "start": "2016-10-19",
+      "end": "2016-10-19",
+      "average": 344
+    },
+    {
+      "key": "2015-12",
+      "label": "December 2015",
+      "words": 2310,
+      "days": 2,
+      "start": "2015-12-01",
+      "end": "2015-12-11",
+      "average": 1155
+    },
+    {
+      "key": "2015-09",
+      "label": "September 2015",
+      "words": 3096,
+      "days": 3,
+      "start": "2015-09-03",
+      "end": "2015-09-15",
+      "average": 1032
+    },
+    {
+      "key": "2014-07",
+      "label": "July 2014",
+      "words": 455,
+      "days": 1,
+      "start": "2014-07-24",
+      "end": "2014-07-24",
+      "average": 455
+    },
+    {
+      "key": "2014-03",
+      "label": "March 2014",
+      "words": 1657,
+      "days": 1,
+      "start": "2014-03-11",
+      "end": "2014-03-11",
+      "average": 1657
+    },
+    {
+      "key": "2013-04",
+      "label": "April 2013",
+      "words": 132,
+      "days": 1,
+      "start": "2013-04-20",
+      "end": "2013-04-20",
+      "average": 132
+    },
+    {
+      "key": "2012-10",
+      "label": "October 2012",
+      "words": 593,
+      "days": 1,
+      "start": "2012-10-28",
+      "end": "2012-10-28",
+      "average": 593
+    },
+    {
+      "key": "2011-11",
+      "label": "November 2011",
+      "words": 395,
+      "days": 1,
+      "start": "2011-11-23",
+      "end": "2011-11-23",
+      "average": 395
+    },
+    {
+      "key": "2011-10",
+      "label": "October 2011",
+      "words": 83,
+      "days": 1,
+      "start": "2011-10-04",
+      "end": "2011-10-04",
+      "average": 83
+    },
+    {
+      "key": "2011-02",
+      "label": "February 2011",
+      "words": 657,
+      "days": 1,
+      "start": "2011-02-14",
+      "end": "2011-02-14",
+      "average": 657
+    }
+  ],
+  "years": [
+    {
+      "key": "2026",
+      "label": "2026",
+      "words": 15739,
+      "days": 17,
+      "start": "2026-05-07",
+      "end": "2026-08-03",
+      "average": 926
+    },
+    {
+      "key": "2022",
+      "label": "2022",
+      "words": 850,
+      "days": 1,
+      "start": "2022-10-11",
+      "end": "2022-10-11",
+      "average": 850
+    },
+    {
+      "key": "2021",
+      "label": "2021",
+      "words": 295,
+      "days": 1,
+      "start": "2021-11-23",
+      "end": "2021-11-23",
+      "average": 295
+    },
+    {
+      "key": "2020",
+      "label": "2020",
+      "words": 1610,
+      "days": 2,
+      "start": "2020-05-21",
+      "end": "2020-09-17",
+      "average": 805
+    },
+    {
+      "key": "2017",
+      "label": "2017",
+      "words": 124,
+      "days": 1,
+      "start": "2017-08-03",
+      "end": "2017-08-03",
+      "average": 124
+    },
+    {
+      "key": "2016",
+      "label": "2016",
+      "words": 344,
+      "days": 1,
+      "start": "2016-10-19",
+      "end": "2016-10-19",
+      "average": 344
+    },
+    {
+      "key": "2015",
+      "label": "2015",
+      "words": 5406,
+      "days": 5,
+      "start": "2015-09-03",
+      "end": "2015-12-11",
+      "average": 1081
+    },
+    {
+      "key": "2014",
+      "label": "2014",
+      "words": 2112,
+      "days": 2,
+      "start": "2014-03-11",
+      "end": "2014-07-24",
+      "average": 1056
+    },
+    {
+      "key": "2013",
+      "label": "2013",
+      "words": 132,
+      "days": 1,
+      "start": "2013-04-20",
+      "end": "2013-04-20",
+      "average": 132
+    },
+    {
+      "key": "2012",
+      "label": "2012",
+      "words": 593,
+      "days": 1,
+      "start": "2012-10-28",
+      "end": "2012-10-28",
+      "average": 593
+    },
+    {
+      "key": "2011",
+      "label": "2011",
+      "words": 1135,
+      "days": 3,
+      "start": "2011-02-14",
+      "end": "2011-11-23",
+      "average": 378
+    }
+  ]
+}

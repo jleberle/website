@@ -24,7 +24,7 @@
        order, minified, then fingerprinted; nothing is emitted if none of them
        resolve. Add a new assets/js/*.js file here or it won't ship. */}}
 {{- $js := slice }}
-{{- range slice "js/pdf.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" "js/archive-filters.js" }}
+{{- range slice "js/pdf.js" "js/carousel.js" "js/lightbox.js" "js/obf-email.js" "js/footnotes.js" "js/archive-filters.js" "js/writing-log.js" }}
     {{- with resources.Get . }}{{ $js = $js | append . }}{{ end }}
 {{- end }}
 {{- with $js }}

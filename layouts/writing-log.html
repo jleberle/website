@@ -1,0 +1,200 @@
+{{- define "main" }}
+{{- /* The public writing log. Data comes from data/writing-log.json, built by
+       scripts/writing-log.py out of the git history of this repo and of the
+       Obsidian vault (~/Notes). StaticHost never sees the vault, so the JSON is
+       committed rather than generated at build time.
+
+       Everything here renders server-side. assets/js/writing-log.js only adds
+       the period tabs and column sorting on top of markup that is already
+       complete and readable without it -- same progressive-enhancement contract
+       as the archives page.
+
+       BAR WIDTHS: the site's CSP is `style-src 'self'` with no 'unsafe-inline'
+       and no style-src-attr escape hatch, which blocks inline style attributes
+       outright. A `style="width:42%"` bar would silently render at zero width.
+       So widths come from .wl-w-0 … .wl-w-50 classes (2% steps) defined in
+       29-writing-log.css. Round to that grid; never reach for an inline style. */}}
+
+{{- $log := index hugo.Data "writing-log" }}
+
+{{- if not $log }}
+<header class="page-header"><h1>{{ .Title }}</h1></header>
+<p>The writing log has not been generated yet. Run <code>scripts/writing-log.py</code>.</p>
+{{- else }}
+
+{{- $totals := $log.totals }}
+{{- $lastDay := index $log.days 0 }}
+
+<header class="page-header">
+  <p class="page-kicker">Record</p>
+  <h1>{{ .Title }}</h1>
+  {{- with .Description }}
+  <div class="post-description">{{ . }}</div>
+  {{- end }}
+</header>
+
+{{- /* KPI row. Sentence-case labels, sans semibold values, no chart -- these
+       are single numbers and a stat tile is the right form for a single
+       number. */}}
+<section class="wl-tiles" aria-label="Writing totals">
+  <div class="wl-tile">
+    <p class="wl-tile-label">Words written</p>
+    <p class="wl-tile-value">{{ lang.FormatNumberCustom 0 $totals.words }}</p>
+    <p class="wl-tile-note">since {{ dateFormat "January 2006" $totals.first }}</p>
+  </div>
+  <div class="wl-tile">
+    <p class="wl-tile-label">Days with writing</p>
+    <p class="wl-tile-value">{{ lang.FormatNumberCustom 0 $totals.days }}</p>
+    <p class="wl-tile-note">{{ lang.FormatNumberCustom 0 $totals.average }} words on an average one</p>
+  </div>
+  <div class="wl-tile">
+    <p class="wl-tile-label">Longest streak</p>
+    <p class="wl-tile-value">{{ $totals.streak.length }}<span class="wl-tile-unit"> days</span></p>
+    <p class="wl-tile-note">{{ dateFormat "Jan 2, 2006" $totals.streak.start }} – {{ dateFormat "Jan 2, 2006" $totals.streak.end }}</p>
+  </div>
+  <div class="wl-tile">
+    <p class="wl-tile-label">Best day</p>
+    <p class="wl-tile-value">{{ lang.FormatNumberCustom 0 $totals.best_day.words }}</p>
+    <p class="wl-tile-note">on {{ dateFormat "Jan 2, 2006" $totals.best_day.date }}</p>
+  </div>
+</section>
+
+<p class="wl-latest">
+  Last wrote
+  <time datetime="{{ $lastDay.date }}">{{ dateFormat "January 2, 2006" $lastDay.date }}</time>
+  — {{ lang.FormatNumberCustom 0 $lastDay.words }} words
+  {{/* int cast: JSON numbers arrive as float64, so `ne .files 1` compares 1.0
+       against an int and is always true — every day reads "1 files". Comment
+       left untrimmed; `{{-` here swallows the space after "words". */}}
+  across {{ $lastDay.files }} file{{ if ne (int $lastDay.files) 1 }}s{{ end }}.
+</p>
+
+{{- /* Tabs are enhancement-only: hidden until writing-log.js reveals them, at
+       which point it also hides the inactive panels. With JS off all four
+       panels stay open and stacked, each under its own heading. */}}
+<div class="wl-tabs" role="tablist" aria-label="Summarise by period" data-wl-tabs hidden>
+  {{- range $index, $tab := (slice (dict "id" "weeks" "label" "Weeks") (dict "id" "months" "label" "Months") (dict "id" "years" "label" "Years") (dict "id" "days" "label" "Days")) }}
+  <button class="wl-tab{{ if eq $index 1 }} is-active{{ end }}" type="button" role="tab"
+          id="wl-tab-{{ $tab.id }}" aria-controls="wl-panel-{{ $tab.id }}"
+          aria-selected="{{ if eq $index 1 }}true{{ else }}false{{ end }}"
+          data-wl-tab="{{ $tab.id }}">{{ $tab.label }}</button>
+  {{- end }}
+</div>
+
+{{- $periods := slice
+      (dict "id" "weeks" "heading" "By week"  "rows" $log.weeks  "unit" "Week")
+      (dict "id" "months" "heading" "By month" "rows" $log.months "unit" "Month")
+      (dict "id" "years" "heading" "By year"  "rows" $log.years  "unit" "Year") }}
+
+{{- range $periods }}
+{{- $rows := .rows }}
+{{- /* Bars are a magnitude comparison within one table, so each panel scales to
+       its own maximum -- a week never competes with a year. Single series, one
+       hue, value directly labelled in its own column, so no legend. */}}
+{{- $max := 1 }}
+{{- range $rows }}{{ if gt .words $max }}{{ $max = .words }}{{ end }}{{ end }}
+<section class="wl-panel" id="wl-panel-{{ .id }}" role="tabpanel" aria-labelledby="wl-tab-{{ .id }}" data-wl-panel="{{ .id }}">
+  <h2 class="wl-panel-heading">{{ .heading }}</h2>
+  <div class="wl-table-scroll">
+    <table class="wl-table" data-wl-sortable>
+      <thead>
+        <tr>
+          <th scope="col" data-wl-sort="text" aria-sort="descending">{{ .unit }}</th>
+          <th scope="col" class="wl-num" data-wl-sort="num">Words</th>
+          <th scope="col" class="wl-num" data-wl-sort="num">Days</th>
+          <th scope="col" class="wl-num" data-wl-sort="num">Average</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{- range $rows }}
+        {{- $step := math.Round (mul (div (float .words) $max) 50) }}
+        <tr>
+          <th scope="row" data-wl-value="{{ .start }}">{{ .label }}</th>
+          <td class="wl-num" data-wl-value="{{ .words }}">
+            <span class="wl-bar-cell">
+              <span class="wl-bar wl-w-{{ $step }}" aria-hidden="true"></span>
+              <span class="wl-bar-value">{{ lang.FormatNumberCustom 0 .words }}</span>
+            </span>
+          </td>
+          <td class="wl-num" data-wl-value="{{ .days }}">{{ .days }}</td>
+          <td class="wl-num" data-wl-value="{{ .average }}">{{ lang.FormatNumberCustom 0 .average }}</td>
+        </tr>
+        {{- end }}
+      </tbody>
+    </table>
+  </div>
+</section>
+{{- end }}
+
+{{- /* The day-by-day record. Capped at 180 entries: the rollups above are the
+       point of the page, and an unbounded daily table would grow without limit
+       while saying less than the month view. */}}
+{{- $days := first 180 $log.days }}
+{{- $dayMax := 1 }}
+{{- range $days }}{{ if gt .words $dayMax }}{{ $dayMax = .words }}{{ end }}{{ end }}
+<section class="wl-panel" id="wl-panel-days" role="tabpanel" aria-labelledby="wl-tab-days" data-wl-panel="days">
+  <h2 class="wl-panel-heading">Day by day</h2>
+  <div class="wl-table-scroll">
+    <table class="wl-table" data-wl-sortable>
+      <thead>
+        <tr>
+          <th scope="col" data-wl-sort="text" aria-sort="descending">Date</th>
+          <th scope="col" class="wl-num" data-wl-sort="num">Words</th>
+          <th scope="col" data-wl-sort="text">Where</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{- range $days }}
+        {{- $step := math.Round (mul (div (float .words) $dayMax) 50) }}
+        {{- $where := slice }}
+        {{- range $name, $count := .sources }}
+        {{- range $source := $log.sources }}{{ if eq $source.name $name }}{{ $where = $where | append $source.label }}{{ end }}{{ end }}
+        {{- end }}
+        <tr>
+          <th scope="row" data-wl-value="{{ .date }}">
+            <time datetime="{{ .date }}">{{ dateFormat "Mon, Jan 2, 2006" .date }}</time>
+          </th>
+          <td class="wl-num" data-wl-value="{{ .words }}">
+            <span class="wl-bar-cell">
+              <span class="wl-bar wl-w-{{ $step }}" aria-hidden="true"></span>
+              <span class="wl-bar-value">{{ lang.FormatNumberCustom 0 .words }}</span>
+            </span>
+          </td>
+          <td data-wl-value="{{ delimit (sort $where) " " }}">{{ delimit (sort $where) ", " }}</td>
+        </tr>
+        {{- end }}
+      </tbody>
+    </table>
+  </div>
+  {{- if gt (len $log.days) 180 }}
+  <p class="wl-note">Showing the most recent 180 writing days of {{ lang.FormatNumberCustom 0 (len $log.days) }}.</p>
+  {{- end }}
+</section>
+
+<section class="wl-method">
+  <h2>How this is counted</h2>
+  <p>
+    Every number here is a difference between two git commits. For each commit that
+    touched a Markdown file, the word count before is subtracted from the word count
+    after, and the result is filed under that commit&rsquo;s date. Two repositories feed
+    it: this site, and my Obsidian vault, which has been tracked in git since
+    August 2026 for exactly this purpose.
+  </p>
+  <p>
+    Front matter, code blocks and blockquotes are stripped before counting, so
+    quoted source material is not counted as mine. Reading notes imported from
+    Zotero and Readwise are excluded entirely. Posts drafted in the vault are
+    counted on the day they were drafted, not the day they were published.
+  </p>
+  <p>
+    Two honest limitations. Rewriting a paragraph into a better paragraph of the
+    same length is a real day&rsquo;s work that registers as zero, because the measure
+    is size rather than effort. And writing that predates its arrival in git — the
+    older posts here were imported in bulk — is filed under the date in its front
+    matter, which is the best record that exists.
+  </p>
+  <p class="wl-note">Last rebuilt {{ dateFormat "January 2, 2006" (substr $log.generated 0 10) }}.</p>
+</section>
+
+{{- end }}
+{{- end }}{{/* end main */}}

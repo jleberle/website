@@ -9,6 +9,8 @@
 #   1d. graph connections    — no orphan posts; `about:` is a subset of `sources:`
 #   2. image policy          — raster sources must be AVIF or allowed companions/icons
 #   2b. image metadata       — no EXIF/IPTC/XMP left on a published raster file
+#   2c. writing log          — regenerate data/writing-log.json from git history
+#                               (skipped when the Obsidian vault isn't present)
 #   3. hugo --minify         — fails on ERROR, surfaces WARN (missing figure alt etc.)
 #   4. content resources     — source Markdown cover blocks point at real files
 #   4b. cite-key cross-ref   — advisory: cite keys missing from Zotero / without a vault note
@@ -115,6 +117,31 @@ else
   echo "$META_OUT"
   fail "raster file(s) still carry EXIF/IPTC/XMP metadata"
 fi
+
+step "writing log"
+# Regenerates rather than merely checking: this repo gains content commits most
+# weeks, so "the JSON is out of date" is the normal state before a push, not an
+# error. ship.sh commits with `git add -A`, so the refreshed
+# data/writing-log.json rides along with whatever else is being pushed. Runs
+# before the build because Hugo reads the file it writes.
+#
+# Deliberately does NOT census the vault -- that is `scripts/log-writing.sh`,
+# run by hand. Rebuilding here reads only committed inputs (git history and
+# data/observations/), so it produces the same answer on every machine and in
+# CI, and a push never silently re-dates vault writing to whatever today's
+# mtimes happen to say.
+#
+# Exit 3 means a git source repo isn't on this machine. That's a skip, not a
+# failure; the committed JSON stands.
+set +e
+WLOG_OUT=$(python3 scripts/writing-log.py --allow-missing 2>&1)
+WLOG_RC=$?
+set -e
+case $WLOG_RC in
+  0) pass "$WLOG_OUT" ;;
+  3) pass "$WLOG_OUT" ;;
+  *) echo "$WLOG_OUT"; fail "writing log could not be regenerated" ;;
+esac
 
 step "hugo build"
 BUILD_OUT=$(hugo --minify 2>&1)

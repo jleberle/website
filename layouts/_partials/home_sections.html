@@ -135,7 +135,7 @@
         <header class="home-band-header">
             <div>
                 <p class="page-kicker">At the desk</p>
-                <h2 id="home-context-title" class="home-band-title">Notebook and reading</h2>
+                <h2 id="home-context-title" class="home-band-title">Notebook, reading, and writing</h2>
             </div>
         </header>
         <div class="home-secondary home-secondary--compact">
@@ -179,6 +179,39 @@
                 </article>
                 <a class="home-section-all" href="{{ $readingPage.RelPermalink }}">Open the reading ledger &rarr;</a>
             </section>
+            {{- end }}
+
+            {{- /* Writing log: the most recent day anything was written, from
+                   data/writing-log.json (scripts/writing-log.py). Renders only
+                   when the data file is present and non-empty, so a fresh
+                   checkout or a failed regeneration degrades to simply not
+                   showing the band rather than to a broken build. */ -}}
+            {{- $writingLog := index hugo.Data "writing-log" }}
+            {{- with $writingLog }}
+            {{- if .days }}
+            {{- $latest := index .days 0 }}
+            {{- $logPage := site.GetPage "writing-log" }}
+            <section class="home-section home-section--writing-log">
+                <header class="home-section-header">
+                    <div>
+                        <h3 class="home-section-title"><a href="{{ $logPage.RelPermalink }}">Writing log</a></h3>
+                        <p class="home-section-description">What I last put words into.</p>
+                    </div>
+                </header>
+                <article class="home-context-entry">
+                    <p class="home-context-kicker">Last wrote</p>
+                    <h4 class="home-list-title">
+                        <time datetime="{{ $latest.date }}">{{ dateFormat "January 2, 2006" $latest.date }}</time>
+                    </h4>
+                    <p class="home-context-meta">
+                        <span>{{ lang.FormatNumberCustom 0 $latest.words }} words</span>
+                        <span aria-hidden="true"> · </span>
+                        <span>{{ lang.FormatNumberCustom 0 .totals.words }} all told</span>
+                    </p>
+                </article>
+                <a class="home-section-all" href="{{ $logPage.RelPermalink }}">Open the writing log &rarr;</a>
+            </section>
+            {{- end }}
             {{- end }}
         </div>
     </section>

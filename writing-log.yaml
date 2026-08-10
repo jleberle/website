@@ -1,0 +1,130 @@
+# Configuration for scripts/writing-log.py — the public writing log at /writing-log.
+#
+# The log answers "what did I write, and when" by differencing word counts over
+# time. Two sources feed it, by two different mechanisms: this repo, walked as
+# git history, and the Obsidian vault, walked as a census (see `kind: census`).
+#
+# WHAT COUNTS
+# -----------
+# Words you composed. Front matter, fenced code, and blockquotes are stripped
+# before counting (see strip_blockquotes below), and whole categories of
+# machine-imported text are excluded here rather than in code, so tuning the
+# log never means editing the engine.
+
+# Blockquotes are quoted source material, not composition. Stripping them
+# matters most in research notes, where a paragraph of Brands or Grandin can
+# outweigh the surrounding argument. Note this is partial by design: the Zotero
+# reading notes quote inline with a trailing page cite -- "(5)" -- rather than
+# with `>`, and no heuristic separates that from ordinary prose. Those files are
+# excluded wholesale below instead, which is the reliable way to handle them.
+strip_blockquotes: true
+
+# Fenced code blocks are never prose.
+strip_code: true
+
+sources:
+  - name: blog
+    label: Blog
+    # Resolved relative to this config file.
+    repo: .
+    # Articles and reviews only. These are the only two sections that hold
+    # composed prose: courses are syllabi, quotes are other people's words with
+    # a line of commentary, sources are bibliographic records, and the
+    # top-level pages (about, colophon, privacy, terms) are site furniture that
+    # gets edited rather than written.
+    include:
+      - "content/articles/**/*.md"
+      - "content/reviews/**/*.md"
+    exclude:
+      # Section landing pages: front matter and a one-line description, churned
+      # by structural edits rather than written.
+      - "content/**/_index.md"
+    # This repo has imported its back catalogue in bulk more than once -- the
+    # root commit in April 2025, then "Added Posts to site" on 2026-05-20, then
+    # the quotes on 2026-06-03, carrying pieces dated as far back as 2011.
+    # Charting those as enormous 2026 writing days would drown out every real
+    # one. So when a file is *added* and its front matter date is more than
+    # backfill_threshold_days older than the commit, the words are credited to
+    # the front matter date instead. Ordinary publishing is unaffected: a post
+    # written and shipped the same week stays on its commit date.
+    backfill_added: frontmatter-date
+    backfill_threshold_days: 3
+    # Front matter keys tried in order when backfilling, first one wins.
+    date_fields: [date, publishDate, lastmod]
+
+  - name: notes
+    label: Notes
+    # A census, not a git walk. The vault lives on three machines that share
+    # files through Obsidian Sync, and Sync is not history -- it delivers the
+    # same words everywhere. Giving each machine a git repo and adding up the
+    # results would count every synced word once per machine. So each run
+    # records how long each file is now, into data/observations/<host>.json, and
+    # the deltas are derived from the merged states afterwards.
+    kind: census
+    path: ~/Notes
+    # The three machines need not keep the vault in the same place.
+    path_env: NOTES_VAULT
+    # Everything at or before this date is the starting position, counted as
+    # zero. The vault held years of writing before the first census ran on
+    # 2026-08-09, and crediting all of it to whatever mtime each file happens to
+    # carry would bury every real writing day. Files first seen after this date
+    # are new and count in full.
+    #
+    # The one-time cost is that writing done ON 2026-08-09 is part of the
+    # baseline rather than the first day of the log. Moving this date later does
+    # not recover it -- it discards more.
+    census_start: "2026-08-09"
+    # THE RUBRIC: count only what feeds visible academic output -- the articles
+    # and the book. Two things qualify. Project material, where the research and
+    # argument actually get built. And blog drafts, which are thinking out loud
+    # that filters into the academic work later.
+    #
+    # Teaching is deliberately out (05 Lectures, 02 Notes/05 LA Notes): real
+    # writing, and a lot of it, but it builds courses rather than publications.
+    # So are personal status posts (06 Micro.Blog), navigation and dashboards,
+    # and workflow documentation.
+    include:
+      # Inside a project, the folders that hold composed prose. The `*` spans
+      # any project, so a new one counts from the day it is created with no
+      # config change. Left out of the skeleton: 03 Index is navigation
+      # (Timeline.md is two citation stubs), 05 Sources is Zotero material, and
+      # the project root files are Bases/Dataview dashboards tagged `dashboard`.
+      - "04 Projects/*/01 Notes/**/*.md"
+      # Empty in both projects today; picked up the moment it isn't.
+      - "04 Projects/*/02 Analysis/**/*.md"
+      # Conference papers are visible academic output and the usual first draft
+      # of an article. Also empty today -- included so the work is captured when
+      # it happens rather than noticed as missing afterwards.
+      - "04 Projects/*/04 Conferences/**/*.md"
+      # Blog drafts. These count here, on the day they were drafted, and the
+      # blog source skips the commit that first publishes them -- see
+      # drafts_own_slugs below.
+      - "07 Blog/**/*.md"
+    # The include list above is narrow enough that the old folder excludes for
+    # Readwise, Clippings and Meta/templates are now unreachable -- nothing
+    # under 02 Notes or Meta is in scope at all. Only what can still be hit is
+    # listed here.
+    exclude:
+      - "**/README.md"
+    # The backstop, and it does real work under this scope: Zotero source notes
+    # get filed inside projects, so a tagged import can land in a counted
+    # folder. Any note tagged `zotero` is an import no matter where it lives.
+    # Both filters run; a file must pass both.
+    exclude_frontmatter_tags: [zotero]
+    # A second handle on the same question, independent of the tag list. The
+    # Zotero importer writes `citekey` into every source note it generates and
+    # the rest of the toolchain keys on it, so it survives a tag being edited
+    # away. Nothing composed by hand has one.
+    exclude_frontmatter_fields: [citekey]
+    # Blog posts are drafted in the vault and then published on the blog, which
+    # would count the same words twice. The vault wins: it knows the day the
+    # words were actually written. Every draft the census sees under these paths
+    # contributes its slug to a skip list, and when the blog repo *adds* a file
+    # with a matching slug, that first commit's words are not counted. Later
+    # edits to the published post are counted normally -- revision is writing.
+    #
+    # The list only grows. A draft published and then deleted from the vault
+    # keeps suppressing its own double count, because the recorded slug outlives
+    # the file.
+    draft_paths:
+      - "07 Blog/**/*.md"

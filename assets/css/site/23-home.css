@@ -295,6 +295,41 @@ body.home .home-info {
     gap: 1.4rem;
 }
 
+/* The "At the desk" band, which holds three cards (notebook, reading, writing
+   log) rather than the two the base grid assumes. In a two-column grid the
+   third card wrapped onto its own row and left a full empty cell beside it.
+   Adding a third column would only move the problem: any card count that isn't
+   an exact multiple of the column count leaves the same hole, and the writing
+   log card is conditional on data/writing-log.json having days in it.
+   Flex fixes it structurally instead of per-count. Items on the final row grow
+   to absorb the leftover space, so the row is always full whether there are
+   three cards, two, or one -- no empty cell to style around. The ~15rem basis
+   is what picks the count: three across in the full-width band, two as it
+   narrows, one on a phone. */
+.home-secondary--compact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.4rem 2.4rem;
+}
+
+.home-secondary--compact > .home-section {
+    /* Column layout so the closing link can be pushed to the card's bottom
+       edge. Without it each link sits directly under its own card's content,
+       and because a quote title, a book title and a date are all different
+       heights the three links land at three different baselines. */
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 15rem;
+
+    /* Flex items floor at min-content by default, so a long unbroken source
+       title would push the card wider than its share. */
+    min-width: 0;
+}
+
+.home-secondary--compact > .home-section > .home-section-all {
+    margin-top: auto;
+}
+
 .home-section {
     margin: 0;
     padding: 0;
