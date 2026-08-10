@@ -92,7 +92,13 @@
     {{- $m = printf "%s%s" $mdCitation $m -}}
   {{- end -}}
   {{- $m = printf "%s%s" $mdCoverImg $m -}}
-  {{- $md = printf "%s\n\n[Reply by email](%s) · © %d %s. Licensed under %s.\n\nOriginally published at [%s](%s)." $m $mailto $page.Date.Year site.Params.author site.Copyright $page.Permalink $page.Permalink -}}
+  {{- /* Link text is the page title, not the URL — publishing this feed's
+         URL as both the visible text and the href of the same Markdown
+         link produces "](https://…)(https://…" back to back, with no
+         character between them that scripts/checks/published-reference-lint.py's
+         URL matcher treats as a boundary, so it misreads the pair as one
+         malformed reference. */ -}}
+  {{- $md = printf "%s\n\n[Reply by email](%s) · © %d %s. Licensed under %s.\n\nOriginally published at [%s](%s)." $m $mailto $page.Date.Year site.Params.author site.Copyright $page.Title $page.Permalink -}}
 {{- end -}}
 
 {{- return (dict "content" $c "cover" $cover "markdown" $md) -}}

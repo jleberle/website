@@ -42,7 +42,6 @@ TARGETS=(
   "public/index.xml:/index.xml"
   "public/reading/index.xml:/reading/index.xml"
   "public/feed.json:/feed.json"
-  "public/reading/feed.json:/reading/feed.json"
 )
 
 digest_of() {
