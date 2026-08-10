@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-09T03:06:04+00:00",
+  "generated": "2026-08-10T16:25:53+00:00",
   "sources": [
     {
       "name": "blog",
@@ -9,15 +9,15 @@
     {
       "name": "notes",
       "label": "Notes",
-      "words": 0
+      "words": 955
     }
   ],
   "totals": {
-    "words": 28340,
-    "days": 35,
+    "words": 29295,
+    "days": 36,
     "first": "2011-02-14",
-    "last": "2026-08-03",
-    "average": 810,
+    "last": "2026-08-10",
+    "average": 814,
     "best_day": {
       "date": "2026-05-18",
       "words": 7654,
@@ -34,6 +34,15 @@
     }
   },
   "days": [
+    {
+      "date": "2026-08-10",
+      "words": 955,
+      "net": 955,
+      "files": 4,
+      "sources": {
+        "notes": 955
+      }
+    },
     {
       "date": "2026-08-03",
       "words": 583,
@@ -352,6 +361,15 @@
   ],
   "weeks": [
     {
+      "key": "2026-08-10",
+      "label": "Week of Aug 10, 2026",
+      "words": 955,
+      "days": 1,
+      "start": "2026-08-10",
+      "end": "2026-08-10",
+      "average": 955
+    },
+    {
       "key": "2026-08-03",
       "label": "Week of Aug 3, 2026",
       "words": 583,
@@ -599,11 +617,11 @@
     {
       "key": "2026-08",
       "label": "August 2026",
-      "words": 583,
-      "days": 1,
+      "words": 1538,
+      "days": 2,
       "start": "2026-08-03",
-      "end": "2026-08-03",
-      "average": 583
+      "end": "2026-08-10",
+      "average": 769
     },
     {
       "key": "2026-07",
@@ -772,11 +790,11 @@
     {
       "key": "2026",
       "label": "2026",
-      "words": 15739,
-      "days": 17,
+      "words": 16694,
+      "days": 18,
       "start": "2026-05-07",
-      "end": "2026-08-03",
-      "average": 926
+      "end": "2026-08-10",
+      "average": 927
     },
     {
       "key": "2022",
