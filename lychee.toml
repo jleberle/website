@@ -9,7 +9,28 @@ user_agent = "lychee/jaredeberle.org link checker"
 
 base_url = "https://jaredeberle.org"
 
+# Open Library search URLs are excluded on two counts, one of them fatal.
+#
+# The check cannot fail usefully. `layouts/_partials/source_catalogues.html`
+# links to a QUERY rather than a record precisely so the link cannot 404, which
+# means lychee sees 200 whether or not the search finds the book. It was never
+# capable of telling us a work was unfindable — see docs/reading.md.
+#
+# The check cannot pass reliably either. The 2026-08-10 scheduled run failed all
+# 55 of these at once: 55 timeouts at the 20s limit, zero OK, while the same
+# URLs answered in ~1.9s from a laptop. That is Open Library throttling a
+# datacenter IP making 55 rapid hits on its most expensive endpoint. It stalls
+# rather than answering 429, so the 429 in `accept` above never fires.
+#
+# So the run spent 55 full-text queries against a nonprofit's search index to
+# learn nothing by construction, and then failed the build for it. If the
+# coverage signal is wanted, it belongs in an advisory check against
+# `openlibrary.org/search.json` (~0.3s, and it answers the question this one
+# structurally cannot), not in a gate.
+#
+# WorldCat is deliberately NOT excluded: its `/isbn/` form is a real check.
 exclude = [
     "^https?://(localhost|127\\.0\\.0\\.1|\\[::1\\])",
     "^https?://(www\\.)?jaredeberle\\.org",
+    "^https?://openlibrary\\.org/search",
 ]

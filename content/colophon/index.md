@@ -16,7 +16,7 @@ attrlink="http://www.metmuseum.org/collection/the-collection-online/search/11130
 align="center"
 >}}
 
-This site is built with [Hugo](https://gohugo.io) and served through [Codeberg](https://codeberg.org/jleberle/website) and [Statichost.eu](https://statichost.eu). The current inspiration for the site's theming comes from Winslow Homer's coastal paintings, in particular *Northeaster* and [*The Fog Warning*](winslow-homer-the-fog-warning.avif), experiencing my New England heritage.
+This site is built with [Hugo](https://gohugo.io) and served through [GitHub](https://github.com/jleberle/website) and [Statichost.eu](https://statichost.eu). The current inspiration for the site's theming comes from Winslow Homer's coastal paintings, in particular *Northeaster* and [*The Fog Warning*](winslow-homer-the-fog-warning.avif), experiencing my New England heritage.
 
 The site's theme was largely designed with the help of Claude but the programs only touched back-end files on the site, everything you see publicly is written and edited by me, a [real human](/humans.txt). Typos are my own but for errors, please blame my cat.
 

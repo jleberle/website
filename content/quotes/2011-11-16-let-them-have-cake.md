@@ -5,7 +5,7 @@ date: 2011-11-16
 description: "Teddy Roosevelt's encounter with homeless children"
 summary: "Teddy Roosevelt's encounter with homeless children"
 sources: ["roosevelt1928"]
-external_url: "https://archive.org/details/theodoreroosevel0000roos_t4a1/page/122/mode/2up"
+external_url: "https://archive.org/details/theodoreroosevel0000roos_t4a1"
 eras:
 - "19th Century"
 ---

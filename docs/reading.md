@@ -91,10 +91,23 @@ Two things to know about the tradeoff:
   anything. If that signal is wanted back, it belongs in an advisory check
   against Open Library's `search.json` API — reporting coverage, not failing a
   build — rather than in a user-facing link that 404s.
-- **Open Library rate-limits.** Roughly a hundred requests in a few minutes is
-  enough to earn a `429` and then a temporary block. The scheduled `lychee` run
-  checks ~57 of these at `max_concurrency = 8`, so it may well be throttled;
-  `429` is already in the accept list, so that cannot fail the build.
+- **Open Library throttles hard enough to fail a build, and it is now
+  excluded from `lychee.toml`.** The prediction above was right about the cause
+  and wrong about the consequence. The 2026-08-10 scheduled run failed all 55
+  Open Library links at once — 55 timeouts at the 20s limit, zero OK — while the
+  same URLs answered in ~1.9s from a laptop. Open Library tarpits a datacenter
+  IP making 55 rapid hits on its search index rather than answering `429`, so
+  having `429` in the accept list protected nothing.
+
+  Combined with the point above, the check was spending 55 full-text queries
+  against a nonprofit's most expensive endpoint to learn nothing by
+  construction, and then failing the build for it. `^https?://openlibrary\.org/search`
+  is excluded now. WorldCat stays in: its `/isbn/` form is a real check.
+
+  The links themselves were not changed — they are working correctly for
+  readers. When Open Library does hold the edition, the ISBN search `303`s
+  straight through to the record, so a search URL is both the durable form and
+  the right destination.
 
 ## Ledger Pages
 
