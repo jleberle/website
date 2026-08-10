@@ -46,6 +46,10 @@
 #   taxonomy facets, tag vocabulary, series naming, graph connections,
 #   image policy, page size, image display
 #
+# LOCAL-ONLY ADVISORY (warn_local) — the Obsidian template drift check. Never
+# promoted by --full, because CI has no vault and would be claiming an
+# enforcement it cannot perform.
+#
 # Full mode (CI) adds, and promotes all advisories to failures:
 #   html-validate, stylelint, checks/a11y-lint.py, lychee --offline
 #
@@ -110,6 +114,18 @@ warn() {
   fi
 }
 
+# An advisory that CI genuinely cannot make: it depends on something only this
+# machine has (the Obsidian vault). --full must NOT promote these, because
+# --full's whole claim is that it shows what CI will say — and for these, CI
+# says nothing at all. Saying "CI will fail on it" here would be a lie of
+# exactly the kind this gate's messages exist to avoid.
+warn_local() {
+  printf '\033[33m⚠ %s\033[0m\n' "$1"
+  printf '   \033[1mFix:\033[0m %s\n' "$2"
+  printf '   \033[2mNot blocking, and CI cannot check this — the vault only exists here.\033[0m\n'
+  ADVISORIES=$((ADVISORIES + 1))
+}
+
 step "published drafts"
 if DRAFT_OUT=$(python3 scripts/checks/draft-lint.py content 2>&1); then
   pass "$DRAFT_OUT"
@@ -154,6 +170,25 @@ else
   warn "A post is not connected to anything — no tags and no sources — so nothing on the site links to it." \
        "Add at least one \`tags:\` or \`sources:\` entry so it appears on a topic or bibliography page. The message above says which post and which field."
 fi
+
+step "Obsidian templates"
+# Advisory, and skipped entirely when the vault isn't on this machine (exit 3),
+# for the same reason the writing-log census is: only one machine needs
+# Obsidian for the repo copy to stay meaningful. Divergence is also fully
+# reversible — the templates are inputs to drafting, not to the published site,
+# so nothing about a push is made wrong by them being out of step.
+set +e
+TPL_OUT=$(scripts/sync-templates.sh --check 2>&1)
+TPL_RC=$?
+set -e
+case $TPL_RC in
+  0|3) pass "$TPL_OUT" ;;
+  *)
+    echo "$TPL_OUT"
+    warn_local "The Obsidian draft templates differ between the repo and the vault." \
+               "Whichever copy you edited is the one to keep: scripts/sync-templates.sh --from-vault (you edited in Obsidian) or --to-vault (you edited in the repo)."
+    ;;
+esac
 
 step "source image policy"
 if IMAGE_OUT=$(python3 scripts/checks/image-policy-lint.py assets content static 2>&1); then

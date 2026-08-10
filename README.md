@@ -121,9 +121,14 @@ canonical; `site` only removes the `cd`.
 Obsidian only runs against the `~/Notes` vault, synced via Obsidian Sync — this
 repo has no `.obsidian/` setup of its own. Drafts live at `~/Notes/07 Blog/Drafts/`
 (override with `WEBSITE_DRAFTS_DIR`), outside the repo, until
-`scripts/publish-draft.sh` moves them into `content/`. The Templater draft
-templates live solely at `~/Notes/Meta/templates/Website/`; there is no repo
-copy, so edit them there directly.
+`scripts/publish-draft.sh` moves them into `content/`.
+
+The Templater draft templates are versioned here, in `templates/obsidian/`, and
+copied into `~/Notes/Meta/templates/Website/` where Obsidian loads them. Edit
+either copy and run `scripts/sync-templates.sh --from-vault` or `--to-vault` to
+match them up; preflight warns when they drift. They no longer decide what a
+draft looks like — they prompt, then call `scripts/newpost.sh`, which is the
+only implementation of the slug rule and field order.
 
 ## Documentation
 

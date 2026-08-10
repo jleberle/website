@@ -24,9 +24,9 @@ without unpublished work ever entering Git. Override the location with
 
 Use the CLI scaffolder or, in Obsidian, the Templater templates at
 `~/Notes/Meta/templates/Website/` (bound to the drafting hotkeys — post/review on
-the hyperkey with `P`/`R`, link/quote on `Ctrl+Cmd+L`). Those templates live only
-in the vault — this repo has no `.obsidian/` setup and no template copies, so
-edit them directly there:
+the hyperkey with `P`/`R`, link/quote on `Ctrl+Cmd+L`). The templates are
+versioned in `templates/obsidian/` and copied into the vault, which is where
+Obsidian loads them from — see [Draft templates](#draft-templates) below:
 
 ```sh
 scripts/newpost.sh article "Post Title"
@@ -59,6 +59,60 @@ scripts/publish-draft.sh reviews/2026-06-24-review-slug.md          # has a cove
 scripts/add-images.sh content/reviews/2026-06-24-review-slug --cover photo.jpg
 scripts/ship.sh "Review: ..."
 ```
+
+## Draft templates
+
+There are two front doors to a new draft — `scripts/newpost.sh` in a terminal
+(which is also how nvim gets there) and the Templater templates in Obsidian —
+and exactly one implementation behind them.
+
+That was not always true. The templates used to reimplement the whole draft
+format in JavaScript: their own slugify, their own YAML emitters, their own
+collision loop. With `lib.sh` that made **three** copies of the slug rule in
+two languages, kept aligned by comments in each file asking the next editor to
+keep them aligned. The comment on `slugify` in `scripts/lib.sh` still records
+what that cost — the Python exists in the shape it does to match the JavaScript
+"byte for byte". Three copies of the rule that decides a published URL is three
+chances for the same title to produce a different address depending on which
+window you started it in.
+
+Now the templates prompt, and `scripts/newpost.sh` generates:
+
+| Mode | Answers |
+|---|---|
+| `--print-slug` | what slug would this title get? |
+| `--print-target` | what path would this draft take, collisions resolved? |
+| `--print` | what does the draft text look like? |
+
+Every prompt has a matching flag (`--title`, `--tags`, `--sources`, ...), and
+`--batch` suppresses prompting entirely, so any front door can collect input
+however suits it and call the script for the answer. Obsidian keeps its
+suggester, which is nicer than a bash `read`; it just no longer decides
+anything about the output.
+
+The templates are versioned in `templates/obsidian/` and copied into
+`~/Notes/Meta/templates/Website/`, where Obsidian actually loads them. Both
+directions are supported because the vault copy is the only one you can test —
+Templater runs only inside Obsidian:
+
+```sh
+scripts/sync-templates.sh --check       # do they differ? (preflight runs this)
+scripts/sync-templates.sh --from-vault  # you edited in Obsidian
+scripts/sync-templates.sh --to-vault    # you edited in the repo
+```
+
+A symlink would be tidier and does not work: Obsidian Sync does not reliably
+follow symlinked folders, so the templates would stop reaching other machines.
+Copy plus drift check is the version that survives contact with Sync.
+
+Preflight reports drift as an advisory, and never as a failure — the templates
+are inputs to drafting, not to the published site, so nothing about a push is
+made wrong by them being out of step. It is also the one advisory `--full` does
+not promote, because CI has no vault to compare against and would be claiming
+an enforcement it cannot perform.
+
+Shelling out makes this desktop-only. Obsidian on iOS cannot run a subprocess,
+so drafting there would need the JavaScript back — and with it the drift.
 
 ## Citations
 
@@ -294,6 +348,7 @@ archive links to their own landing page.
 | `scripts/finishsource.sh` | Mark a source read and stamp its finish metadata |
 | `scripts/cite-refs.sh` | Extract citation keys / render a Works Cited list for a draft (used by publish-draft) |
 | `scripts/add-images.sh` | Add bundle images, with cover/body handling |
+| `scripts/sync-templates.sh` | Keep `templates/obsidian/` and the vault's Templater copies identical (`--check`, `--from-vault`, `--to-vault`) |
 | `scripts/doctor.sh` | Check this machine has what the site needs, sorted by what actually breaks without each tool; prints the install command for anything missing |
 | `scripts/preflight.sh` | Deploy gate. Blocks only on what a follow-up commit cannot undo (drafts, image metadata, build, content resources, feeds, published references); taxonomy, image policy and size/display lints print as advisories and are enforced by CI. Also run automatically by the `pre-push` git hook — see [operations.md](operations.md) |
 | `scripts/ship.sh` | Stage, commit, and push in one step, confirming the pending-file list first (`--yes` skips it); runs preflight itself so a failure leaves nothing committed, rather than relying on the hook to catch it after a commit exists. Called by `--push` on publish-draft.sh / finishsource.sh |
