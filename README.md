@@ -145,10 +145,14 @@ only implementation of the slug rule and field order.
 ## Credits
 
 - [PaperMod](https://github.com/adityatelange/hugo-PaperMod) — origin of the vendored Hugo theme base (MIT licensed)
-- [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — original palette inspiration
+- [Fast Search for Hugo](https://gist.github.com/cmod/5410eae147e4318164258742dd053993) by Craig Mod — fuzzy-match approach adapted into `assets/js/archive-filters.js`'s archive search (MIT licensed)
 - [Charter](https://ctan.org/pkg/xcharter) by Matthew Carter (Bitstream), extended as XCharter by Michael Sharpe ([Bitstream Charter Free font license](static/fonts/charter-LICENSE.txt))
 - [Fraunces](https://fonts.google.com/specimen/Fraunces) by Undercase Type ([SIL Open Font License](https://openfontlicense.org/))
 - [IBM Plex Mono](https://fonts.google.com/specimen/IBM+Plex+Mono) by IBM ([SIL Open Font License](https://openfontlicense.org/))
+
+### No longer in use
+
+- [Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover — early palette inspiration; the current palette (see [docs/maintenance.md](docs/maintenance.md)) has since diverged from it entirely
 
 ## License
 

@@ -24,6 +24,22 @@
             .trim();
     }
 
+    // Exact substring match first; for terms of 3+ characters, fall back to a
+    // sequential character-order check so a typo (e.g. "raech" for "reach")
+    // still matches without needing a full fuzzy-search library.
+    function fuzzyIncludes(text, term) {
+        if (text.indexOf(term) !== -1) return true;
+        if (term.length < 3) return false;
+
+        var lastIndex = -1;
+        for (var i = 0; i < term.length; i++) {
+            var found = text.indexOf(term[i], lastIndex + 1);
+            if (found === -1) return false;
+            lastIndex = found;
+        }
+        return true;
+    }
+
     function setUrlState(filter, query) {
         if (!window.history || !window.URL) return;
         var url = new URL(window.location.href);
@@ -51,7 +67,7 @@
             var matchesType = filter === "all" || entry.dataset.archiveSection === filter;
             var searchText = normalizeSearchText(entry.dataset.archiveSearchText);
             var matchesQuery = queryTerms.every(function (term) {
-                return searchText.indexOf(term) !== -1;
+                return fuzzyIncludes(searchText, term);
             });
             var isMatch = matchesType && matchesQuery;
             entry.classList.toggle("is-hidden", !isMatch);
