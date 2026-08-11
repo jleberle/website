@@ -9,7 +9,6 @@ categories:
 - "Articles"
 tags:
 - "AI"
-- "Personal"
 publishDate: "2026-08-11T12:20:18-05:00"
 lastmod: "2026-08-11T12:20:18-05:00"
 ---
