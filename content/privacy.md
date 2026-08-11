@@ -5,7 +5,8 @@ hideMeta: true
 
 I take internet privacy seriously and have worked to ensure almost everything on this site is as self-hosted as possible which protects privacy with the added benefit of speeding up the site. My promises as long as this site exists are the following:
 
-- No tracking is used on this website, I utilize Statichost.eu for serving the site and they receive your IP address but they are EU based and do not keep logs. Their privacy policy is [available on their website](https://www.statichost.eu/privacy/).
+- This website is hosted by Cloudflare, which logs your IP address under
+  their [privacy policies](https://www.cloudflare.com/privacypolicy/) when you visit the site. I've disabled all tracking through Cloudflare and do not utilize visitor tracking on the website.
 - No external resources are used on the site. I try to only link out to sites I
   support but cannot control what happens when you leave here.
 - However, in terms of what is sent when you do leave, I've set the site to minimize the information passed on. Currently if you leave to an HTTPS address it will only display this site rather than the whole url you came from. There are no non-SSL links but in the event those do appear on the site they will not receive any information on where you came from.
