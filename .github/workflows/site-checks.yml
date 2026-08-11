@@ -5,6 +5,13 @@ name: Site checks
 # Playwright Chromium for the build — on every push to every branch.
 # paths-ignore covers only files nothing is built from; note `README.md`
 # anchors to the repo root, so assets/css/README.md still triggers a run.
+#
+# paths-ignore is deliberately on `push` ONLY. Both jobs below are required
+# status checks on main, and a required check that never reports leaves a PR
+# stuck pending forever with no failure to fix — which is exactly what a
+# docs-only PR would hit if the filter applied here. Skipping costs a few
+# minutes of Actions time on the rare docs-only PR; the alternative is an
+# un-mergeable PR and no way to tell that from a hung one.
 on:
   push:
     branches: [main]
@@ -14,10 +21,6 @@ on:
       - "docs/**"
   pull_request:
     branches: [main]
-    paths-ignore:
-      - "README.md"
-      - "LICENSE"
-      - "docs/**"
   workflow_dispatch:
   schedule:
     - cron: "17 9 * * 1"
