@@ -18,11 +18,15 @@ set -euo pipefail
 
 usage() {
   cat >&2 <<EOF
-Usage: $(basename "$0") [--cite] [--push] <articles|reviews|quotes>/YYYY-MM-DD-slug.md
+Usage: $(basename "$0") [--cite] [--push] [<articles|reviews|quotes>/YYYY-MM-DD-slug.md]
 
 Moves an Obsidian draft (from the vault drafts folder, or an absolute path) into
 the Hugo content tree and sets draft: false. Articles and reviews publish as Hugo
 page bundles; quotes publish as flat files.
+
+Called with no path, lists every draft under the drafts folder and prompts for
+a number instead — handy when you don't have newpost.sh's printed path handy
+anymore (e.g. publishing a day or two later).
 
   --cite   Also append a rendered "Works Cited" list (articles and reviews only).
   --push   Also run scripts/ship.sh (preflight, commit, push) once published.
@@ -41,7 +45,7 @@ while [[ $# -gt 0 ]]; do
     *) ARGS+=("$1"); shift ;;
   esac
 done
-[[ ${#ARGS[@]} -eq 1 ]] || usage
+[[ ${#ARGS[@]} -le 1 ]] || usage
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 REPO_ROOT="$( cd "$SCRIPT_DIR/.." >/dev/null 2>&1 && pwd )"
@@ -49,6 +53,49 @@ source "$SCRIPT_DIR/lib.sh"
 
 # Drafts live in the Obsidian vault, outside the repo. Override with WEBSITE_DRAFTS_DIR.
 DRAFTS_ROOT="${WEBSITE_DRAFTS_DIR:-$HOME/Notes/07 Blog/Drafts}"
+
+# No path given: list every draft (newest first) and prompt for one, rather
+# than requiring the caller to remember or re-type the vault-relative path.
+if [[ ${#ARGS[@]} -eq 0 ]]; then
+  # Draft basenames are date-prefixed (YYYY-MM-DD-slug.md), so sorting on the
+  # basename (not the full path, which would group by section first) puts
+  # them newest-first across all three kinds -- no need to shell out for mtimes.
+  DRAFT_FILES=()
+  while IFS= read -r -d '' f; do
+    DRAFT_FILES+=("$f")
+  done < <(
+    find "$DRAFTS_ROOT" -mindepth 2 -maxdepth 2 \( -path "*/articles/*.md" -o -path "*/reviews/*.md" -o -path "*/quotes/*.md" \) -print0 2>/dev/null \
+      | while IFS= read -r -d '' f; do printf '%s\t%s\0' "$(basename "$f")" "$f"; done \
+      | sort -z -r \
+      | while IFS= read -r -d '' pair; do printf '%s\0' "${pair#*$'\t'}"; done
+  )
+
+  [[ ${#DRAFT_FILES[@]} -gt 0 ]] || { echo "No drafts found under $DRAFTS_ROOT." >&2; exit 1; }
+
+  echo "Drafts (newest first):" >&2
+  DRAFT_LABELS=()
+  for f in "${DRAFT_FILES[@]}"; do
+    title="$(sed -n 's/^title: *"\(.*\)"[[:space:]]*$/\1/p' "$f" | head -1)"
+    rel="${f#"$DRAFTS_ROOT/"}"
+    if [[ -n "$title" ]]; then
+      DRAFT_LABELS+=("$rel  —  $title")
+    else
+      DRAFT_LABELS+=("$rel")
+    fi
+  done
+
+  PS3="Publish which draft? (number, or Ctrl-C to cancel): "
+  DRAFT_PATH=""
+  select choice in "${DRAFT_LABELS[@]}"; do
+    if [[ -n "${choice:-}" ]]; then
+      DRAFT_PATH="${DRAFT_FILES[$((REPLY-1))]}"
+      break
+    fi
+    echo "Invalid choice." >&2
+  done
+  [[ -n "$DRAFT_PATH" ]] || { echo "No draft selected." >&2; exit 1; }
+  ARGS=("$DRAFT_PATH")
+fi
 
 DRAFT_INPUT="${ARGS[0]}"
 case "$DRAFT_INPUT" in
