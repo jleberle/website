@@ -349,7 +349,7 @@ archive links to their own landing page.
 | `scripts/cite-refs.sh` | Extract citation keys / render a Works Cited list for a draft (used by publish-draft) |
 | `scripts/add-images.sh` | Add bundle images, with cover/body handling |
 | `scripts/sync-templates.sh` | Keep `templates/obsidian/` and the vault's Templater copies identical (`--check`, `--from-vault`, `--to-vault`) |
-| `scripts/doctor.sh` | Check this machine has what the site needs, sorted by what actually breaks without each tool; prints the install command for anything missing |
+| `scripts/doctor.sh` | Check this checkout is configured correctly (Hugo version pin, `node_modules`, drafts folder, `WEBSITE_REPO`) — not tool installation, which is a package-manager concern |
 | `scripts/preflight.sh` | Deploy gate. Blocks only on what a follow-up commit cannot undo (drafts, image metadata, build, content resources, feeds, published references); taxonomy, image policy and size/display lints print as advisories and are enforced by CI. Also run automatically by the `pre-push` git hook — see [operations.md](operations.md) |
 | `scripts/ship.sh` | Stage, commit, and push in one step, confirming the pending-file list first (`--yes` skips it); runs preflight itself so a failure leaves nothing committed, rather than relying on the hook to catch it after a commit exists. Called by `--push` on publish-draft.sh / finishsource.sh |
 | `scripts/lib.sh` | Shared bash helpers (`trim`, `field`, `list_field`, `rfc3339_now`, ...) sourced by the scripts above — not run directly |

@@ -328,18 +328,18 @@ Two consequences worth internalising:
 2. **Deleting an imported post does not stick while its item is still in the
    feed.** Micro.blog re-creates any item it cannot find a post for, so a
    deletion only holds once the item has aged out of the window. Ask before
-   cleaning up duplicates:
+   cleaning up duplicates — open the **live** feed (what Micro.blog can
+   actually see, which a local build may be ahead of) and check whether the
+   event is still listed:
 
-   ```sh
-   python3 scripts/reading-window.py
+   ```
+   https://jaredeberle.org/reading/index.xml
    ```
 
-   It reads the **live** feed — what Micro.blog can actually see, which a local
-   build may be ahead of — and lists every event currently inside the window.
-   Anything listed will come back if you delete its post; anything absent is
-   safe to delete. This is the check that was missing during the 2026-08
-   cleanup, where 15 deletions held only because those events happened to have
-   aged out already.
+   `services.rss.limit` in `hugo.yaml` (currently 10) bounds how many events
+   are ever in the window at once, so this risk is smaller than it was during
+   the 2026-08 cleanup — but the underlying rule hasn't changed: anything
+   still in the live feed will come back if you delete its post.
 
 `scripts/checks/feed-lint.py` enforces the first point.
 `scripts/checks/reading-feed-links.json` records the link each event has been

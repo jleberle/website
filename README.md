@@ -6,19 +6,20 @@ Built with [Hugo](https://gohugo.io). The site began as a PaperMod fork but is n
 
 ## Setup
 
+Install the tools this repo needs — [Hugo](https://gohugo.io/installation/)
+(extended), Python 3, Git, [ImageMagick](https://imagemagick.org/), Node, and
+[Lychee](https://lychee.cli.rs/) — however you manage packages on your
+machine.
+
 ```sh
 scripts/doctor.sh
 ```
 
-That checks every program the site needs, says what each one is needed *for*,
-and prints the exact install command for anything missing. It exits non-zero
-only when something genuinely blocks publishing — most of what it can report is
-optional.
-
-Four things are required: [Hugo](https://gohugo.io/installation/) (extended),
-Python 3, Git, and [ImageMagick](https://imagemagick.org/). Node and
-[Lychee](https://lychee.cli.rs/) are needed only for `preflight --full`, which
-CI runs anyway, and GnuPG only for re-signing `security.txt` about once a year.
+That checks this *checkout*, not the tools: whether the Hugo you have matches
+the version pinned for the live build, whether `node_modules` is installed,
+and whether the machine-specific paths (Obsidian drafts folder, `WEBSITE_REPO`)
+are set up. It exits non-zero only when something needs attention — most of
+what it reports is informational.
 
 ## Publishing a post
 
@@ -98,7 +99,7 @@ scripts/finishsource.sh --push egan2023      # mark read, ship, and push
 
 ```sh
 scripts/log-writing.sh          # end of a writing session: count the vault, publish the log
-scripts/doctor.sh               # check this machine is set up
+scripts/doctor.sh               # check this checkout is configured correctly
 scripts/preflight.sh            # run the checks without committing anything
 ```
 
