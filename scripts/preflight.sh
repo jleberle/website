@@ -3,8 +3,8 @@
 #
 #   if this reaches the live site wrong, can it be taken back?
 #
-# StaticHost deploys on every push, independently of GitHub Actions, and
-# public/ is untracked — so CI is not a gate, it is a report that arrives after
+# Cloudflare Workers Builds deploys on every push, independently of GitHub
+# Actions, and public/ is untracked — so CI is not a gate, it is a report that arrives after
 # the site is already live. That is what makes the tiers mean something. A
 # BLOCKING failure is one where the push itself does damage that a follow-up
 # commit cannot undo (or where the site simply fails to build). Everything else
@@ -21,7 +21,7 @@
 #   2. image metadata        — EXIF/IPTC/XMP (incl. GPS) on a published raster;
 #                               once served it is scraped, syndicated, archived
 #   3. hugo --minify         — fails on ERROR, surfaces WARN; a build error means
-#                               StaticHost publishes nothing
+#                               Cloudflare Workers Builds publishes nothing
 #   4. content resources     — cover blocks pointing at files that don't exist
 #   5. source junk files     — Thumbs.db/desktop.ini in Hugo inputs get copied
 #                               into the build (.DS_Store is in .gitignore, so it
@@ -265,7 +265,7 @@ fi
 step "source junk files"
 # Only the two files that can actually reach the live site. `.DS_Store` used to
 # be checked here and no longer is: it's in .gitignore, so it cannot be
-# committed, and StaticHost builds from a fresh clone that never contains one.
+# committed, and Cloudflare Workers Builds builds from a fresh clone that never contains one.
 # The matching scan of public/ is gone for the same reason — public/ is
 # untracked and rebuilt in a clean container, so anything found there was a
 # local artifact that was never going to ship. Thumbs.db and desktop.ini are

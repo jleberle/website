@@ -40,8 +40,9 @@ never happens. Same for the blog-draft slug list.
 
 WHAT IT WRITES
 --------------
-data/writing-log.json, committed to this repo, because StaticHost builds the site
-in a container that has never seen the vault. Hugo reads it from hugo.Data.
+data/writing-log.json, committed to this repo, because Cloudflare Workers Builds
+builds the site in a container that has never seen the vault. Hugo reads it
+from hugo.Data.
 
 WHAT IT CANNOT SEE
 ------------------
@@ -82,7 +83,7 @@ except ModuleNotFoundError:  # pragma: no cover - environment guard
     sys.exit(
         "writing-log.py needs PyYAML to read writing-log.yaml.\n"
         "  pip3 install --user pyyaml\n"
-        "Only this script needs it; the StaticHost build reads the committed JSON."
+        "Only this script needs it; the Cloudflare Workers Builds build reads the committed JSON."
     )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent

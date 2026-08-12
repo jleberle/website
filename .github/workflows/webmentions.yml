@@ -2,9 +2,9 @@ name: Fetch webmentions
 
 # Pulls received webmentions from webmention.io on its own schedule, decoupled
 # from publishing — a post's mentions can arrive years after it goes up. If
-# anything changed, the commit here is pushed like any other; StaticHost
-# deploys on every push regardless of source, so no separate deploy hook is
-# needed (see docs/operations.md).
+# anything changed, the commit here is pushed like any other; Cloudflare
+# Workers Builds deploys on every push regardless of source, so no separate
+# deploy hook is needed (see docs/operations.md).
 on:
   schedule:
     - cron: "5 7 * * *"

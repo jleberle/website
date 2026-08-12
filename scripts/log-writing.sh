@@ -148,7 +148,7 @@ fi
 bold "Pushing"
 note "(Touch ID, if your key asks for it)"
 if git push --quiet; then
-  bold "Published — StaticHost will redeploy"
+  bold "Published — Cloudflare Workers Builds will redeploy"
   exit 0
 fi
 

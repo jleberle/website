@@ -56,8 +56,8 @@ repo directly — this is dashboard-managed config, not anything in this repo.
 
 That question, and not check runtime, is what decides the tiers. The whole
 default gate runs in about 7 seconds, so speed was never the constraint. What
-matters is that **StaticHost deploys on every push, independently of GitHub
-Actions, and `public/` is untracked** — CI is not a gate, it is a report that
+matters is that **Cloudflare Workers Builds deploys on every push, independently
+of GitHub Actions, and `public/` is untracked** — CI is not a gate, it is a report that
 arrives after the site is already live. So a check only earns the right to stop
 a push if pushing past it does damage a follow-up commit cannot undo.
 
@@ -67,7 +67,7 @@ a push if pushing past it does damage a follow-up commit cannot undo.
 |---|---|
 | published drafts | a post you believe is live and isn't; fails silently by nature |
 | image metadata | EXIF/IPTC/XMP (incl. GPS) on a published raster is scraped, syndicated and archived the moment it is served |
-| `hugo --minify` | a build error means StaticHost publishes nothing |
+| `hugo --minify` | a build error means Cloudflare Workers Builds publishes nothing |
 | content resources | cover blocks pointing at files that don't exist |
 | source junk files | `Thumbs.db`/`desktop.ini` in Hugo inputs get copied into the build |
 | feed lint | the sharpest one — Micro.blog dedupes on `<link>`, so a changed link creates duplicate posts on eberle.blog that must be deleted by hand (see `services.rss` in `hugo.yaml`) |
@@ -117,7 +117,8 @@ scripts/sign-security-txt.sh                    # re-sign (needs the private key
 
 Two checks were removed rather than retiered. The `public/` junk-file scan
 could not detect anything that could reach the live site: `public/` is
-untracked and StaticHost builds from a fresh clone in a clean container. The
+untracked and Cloudflare Workers Builds builds from a fresh clone in a clean
+container. The
 `.DS_Store` half of the source junk scan was equally unreachable — it is in
 `.gitignore`, so it cannot be committed. `Thumbs.db` and `desktop.ini` are not
 gitignored, so those remain checked.
@@ -294,7 +295,7 @@ The main and reading RSS feeds advertise the public Google WebSub hub through
 `atom:link rel="hub"`, alongside their canonical `rel="self"` links. The JSON
 Feed advertises the same endpoint through its JSON Feed 1.1 `hubs` array. After
 a successful push validation on GitHub, `scripts/notify-websub.py` waits until
-StaticHost serves the exact newly built feeds and then sends one publish ping
+Cloudflare Workers Builds serves the exact newly built feeds and then sends one publish ping
 for all three topics. It then sends Micro.blog's form-encoded `/ping` request
 for each feed, allowing Micro.blog to refresh registered sources immediately.
 

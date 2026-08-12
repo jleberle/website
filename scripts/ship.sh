@@ -2,7 +2,7 @@
 # Stage, commit, and push pending changes after running the local preflight gate.
 #
 # This is the last step of the write -> publish -> distribute pipeline: once
-# preflight passes, StaticHost deploys and GitHub Actions pings WebSub/Micro.blog
+# preflight passes, Cloudflare Workers Builds deploys and GitHub Actions pings WebSub/Micro.blog
 # automatically, so a clean push is the only manual action left.
 #
 # Usage:

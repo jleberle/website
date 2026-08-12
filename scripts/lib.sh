@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Shared bash helpers for the authoring scripts (newpost.sh, newsource.sh,
-# finishsource.sh, publish-draft.sh, ship.sh). Source, don't execute:
+# finishsource.sh, publish-draft.sh). Source, don't execute:
 #   source "$SCRIPT_DIR/lib.sh"
 #
 # These were previously copy-pasted verbatim across those five scripts, which

@@ -49,8 +49,8 @@ scripts/add-images.sh content/articles/<dir> --cover photo.jpg
 ```
 
 **5. Ship it.** This runs the checks, commits everything, and pushes. Pushing is
-what deploys — StaticHost builds from the push, so there is no separate deploy
-step.
+what deploys — Cloudflare Workers Builds builds from the push, so there is no
+separate deploy step.
 
 ```sh
 scripts/ship.sh "Commit message"
