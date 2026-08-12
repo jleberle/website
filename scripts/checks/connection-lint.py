@@ -35,38 +35,16 @@ adding a section does not quietly opt it out of the rules.
 
 from __future__ import annotations
 
+import difflib
 import re
 import sys
 from pathlib import Path
 
-BLOCK_ITEM = re.compile(r"^(\s*)-\s+(.*\S)\s*$")
+from _frontmatter import BLOCK_ITEM, front_matter, scalar, values
 
 # Kept in step with the accepted list in scripts/newsource.sh and the table in
 # docs/reading.md. Adding a kind is deliberate in all three places.
 SOURCE_TYPES = {"book", "article", "archive", "thesis", "dissertation"}
-
-
-def front_matter(path: Path) -> str:
-    text = path.read_text(encoding="utf-8", errors="replace")
-    match = re.match(r"^---\n(.*?)\n---", text, re.S)
-    return match.group(1) if match else ""
-
-
-def values(fm: str, key: str) -> list[str]:
-    """Read an inline (`[a, b]`) or block (`- a`) list for `key`."""
-    match = re.search(rf"^{key}:[ \t]*(.*)$", fm, re.M)
-    if not match:
-        return []
-    inline = match.group(1).strip()
-    if inline.startswith("["):
-        return [v.strip().strip("\"'") for v in inline.strip("[]").split(",") if v.strip()]
-    found = []
-    for line in fm[match.end():].split("\n")[1:]:
-        item = BLOCK_ITEM.match(line)
-        if not item:
-            break
-        found.append(item.group(2).strip("\"'"))
-    return found
 
 
 def content_sections(repo: Path) -> list[str]:
@@ -91,11 +69,9 @@ def main() -> int:
 
     badtypes: list[tuple[Path, str]] = []
     for path in sorted((root / "sources").glob("*/_index.md")):
-        match = re.search(r"^type:[ \t]*(.+)$", front_matter(path), re.M)
-        if match:
-            value = match.group(1).strip().strip("\"'")
-            if value not in SOURCE_TYPES:
-                badtypes.append((path, value))
+        value = scalar(front_matter(path), "type")
+        if value and value not in SOURCE_TYPES:
+            badtypes.append((path, value))
 
     orphans: list[Path] = []
     dangling: list[tuple[Path, str]] = []
@@ -142,8 +118,8 @@ def main() -> int:
             print()
         print("`sources:` keys with no page under content/sources/ (Hugo will publish an empty one):")
         for path, key in phantoms:
-            near = sorted(k for k in known if k[:4] == key[:4] or k.rstrip("abcdefgh") == key.rstrip("abcdefgh"))
-            hint = f"  did you mean {', '.join(repr(n) for n in near[:3])}?" if near else ""
+            near = difflib.get_close_matches(key, known, n=3, cutoff=0.6)
+            hint = f"  did you mean {', '.join(repr(n) for n in near)}?" if near else ""
             print(f"  {path}: {key!r}{hint}")
         print("Create content/sources/<key>/_index.md, or fix the key on the post.")
 

@@ -33,25 +33,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-
-def front_matter(path: Path) -> list[str]:
-    lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
-    if not lines or lines[0].strip() != "---":
-        return []
-    out = []
-    for line in lines[1:]:
-        if line.strip() == "---":
-            return out
-        out.append(line)
-    return []
-
-
-def scalar(lines: list[str], key: str) -> str:
-    for line in lines:
-        match = re.match(rf"^{key}:\s*(.*)$", line)
-        if match:
-            return match.group(1).strip().strip("\"'")
-    return ""
+from _frontmatter import front_matter, scalar
 
 
 def normalize(value: str) -> str:

@@ -18,39 +18,9 @@ import re
 import sys
 from pathlib import Path
 
+from _frontmatter import front_matter, values
+
 PERIOD = re.compile(r"^(?:\d{3,4}s|\d{1,2}(?:st|nd|rd|th)\s+century)$", re.IGNORECASE)
-BLOCK_ITEM = re.compile(r"^(\s*)-\s+(.*\S)\s*$")
-
-
-def front_matter(path: Path) -> list[str]:
-    lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
-    if not lines or lines[0].strip() != "---":
-        return []
-    out = []
-    for line in lines[1:]:
-        if line.strip() == "---":
-            return out
-        out.append(line)
-    return []
-
-
-def values(lines: list[str], key: str) -> list[str]:
-    """Read a block or inline list for `key` out of front matter."""
-    for i, line in enumerate(lines):
-        match = re.match(rf"^{key}:\s*(.*)$", line)
-        if not match:
-            continue
-        inline = match.group(1).strip()
-        if inline.startswith("["):
-            return [v.strip().strip("\"'") for v in inline.strip("[]").split(",") if v.strip()]
-        found = []
-        for item in lines[i + 1:]:
-            block = BLOCK_ITEM.match(item)
-            if not block:
-                break
-            found.append(block.group(2).strip("\"'"))
-        return found
-    return []
 
 
 def main() -> int:
