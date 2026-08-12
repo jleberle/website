@@ -11,8 +11,17 @@
 # <!-- cite: @key --> comment) can be rendered as a Works Cited list. With
 # --cite, a Chicago "Works Cited" list is appended to articles and reviews.
 # With --push, scripts/ship.sh runs immediately after (preflight, commit, push)
-# instead of leaving the change for a later scripts/ship.sh call — skip this if
-# the post still needs scripts/add-images.sh before it's ready to go live.
+# instead of leaving the change for a later scripts/ship.sh call.
+#
+# Body images: Obsidian saves pasted screenshots next to the note itself
+# (attachmentFolderPath "./") and links them as vault-root-relative markdown
+# image links (newLinkFormat "absolute", useMarkdownLinks true) -- see
+# .obsidian/app.json. For articles and reviews, publish-draft.sh resolves
+# those links, copies the images into the post bundle, converts them to AVIF
+# via scripts/to-avif.sh, rewrites the links to {{< figure >}} shortcodes, and
+# removes the originals from the vault. Cover images are still added by hand
+# afterward with scripts/add-images.sh --cover -- deciding which image is the
+# cover, and filling in its front matter, stays a deliberate step.
 
 set -euo pipefail
 
@@ -190,6 +199,91 @@ awk -v publish_date="$PUBLISH_DATE" '
 mkdir -p "$TARGET_DIR"
 mv "$TMP_FILE" "$TARGET_PATH"
 rm "$DRAFT_PATH"
+
+# Carry over and optimize body images (page bundles only -- quotes are flat
+# files with no bundle dir to hold them). See the header comment for how
+# Obsidian links these.
+if [[ "$SECTION" != "quotes" ]]; then
+  VAULT_ROOT="${WEBSITE_VAULT_ROOT:-$HOME/Notes}"
+  TO_AVIF="$SCRIPT_DIR/to-avif.sh"
+  IMAGE_MAP="$(python3 - "$TARGET_PATH" "$VAULT_ROOT" "$(dirname "$DRAFT_PATH")" <<'PY'
+import os
+import re
+import sys
+import urllib.parse
+
+target_path, vault_root, draft_dir = sys.argv[1:4]
+EXTS = {"jpg", "jpeg", "png", "webp", "avif"}
+
+with open(target_path, "r") as f:
+    content = f.read()
+
+seen_stems = set()
+resolved = []
+
+
+def slugify_stem(name):
+    stem = os.path.splitext(name)[0].lower()
+    stem = re.sub(r"[^a-z0-9]+", "-", stem).strip("-")
+    return stem or "image"
+
+
+def repl(m):
+    alt, raw_path = m.group(1), m.group(2)
+    if raw_path.startswith(("http://", "https://", "//")):
+        return m.group(0)
+    decoded = urllib.parse.unquote(raw_path)
+    candidates = [
+        decoded if os.path.isabs(decoded) else None,
+        os.path.join(vault_root, decoded),
+        os.path.join(draft_dir, os.path.basename(decoded)),
+    ]
+    src = next((c for c in candidates if c and os.path.isfile(c)), None)
+    if src is None:
+        print(f"  warning: could not resolve image, left as-is: {raw_path}", file=sys.stderr)
+        return m.group(0)
+    ext = os.path.splitext(src)[1].lstrip(".").lower()
+    if ext == "jpeg":
+        ext = "jpg"
+    if ext not in EXTS:
+        print(f"  warning: unsupported image format, left as-is: {src}", file=sys.stderr)
+        return m.group(0)
+    stem = slugify_stem(os.path.basename(src))
+    base_stem, n = stem, 2
+    while stem in seen_stems:
+        stem = f"{base_stem}-{n}"
+        n += 1
+    seen_stems.add(stem)
+    resolved.append((src, ext, stem))
+    alt_escaped = alt.replace('"', '\\"')
+    return '{{< figure src="' + stem + '.avif" alt="' + alt_escaped + '" align=center >}}'
+
+
+new_content = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", repl, content)
+
+with open(target_path, "w") as f:
+    f.write(new_content)
+
+for src, ext, stem in resolved:
+    print(f"{src}\t{ext}\t{stem}")
+PY
+)"
+
+  if [[ -n "$IMAGE_MAP" ]]; then
+    while IFS=$'\t' read -r img_src img_ext img_stem; do
+      [[ -z "$img_src" ]] && continue
+      img_dest="$TARGET_DIR/$img_stem.$img_ext"
+      cp "$img_src" "$img_dest"
+      if [[ "$img_ext" == "avif" ]]; then
+        echo "  copied (already avif): $img_stem.avif"
+      else
+        "$TO_AVIF" --no-jpeg --replace "$img_dest" >/dev/null
+        echo "  converted: $img_stem.avif"
+      fi
+      rm -f "$img_src"
+    done <<< "$IMAGE_MAP"
+  fi
+fi
 
 TITLE="$(sed -n 's/^title: *"\(.*\)"[[:space:]]*$/\1/p' "$TARGET_PATH" | head -1)"
 SLUG="$(sed -n 's/^slug: *"\(.*\)"[[:space:]]*$/\1/p' "$TARGET_PATH" | head -1)"
