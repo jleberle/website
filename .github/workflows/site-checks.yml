@@ -198,10 +198,15 @@ jobs:
             --public-root public --base-url https://jaredeberle.org
 
       - name: Commit outbound webmention state
+        # Pushes with PUSH_TOKEN (a PAT owned by an admin), not GITHUB_TOKEN:
+        # main requires 2 status checks and the bot identity behind
+        # GITHUB_TOKEN isn't exempt from that the way an admin push is
+        # (enforce_admins is off) — GH006 otherwise, silently swallowed here
+        # by continue-on-error.
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
         run: |
           set -euo pipefail
           if [[ -z "$(git status --porcelain -- data/webmentions-sent.json)" ]]; then
@@ -231,10 +236,11 @@ jobs:
         run: scripts/archive-links.sh --all
 
       - name: Commit archived link rewrites
+        # See the PUSH_TOKEN note on "Commit outbound webmention state" above.
         if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
         run: |
           set -euo pipefail
           if [[ -z "$(git status --porcelain -- content/)" ]]; then
