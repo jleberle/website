@@ -81,6 +81,32 @@ fi
 
 git add -A
 git commit -m "$MESSAGE"
-git push
+
+# writing-log.py reads *committed* git history, so the preflight run above
+# regenerated data/writing-log.json before the commit just made existed --
+# today's post was still invisible to `git log`. Re-run now that it exists,
+# and fold any change into the same not-yet-pushed commit (--amend is safe
+# here: nothing has been pushed yet, so this rewrites no shared history).
+# Without this, the log stays visibly stale until some later, unrelated push
+# happens to trigger another preflight run.
+set +e
+WLOG_OUT=$(python3 scripts/writing-log.py --allow-missing 2>&1)
+WLOG_RC=$?
+set -e
+if [[ $WLOG_RC -eq 0 ]] && ! git diff --quiet -- data/writing-log.json; then
+  git add data/writing-log.json
+  git commit --amend --no-edit
+  echo "writing log: updated after commit, folded in ($WLOG_OUT)" >&2
+elif [[ $WLOG_RC -ne 0 && $WLOG_RC -ne 3 ]]; then
+  echo "writing log: post-commit rebuild failed, left as committed by preflight:" >&2
+  echo "$WLOG_OUT" >&2
+fi
+
+# Tells the global pre-push hook (~/git/dotfiles/git/hooks/pre-push) that
+# preflight already ran and passed above, so it doesn't run the whole gate a
+# second time for a push that came from here. Exported only for this `git
+# push` child process, not the calling shell, so a bare `git push` afterward
+# is still fully gated.
+WEBSITE_PREFLIGHT_VERIFIED=1 git push
 
 echo "Shipped: $MESSAGE" >&2
