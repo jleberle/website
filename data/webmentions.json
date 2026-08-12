@@ -1,15 +1,1 @@
-{
-  "/articles/what-writing-a-post-looks-like/": [
-    {
-      "type": "in-reply-to",
-      "url": "https://micro.blog/technogeek75/95605162",
-      "published": "2026-08-11T22:29:16+00:00",
-      "author": {
-        "name": "technogeek75",
-        "url": "https://micro.blog/technogeek75",
-        "photo": "https://avatars.webmention.io/micro.blog/61573aa9986ce910b4a70e218736a225c5cfc75f68a8caa11ac69c3e34a81d7c.jpg"
-      },
-      "content": "@eberle your blog link seems not working? Do you know that?"
-    }
-  ]
-}
+{}
