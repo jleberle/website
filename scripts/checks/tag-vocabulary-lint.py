@@ -86,6 +86,7 @@ VOCABULARY = {
     "Rodeo",
     "Sports",
     "Tribal Recognition",
+    "Writing",
 }
 
 def main() -> int:
