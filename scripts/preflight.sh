@@ -39,6 +39,7 @@
 # failing and making a human retype it. ship.sh commits with `git add -A`, so
 # the refreshed files ride along with the push:
 #   - data/writing-log.json   (writing-log.py)
+#   - static/_headers CSP     (csp-hashes.sh --write; prints every hash it moves)
 #   - public/_headers digests (digest-fields.sh)
 #
 # ADVISORY — real, but a follow-up commit fixes them with no trace:
@@ -286,6 +287,22 @@ else
   echo "$FEED_OUT" | head -20
   fail "Something is wrong with the RSS/JSON feeds." \
        "Read the message above — it explains the specific problem and what to do. If it mentions changed reading links, take it seriously: that creates duplicate posts on eberle.blog that have to be deleted by hand."
+fi
+
+step "CSP hashes"
+# Regenerated, not checked. Drift here is live-breaking (a stale hash means the
+# browser blocks a real inline script in production), but the correct value is
+# fully determined by the build that just ran — so failing only made a human
+# copy-paste a hash that the script already knew. Writing it keeps the push
+# unblocked AND keeps production correct, which checking could only do one of.
+# csp-hashes.sh --write prints every hash it adds or removes with the source
+# that produced it, so a newly introduced inline script still shows up here.
+if CSP_OUT=$(bash scripts/csp-hashes.sh --write --no-build 2>&1); then
+  pass "$CSP_OUT"
+else
+  echo "$CSP_OUT"
+  fail "The security header in static/_headers could not be updated to match this build." \
+       "Read the error above. Until this is resolved, scripts on the live site may be blocked by the browser."
 fi
 
 step "Content-Digest headers"

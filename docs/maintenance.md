@@ -14,26 +14,44 @@ Two independent places pin the Hugo version, and both are manual:
    [operations.md](operations.md)) — update this to match, or the live build
    drifts from what CI validated.
 
-There used to be a script (`sync-hugo-version.sh`) that automated step 1. It's
-gone: step 2 was always manual regardless, so automating only half the sync
-didn't save the trip — both get updated by hand now, in the same sitting.
+After a Hugo upgrade, also verify CSP hashes — a changed minifier is one of the
+two ways they drift:
 
-## CSP
+```sh
+scripts/csp-hashes.sh --check
+```
 
-The `Content-Security-Policy` header in `static/_headers` is `script-src
-'self'; style-src 'self'` — no `'unsafe-inline'`, and no per-build hash list to
-maintain. There are no inline `<script>` or `<style>` blocks anywhere in
-`layouts/`; everything is either a fingerprinted external file under
-`/js/*` (see `extend_head.html`'s JS bundle) or, for the Speculation Rules
-block, `static/speculation-rules.json` loaded via `src=`. `'self'` already
-covers both, so nothing here needs regenerating after a Hugo upgrade or a
-template change.
+## CSP Hashes
 
-If a future template reintroduces an inline `<script>` or `<style>` block,
-either move it to an external file the same way, or reintroduce a hash-based
-CSP exception (a former `scripts/csp-hashes.sh` did this by computing
-SHA-256 hashes from the built output — check history if you need the
-approach back).
+The `Content-Security-Policy` header in `static/_headers` allows inline `<style>` and `<script>` blocks by exact SHA-256 hash. There is no `'unsafe-inline'` in `script-src` or `style-src`.
+
+That means hashes can drift when:
+
+- an inline script or style changes
+- Hugo's minifier changes how those blocks are emitted
+
+Commands:
+
+```sh
+scripts/csp-hashes.sh                       # print hashes for copy-paste
+scripts/csp-hashes.sh --check               # diff against static/_headers
+scripts/csp-hashes.sh --write               # rewrite static/_headers to match
+scripts/csp-hashes.sh --check --no-build    # reuse an existing public/
+```
+
+Drift normally resolves itself: `scripts/preflight.sh` runs `--write` on every
+run, so an edited inline script updates `static/_headers` in place and the
+change is committed with the rest of the push. `--write` prints every hash it
+adds or removes next to the source that produced it, so a newly introduced
+inline script appears in the preflight output rather than being blessed
+silently.
+
+This is safe for the property CSP actually provides: the hash list pins which
+inline scripts a *browser* may run, and it is generated from the same build
+that ships, so the pin stays exact. It was never a tamper check against this
+repo — anyone who can edit a template can edit `static/_headers` in the same
+commit. What it guards is drift, where an edited inline script silently stops
+matching its hash and the feature dies in production only.
 
 ## Trusted Types
 

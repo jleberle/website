@@ -39,10 +39,20 @@
        site's minimal-footprint stance (see /colophon) better than the
        "moderate" default that speculatively fetches on hover. Ignored
        outright by browsers without support; PDFs and external/download
-       links are excluded since they were never candidates to render.
-
-       Served from static/speculation-rules.json rather than inline: it never
-       changes per page, and loading it via `src=` means script-src only ever
-       needs 'self' -- no CSP hash to regenerate on every build (see
-       scripts/csp-hashes.sh's removal). */}}
-<script type="speculationrules" src="{{ "speculation-rules.json" | relURL }}"></script>
+       links are excluded since they were never candidates to render. */}}
+<script type="speculationrules">
+{
+  "prerender": [
+    {
+      "where": {
+        "and": [
+          { "href_matches": "/*" },
+          { "not": { "href_matches": "/*.pdf" } },
+          { "not": { "selector_matches": "[rel~=nofollow], [download], [target=_blank]" } }
+        ]
+      },
+      "eagerness": "conservative"
+    }
+  ]
+}
+</script>
