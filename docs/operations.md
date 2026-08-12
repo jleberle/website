@@ -225,16 +225,15 @@ rendered as links in each row, which is what dropped the ceiling above from
 GitHub Actions runs from `.github/workflows/site-checks.yml` on:
 
 - pushes to the canonical repo
+- pull requests
 - manual dispatch
 - weekly schedule
 
-The workflow runs:
+Three jobs:
 
-- a separate full-history Gitleaks secret scan
-- `scripts/preflight.sh --strict --full`
-- `npm run test:axe`
-
-Manual and scheduled runs also perform the full external `lychee` check against the generated site.
+- **Secret scan** (required check) — full-history Gitleaks scan
+- **Build, validate, and audit** (required check) — `scripts/preflight.sh --strict --full` and `npm run test:axe`. Read-only; never pushes.
+- **Post-deploy and maintenance** (not a required check; `needs: verify`, skipped on `pull_request`) — feed/WebSub notification and outbound webmentions on every push to `main`; on manual dispatch or the weekly schedule, also the full external `lychee` check and dead-link archiving to Wayback snapshots. The only job that pushes (outbound webmention state, archived link rewrites), using the `PUSH_TOKEN` PAT — see the Webmentions section above.
 
 Failure artifacts include the built `public/` directory and captured logs so CI failures can be inspected without reproducing them locally.
 

@@ -6,12 +6,12 @@ name: Site checks
 # paths-ignore covers only files nothing is built from; note `README.md`
 # anchors to the repo root, so assets/css/README.md still triggers a run.
 #
-# paths-ignore is deliberately on `push` ONLY. Both jobs below are required
-# status checks on main, and a required check that never reports leaves a PR
-# stuck pending forever with no failure to fix — which is exactly what a
-# docs-only PR would hit if the filter applied here. Skipping costs a few
-# minutes of Actions time on the rare docs-only PR; the alternative is an
-# un-mergeable PR and no way to tell that from a hung one.
+# paths-ignore is deliberately on `push` ONLY. Both required-check jobs below
+# (`secrets`, `verify`) run on `pull_request`, and a required check that never
+# reports leaves a PR stuck pending forever with no failure to fix — which is
+# exactly what a docs-only PR would hit if the filter applied there too.
+# Skipping costs a few minutes of Actions time on the rare docs-only PR; the
+# alternative is an un-mergeable PR and no way to tell that from a hung one.
 on:
   push:
     branches: [main]
@@ -72,12 +72,11 @@ jobs:
     name: Build, validate, and audit
     runs-on: ubuntu-24.04
     timeout-minutes: 30
-    # Only the two webmention steps at the end need to push (a data-file
-    # commit recording which outbound links have already been notified);
-    # everything else here — installing deps, running Playwright, shelling
-    # out to lychee's Docker image — has no business holding a write token.
+    # Read-only: this job only builds and checks, it never pushes. Push
+    # side-effects (webmentions, link archiving) live in post-deploy below,
+    # which is the only job holding a write token.
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - name: Check out repository
@@ -94,11 +93,11 @@ jobs:
       - name: Derive Hugo version from .hugo-version
         # .hugo-version is this repo's record of the Hugo release Cloudflare
         # Workers Builds is pinned to via its own HUGO_VERSION build variable
-        # (dashboard-managed — see docs/operations.md). notify-websub.py later
-        # does a byte-for-byte comparison between this job's build output and
-        # what's live on the site — if this job's Hugo version ever drifted
-        # from Cloudflare's, that comparison would never match and the notify
-        # step would burn its full --wait budget every run before failing.
+        # (dashboard-managed — see docs/operations.md). notify-websub.py
+        # (post-deploy job) later does a byte-for-byte comparison between a
+        # freshly built site and what's live — if either job's Hugo version
+        # ever drifted from Cloudflare's, that comparison would never match
+        # and the notify step would burn its full --wait budget before failing.
         run: |
           set -euo pipefail
           VERSION=$(cat .hugo-version)
@@ -179,6 +178,71 @@ jobs:
           mkdir -p .ci-artifacts
           bash -o pipefail -c 'npm run test:axe 2>&1 | tee .ci-artifacts/axe.log'
 
+      - name: Upload failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-checks-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 3
+          if-no-files-found: warn
+          include-hidden-files: true
+          path: .ci-artifacts/
+
+  post-deploy:
+    name: Post-deploy and maintenance
+    needs: verify
+    # Not a required status check — this handles side effects (feed pings,
+    # outbound webmentions, dead-link archiving) after verify has already
+    # confirmed the build is good, not correctness itself. Skipped entirely
+    # on pull_request: every step below is push/schedule/dispatch-only via its
+    # own `if`, so a PR run would just spin up the runner to do nothing.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    # The only job in this workflow that pushes (outbound webmention state,
+    # archived link rewrites) — isolated here so verify above stays read-only.
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Derive Hugo version from .hugo-version
+        run: |
+          set -euo pipefail
+          VERSION=$(cat .hugo-version)
+          if [[ -z "$VERSION" ]]; then
+            echo "Could not read a Hugo version from .hugo-version" >&2
+            exit 1
+          fi
+          echo "Using Hugo $VERSION (from .hugo-version)"
+          echo "HUGO_VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Install Hugo
+        run: |
+          set -euo pipefail
+          DEB="hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          curl -fsSL \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${DEB}" \
+            -o "/tmp/${DEB}"
+          curl -fsSL \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_checksums.txt" \
+            -o /tmp/hugo_checksums.txt
+          awk -v f="$DEB" '$2 == f' /tmp/hugo_checksums.txt > /tmp/hugo.deb.sha256
+          [[ -s /tmp/hugo.deb.sha256 ]] || { echo "No checksum entry for $DEB" >&2; exit 1; }
+          (cd /tmp && sha256sum -c hugo.deb.sha256)
+          sudo dpkg -i "/tmp/${DEB}"
+          hugo version
+
+      - name: Build site
+        # Matches Cloudflare's build command exactly (hugo --minify &&
+        # digest-fields.sh --no-build) so notify-websub.py's byte-for-byte
+        # comparison against the live site is meaningful.
+        run: hugo --minify && scripts/digest-fields.sh --no-build
+
       - name: Notify feed services after deployment
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         continue-on-error: true
@@ -219,6 +283,17 @@ jobs:
           git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
           git push
 
+      - name: Add lychee wrapper
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          cat > "$RUNNER_TEMP/bin/lychee" <<SH
+          #!/usr/bin/env sh
+          exec docker run --rm -v "\$PWD":/work -w /work $LYCHEE_IMAGE "\$@"
+          SH
+          chmod +x "$RUNNER_TEMP/bin/lychee"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
       - name: Run external link check
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
@@ -257,7 +332,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: site-checks-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          name: post-deploy-failure-${{ github.run_id }}-${{ github.run_attempt }}
           retention-days: 3
           if-no-files-found: warn
           include-hidden-files: true
