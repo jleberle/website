@@ -80,13 +80,7 @@ it beats failing and making a human retype it. `ship.sh` commits with
 `git add -A`, so the refreshed files ride along with the push:
 
 - `data/writing-log.json` — `writing-log.py`
-- `static/_headers` CSP hashes — `csp-hashes.sh --write`
 - `public/_headers` Content-Digest — `digest-fields.sh`
-
-CSP drift is live-breaking (a stale hash means the browser blocks a real inline
-script in production), so it can't be an advisory — but it also can't justify
-blocking, since the script already knows the answer. Writing it keeps the push
-unblocked *and* production correct, which checking could only do one of.
 `--write` prints every hash it adds or removes alongside the source that
 produced it, so a newly introduced inline script still surfaces in the output
 rather than being blessed silently.
