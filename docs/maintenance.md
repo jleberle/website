@@ -8,10 +8,12 @@ When local Hugo changes, run:
 scripts/sync-hugo-version.sh
 ```
 
-That updates the Hugo version pinned in `statichost.yml`. CI needs no separate
+That updates the Hugo version pinned in `.hugo-version`. CI needs no separate
 update: `.github/workflows/site-checks.yml` derives its own Hugo version from
-`statichost.yml`'s image line at run time, so it can't drift from what this
-script just set.
+`.hugo-version` at run time, so it can't drift from what this script just set.
+This does NOT update the live build — Cloudflare Workers Builds pins Hugo via
+its own `HUGO_VERSION` build variable (dashboard-managed); update that
+separately or the two will drift (see [operations.md](operations.md)).
 
 After a Hugo upgrade, also verify CSP hashes — a changed minifier is one of the
 two ways they drift:
@@ -79,7 +81,7 @@ Dead compatibility shims and unused PaperMod pieces were deliberately removed ra
 
 ## Operational Notes
 
-- StaticHost deploys independently of GitHub Actions, so local preflight remains the real pre-push gate.
+- Cloudflare Workers Builds deploys independently of GitHub Actions, so local preflight remains the real pre-push gate.
 - Secret scanning is the global Git pre-commit hook's only responsibility. The repository preflight owns publish policy, including draft and source-image checks, without modifying the Git index.
-- `scripts/preflight.sh` scans Hugo source directories for `Thumbs.db` and `desktop.ini`. It no longer scans for `.DS_Store` (in `.gitignore`, so it cannot be committed) or scans `public/` at all (untracked, and StaticHost builds from a fresh clone) — neither could detect anything that could reach the live site. See [operations.md](operations.md).
+- `scripts/preflight.sh` scans Hugo source directories for `Thumbs.db` and `desktop.ini`. It no longer scans for `.DS_Store` (in `.gitignore`, so it cannot be committed) or scans `public/` at all (untracked, and Cloudflare builds from a fresh clone) — neither could detect anything that could reach the live site. See [operations.md](operations.md).
 - Preflight also includes site-specific growth guards: oversized built HTML pages and responsive image candidates that are too small for the slots the theme renders. Both are advisories — they print but do not block a push, and CI fails on them.

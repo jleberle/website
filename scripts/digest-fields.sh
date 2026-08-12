@@ -5,10 +5,10 @@
 # Unlike CSP hashes (template-driven, stable across builds), these digests
 # are content-driven: they change on every post. They cannot live in
 # static/_headers as a hand-maintained value, so this script runs as part
-# of the deploy build (see statichost.yml) and writes straight into the
-# public/_headers build artifact, after Hugo has copied static/_headers
-# there. Re-running is idempotent: any previously appended block is
-# replaced, not accumulated.
+# of the deploy build (Cloudflare Workers Builds' build command — see
+# docs/operations.md) and writes straight into the public/_headers build
+# artifact, after Hugo has copied static/_headers there. Re-running is
+# idempotent: any previously appended block is replaced, not accumulated.
 #
 # Deliberately scoped to JSON/XML feeds, not HTML — browsers ignore these
 # fields, and per the spec, spending the effort only pays off on
@@ -46,7 +46,7 @@ TARGETS=(
 
 digest_of() {
   # Prefer openssl; fall back to GNU coreutils (sha256sum + basenc), in case
-  # the deploy image (see statichost.yml) lacks an openssl CLI.
+  # Cloudflare's build image lacks an openssl CLI.
   if command -v openssl >/dev/null; then
     openssl dgst -sha256 -binary "$1" | openssl base64 -A
   elif command -v sha256sum >/dev/null && command -v basenc >/dev/null; then

@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
-# Sync the Hugo version pinned in statichost.yml to match local Hugo — but
-# only once the matching Docker image and GitHub release actually exist.
-# Bumping early 404s StaticHost's image pull (see statichost.yml). CI needs no
-# separate sync: .github/workflows/site-checks.yml derives its own Hugo
-# version from statichost.yml's image line at run time, so it can never drift
-# from what this script updates here.
+# Sync the Hugo version pinned in .hugo-version to match local Hugo — but
+# only once the matching GitHub release actually exists. Bumping early would
+# 404 CI's .deb download (see .github/workflows/site-checks.yml, which derives
+# its own Hugo version from .hugo-version at run time, so it can never drift
+# from what this script sets here).
+#
+# .hugo-version does NOT drive the live build — Cloudflare Workers Builds
+# pins Hugo via its own HUGO_VERSION build variable (dashboard-managed, see
+# docs/operations.md), independent of anything in this repo. After bumping
+# .hugo-version, update that build variable too or the two will drift.
 #
 # Usage:
 #   scripts/sync-hugo-version.sh            # check and update if available
@@ -13,7 +17,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-STATICHOST="$REPO_ROOT/statichost.yml"
+PIN_FILE="$REPO_ROOT/.hugo-version"
 DRY_RUN=false
 
 while [[ $# -gt 0 ]]; do
@@ -30,34 +34,16 @@ if [[ -z "$LOCAL_VERSION" ]]; then
 fi
 echo "Local Hugo version: $LOCAL_VERSION"
 
-# curl -f treats any non-4xx/5xx response (including GitHub's redirect to the
-# release asset) as success, so one check covers both Docker Hub and GitHub.
-curl -fsS -o /dev/null "https://hub.docker.com/v2/repositories/hugomods/hugo/tags/debian-git-${LOCAL_VERSION}" \
-  || { echo "Docker image hugomods/hugo:debian-git-${LOCAL_VERSION} not published yet. No changes made."; exit 0; }
 curl -fsS -o /dev/null "https://github.com/gohugoio/hugo/releases/download/v${LOCAL_VERSION}/hugo_extended_${LOCAL_VERSION}_linux-amd64.deb" \
   || { echo "GitHub release v${LOCAL_VERSION} .deb not published yet. No changes made."; exit 0; }
-echo "Docker image and GitHub release both available."
-
-# statichost.yml pins the image by digest (tag alone is mutable), so the new
-# tag's digest has to be resolved here too — the sed below would otherwise
-# leave the old digest attached to the new tag, silently pulling stale bits.
-DOCKER_TAG="debian-git-${LOCAL_VERSION}"
-DOCKER_TOKEN=$(curl -fsS "https://auth.docker.io/token?service=registry.docker.io&scope=repository:hugomods/hugo:pull" \
-  | python3 -c "import json,sys; print(json.load(sys.stdin)['token'])")
-HUGO_DIGEST=$(curl -fsS -D - -o /dev/null \
-  -H "Authorization: Bearer ${DOCKER_TOKEN}" \
-  -H "Accept: application/vnd.docker.distribution.manifest.list.v2+json,application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
-  "https://registry-1.docker.io/v2/hugomods/hugo/manifests/${DOCKER_TAG}" \
-  | grep -i '^docker-content-digest:' | tr -d '\r' | awk '{print $2}')
-[[ -n "$HUGO_DIGEST" ]] || { echo "Error: could not resolve digest for hugomods/hugo:${DOCKER_TAG}." >&2; exit 1; }
-echo "Resolved hugomods/hugo:${DOCKER_TAG} -> ${HUGO_DIGEST}"
+echo "GitHub release available."
 
 if $DRY_RUN; then
-  echo "Dry run — would update $STATICHOST to Hugo $LOCAL_VERSION."
+  echo "Dry run — would update $PIN_FILE to Hugo $LOCAL_VERSION."
   exit 0
 fi
 
-# -i.bak is portable across BSD and GNU sed (only a bare -i differs between them).
-sed -i.bak -E "s|hugomods/hugo:[a-z-]+[0-9]+\.[0-9]+\.[0-9]+(@sha256:[a-f0-9]+)?|hugomods/hugo:${DOCKER_TAG}@${HUGO_DIGEST}|" "$STATICHOST" && rm -f "$STATICHOST.bak"
+echo "$LOCAL_VERSION" > "$PIN_FILE"
 
-echo "Updated (or already current). Review with: git diff $STATICHOST"
+echo "Updated (or already current). Review with: git diff $PIN_FILE"
+echo "Remember: also update the HUGO_VERSION build variable in Cloudflare's Workers Builds settings."

@@ -33,13 +33,20 @@ Bypass the hook deliberately with `git push --no-verify`.
 
 ## Deployment
 
-Deployment is handled by [statichost.eu](https://statichost.eu) via `statichost.yml`.
+Deployment is handled by Cloudflare Workers Builds, which watches the GitHub
+repo directly — this is dashboard-managed config, not anything in this repo.
 
-- every push deploys from the canonical repo path, which must be set to the
-  GitHub repo in Statichost's dashboard — this is external config, not
-  anything in this repo
-- Hugo runs with `--minify`
-- output is written to `public/`
+- every push to `main` triggers a build and deploy; other branches build to
+  preview URLs
+- build command: `hugo --minify && scripts/digest-fields.sh --no-build`
+- deploy command: `npx wrangler deploy` (`npx wrangler versions upload` for
+  previews)
+- the Hugo version is pinned via a `HUGO_VERSION` build variable in
+  Cloudflare's build config, kept in sync with this repo's `.hugo-version`
+  (see [maintenance.md](maintenance.md)) — the two are independent and can
+  drift if one is updated without the other
+- `wrangler.jsonc`'s `assets.directory` (`./public`) is served via Workers
+  Assets, which honors `public/_headers` the same way Cloudflare Pages did
 
 ## Local Preflight
 

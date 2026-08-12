@@ -147,13 +147,15 @@ optional curl "curl" \
 # --- Configuration ----------------------------------------------------------
 heading "SETUP — where things live"
 
-# The pinned Hugo in statichost.yml is what actually builds the live site. A
-# local version ahead of it can use features the deploy cannot, so the build
-# passes here and fails there — the one drift worth naming explicitly.
-PINNED="$(sed -n -E 's/^image: hugomods\/hugo:debian-git-([0-9]+\.[0-9]+\.[0-9]+)@sha256:.*/\1/p' statichost.yml 2>/dev/null)"
+# The pin in .hugo-version tracks what Cloudflare Workers Builds' own
+# HUGO_VERSION build variable is set to (dashboard-managed, not read from this
+# repo — see docs/operations.md). A local version ahead of it can use features
+# the deploy cannot, so the build passes here and fails there — the one drift
+# worth naming explicitly.
+PINNED="$(cat .hugo-version 2>/dev/null)"
 LOCAL="$(printf '%s' "${HUGO_V:-}" | sed -E 's/^v?([0-9]+\.[0-9]+\.[0-9]+).*/\1/')"
 if [[ -z "$PINNED" ]]; then
-  printf '  \033[33m⚠\033[0m %-14s %s\n' "hugo pin" "could not read a version from statichost.yml"
+  printf '  \033[33m⚠\033[0m %-14s %s\n' "hugo pin" "could not read a version from .hugo-version"
 elif [[ -z "$LOCAL" ]]; then
   : # hugo missing; already reported above
 elif [[ "$LOCAL" == "$PINNED" ]]; then

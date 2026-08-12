@@ -43,7 +43,7 @@ if $NO_BUILD; then
   [[ -d public ]] || { echo "Error: --no-build set but public/ not found." >&2; exit 2; }
 else
   # Build fresh — minifyOutput is on in hugo.yaml, so the bytes here match what
-  # statichost serves (a stale public/ would hash to the wrong values).
+  # Cloudflare serves (a stale public/ would hash to the wrong values).
   hugo --quiet
 fi
 

@@ -91,23 +91,22 @@ jobs:
           node-version: "24"
           cache: npm
 
-      - name: Derive Hugo version from statichost.yml
-        # statichost.yml is the actual production build config (StaticHost.eu
-        # reads it directly), so it's the single source of truth for which
-        # Hugo release to install here. notify-websub.py later does a
-        # byte-for-byte comparison between this job's build output and what's
-        # live on the site — if this job's Hugo version ever drifted from
-        # StaticHost's, that comparison would never match and the notify step
-        # would burn its full --wait budget every run before failing.
+      - name: Derive Hugo version from .hugo-version
+        # .hugo-version is this repo's record of the Hugo release Cloudflare
+        # Workers Builds is pinned to via its own HUGO_VERSION build variable
+        # (dashboard-managed — see docs/operations.md). notify-websub.py later
+        # does a byte-for-byte comparison between this job's build output and
+        # what's live on the site — if this job's Hugo version ever drifted
+        # from Cloudflare's, that comparison would never match and the notify
+        # step would burn its full --wait budget every run before failing.
         run: |
           set -euo pipefail
-          IMAGE_LINE=$(grep -m1 '^image:' statichost.yml)
-          VERSION=$(sed -n -E 's/^image: hugomods\/hugo:debian-git-([0-9]+\.[0-9]+\.[0-9]+)@sha256:.*/\1/p' <<< "$IMAGE_LINE")
+          VERSION=$(cat .hugo-version)
           if [[ -z "$VERSION" ]]; then
-            echo "Could not parse a Hugo version out of statichost.yml's image line: $IMAGE_LINE" >&2
+            echo "Could not read a Hugo version from .hugo-version" >&2
             exit 1
           fi
-          echo "Using Hugo $VERSION (parsed from statichost.yml)"
+          echo "Using Hugo $VERSION (from .hugo-version)"
           echo "HUGO_VERSION=$VERSION" >> "$GITHUB_ENV"
 
       - name: Install Hugo
