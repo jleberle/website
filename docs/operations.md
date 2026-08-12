@@ -231,6 +231,37 @@ Manual and scheduled runs also perform the full external `lychee` check against 
 
 Failure artifacts include the built `public/` directory and captured logs so CI failures can be inspected without reproducing them locally.
 
+## Webmentions
+
+`.github/workflows/webmentions.yml` fetches received webmentions from
+webmention.io on a daily schedule and writes `data/webmentions.json`,
+overwriting it in full each run — webmention.io is the source of truth, not
+the file. To remove a mention from the site, delete it in the webmention.io
+dashboard first, then re-run the workflow (`gh workflow run webmentions.yml`)
+or wait for the next scheduled run; editing `data/webmentions.json` directly
+is not durable.
+
+That workflow, plus two steps inside `site-checks.yml` (outbound webmention
+state, archived link rewrites), push commits straight to `main`. `main`
+requires 2 status checks to pass before a push lands, and `enforce_admins` is
+off, so pushes authenticated as an admin (e.g. Jared's own commits) bypass
+that requirement — but the default `GITHUB_TOKEN` used by Actions is not an
+admin and gets rejected with `GH006: Protected branch update failed`. All
+three steps instead authenticate with the `PUSH_TOKEN` repo secret, a
+fine-grained PAT owned by an admin, scoped to this repo only with Contents:
+Read and write.
+
+To rotate `PUSH_TOKEN` before it expires:
+
+1. Go to <https://github.com/settings/personal-access-tokens>, regenerate (or
+   create a new) fine-grained token scoped to `jleberle/website` only, with
+   Contents: Read and write and nothing else.
+2. Run `gh secret set PUSH_TOKEN --repo jleberle/website` and paste the new
+   value when prompted.
+
+`gh secret list --repo jleberle/website` only lists secrets and shows when
+they were last updated — it does not renew or rotate anything.
+
 ## Dependabot
 
 Dependabot is configured in `.github/dependabot.yml` for grouped monthly updates covering:
