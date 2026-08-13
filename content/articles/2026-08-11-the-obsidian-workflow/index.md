@@ -42,6 +42,7 @@ The promotion process is relatively simple, I skim them in Obsidian for any mate
 ## The Obsidian Structure
 
 {{< figure src="screenshot-2026-08-11-at-12-50-33-pm.avif" alt="My folder structure in Obsidian" align=center >}}
+
 My Obsidian is organized with numbered folders, starting with the Journal which includes weekly, monthly, and yearly notes, that recap what happened during those periods. Inbox is for imported notes; Notes are general notes not tied to a project; Research is all my archival PDFs; Projects are the individual projects I'm working on; Lectures are my class lecture materials; Micro.Blog stores my micro.blog posts and Blog are the main blog drafts (where I'm writing this). Finally Meta is a collection of scripts and templates along with Obsidian bases to service and provide an overview of the materials in the vault.
 ## Working with Notes
 
@@ -50,7 +51,9 @@ When I'm ready I run the [Zotero Integration plugin](https://community.obsidian.
 Within each project I have a folder for Notes, which are notes directly connected to a source; analysis, which are deeper writings, moving towards the final product; Index, which collects the timeline materials for the project; Conferences collects papers that come out of the material; and Sources are the books or archival materials tied to that project. Below the folders are Obsidian bases that provide overviews of the books and archival sources and a listing of the various people, places, and organizations tied to the project. When I import a source, if it's connected to a person I can add a `[[wikilink]]` of their name in the frontmatter and it will populate a note I can fill in with the appropriate information to build a database for the project.
 
 Finally there's a base showing all unread materials, a to-do document for the various things I need to track down or verify, and a project dashboard providing an overview of everything in one spot.
+
 {{< figure src="screenshot-2026-08-11-at-12-58-22-pm.avif" alt="The structure of an individual project folder" align=center >}}
+
 ## Moving Forward
 
 All of this is pretty vague because I haven't been working with the setup too much so far, as I dive deeper into it I will undoubtedly encounter annoyances and tweak the setup as it progresses, but right now it provides much more structure than my previous setup and the metadata for my files is actually there now allowing for better searching and processing than before. 
