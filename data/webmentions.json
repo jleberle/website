@@ -1,1 +1,15 @@
-{}
+{
+  "/articles/what-writing-a-post-looks-like/": [
+    {
+      "type": "in-reply-to",
+      "url": "https://micro.blog/eberle/95649964",
+      "published": "2026-08-12T16:58:46+00:00",
+      "author": {
+        "name": "eberle",
+        "url": "https://micro.blog/eberle",
+        "photo": "https://avatars.webmention.io/micro.blog/d6e585682ec4fa0c5eb3f158d64e20c258427d3dcf2f1a353f8c17452e241242.jpg"
+      },
+      "content": "@technogeek75 Yeah it was a DNSSEC issue with Porkbun, didn’t thing it’d be a problem but it was. Thanks."
+    }
+  ]
+}
