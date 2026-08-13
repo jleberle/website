@@ -1,23 +1,23 @@
 {
-  "generated": "2026-08-12T17:41:25+00:00",
+  "generated": "2026-08-13T15:20:59+00:00",
   "sources": [
     {
       "name": "blog",
       "label": "Blog",
-      "words": 29096
+      "words": 30149
     },
     {
       "name": "notes",
       "label": "Notes",
-      "words": 955
+      "words": 2043
     }
   ],
   "totals": {
-    "words": 30051,
-    "days": 37,
+    "words": 32192,
+    "days": 38,
     "first": "2011-02-14",
-    "last": "2026-08-12",
-    "average": 812,
+    "last": "2026-08-13",
+    "average": 847,
     "best_day": {
       "date": "2026-05-18",
       "words": 7654,
@@ -35,12 +35,22 @@
   },
   "days": [
     {
-      "date": "2026-08-12",
-      "words": 363,
-      "net": 363,
-      "files": 2,
+      "date": "2026-08-13",
+      "words": 1053,
+      "net": 1053,
+      "files": 1,
       "sources": {
-        "blog": 363
+        "blog": 1053
+      }
+    },
+    {
+      "date": "2026-08-12",
+      "words": 1451,
+      "net": 1451,
+      "files": 3,
+      "sources": {
+        "blog": 363,
+        "notes": 1088
       }
     },
     {
@@ -373,11 +383,11 @@
     {
       "key": "2026-08-10",
       "label": "Week of Aug 10, 2026",
-      "words": 1711,
-      "days": 2,
+      "words": 3852,
+      "days": 3,
       "start": "2026-08-10",
-      "end": "2026-08-12",
-      "average": 856
+      "end": "2026-08-13",
+      "average": 1284
     },
     {
       "key": "2026-08-03",
@@ -627,11 +637,11 @@
     {
       "key": "2026-08",
       "label": "August 2026",
-      "words": 2294,
-      "days": 3,
+      "words": 4435,
+      "days": 4,
       "start": "2026-08-03",
-      "end": "2026-08-12",
-      "average": 765
+      "end": "2026-08-13",
+      "average": 1109
     },
     {
       "key": "2026-07",
@@ -800,11 +810,11 @@
     {
       "key": "2026",
       "label": "2026",
-      "words": 17450,
-      "days": 19,
+      "words": 19591,
+      "days": 20,
       "start": "2026-05-07",
-      "end": "2026-08-12",
-      "average": 918
+      "end": "2026-08-13",
+      "average": 980
     },
     {
       "key": "2022",
