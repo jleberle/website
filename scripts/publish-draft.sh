@@ -261,6 +261,26 @@ def repl(m):
 
 new_content = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", repl, content)
 
+
+def ensure_blank_lines_around_figures(text):
+    # Figure shortcodes are block-level; html-validate chokes if one lands
+    # adjacent to paragraph text with no blank line separating them (the
+    # renderer nests it inside the <p>, producing implicitly-closed/stray
+    # tags). Force a blank line before and after every figure shortcode line.
+    lines = text.split("\n")
+    out = []
+    for i, line in enumerate(lines):
+        is_figure = line.strip().startswith("{{< figure") and line.strip().endswith(">}}")
+        if is_figure and out and out[-1].strip() != "":
+            out.append("")
+        out.append(line)
+        if is_figure and i + 1 < len(lines) and lines[i + 1].strip() != "":
+            out.append("")
+    return "\n".join(out)
+
+
+new_content = ensure_blank_lines_around_figures(new_content)
+
 with open(target_path, "w") as f:
     f.write(new_content)
 
