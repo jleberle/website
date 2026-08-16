@@ -19,9 +19,18 @@
 # .obsidian/app.json. For articles and reviews, publish-draft.sh resolves
 # those links, copies the images into the post bundle, converts them to AVIF
 # via scripts/to-avif.sh, rewrites the links to {{< figure >}} shortcodes, and
-# removes the originals from the vault. Cover images are still added by hand
-# afterward with scripts/add-images.sh --cover -- deciding which image is the
-# cover, and filling in its front matter, stays a deliberate step.
+# removes the originals from the vault.
+#
+# Cover images: if the draft has both a `cover:` block (from newpost.sh
+# --cover) and a `sources:` credit, publish-draft.sh fetches the cover
+# automatically via scripts/fetch-cover.py once the bundle directory exists --
+# it reads the source's title/author, searches Apple's Books catalogue, and
+# writes cover.avif + cover.jpg. Best-effort: a network failure or a title
+# with no match warns and leaves the cover: block pointing at a file that
+# doesn't exist yet rather than blocking the rest of the publish. A draft
+# without sources: (or without a cover: block at all) is untouched, same as
+# before -- add one by hand with scripts/fetch-cover.py or
+# scripts/add-images.sh --cover.
 
 set -euo pipefail
 
@@ -302,6 +311,25 @@ PY
       fi
       rm -f "$img_src"
     done <<< "$IMAGE_MAP"
+  fi
+fi
+
+# Auto-fetch a cover when a review credits a source and asked for one
+# (newpost.sh --cover). Reviews only: the cover illustrates the specific book
+# being reviewed, which has no equivalent meaning for an article that merely
+# cites a source (fetch-cover.py's resolve_about_source refuses non-reviews
+# too, but gating here as well skips the pointless invocation on every
+# article publish). Same best-effort spirit as the Open Library/Crossref
+# lookups in newsource.sh: a bad match or no network falls through rather
+# than blocking the rest of the publish. See the header comment.
+if [[ "$SECTION" == "reviews" && ! -e "$TARGET_DIR/cover.avif" ]]; then
+  FRONT_MATTER="$(sed -n '2,/^---$/p' "$TARGET_PATH" | sed '$d')"
+  if grep -qE '^cover:[[:space:]]*$' <<< "$FRONT_MATTER" \
+     && grep -qE '^sources:' <<< "$FRONT_MATTER"; then
+    echo "Fetching cover..."
+    if ! "$SCRIPT_DIR/fetch-cover.py" "$TARGET_DIR"; then
+      echo "  cover not fetched automatically -- add one by hand with scripts/fetch-cover.py \"${TARGET_DIR#$REPO_ROOT/}\"" >&2
+    fi
   fi
 fi
 

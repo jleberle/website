@@ -273,7 +273,18 @@ mkdir -p "$DRAFTS_ROOT/$SECTION"
 emit_draft > "$FILE"
 
 if $ADD_COVER; then
-  echo "After publishing, add the cover with: scripts/add-images.sh content/$SECTION/$BASE --cover <image>" >&2
+  if [[ "$KIND" == "review" && -n "$SOURCES" ]]; then
+    echo "publish-draft.sh will fetch the cover automatically from sources: $SOURCES." >&2
+    echo "  (falls back to a manual scripts/fetch-cover.py content/$SECTION/$BASE if that fails)" >&2
+  elif [[ "$KIND" == "review" ]]; then
+    echo "No sources: set yet, so publishing won't fetch a cover automatically." >&2
+    echo "  Add one after: scripts/fetch-cover.py content/$SECTION/$BASE" >&2
+  else
+    # Automatic lookup is reviews-only -- a fetched book cover is illustrative
+    # of the book being reviewed, which a source cited in passing on an
+    # article doesn't mean. Add a cover here by hand if one is wanted.
+    echo "Add the cover by hand after publishing: scripts/add-images.sh content/$SECTION/$BASE --cover <image>" >&2
+  fi
 fi
 echo "Created draft: ${FILE#"$DRAFTS_ROOT/"}" >&2
 echo "Publish with: scripts/publish-draft.sh \"$FILE\"" >&2
