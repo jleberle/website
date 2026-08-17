@@ -29,8 +29,16 @@ base_url = "https://jaredeberle.org"
 # structurally cannot), not in a gate.
 #
 # WorldCat is deliberately NOT excluded: its `/isbn/` form is a real check.
+#
+# archive.org and web.archive.org (Wayback Machine) are excluded for the same
+# reason as Open Library above. The 2026-08-17 scheduled run failed 21 links
+# there, all in the same run, all either 503s (a "rate limit backoff of 1h"
+# warning preceded each host) or one spurious 404. Spot-checking
+# archive.org/details/threatstopeacefu00unit by hand afterward returned 200 —
+# the runner's IP was throttled, the links are not actually dead.
 exclude = [
     "^https?://(localhost|127\\.0\\.0\\.1|\\[::1\\])",
     "^https?://(www\\.)?jaredeberle\\.org",
     "^https?://openlibrary\\.org/search",
+    "^https?://(web\\.)?archive\\.org",
 ]
