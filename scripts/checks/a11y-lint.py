@@ -40,16 +40,40 @@ def check(html):
         altm = ALT_RE.search(tag)
         alt = altm.group(1).strip("\"'").strip() if altm else None
         if not alt:
-            errors.append(f"<img> missing/empty alt: {src or tag[:70]}")
+            kind = "cover" if 'class="u-featured"' in tag else "body"
+            errors.append((kind, src or tag[:70]))
 
     prev = 0
     for m in HEAD_RE.finditer(html):
         level = int(m.group(1))
         if prev and level > prev + 1:
-            errors.append(f"heading skip: h{prev} -> h{level}")
+            errors.append(("heading", f"h{prev} -> h{level}"))
         prev = level
 
     return errors
+
+
+FIXES = {
+    "cover": (
+        "missing alt on the COVER image — add `alt:` under `cover:` in the "
+        "post's front matter, e.g.:\n"
+        '                 cover:\n'
+        '                   image: "cover.avif"\n'
+        '                   alt: "Front cover of <book/album/etc title>"'
+    ),
+    "body": (
+        "missing alt on a body image — describe what it SHOWS, in the Markdown:\n"
+        "                 ![A crowd outside the courthouse](photo.avif)\n"
+        '                 If the image is purely decorative, alt="" is correct.'
+    ),
+    "heading": (
+        "heading level skip — do not jump from ## straight to ####. Headings "
+        "are\n"
+        "                 how screen readers build a table of contents, so a "
+        "skipped\n"
+        "                 level reads as a missing section."
+    ),
+}
 
 
 def main(argv):
@@ -62,6 +86,7 @@ def main(argv):
             files += glob.glob(f"{root}/**/*.html", recursive=True)
 
     total = 0
+    seen_kinds = set()
     for path in sorted(set(files)):
         try:
             html = open(path, encoding="utf-8").read()
@@ -69,21 +94,19 @@ def main(argv):
             print(f"{path}: read error: {e}")
             total += 1
             continue
-        for err in check(html):
-            print(f"{path}: {err}")
+        for kind, detail in check(html):
+            label = {"cover": "missing alt (cover)", "body": "missing alt (body)",
+                      "heading": "heading skip"}[kind]
+            print(f"{path}: {label}: {detail}")
+            seen_kinds.add(kind)
             total += 1
 
     if total:
         print(f"\na11y-lint: {total} issue(s) found")
-        print(
-            "\nThese are the pages a screen-reader user cannot navigate.\n"
-            "  missing alt  — describe what the image SHOWS, in the Markdown:\n"
-            "                 ![A crowd outside the courthouse](photo.avif)\n"
-            "                 If the image is purely decorative, alt=\"\" is correct.\n"
-            "  heading skip — do not jump from ## straight to ####. Headings are\n"
-            "                 how screen readers build a table of contents, so a\n"
-            "                 skipped level reads as a missing section."
-        )
+        print("\nThese are the pages a screen-reader user cannot navigate.")
+        for kind in ("cover", "body", "heading"):
+            if kind in seen_kinds:
+                print(f"  {FIXES[kind]}")
         return 1
     print(f"a11y-lint: clean ({len(files)} pages)")
     return 0
