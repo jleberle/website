@@ -73,7 +73,7 @@ PREFLIGHT_ARGS=()
 $FULL && PREFLIGHT_ARGS+=(--full)
 
 echo "Running preflight..." >&2
-if ! scripts/preflight.sh "${PREFLIGHT_ARGS[@]}"; then
+if ! WEBSITE_SHIP_RUNNING=1 scripts/preflight.sh "${PREFLIGHT_ARGS[@]}"; then
   echo >&2
   echo "Preflight failed; nothing committed or pushed. Fix the issues above and re-run." >&2
   exit 1

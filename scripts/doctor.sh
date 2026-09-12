@@ -113,6 +113,17 @@ else
     "running \`site\` from outside the repo" "set WEBSITE_REPO to $REPO_ROOT"
 fi
 
+# Registered per machine because git config isn't versioned -- without it,
+# any pull/rebase/stash-pop that touches data/writing-log.json falls back to
+# a plain text merge and can leave conflict markers in a file nobody hand-edits.
+if [[ "$(git config --get merge.writing-log.driver 2>/dev/null)" == "scripts/writing-log-merge.sh %O %A %B" ]]; then
+  ok "merge driver" "data/writing-log.json regenerates instead of conflicting"
+else
+  warn "merge driver" "not registered for data/writing-log.json" \
+    "pulls, rebases, and stash pops not leaving conflict markers in the generated writing log" \
+    "git config merge.writing-log.driver 'scripts/writing-log-merge.sh %O %A %B'"
+fi
+
 # --- Summary ----------------------------------------------------------------
 echo
 if [[ $MISSING -gt 0 ]]; then

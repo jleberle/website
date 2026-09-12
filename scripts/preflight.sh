@@ -280,6 +280,18 @@ case $WLOG_RC in
        "$WLOG_OUT" ;;
 esac
 
+# Regenerating here only refreshes the working tree; only ship.sh's own
+# post-commit step (see scripts/ship.sh) folds the result into a commit. A
+# bare `git push` or a manual run of this script leaves the refresh sitting
+# uncommitted -- invisible until a later `git pull` autostashes it and
+# conflicts with a newer copy from another machine.
+if [[ $WLOG_RC -eq 0 && -z "${WEBSITE_SHIP_RUNNING:-}" ]] && ! git diff --quiet -- data/writing-log.json; then
+  printf '\033[33m⚠ %s\033[0m\n' "The writing log changed, and this run isn't going through scripts/ship.sh -- nothing here will commit it."
+  printf '   \033[1mFix:\033[0m %s\n' "Run scripts/ship.sh to publish (it folds this in automatically), or commit data/writing-log.json yourself now so it doesn't sit uncommitted until your next pull."
+  printf '   \033[2mNot blocking, and not a CI signal -- CI never runs through ship.sh, so this is expected there and means nothing.\033[0m\n'
+  ADVISORIES=$((ADVISORIES + 1))
+fi
+
 step "hugo build"
 BUILD_OUT=$(hugo --minify 2>&1)
 BUILD_RC=$?

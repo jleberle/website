@@ -7,3 +7,9 @@
 *.avif -text
 *.ico -text
 *.woff2 -text
+
+# Fully derived from git history + data/observations/, never hand-edited --
+# any conflict here is resolved by regenerating, not by merging text. See
+# scripts/writing-log-merge.sh. The driver itself is registered per machine
+# (git config isn't versioned) -- scripts/doctor.sh checks for it.
+data/writing-log.json merge=writing-log
