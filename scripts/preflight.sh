@@ -82,21 +82,59 @@ done
 
 FAILURES=0
 ADVISORIES=0
-step() { printf '\n\033[1m== %s\033[0m\n' "$1"; }
+CURRENT_STEP=""
+step() { CURRENT_STEP="$1"; printf '\n\033[1m== %s\033[0m\n' "$1"; }
 pass() { printf '\033[32m✓ %s\033[0m\n' "$1"; }
+
+# GitHub Actions renders a failing step as "Process completed with exit code
+# 1" in the Checks UI and PR summary — the actual reason only exists in the
+# raw log, one click further in. `::error::` workflow commands surface a
+# message directly in that UI instead, so `fail`/`warn` below emit one on top
+# of the terminal output whenever GITHUB_ACTIONS is set. No-op locally.
+#
+# `%`, CR and LF must be percent-encoded in the data; property values (like
+# `title=`) additionally need `:` and `,` encoded, since those delimit the
+# workflow-command syntax itself.
+gha_escape_data() {
+  local s="$1"
+  s="${s//%/%25}"
+  s="${s//$'\r'/%0D}"
+  s="${s//$'\n'/%0A}"
+  printf '%s' "$s"
+}
+gha_escape_prop() {
+  local s
+  s="$(gha_escape_data "$1")"
+  s="${s//:/%3A}"
+  s="${s//,/%2C}"
+  printf '%s' "$s"
+}
+
+# $1=summary $2=fix $3=detail (optional — the specific file/line the check's
+# own output already named; without it the annotation would just repeat the
+# same generic sentence CI shows for every failure).
+gha_annotate() {
+  [[ -n "${GITHUB_ACTIONS:-}" ]] || return 0
+  local msg="$1 Fix: $2"
+  [[ -n "${3:-}" ]] && msg+=$'\n'"$(head -5 <<<"$3")"
+  printf '::error title=%s::%s\n' "$(gha_escape_prop "$CURRENT_STEP")" "$(gha_escape_data "$msg")"
+}
 
 # Every failure takes two arguments, and the second is not optional:
 #
-#   fail "what is wrong, in plain words"  "what to do about it"
+#   fail "what is wrong, in plain words"  "what to do about it"  ["detail"]
 #
 # The check's own output above already names the files. What it cannot say is
 # what the person reading it should do next, and "preflight failed" with no
 # next step is the same as no message at all for anyone who did not write the
 # check. Requiring the fix line as an argument is what keeps it that way —
-# a new check cannot be added without answering the question.
+# a new check cannot be added without answering the question. The optional
+# third argument feeds the same specifics into the GitHub annotation (see
+# gha_annotate above) so they show up without opening the log.
 fail() {
   printf '\033[31m✗ %s\033[0m\n' "$1"
   printf '   \033[1mFix:\033[0m %s\n' "$2"
+  gha_annotate "$1" "$2" "${3:-}"
   FAILURES=$((FAILURES + 1))
 }
 
@@ -105,7 +143,7 @@ fail() {
 # other — deferred, not forgiven.
 warn() {
   if $FULL; then
-    fail "$1" "$2"
+    fail "$1" "$2" "${3:-}"
   else
     printf '\033[33m⚠ %s\033[0m\n' "$1"
     printf '   \033[1mFix:\033[0m %s\n' "$2"
@@ -132,7 +170,8 @@ if DRAFT_OUT=$(python3 scripts/checks/draft-lint.py content 2>&1); then
 else
   echo "$DRAFT_OUT"
   fail "A post marked \`draft: true\` is sitting in content/, so it will NOT appear on the site." \
-       "Either finish it and remove the \`draft: true\` line, or move it back out to your drafts folder. Listed above."
+       "Either finish it and remove the \`draft: true\` line, or move it back out to your drafts folder. Listed above." \
+       "$DRAFT_OUT"
 fi
 
 step "taxonomy facets"
@@ -141,7 +180,8 @@ if FACET_OUT=$(python3 scripts/checks/taxonomy-facet-lint.py content 2>&1); then
 else
   echo "$FACET_OUT"
   warn "A time period (like 1970s) is filed under \`tags:\`, which is for subjects." \
-       "Move that value into the \`eras:\` list in the post front matter. Tags say what a piece is ABOUT; eras say what period it covers."
+       "Move that value into the \`eras:\` list in the post front matter. Tags say what a piece is ABOUT; eras say what period it covers." \
+       "$FACET_OUT"
 fi
 
 step "tag vocabulary"
@@ -150,7 +190,8 @@ if VOCAB_OUT=$(python3 scripts/checks/tag-vocabulary-lint.py content 2>&1); then
 else
   echo "$VOCAB_OUT"
   warn "A tag is not on the approved subject list, so it would create a new topic page nobody links to." \
-       "Either correct the spelling to match an existing tag, or — if it is genuinely a new subject — add it to VOCABULARY in scripts/checks/tag-vocabulary-lint.py in the same commit."
+       "Either correct the spelling to match an existing tag, or — if it is genuinely a new subject — add it to VOCABULARY in scripts/checks/tag-vocabulary-lint.py in the same commit." \
+       "$VOCAB_OUT"
 fi
 
 step "series naming"
@@ -159,7 +200,8 @@ if SERIES_OUT=$(python3 scripts/checks/series-lint.py content 2>&1); then
 else
   echo "$SERIES_OUT"
   warn "One series is spelled two different ways, so its parts would split into two separate series." \
-       "Pick one spelling and use it in the \`series:\` line of every part. The variants are listed above."
+       "Pick one spelling and use it in the \`series:\` line of every part. The variants are listed above." \
+       "$SERIES_OUT"
 fi
 
 step "graph connections"
@@ -168,7 +210,8 @@ if CONN_OUT=$(python3 scripts/checks/connection-lint.py content 2>&1); then
 else
   echo "$CONN_OUT"
   warn "A post is not connected to anything — no tags and no sources — so nothing on the site links to it." \
-       "Add at least one \`tags:\` or \`sources:\` entry so it appears on a topic or bibliography page. The message above says which post and which field."
+       "Add at least one \`tags:\` or \`sources:\` entry so it appears on a topic or bibliography page. The message above says which post and which field." \
+       "$CONN_OUT"
 fi
 
 step "Obsidian templates"
@@ -196,7 +239,8 @@ if IMAGE_OUT=$(python3 scripts/checks/image-policy-lint.py assets content static
 else
   echo "$IMAGE_OUT"
   warn "Image(s) are in a heavy format (JPEG/PNG/WebP) instead of AVIF, so pages load slower than they need to." \
-       "Run scripts/to-avif.sh --replace on the files listed above, or add them with scripts/add-images.sh, which converts automatically."
+       "Run scripts/to-avif.sh --replace on the files listed above, or add them with scripts/add-images.sh, which converts automatically." \
+       "$IMAGE_OUT"
 fi
 
 step "image metadata"
@@ -205,7 +249,8 @@ if META_OUT=$(python3 scripts/checks/image-metadata-lint.py assets content stati
 else
   echo "$META_OUT"
   fail "Image(s) still carry hidden camera data — which can include the GPS coordinates of where the photo was taken." \
-       "Strip it by re-running the image through scripts/to-avif.sh --replace, or scripts/add-images.sh. Once published this data is copied by scrapers and archives and cannot be recalled."
+       "Strip it by re-running the image through scripts/to-avif.sh --replace, or scripts/add-images.sh. Once published this data is copied by scrapers and archives and cannot be recalled." \
+       "$META_OUT"
 fi
 
 step "writing log"
@@ -231,7 +276,8 @@ case $WLOG_RC in
   0) pass "$WLOG_OUT" ;;
   3) pass "$WLOG_OUT" ;;
   *) echo "$WLOG_OUT"; fail "The writing log (data/writing-log.json) could not be rebuilt from git history." \
-       "Read the error above — this is a bug in scripts/writing-log.py or a damaged git checkout, not something you did wrong in a post." ;;
+       "Read the error above — this is a bug in scripts/writing-log.py or a damaged git checkout, not something you did wrong in a post." \
+       "$WLOG_OUT" ;;
 esac
 
 step "hugo build"
@@ -239,14 +285,18 @@ BUILD_OUT=$(hugo --minify 2>&1)
 BUILD_RC=$?
 WARNINGS=$(grep -c '^WARN' <<<"$BUILD_OUT" || true)
 if [[ $BUILD_RC -ne 0 ]]; then
-  grep -E '^(ERROR|Error)' <<<"$BUILD_OUT" | head -10
+  BUILD_ERR_LINES=$(grep -E '^(ERROR|Error)' <<<"$BUILD_OUT" | head -10)
+  echo "$BUILD_ERR_LINES"
   fail "Hugo could not build the site. Nothing would be published at all." \
-       "The first error above names the file and line. A missing closing shortcode tag or a broken front-matter line is the usual cause."
+       "The first error above names the file and line. A missing closing shortcode tag or a broken front-matter line is the usual cause." \
+       "$BUILD_ERR_LINES"
 elif [[ $WARNINGS -gt 0 ]]; then
-  grep '^WARN' <<<"$BUILD_OUT"
+  BUILD_WARN_LINES=$(grep '^WARN' <<<"$BUILD_OUT")
+  echo "$BUILD_WARN_LINES"
   if $STRICT; then
     fail "The site built, but with $WARNINGS warning(s), and --strict treats those as errors." \
-       "Each WARN line above names its file. Missing image alt text is the most common one."
+       "Each WARN line above names its file. Missing image alt text is the most common one." \
+       "$BUILD_WARN_LINES"
   else
     pass "build passed ($WARNINGS warning(s) above)"
   fi
@@ -260,7 +310,8 @@ if RESOURCE_OUT=$(python3 scripts/checks/content-resource-lint.py content 2>&1);
 else
   echo "$RESOURCE_OUT"
   fail "A post points at an image file that is not there, so it would publish with a broken image." \
-       "Check the filename in the post front matter against the files actually in its folder — usually a typo or an image that was never copied in. Listed above."
+       "Check the filename in the post front matter against the files actually in its folder — usually a typo or an image that was never copied in. Listed above." \
+       "$RESOURCE_OUT"
 fi
 
 step "source junk files"
@@ -277,7 +328,8 @@ if [[ -z "$SOURCE_JUNK_OUT" ]]; then
 else
   echo "$SOURCE_JUNK_OUT"
   fail "Windows junk files (Thumbs.db / desktop.ini) are sitting in the site source and would be copied onto the live site." \
-       "Delete the files listed above; nothing needs them."
+       "Delete the files listed above; nothing needs them." \
+       "$SOURCE_JUNK_OUT"
 fi
 
 step "feed lint"
@@ -286,7 +338,8 @@ if FEED_OUT=$(python3 scripts/checks/feed-lint.py public 2>&1); then
 else
   echo "$FEED_OUT" | head -20
   fail "Something is wrong with the RSS/JSON feeds." \
-       "Read the message above — it explains the specific problem and what to do. If it mentions changed reading links, take it seriously: that creates duplicate posts on eberle.blog that have to be deleted by hand."
+       "Read the message above — it explains the specific problem and what to do. If it mentions changed reading links, take it seriously: that creates duplicate posts on eberle.blog that have to be deleted by hand." \
+       "$FEED_OUT"
 fi
 
 step "CSP hashes"
@@ -302,7 +355,8 @@ if CSP_OUT=$(bash scripts/csp-hashes.sh --write --no-build 2>&1); then
 else
   echo "$CSP_OUT"
   fail "The security header in static/_headers could not be updated to match this build." \
-       "Read the error above. Until this is resolved, scripts on the live site may be blocked by the browser."
+       "Read the error above. Until this is resolved, scripts on the live site may be blocked by the browser." \
+       "$CSP_OUT"
 fi
 
 step "Content-Digest headers"
@@ -311,7 +365,8 @@ if DIGEST_OUT=$(bash scripts/digest-fields.sh --no-build 2>&1); then
 else
   echo "$DIGEST_OUT"
   fail "Could not write the Content-Digest headers for the feeds." \
-       "Read the error above — this is a problem in scripts/digest-fields.sh, not in your writing."
+       "Read the error above — this is a problem in scripts/digest-fields.sh, not in your writing." \
+       "$DIGEST_OUT"
 fi
 
 step "published-reference scan"
@@ -320,7 +375,8 @@ if SCAN_OUT=$(python3 scripts/checks/published-reference-lint.py public 2>&1); t
 else
   echo "$SCAN_OUT" | head -20
   fail "The built site links to file(s) that were never published — visitors would get a 404 or a broken image." \
-       "Each line above shows which page links to which missing file. If it is an image in a post, the template needs to reference it as a Hugo resource rather than writing out the path by hand (see docs/images.md)."
+       "Each line above shows which page links to which missing file. If it is an image in a post, the template needs to reference it as a Hugo resource rather than writing out the path by hand (see docs/images.md)." \
+       "$SCAN_OUT"
 fi
 
 step "page size lint"
@@ -329,7 +385,8 @@ if PAGE_OUT=$(python3 scripts/checks/page-size-lint.py public 2>&1); then
 else
   echo "$PAGE_OUT"
   warn "A page has grown past the size limit set for this site." \
-       "See the Known growth limits table in docs/operations.md — this usually means a list page needs splitting or paginating, not that a single post is too long."
+       "See the Known growth limits table in docs/operations.md — this usually means a list page needs splitting or paginating, not that a single post is too long." \
+       "$PAGE_OUT"
 fi
 
 step "image display lint"
@@ -338,7 +395,8 @@ if DISPLAY_OUT=$(python3 scripts/checks/image-display-lint.py public 2>&1); then
 else
   echo "$DISPLAY_OUT"
   warn "Image(s) are too small for the space the design puts them in, so they will look soft or blurry." \
-       "Re-add them from a higher-resolution original with scripts/add-images.sh. Each line above gives the size available and the size supplied."
+       "Re-add them from a higher-resolution original with scripts/add-images.sh. Each line above gives the size available and the size supplied." \
+       "$DISPLAY_OUT"
 fi
 
 if $FULL; then
@@ -359,7 +417,8 @@ if $FULL; then
     else
       tail -20 <<<"$HV_OUT"
       fail "The generated HTML is invalid." \
-       "The output above gives the file, line, and rule. This nearly always comes from a template or a raw HTML block in a post, not from ordinary Markdown."
+       "The output above gives the file, line, and rule. This nearly always comes from a template or a raw HTML block in a post, not from ordinary Markdown." \
+       "$HV_OUT"
     fi
   else
     echo "node/npx not found — skipping html-validate (npm ci); CI still runs it"
@@ -382,7 +441,8 @@ if $FULL; then
     else
       tail -20 <<<"$SL_OUT"
       fail "The CSS has lint errors." \
-       "The output above gives the file, line, and rule. Run: npx stylelint --fix \"assets/css/**/*.css\" to fix the mechanical ones automatically."
+       "The output above gives the file, line, and rule. Run: npx stylelint --fix \"assets/css/**/*.css\" to fix the mechanical ones automatically." \
+       "$SL_OUT"
     fi
   else
     echo "node/npx not found — skipping stylelint (npm ci); CI still runs it"
@@ -394,7 +454,8 @@ if $FULL; then
   else
     tail -20 <<<"$A11Y_OUT"
     fail "Accessibility problems in the published pages — images without alt text, or headings that skip a level." \
-       "Add alt text to the images listed above. For headings, do not jump from ## straight to ####; screen-reader users navigate by that structure."
+       "Each issue above names the page and the specific fix — a cover image's alt text lives in front matter, a body image's in the Markdown, differently." \
+       "$A11Y_OUT"
   fi
 
   step "internal links (lychee --offline)"
@@ -404,7 +465,8 @@ if $FULL; then
     else
       tail -15 <<<"$LYCHEE_OUT"
       fail "Link(s) inside the site point at pages that do not exist." \
-       "Each broken link is listed above with the page it appears on. A renamed or deleted post is the usual cause."
+       "Each broken link is listed above with the page it appears on. A renamed or deleted post is the usual cause." \
+       "$LYCHEE_OUT"
     fi
   else
     echo "lychee not installed — skipping (brew install lychee); CI still runs it"
