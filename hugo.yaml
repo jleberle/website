@@ -228,7 +228,8 @@ markup:
 # than the default, so don't "raise" this expecting smaller output.
 # ------------------------------------------------------------
 imaging:
-  quality: 50
+  avif:
+    quality: 50
 
 # ------------------------------------------------------------
 # Module mounts
