@@ -195,9 +195,12 @@ outputs:
 # ------------------------------------------------------------
 markup:
   # Use Hugo's built-in Chroma highlighter.
-  # Keep noClasses true unless switching to class-based Chroma CSS.
+  # Class-based, not inline styles: the CSP (static/_headers) sets
+  # style-src 'self' with no 'unsafe-inline'/'unsafe-hashes', so
+  # noClasses:true spans render with no color at all (and fail
+  # no-inline-style in .htmlvalidate.json). See assets/css/site/04-chroma.css.
   highlight:
-    noClasses: true
+    noClasses: false
   goldmark:
     parser:
       # Don't wrap a standalone image in <p>, so a trailing attribute list
