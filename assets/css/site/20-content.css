@@ -131,7 +131,9 @@
     margin-inline-start: calc(var(--gap) * -2);
 }
 
-.md-content .highlight pre {
+.md-content .highlight pre,
+.md-content pre {
+    position: relative;
     margin: 0;
 }
 
@@ -151,6 +153,48 @@
     background: var(--code-block-bg) !important;
     border-radius: var(--radius);
     overflow-x: auto;
+
+    /* Wrap instead of forcing horizontal scroll — most code on this site
+       is illustrative (a bookmarklet, a config snippet), not something a
+       reader tabs through line by line, so a wrapped long line reads
+       better than one that requires scrolling to see the end of. */
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* Copy-to-clipboard button, injected by js/copy-code.js into every <pre>.
+   Hidden until the block is hovered or the button itself is focused, so it
+   doesn't clutter a page that's mostly prose; kept visible through the
+   "Copied!" confirmation regardless of hover state so the feedback isn't
+   cut off by the mouse moving away right after the click. */
+.copy-code-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 1;
+    padding: 0.3rem 0.6rem;
+    font-family: var(--meta-font);
+    font-size: 0.72rem;
+    line-height: 1;
+    color: rgb(213 213 214);
+    background: color-mix(in sRGB, var(--code-block-bg), white 15%);
+    border: 1px solid rgb(213 213 214 / 25%);
+    border-radius: 0.3rem;
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+.md-content pre:hover .copy-code-button,
+.copy-code-button:focus-visible,
+.copy-code-button.is-copied {
+    opacity: 1;
+}
+
+.copy-code-button.is-copied {
+    color: var(--fog-mist);
+    background: var(--tide);
+    border-color: var(--tide);
 }
 
 .md-content iframe {

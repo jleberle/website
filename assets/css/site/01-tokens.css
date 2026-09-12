@@ -86,6 +86,14 @@
         --tide-deep:     #92ccda;   /* link hover — brighter undertow          */
         --code-bg:       var(--fog-granite);
 
+        /* --code-block-bg is --fog-slate in light mode, deliberately dark
+           there for a terminal-like block regardless of page theme. Dark
+           mode redefines --fog-slate as a light heading color, so it must
+           be overridden here too or the block inherits that light value
+           against the light gray text in 20-content.css, leaving it nearly
+           illegible. --fog-granite matches --code-bg's panel treatment. */
+        --code-block-bg: var(--fog-granite);
+
         color-scheme: dark;
     }
 }
