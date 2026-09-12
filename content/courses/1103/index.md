@@ -14,136 +14,195 @@ slug: 1103
 description: "This course provides a general introduction to major themes and events in the history of North America and the United States beginning with earliest Indigenous arrivals and continuing through the present day"
 ---
 
-*This course was offered as an online course in the Spring 2025 semester*
+*This course was last offered online during the Fall 2026 semester*
 
 *If you are enrolled in one of my courses make sure you consult the current syllabus on the course’s Canvas page*
 
-## Course Description
+## Contact Information
 
-This course provides a general introduction to major themes and events in the history of North America and the United States beginning with early European-indigenous encounters and continuing through the present day. Students are expected to attend weekly lectures, complete assigned readings, and demonstrate acquired knowledge through exams and an essay assignment. Students are also expected to think critically about the complicated, and possibly controversial, nature of our nation’s shared pasts.
+Dr. Jared Eberle\
+Email: <jared.eberle@okstate.edu>\
+Office: 154 Social Sciences and Humanities
+Student Hours: 1PM-2PM MWF or appointments via Zoom gladly available
+
+**Mandatory Reporting Notice**: All communications are kept confidential except in two circumstances. As a university employee I am required by law to report statements of self harm and sexual violence. Under Title IX I must inform the University of all reports of sexual violence regardless of circumstances or requests to not report. The University has confidential reporters who can assist you if you do not want the information reported to the University. Students who wish to take this option should contact the OSU victim advocates at 405-564-2129 or email advocate@okstate.edu.
+
+### Resources
+
+- [LASSO Center](https://universitycollege.okstate.edu/lasso/): Tutoring and academic support coaches
+- [OSU Counseling](https://ucs.okstate.edu): University Counseling including emergency support options
+- [Victim Support Services](https://1is2many.okstate.edu/find-support/support-for-victims/index.html): Sexual violence support and reporting information.
+
+## Course Description
 
 ## A Note About Online Delivery
 
-This course is delivered entirely online and is largely self-paced over the course of the week. Because this course does not meet in person it is expected that your work on the course each week will equal the time you would have spent in a traditional face-to-face class. Over the course of the semester you will need to cover roughly two chapters in the assigned textbook per week and complete the associated reading quizzes or primary source document assignments to keep a reasonable pace. 
+This course is entirely online and asynchronous. Because this course does not meet in person, your work in the course each week will equal the time you would have spent in a traditional face-to-face class. Each week you will need to complete the assigned readings, lectures, and associated assignments.
 
-I encourage you to utilize my office hours throughout the semester, especially if you are having trouble comprehending the material or find yourself falling behind or getting overwhelmed. I can review drafts of the primary source assignments or discuss materials for the exams, but only prior to the exams opening. I am not able to answer content related questions on the exams while they're open for completion.
+Additionally, you must have access to reliable internet throughout the semester. Make sure you do not wait until the last minute to submit assignments as technical issues (e.g. internet outages, technical errors) do not automatically qualify for extensions and must be approved by me with appropriate documentation. If you know you will be without internet during a period of the semester you need to contact me ahead of time to arrange early assignment completion.
 
-## Course Materials and Costs
+I encourage you to contact me as soon as possible if there is any trouble comprehending the material or you find yourself falling behind or getting overwhelmed. I am also available to discuss constructing essays/planning for your exams.
 
-Eric Foner, *Give Me Liberty* Custom OSU Edition, delivered electronically through the Canvas site.
+## Required Materials
 
-**Note**: The Foner textbook is mandatory for the course and there is not an alternative form of delivery as Norton has not produced a hard copy of the custom OSU edition. Failure to have access to the textbook is not grounds for extensions on assignments.
+### Textbook
 
-The textbook is the only resource besides lectures that you're allowed to use in completing assignments for the course. **Use of outside sources will result in automatic failure on assignments**. Outside source usage is anything not provided through the course materials. Students who use un-cited outside materials may be subject to academic integrity hearings.
+The course utilizes Eric Foner's *Give Me Liberty* which is delivered as an ebook through the course's module tab on Canvas. The book is a required component of the course and will be billed directly to your bursar account.
 
-## Meazure/ProctorU Monitoring 
+### Exam Proctoring
 
-In this course, all exams will be proctored by a third-party vendor, Meazure Learning/ProctorU.  For this course, you will be using Record+. A week before the exam, please go to the Student Guide to Taking a Test and complete the steps to ensure that your device is able to be used for online proctoring and that you understand the online proctoring process. The online test proctoring cost of $6 per exam will be billed to your Bursar account early the next month after each exam.
+Exams will be proctored using OSU's approved virtual proctoring program, ProctorU/Meazure Learning. Exams will be proctored with the Record+ setup which costs roughly $7 per exam. Information on setting up the program is available on the modules tab of Canvas and you should verify your system works with the proctoring service prior to the semester or during the first week. Students who do not wish to utilize virtual proctoring must email me ahead of time to discuss alternative arrangements. Exams not taken with virtual proctoring will either need to be completed by hand in my office or at the testing center (exams done at the testing center will have an additional cost unless they are accessibility exams). Alternative arrangements **must be approved by me ahead of time**.
+
+**Note**: Due to a long standing bug in ProctorU, make-ups are not available through the virtual proctoring system. All makeups will need to happen in-person in my office or through the testing center (an additional charge will be required if done at the testing center)
 
 ## Assignments
 
-**Syllabus Quiz** - Ten question, pass/fail quiz covering the syllabus and course policies.
+The course runs on a Monday-Sunday schedule, with all assignments for the week due by 11:59PM on Sunday, excluding the final exam. For final exam week there is no assigned course materials but the exam is due by the end of the date on Wednesday of finals week. 
 
-**Course video viewership** - Points will be allotted based on viewership of course lectures. 2 points per full video, 1 point if at least half the video was watched. Videos must be watched during the week they are assigned for points to be awarded.
+### Syllabus Quiz
 
-**Chapter Readings** - Each week you have assigned chapters from the course textbook. Each chapter includes short quizzes in each section that you will complete. Each chapter reading is worth 10 points and the three lowest grades will be dropped. 
+A 10 question quiz covering the major parts of the syllabus and class requirements. The quiz is pass/fail.
 
-**Inquisitive** - Each chapter includes an inquisitive quiz that are more in-depth and cover the course material for the week. Each inquisitive is worth 10 points and the three lowest grades will be dropped.
+### Lecture Viewership
 
-**Essay Exams** - Four exams that will consist of short answer responses and a formal essay responding to a prompt. On each exam you will be asked to identify five terms in a paragraph-length response each that provides the relevant information on the topic as it relates to the class material and write a comprehensive essay related to the material from that section. Exams may be scheduled at any point during the week throught ProctorU/Meazure with the last exam slot being 9:45PM on Sunday.
+Each week there will be lecture videos on the main page of the course. Each video watched in full will earn full credit, each watched at least 50% but not completely will earn half credit. Videos must be watched the week they are assigned to earn points. 20 videos will be scored for credit in the course.
 
-## Grade Breakdown
+### Inquizitives
 
-|Assignments              | Number Due | Total Points |
-| ----                    | ---        |---           |
-| Syllabus Quiz           |1           | 50 Points    | 
-| Course Lectures         |            | 50 Points    | 
-| Textbook Chapters       |25          | 250 Points   |
-| Inquisitives            |25          | 250 Points   |
-| Exams                   |4           | 400 Points   |
+These are quizzes attached to each chapter of the *Give Me Liberty* textbook. They are quizzes where your grade is based on the number of points earned, if you get a question wrong it does not necessarily mean points will be lost. Once you hit the required point threshold you can keep doing the quiz for additional practice if you chose to. The lowest four scores will be dropped at the end of the semester.
 
-## Overall Grades
+### Exams
 
-| Letter Grade | Percentage |
-| --- | --- |
-| A   | 100%-90% |
-| B   | 89%-80%  |
-| C   | 79%-70%  |
-| D   | 69%-60%  |
-| F   | 59%-0    |
+There will be four exams throughout the semester, each of which is closed note/book. The exams will be comprised of two parts: short answer and essay. For the short answer you will be provided a list of terms and you will pick three of those terms that relate together and write a paragraph identifying each term and why they relate. For the essay you will be provided two prompts and you will write a detailed, thesis-based essay responding to the prompt with evidence from the course. Exams will be done through ProctorU, consult the required materials above for additional information. Lowest exam score will be dropped at the end of the semester.
 
-## Grading Policies
+## Grades
 
-- All assignment submissions are final. No resubmissions will be accepted. 
-- The only extra credit opportunity is if 75% of the course submits course evaluations at the end of the semester. No additional extra credit is offered in the course and students may not submit additional work or revise assignments for additional credit at any point during the semester.
-- Once assignments have closed on Canvas they cannot be completed for credit. Technical issues cannot be verified by myself or Canvas support and are not valid excuses for missing assignments. If you have technical issues you should contact Canvas support as soon as possible prior to the deadline to resolve any issues.
-- If you have a extenuating circumstance that prevents you from completing course assignments (unforeseen illness, etc.) you need to alert me as soon as possible and provide relevant dated documentation of the issue. Extension requests without appropriate documentation will not be approved.
+| Assignment   | Number Due | Total Points |
+| :--------:   | :--------: | :----------: |
+|Syllabus Quiz |    1       |     50       |
+| Lectures     |    30      |     150      | 
+| Inquizitives |    20      |     200      |
+| Exams        |    4       |     600      | 
 
-## Incomplete Grades
+### Overall Grades
 
-Incomplete Grades University policy requires that students complete at least 50% of the assigned coursework to receive an “incomplete” grade. While I will only give incompletes in extremely rare situations, be advised you will need to finish the coursework within a year to remove the incomplete, otherwise you will receive an “I” paired with the grade you earned at that time (e.g. I/B, I/C). Incompletes are not automatic, you need to meet with me in person to arrange an incomplete.
+| Grade |  Percentage   |
+| :---: | :-----------: |
+|   A   | 90% and above |
+|   B   |    80%-89%    |
+|   C   |    70%-79%    |
+|   D   |    60-69%     |
+|   F   | Less than 60% |
+
+### Grading Policies
+
+- All assignment submissions are final once the due date has passed. Assignments
+  may not be revised or resubmitted for additional points.
+- Extensions are available for extenuating circumstances (unforeseen illness, etc.) and you need to alert me as soon as possible and provide relevant dated documentation of the issue in order to be eligible for an extension.
+- Each student is afforded one documentation-free extension for a technical issue during the semester. Subsequent requests due to technical issues will need verifiable documentation of the circumstances to be eligible for an extension.
+- Due to federal privacy laws, grades cannot be discussed over email or via Canvas assignment comments. Students wishing to discuss their grade in the course must schedule an office hours appointment with me.
+
+### Important Dates
+
+Important deadlines for dropping the class are:
+
+- Monday, August 24th: 100% refund for dropped class
+- Friday, August 28th: Partial refund for dropped class
+- Wednesday, September 30th: Six Week Grades
+- Friday, November 6th: Withdraw deadline
+
+### Incomplete Grades
+
+University policy requires that students complete *at least 50%* of the assigned coursework to receive an "incomplete" grade. While I will only give incompletes in extremely rare situations, be advised you will need to finish the coursework within a year to remove the incomplete, otherwise you will receive the grade you earned at that time (e.g. I/B becomes a B, etc.) **Incompletes are not automatic**, you need to meet with me in person to arrange an incomplete.
+
+### Accessibility Services
+
+According to the Americans with Disabilities Act, each student with a disability is responsible for notifying the University of their disability and requesting accommodations. If you think you have a qualified disability and need special accommodations, you should notify the instructor and request verification of eligibility for accommodations from Student Accessibility Services, Oklahoma ABLE Tech & Student Accessibility Services 1514 W. Hall of Fame, 405-744-7116. Please advise the instructor of such disability and desired accommodations at some point before, during, or immediately after the first scheduled class period. Faculty members are obligated to respond when they receive official notice of a disability, but are under no obligation to provide retroactive accommodations. To receive services, you must submit appropriate documentation and complete an intake process during which the existence of a qualified disability is verified and reasonable accommodations are identified. Go to https://accessibility.okstate.edu for additional information.
+
+**Students wishing to use SAS accommodations need to schedule a meeting with me as soon as possible**
+
+### Academic Integrity
+
+Intentional cheating of any kind on any assignment will result in formal academic integrity violation proceedings including referral to the Office of Student Conduct, and may result in a failing grade for the entire course and/or receiving a permanent notation of a violation of academic integrity on your transcript (F!) All students should be familiar with university academic integrity guidelines and procedures, including the right to appeal charges. For more information you may contact the Office of Academic Affairs, 101 Whitehurst, 405-744-5627, or visit http://academicintegrity.okstate.edu
+
+Course specific policies:
+
+- All work completed for the course must be your own original work. Students are not allowed to work with others or submit work done for other classes.
+- Students may only utilize assigned course materials in completing assignments. Use of non-course materials is strictly prohibited and will result in point deductions on assignments, up to a zero on the assignment.
+- Use of artificial intelligence programs (AI) like ChatGPT are strictly prohibited in the course. Students may not use AI programs to complete assignments in the course.
+
+\newpage
 
 ## Course Schedule
 
-The course follows the outline of Foner's *Give Me Liberty* textbook over the course of the semester. 
+The schedule breaks down to two chapters in the textbook per week and one chapter on exam weeks. To account for the reduced time during finals week, the week prior has three chapters and the material will be available over Thanksgiving if you want to work ahead.
 
-Each week starts on Monday and runs through the following Sunday. Materials for the week will unlock on Monday morning while the quizzes and assignments will unlock on Wednesday morning. All assignments for the week, excluding exams, need to be submitted by 11:59PM on Sunday for credit. Below is the basic outline of the course with exam weeks noted.
+### Week 1 (August 17-August 23): An Old World
 
-Week 1 (January 13-19): Indigenous America and European Arrivals
+- Chapters Covered: 1-2
+- Syllabus Quiz Due
 
-- Readings: Chapters 1 and 2
+### Week 2 (August 24-August 30): British America and Slavery
 
-Week 2 (January 20-26): The Growing British Empire
+- Chapters Covered: 3-4
 
-- Readings: Chapters 3 and 4
+### Week 3 (August 31-September 6): The American Revolution
 
-Week 3 (January 27-February 2): The American Revolution and New Republic
+- Chapters Covered: 5-6
 
-- Readings: Chapters 5-8
+### Week 4 (September 7-September 13): The Constitution
 
-Week 4 (February 3-9): Exam 1
+- Chapter Covered: 7
+- Exam 1 Due
 
-Week 5 (February 10-16): The Market Revolution
+### Week 5 (September 14-September 20): The New Republic And Market Revolution
 
-- Readings: Chapters 9 and 10
+- Chapters Covered: 8-9
 
-Week 6 (February 17-23): Slavery in America
+### Week 6 (September 21-September 27): Andrew Jackson and Slavery
 
-- Readings: Chapters 11 and 12
+- Chapters Covered: 10-11
 
-Week 7 (February 24-March 2): The Civil War
+### Week 7 (September 28-October 4): The Road to War
 
-- Reading: Chapters 13-15
+- Chapters Covered: 12-13
 
-Week 8 (March 3-9): Exam 2
+### Week 8 (October 5-October 11): The Civil War
 
-Week 9 (March 10-16): The Gilded Age
+- Chapter Covered: 14
+- Exam 2 Due
 
-- Readings: Chapters 16 and 17 
+### Week 9 (October 12-October 18): Reconstruction and the Gilded Age
 
-Week 10 (March 17-23): Spring Break
+- Chapters Covered: 15-16
 
-Week 11 (March 24-30): The Early Twentieth Century
+### Week 10 (October 19-October 25): Social and Political Regulations
 
-- Readings: Chapters 18-20
+- Chapters Covered 17-18
 
-Week 12 (March 31-April 6): The Great Depression and World War II
+### Week 11 (October 26-November 1): The Great War and Roaring Twenties
 
-- Readings: Chapters 21 and 22
-- Review Quiz 7 Due
+- Chapters Covered: 19-20
 
-Week 13 (April 7-13): Exam 3
+### Week 12 (November 2-November 8): The Great Depression
 
-Week 14 (April 14-20): The Post-War Boom
+- Chapter Covered: 21
+- Exam 3 Due
 
-- Readings: Chapters 23-25
+### Week 13 (November 9-November 15): World War II and Early Cold War
 
-Week 15 (April 21-27): Conservatism
+- Chapters Covered: 22-23
 
-- Readings: Chapter 26
+### Week 14 (November 16-November 22): Civil Rights
 
-Week 16 (April 28-May 4): The New World Order
+- Chapters Covered: 24-25
 
-- Readings: Chapters 27 and 28
+### Week 15 (November 23-November 29): Thanksgiving
 
-Final: Due by May 9th
+### Week 16 (November 30-December 6): Conservatism
+
+- Chapters Covered: 26-28
+
+### Week 17 (December 7-December 11): Final Exam
+
+- Exam 4 Due (WEDNESDAY, December 9th)

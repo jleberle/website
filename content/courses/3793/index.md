@@ -14,13 +14,24 @@ description: "Introduction to the history of Native American peoples from encoun
 summary: "Introduction to the history of Native American peoples from encounters with European colonists to the present, with an emphasis on tribal nationhood and sovereignty, war and diplomacy, treaty rights and federal policies, indigeneity in modern contexts, and a leadership in Indian Country."
 ---
 
-*This course was offered in-person during the Spring 2023 semester*
+*This course was last offered in-person during the Spring 2023 semester*
 
 *If you are enrolled in one of my courses make sure you consult the current syllabus on the course’s Canvas page*
 
 ## Course Description
 
 Introduction to the history of Native American peoples from encounters with European colonists to the present, with an emphasis on tribal nationhood and sovereignty, war and diplomacy, treaty rights and federal policies, indigeneity in modern contexts, and a leadership in Indian Country.
+
+## Contact Information
+
+Dr. Eberle\
+154 Social Sciences and Humanities\
+Office Hours: MWF 1PM-2PM or by appt.\
+Virtual Office Hours Sign-Up: <https://calendly.com/jared-eberle/office-hours> \
+Email: <jared.eberle@okstate.edu>                  
+
+Appointments are only required for virtual office hours. You may sign up for an appointment for in-person office hours to guarantee a spot if you want to be thorough.
+
 
 ## Required Materials
 
@@ -29,30 +40,29 @@ The course requires the following two books which can be purchased at the Univer
 - Philip J. Deloria, *Playing Indian* (Yale University Press, 2022) **Make sure to buy new edition**
 - Coll Thrush, *Indigenous London: Native Travelers at the Heart of Empire* (Yale University Press, 2016)
 
-## Assignments
+### Assignments
 
-### Syllabus Quiz
+#### Syllabus Quiz
 
 Short multiple choice quiz on Canvas that covers the basics of this syllabus. The quiz is pass/fail.
 
-### Attendance
+#### Attendance
 
 I will take attendance 10 times randomly throughout the semester.
 
-### Reading Responses
+#### Reading Responses
 
 Four responses to assigned reading materials. Additional information and the prompts for each of these assignments are available on the corresponding Canvas assignment. You will turn in a digital copy to the appropriate Canvas assignment by the end of the day listed in the course syllabus.
 
-### Paper 
+#### Paper 
 
 A 5-10 page paper that will provide a biography and historical assessment of a major figure in Native American History. The paper will have three components: an initial proposal (25 points); an annotated bibliography and paper update (25 points); the final paper (150 points). Students may propose alternative methods for satisfying the assignment. All alternative methods must be approved by me in advance.
 
-### Exams
+#### Exams
 
 Three in-class exams comprised of short IDs and an essay. A study guide will be provided. No notes or other materials will be allowed in completing the exam.
 
-## Grades
-
+### Grades
 
 |     Assignment     | Breakdown |
 | :----------------: | :-------: |
@@ -61,7 +71,6 @@ Three in-class exams comprised of short IDs and an essay. A study guide will be 
 |  Reading Responses |    200 points    |
 |      Paper         |    200 points    | 
 |      Exams         |    450 points    |
-
 
 The following key will determine your letter grade:
 
@@ -73,28 +82,40 @@ The following key will determine your letter grade:
 |   D   |    60-69%     |
 |   F   | Less than 60% |
 
-
-### Grade Disputes
+#### Grade Disputes
 
 Students wishing to dispute their grades (outside of obvious mathematical errors or clarification of comments) are required to wait 24 hours after the assignment has been handed back and then need to attend office hours (or schedule a meeting) **with the person who graded their work** to formally discuss the grade they received. Be prepared to come to the meeting with specific points you feel were not taken into account by your grader. If I did not grade your assignment I will only meet with you *after* you have talked to the TA. We reserve the right to raise *or* lower your grade at these meetings.
 
 Due to the Federal Educational Rights and Privacy Act (FERPA), we **do not** answer any emails related to grades. Emails about grades will not be answered, students unsure about where they stand in class need to come see us in person.
 
-## Additional Policies
+#### Drops
 
-### Late Work
+Important deadlines for dropping the class are:
+
+- January 24 (Tuesday): 100% refund for dropped class
+- January 27 (Friday): Partial refund for dropped class
+- March 1 (Wednesday): Six Week Grades
+- April 14 (Friday): Withdraw deadline
+
+#### Incomplete Grades
+
+University policy requires that students complete *at least 50%* of the assigned coursework to receive an "incomplete" grade. While I will only give incompletes in extremely rare situations, be advised you will need to finish the coursework within a year to remove the incomplete, otherwise you will receive the grade you earned at that time (e.g. I/B becomes a B, etc.) **Incompletes are not automatic**, you need to meet with me in person to arrange an incomplete.
+
+### Additional Policies
+
+#### Late Work
 
 All assignments besides exams are due to Canvas by 11:59PM on the date listed in the syllabus. After the deadline you have two days to submit the assignment for late work credit with 10% off per day late (the late work window **does not** apply to the in-class exams). Late work penalties are automatically deducted by Canvas and the late work window starts immediately after the full credit deadline. Once the late work window has passed assignments may not be submitted for credit.
 
 All extensions for full credit must have appropriate dated documentation and be made in a timely manner. Any extension requests without documentation or made excessively late will not be granted. Technical issues cannot be sufficiently verified and do not qualify for extensions so do not wait until the late minute to submit assignments to avoid late penalties or missed assignments.
 
-### Resubmissions / Extra Credit
+#### Resubmissions / Extra Credit
 
 You have unlimited submissions prior to the assignment deadline and we will grade the most recent submission (excluding syllabus quiz which offers two attempts). Once the deadline passes assignments cannot be resubmitted or redone for additional credit. Make sure you verify your assignment has been submitted to Canvas and is the correct assignment to ensure credit. Wrongly submitted assignments are not grounds for extensions or makeups.
 
 There are **two extra credit opportunities in the course this semester**. First, students who turn in all assignments on-time this semester will receive 25 extra points at the end of the semester. Students with an approved extension request will still be eligible for the bonus points. Second, if 75% of the class completes the online course evaluation at the end of the semester, the entire class will receive 25 bonus points on the final exam. Students may also earn bonus points if they email me by Friday of the first week of classes with their favorite thing.
 
-### Class conduct
+#### Class conduct
 
 - You may use a laptop to take notes for the course. Chronic misuse will result in dismissal from the course and potential loss of attendance points
 - Phones may not be used in any circumstance and headphones must be taken off during the class period.
@@ -102,7 +123,32 @@ There are **two extra credit opportunities in the course this semester**. First,
 - Do not pack up prior to class being formally dismissed. Packing up early is not only disrespectful but causes too much noise for others to properly hear the lecture. 
 - You are expected to conduct yourself in a professional manner. History has a number of controversial events and we will address some of these. Please respect the views of your classmates and treat everyone with decency. 
 
+#### Accessibility Services
+
+According to the Americans with Disabilities Act, each student with a disability is responsible for notifying the University of their disability and requesting accommodations. If you think you have a qualified disability and need accommodations, you should notify the instructor and request verification of eligibility for accommodations from Student Accessibility Services. Please advise the instructor of such disability and desired accommodations at some point before, during, or immediately after the first scheduled class period. Faculty members are obligated to respond when they receive official notice of a disability, but are under no obligation to provide retroactive accommodations. To receive services, you must submit appropriate documentation and complete an intake process during which the existence of a qualified disability is verified and reasonable accommodations are identified. Go to https://accessibility.okstate.edu for additional information.
+
+#### Plagiarism/Academic Integrity
+
+Intentional cheating on any assignment will result in formal academic integrity violation proceedings including referral to the Office of Student Conduct, and may result in a failing grade for the entire course and/or receiving a permanent notation of a violation of academic integrity on your transcript (F!) All students should be familiar with university academic integrity guidelines and procedures, including the right to appeal charges. For more information you may contact the Office of Academic Affairs, 101 Whitehurst, 405-744-5627, or visit http://academicintegrity.okstate.edu
+
+All work completed for the course must be your own original work and only utilize assigned course materials. You are not allowed to work on assignments with others, re-submit previously used assignments, or use outside sources. Failure to comply can result in failure on the assignment or formal academic integrity inquiries. 
+
+\newpage
+
 ## Class Schedule (Subject to Change)
+
+### Due Dates
+
+- 1/22: Syllabus Quiz
+- 2/2: Reading Response #1 and Paper Proposal
+- 2/16: Exam 1
+- 3/2: Reading Response #2
+- 3/9: Annotated Bibliography
+- 3/23: Exam 2 
+- 3/30: Reading Response #3
+- 4/13: Reading Response #4
+- 4/27: Paper
+- 5/10: Final Exam
 
 ### Week 1 (1/16 - 1/20): Introductions and Early Americans
 * **Sunday, January 22:** Syllabus Quiz on Canvas
