@@ -14,6 +14,7 @@ eras:
   - "21th Century"
 cover:
   image: "cover.avif"
+  alt: "Front cover of Yesteryear by Caro Claire Burke"
   hiddenInList: true
   hiddenInSingle: false
   relative: true
