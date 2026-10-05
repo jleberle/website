@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-11T16:37:02+00:00",
+  "generated": "2026-10-05T17:50:08+00:00",
   "sources": [
     {
       "name": "blog",
@@ -9,31 +9,58 @@
     {
       "name": "notes",
       "label": "Notes",
-      "words": 2043
+      "words": 26148
     }
   ],
   "totals": {
-    "words": 33518,
-    "days": 39,
+    "words": 57623,
+    "days": 42,
     "first": "2011-02-14",
-    "last": "2026-09-11",
-    "average": 859,
+    "last": "2026-10-05",
+    "average": 1372,
     "best_day": {
-      "date": "2026-05-18",
-      "words": 7654,
-      "net": 7647,
-      "files": 4,
+      "date": "2026-10-03",
+      "words": 19242,
+      "net": 19242,
+      "files": 12,
       "sources": {
-        "blog": 7654
+        "notes": 19242
       }
     },
     "streak": {
-      "length": 2,
-      "start": "2026-05-26",
-      "end": "2026-05-27"
+      "length": 3,
+      "start": "2026-10-03",
+      "end": "2026-10-05"
     }
   },
   "days": [
+    {
+      "date": "2026-10-05",
+      "words": 503,
+      "net": 503,
+      "files": 1,
+      "sources": {
+        "notes": 503
+      }
+    },
+    {
+      "date": "2026-10-04",
+      "words": 4360,
+      "net": 4360,
+      "files": 2,
+      "sources": {
+        "notes": 4360
+      }
+    },
+    {
+      "date": "2026-10-03",
+      "words": 19242,
+      "net": 19242,
+      "files": 12,
+      "sources": {
+        "notes": 19242
+      }
+    },
     {
       "date": "2026-09-11",
       "words": 1326,
@@ -390,6 +417,24 @@
   ],
   "weeks": [
     {
+      "key": "2026-10-05",
+      "label": "Week of Oct 5, 2026",
+      "words": 503,
+      "days": 1,
+      "start": "2026-10-05",
+      "end": "2026-10-05",
+      "average": 503
+    },
+    {
+      "key": "2026-09-28",
+      "label": "Week of Oct 3, 2026",
+      "words": 23602,
+      "days": 2,
+      "start": "2026-10-03",
+      "end": "2026-10-04",
+      "average": 11801
+    },
+    {
       "key": "2026-09-07",
       "label": "Week of Sep 11, 2026",
       "words": 1326,
@@ -653,6 +698,15 @@
   ],
   "months": [
     {
+      "key": "2026-10",
+      "label": "October 2026",
+      "words": 24105,
+      "days": 3,
+      "start": "2026-10-03",
+      "end": "2026-10-05",
+      "average": 8035
+    },
+    {
       "key": "2026-09",
       "label": "September 2026",
       "words": 1326,
@@ -837,11 +891,11 @@
     {
       "key": "2026",
       "label": "2026",
-      "words": 20917,
-      "days": 21,
+      "words": 45022,
+      "days": 24,
       "start": "2026-05-07",
-      "end": "2026-09-11",
-      "average": 996
+      "end": "2026-10-05",
+      "average": 1876
     },
     {
       "key": "2022",
