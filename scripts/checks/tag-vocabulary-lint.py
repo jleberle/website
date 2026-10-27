@@ -73,6 +73,7 @@ VOCABULARY = {
     "Federal Law Enforcement",
     "Fiction",
     "Folklore",
+    "Green Corn Rebellion",
     "Historiography",
     "Journalism",
     "Labor",
