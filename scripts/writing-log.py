@@ -82,7 +82,7 @@ try:
 except ModuleNotFoundError:  # pragma: no cover - environment guard
     sys.exit(
         "writing-log.py needs PyYAML to read writing-log.yaml.\n"
-        "  pip3 install --user pyyaml\n"
+        "  make -C ~/git/dotfiles pydeps   (installs it for the current python3)\n"
         "Only this script needs it; the Cloudflare Workers Builds build reads the committed JSON."
     )
 

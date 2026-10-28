@@ -294,5 +294,6 @@ python3 scripts/writing-log.py --stats    # rebuild and print a summary
 python3 scripts/writing-log.py --check    # non-zero exit if it would change
 ```
 
-Needs PyYAML locally (`pip3 install --user pyyaml`); the deploy build only reads
-the committed JSON.
+Needs PyYAML locally, which `~/git/dotfiles` installs (`dots pydeps`, part of
+`make apps`) and the weekly brew job reinstalls whenever `python3` changes minor
+version. The deploy build only reads the committed JSON.
