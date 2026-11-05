@@ -44,8 +44,10 @@ repo directly — this is dashboard-managed config, not anything in this repo.
   is set, so the digest matched only uncompressed responses and was wrong for
   nearly every real client. Don't re-add it without disabling compression for
   those paths.
-- deploy command: `npx wrangler deploy` (`npx wrangler versions upload` for
-  previews)
+- deploy command: `npx wrangler@4.158.0 deploy` (`npx wrangler@4.158.0
+  versions upload` for previews). Wrangler isn't in `package.json`, so without
+  the `@version` npx downloads whatever is newest on every deploy. Bump both
+  commands together, by hand, and update this line to match.
 - the Hugo version is pinned via a `HUGO_VERSION` build variable in
   Cloudflare's build config, kept in sync with this repo's `.hugo-version`
   (see [maintenance.md](maintenance.md)) — the two are independent and can
