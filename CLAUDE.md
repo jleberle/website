@@ -12,10 +12,10 @@ for what those documents don't say, plus a router to the one that does.
 | Content model, draft→publish flow, shortcodes | `docs/workflow.md` |
 | Images, responsive output, figures/carousels | `docs/images.md` |
 | Source/reading ledger schema, RSS syndication | `docs/reading.md` |
-| Front-matter schema and tag vocabulary | `docs/metadata-sweep.md` |
+| Front-matter schema and tag vocabulary | `docs/workflow.md` (Sources, Tags and Eras) |
 | The public writing log and how words are counted | `docs/writing-log.md` |
 | Remotes, CI, deployment, check severity | `docs/operations.md` |
-| Hugo upgrades, CSP hashes, palette, upkeep | `docs/maintenance.md` |
+| Hugo upgrades, CSP, palette, upkeep | `docs/maintenance.md` |
 
 ## Publishing is `scripts/ship.sh`, not `git commit`
 
@@ -77,10 +77,10 @@ comment there.
 
 ## Things that break without erroring
 
-- **Editing an inline `<script>` breaks its CSP hash.** The hash is a drift
-  guard, not a tamper check — an edited script stops matching and the browser
-  refuses to run it, with nothing failing at build time. Re-run
-  `scripts/csp-hashes.sh`.
+- **Inline `<script>` and `<style>` are blocked by the CSP.** There are no
+  hashes or nonces; JS goes in `assets/js/`, CSS in `assets/css/`. Locally the
+  page just silently lacks the feature. `npm run test:axe` (CI) serves the
+  real `_headers` and fails on the violation.
 - **`scripts/writing-log.py`'s counting key must never change.** Changing it
   orphans every recorded observation; the file says so at the definition.
   Relatedly, `log-writing.sh` resets `--mixed`, never `--hard` — a `--hard`

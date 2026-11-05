@@ -87,11 +87,33 @@ else
 fi
 
 if [[ -d node_modules ]]; then
-  ok "node_modules" "installed"
+  # Present is not the same as current: a checkout last installed months ago
+  # still has a node_modules, just with versions package-lock.json has since
+  # moved past (security floors included). `npm ls` exits non-zero on that.
+  if ! command -v npm >/dev/null 2>&1; then
+    ok "node_modules" "installed (npm not found, so not checked against the lockfile)"
+  elif npm ls --all >/dev/null 2>&1; then
+    ok "node_modules" "installed, matches package-lock.json"
+  else
+    warn "node_modules" "installed, but does not match package-lock.json" \
+      "preflight and the axe check to run the same tool versions as CI" \
+      "npm ci && npx playwright install chromium"
+  fi
 else
   warn "node_modules" "not installed" \
     "the pinned versions of html-validate and stylelint used by 'preflight --full' (falls back to npx otherwise, slower and unpinned)" \
     "npm ci"
+fi
+
+# Names this machine's writing-log observation file. The hostname fallback is
+# unstable on some networks (a DHCP lease name), which forks a new file per
+# lease. See docs/writing-log.md.
+if [[ -n "${WRITING_LOG_MACHINE:-}" ]]; then
+  ok "machine name" "$WRITING_LOG_MACHINE (data/observations/$WRITING_LOG_MACHINE.json)"
+else
+  warn "machine name" "WRITING_LOG_MACHINE not set; the writing log would use the hostname" \
+    "a stable data/observations/<machine>.json across networks" \
+    "set -Ux WRITING_LOG_MACHINE <short-name>   (fish; e.g. laptop)"
 fi
 
 # Drafts live outside the repo, in the Obsidian vault. That is a real

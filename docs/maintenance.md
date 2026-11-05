@@ -14,44 +14,23 @@ Two independent places pin the Hugo version, and both are manual:
    [operations.md](operations.md)) — update this to match, or the live build
    drifts from what CI validated.
 
-After a Hugo upgrade, also verify CSP hashes — a changed minifier is one of the
-two ways they drift:
+## Content-Security-Policy
 
-```sh
-scripts/csp-hashes.sh --check
-```
+`static/_headers` allows scripts and styles from `'self'` only: no hashes, no
+nonces, no `'unsafe-inline'`. So **any inline `<script>` or `<style>` is
+blocked by the browser.** Put JavaScript in `assets/js/` (bundled by
+`extend_head.html`) and CSS in `assets/css/`. `<script type="application/ld+json">`
+is a data block, not executed, and is unaffected.
 
-## CSP Hashes
+The one feature that used to need an inline script, Speculation Rules, is
+delivered by the `Speculation-Rules` header instead (rules in
+`static/speculationrules.json`). This replaced `scripts/csp-hashes.sh`, which
+regenerated a hash for that script on every preflight run.
 
-The `Content-Security-Policy` header in `static/_headers` allows inline `<style>` and `<script>` blocks by exact SHA-256 hash. There is no `'unsafe-inline'` in `script-src` or `style-src`.
-
-That means hashes can drift when:
-
-- an inline script or style changes
-- Hugo's minifier changes how those blocks are emitted
-
-Commands:
-
-```sh
-scripts/csp-hashes.sh                       # print hashes for copy-paste
-scripts/csp-hashes.sh --check               # diff against static/_headers
-scripts/csp-hashes.sh --write               # rewrite static/_headers to match
-scripts/csp-hashes.sh --check --no-build    # reuse an existing public/
-```
-
-Drift normally resolves itself: `scripts/preflight.sh` runs `--write` on every
-run, so an edited inline script updates `static/_headers` in place and the
-change is committed with the rest of the push. `--write` prints every hash it
-adds or removes next to the source that produced it, so a newly introduced
-inline script appears in the preflight output rather than being blessed
-silently.
-
-This is safe for the property CSP actually provides: the hash list pins which
-inline scripts a *browser* may run, and it is generated from the same build
-that ships, so the pin stays exact. It was never a tamper check against this
-repo — anyone who can edit a template can edit `static/_headers` in the same
-commit. What it guards is drift, where an edited inline script silently stops
-matching its hash and the feature dies in production only.
+`npm run test:axe` serves `public/` with the headers from `public/_headers`, so
+CI's Chromium enforces the real policy. A CSP or Trusted Types violation shows
+up there as a console error and fails the run, and so does a speculation rule
+set that fails to load.
 
 ## Trusted Types
 

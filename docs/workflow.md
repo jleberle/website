@@ -237,8 +237,8 @@ contains a year — `Tulsa in 1918` — is a subject and is left alone.
 
 The period vocabulary is closed by construction, which is why a regex can check
 it. The subject vocabulary has no shape to check against, so as of 2026-07-31 it
-is closed by list instead: `scripts/checks/tag-vocabulary-lint.py` holds the 22
-approved terms and flags anything else. Adding a subject is a two-line commit — the term in the lint, the term in the front matter — which is
+is closed by list instead: `VOCABULARY` in `scripts/checks/tag-vocabulary-lint.py`
+is the authoritative list of approved terms, and the lint flags anything else. Adding a subject is a two-line commit — the term in the lint, the term in the front matter — which is
 the point, since a new hub should be a decision rather than a side effect of
 typing `rodeo` for `Rodeo`. The lint also fails when an approved term falls out
 of use, so retiring a tag means retiring it from the list in the same commit.
@@ -283,6 +283,15 @@ and the moment one exists, place inherits exactly the granularity problem
 centuries have with decades. Solve it the way `era_rollup.html` does, by
 deriving the wider term at render time, rather than by writing both into front
 matter. That is also the point at which a `places` facet earns a second look.
+
+`AI` is the one standing exception to the three-member rule: it is the first
+part of a running series and expected to grow. If the series stalls, retire it.
+
+Leave `eras` empty on contemporary pieces. An era marks *historical* subject
+matter, so a review of a 2026 book or an essay about the present carries none,
+and there is no `2010s`/`2020s`: those would land on nearly every new post and
+say nothing. Likewise leave it empty where the period would be a guess, such as
+a definition with no time frame, or a book braiding two centuries' stories.
 
 Both render on a post, in separate "Topics" and "Period" rows, and both have
 term pages (`/tags/<term>/`, `/eras/<term>/`). A post may carry only one facet;

@@ -105,7 +105,7 @@ observation and re-counts the entire vault from scratch.
 
 ### The baseline
 
-`census_start` in `writing-log.yaml` is 2026-08-09. Everything at or before that
+`census_start` in `writing-log.toml` is 2026-08-09. Everything at or before that
 date is the *starting position*, counted as zero: the vault held years of
 writing before the first census ran, and crediting all of it to whatever mtime
 each file happens to carry would bury every real writing day under a handful of
@@ -165,7 +165,7 @@ lives in Secretive that means one Touch ID prompt for the push instead of two.
 
 ## What counts
 
-Configured in [`writing-log.yaml`](../writing-log.yaml), not in code — tuning the
+Configured in [`writing-log.toml`](../writing-log.toml), not in code — tuning the
 log should never mean editing the engine.
 
 Included, and nothing else:
@@ -301,6 +301,7 @@ python3 scripts/writing-log.py --stats    # rebuild and print a summary
 python3 scripts/writing-log.py --check    # non-zero exit if it would change
 ```
 
-Needs PyYAML locally, which `~/git/dotfiles` installs (`dots pydeps`, part of
-`make apps`) and the weekly brew job reinstalls whenever `python3` changes minor
-version. The deploy build only reads the committed JSON.
+Standard library only (Python 3.11+, for `tomllib`). It used to need PyYAML,
+which broke whenever Homebrew moved `python3` to a new minor version; the
+config is now TOML and front matter is read by `scripts/checks/_frontmatter.py`.
+The deploy build only reads the committed JSON.

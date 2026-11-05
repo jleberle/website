@@ -135,13 +135,12 @@ only implementation of the slug rule and field order.
 
 | Document | What it covers |
 |---|---|
-| [docs/workflow.md](docs/workflow.md) | Content model, draft/publish flow, scripts, shortcodes |
+| [docs/workflow.md](docs/workflow.md) | Content model, front-matter schema and tag vocabulary, draft/publish flow, scripts, shortcodes |
 | [docs/images.md](docs/images.md) | Image authoring, responsive output, figure/carousel behavior |
 | [docs/reading.md](docs/reading.md) | Reading/source ledger schema, scripts, RSS syndication behavior |
-| [docs/metadata-sweep.md](docs/metadata-sweep.md) | The 2026-07 front-matter restructure: schema, vocabulary, per-file record |
 | [docs/writing-log.md](docs/writing-log.md) | The public writing log: `scripts/log-writing.sh`, how words are counted from git history, and the multi-machine vault census |
 | [docs/operations.md](docs/operations.md) | Remotes, CI, deployment, checks, failure behavior |
-| [docs/maintenance.md](docs/maintenance.md) | Hugo upgrades, CSP hashes, theme history, repo-specific upkeep |
+| [docs/maintenance.md](docs/maintenance.md) | Hugo upgrades, CSP, theme history, repo-specific upkeep |
 
 ## Credits
 

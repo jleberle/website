@@ -77,17 +77,21 @@ from datetime import date as date_type
 from datetime import datetime, timezone
 from pathlib import Path
 
-try:
-    import yaml
-except ModuleNotFoundError:  # pragma: no cover - environment guard
-    sys.exit(
-        "writing-log.py needs PyYAML to read writing-log.yaml.\n"
-        "  make -C ~/git/dotfiles pydeps   (installs it for the current python3)\n"
-        "Only this script needs it; the Cloudflare Workers Builds build reads the committed JSON."
-    )
+import tomllib
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-CONFIG_PATH = REPO_ROOT / "writing-log.yaml"
+CONFIG_PATH = REPO_ROOT / "writing-log.toml"
+
+# Front matter is read with the same line-based reader the content lints use,
+# not a YAML library: only flat top-level scalars and lists are ever needed, and
+# it keeps this script standard-library only. It is also more forgiving than a
+# real YAML parser, which matters for historical revisions: an old commit with
+# an unquoted colon in its title is still readable for its date and tags.
+sys.path.insert(0, str(REPO_ROOT / "scripts" / "checks"))
+from _frontmatter import scalar as fm_scalar, values as fm_values  # noqa: E402
+
+# Spellings YAML would read as "no value".
+FM_EMPTY = {"", "null", "~", "[]", "{}"}
 OUTPUT_PATH = REPO_ROOT / "data" / "writing-log.json"
 OBSERVATIONS_DIR = REPO_ROOT / "data" / "observations"
 
@@ -213,64 +217,34 @@ def front_matter_has_any(front: str, fields: list[str]) -> bool:
     """
     if not fields or not front.strip():
         return False
-    try:
-        data = yaml.safe_load(front)
-    except yaml.YAMLError:
-        return False
-    if not isinstance(data, dict):
-        return False
+    lines = front.splitlines()
     return any(
-        data.get(field) not in (None, "", [], {})
+        fm_scalar(lines, field).lower() not in FM_EMPTY or fm_values(lines, field)
         for field in fields
     )
 
 
 def front_matter_tags(front: str) -> frozenset[str]:
-    """Tags declared in front matter, lowercased. Empty when unparseable.
-
-    Historical revisions include half-finished files, so a YAML error here means
-    "no tags I can prove", not a crash.
-    """
+    """Tags declared in front matter, lowercased; a block list, an inline
+    `[a, b]` list, or a single bare value."""
     if not front.strip():
         return frozenset()
-    try:
-        data = yaml.safe_load(front)
-    except yaml.YAMLError:
-        return frozenset()
-    if not isinstance(data, dict):
-        return frozenset()
-    raw = data.get("tags")
-    if raw is None:
-        return frozenset()
-    if isinstance(raw, str):
-        raw = [raw]
-    if not isinstance(raw, list):
-        return frozenset()
-    return frozenset(str(tag).strip().lower() for tag in raw if tag is not None)
+    lines = front.splitlines()
+    found = fm_values(lines, "tags")
+    if not found:
+        single = fm_scalar(lines, "tags")
+        if single.lower() not in FM_EMPTY:
+            found = [single]
+    return frozenset(tag.strip().lower() for tag in found if tag.strip())
 
 
 def front_matter_date(front: str, fields: list[str]) -> str | None:
     """First parseable date among `fields`, as YYYY-MM-DD."""
     if not front.strip():
         return None
-    try:
-        data = yaml.safe_load(front)
-    except yaml.YAMLError:
-        return None
-    if not isinstance(data, dict):
-        return None
+    lines = front.splitlines()
     for field in fields:
-        value = data.get(field)
-        if value is None:
-            continue
-        if isinstance(value, datetime):
-            return value.date().isoformat()
-        if hasattr(value, "isoformat"):  # datetime.date
-            return value.isoformat()
-        text = str(value).strip()
-        if not text:
-            continue
-        match = re.match(r"(\d{4}-\d{2}-\d{2})", text)
+        match = re.match(r"(\d{4}-\d{2}-\d{2})", fm_scalar(lines, field))
         if match:
             return match.group(1)
     return None
@@ -819,14 +793,15 @@ def missing_repos(sources: list[dict]) -> list[str]:
 
 
 def load_config() -> dict:
-    return yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
+    with CONFIG_PATH.open("rb") as handle:
+        return tomllib.load(handle)
 
 
 def census_source(config: dict) -> dict:
     for source in config["sources"]:
         if source.get("kind") == "census":
             return source
-    sys.exit("writing-log: no census source configured in writing-log.yaml")
+    sys.exit("writing-log: no census source configured in writing-log.toml")
 
 
 def build() -> dict:

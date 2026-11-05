@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, isAbsolute, join, relative, resolve } from 'node:path';
 import AxeBuilder from '@axe-core/playwright';
@@ -66,6 +66,43 @@ if (missingPages.length > 0) {
   process.exit(1);
 }
 
+// Serve public/_headers the way Cloudflare does: every block whose path
+// pattern matches the request contributes its headers, later blocks winning.
+// This is what makes the browser below enforce the real CSP and Trusted Types
+// and fetch the Speculation-Rules set. A server that sends only content-type
+// (as this one once did) lets a CSP violation through CI unseen.
+function loadHeaderRules(file) {
+  if (!existsSync(file)) return [];
+  const rules = [];
+  let current = null;
+  for (const line of readFileSync(file, 'utf8').split('\n')) {
+    if (!line.trim() || line.trim().startsWith('#')) continue;
+    if (!/^\s/.test(line)) {
+      const source = line.trim().replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
+      current = { pattern: new RegExp(`^${source}$`), headers: [] };
+      rules.push(current);
+    } else if (current) {
+      const colon = line.indexOf(':');
+      if (colon > 0) current.headers.push([line.slice(0, colon).trim().toLowerCase(), line.slice(colon + 1).trim()]);
+    }
+  }
+  return rules;
+}
+const headerRules = loadHeaderRules(join(root, '_headers'));
+if (headerRules.length === 0) {
+  console.error('public/_headers is missing or empty; cannot check pages under the production CSP.');
+  process.exit(1);
+}
+
+function responseHeaders(urlPath, file) {
+  const headers = { 'content-type': mimeTypes.get(extname(file)) || 'application/octet-stream' };
+  for (const rule of headerRules) {
+    if (!rule.pattern.test(urlPath)) continue;
+    for (const [name, value] of rule.headers) headers[name] = value;
+  }
+  return headers;
+}
+
 const server = createServer((req, res) => {
   const file = resolveRequest(req.url || '/');
   const fileRel = file && relative(root, file);
@@ -74,7 +111,7 @@ const server = createServer((req, res) => {
     res.end('Not found');
     return;
   }
-  res.writeHead(200, { 'content-type': mimeTypes.get(extname(file)) || 'application/octet-stream' });
+  res.writeHead(200, responseHeaders(decodeURIComponent((req.url || '/').split('?')[0]), file));
   createReadStream(file).pipe(res);
 });
 
@@ -86,6 +123,14 @@ let failures = 0;
 const browser = await chromium.launch();
 const context = await browser.newContext();
 const page = await context.newPage();
+
+// Chromium reports every speculation rule set it loads, with any parse or
+// fetch error, through the DevTools Preload domain. Prerendering otherwise
+// fails silently (b0afe31 shipped a rule set no browser ever loaded).
+const cdp = await context.newCDPSession(page);
+const ruleSets = [];
+cdp.on('Preload.ruleSetUpdated', ({ ruleSet }) => ruleSets.push(ruleSet));
+await cdp.send('Preload.enable');
 
 // A CSP or Trusted Types violation doesn't fail page load or necessarily
 // register as an axe rule — it just logs. Catching it here is the only
@@ -133,6 +178,17 @@ try {
         console.error(`  ...and ${violation.nodes.length - 5} more node(s)`);
       }
     }
+  }
+
+  if (ruleSets.length === 0) {
+    failures += 1;
+    console.error('\nspeculation rules: no rule set loaded (check the Speculation-Rules header and /speculationrules.json).');
+  } else {
+    for (const set of ruleSets.filter((s) => s.errorType)) {
+      failures += 1;
+      console.error(`\nspeculation rules: ${set.errorType}: ${set.errorMessage ?? ''} (${set.url ?? 'inline'})`);
+    }
+    if (!ruleSets.some((s) => s.errorType)) console.log(`speculation rules: ${ruleSets.length} load(s), no errors`);
   }
 } finally {
   await context.close();

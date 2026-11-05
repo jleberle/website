@@ -39,7 +39,6 @@
 # failing and making a human retype it. ship.sh commits with `git add -A`, so
 # the refreshed files ride along with the push:
 #   - data/writing-log.json   (writing-log.py)
-#   - static/_headers CSP     (csp-hashes.sh --write; prints every hash it moves)
 #
 # ADVISORY — real, but a follow-up commit fixes them with no trace:
 #   taxonomy facets, tag vocabulary, series naming, graph connections,
@@ -268,8 +267,8 @@ step "writing log"
 #
 # Any other failure is ADVISORY, not blocking: a stale writing log is fixed
 # completely by the next commit, which is the line every other advisory sits
-# on. Its most common cause is environmental (PyYAML missing after a python3
-# minor-version upgrade), which should never be able to stop a post shipping.
+# on. Nothing about the writing log should ever be able to stop a post
+# shipping.
 WLOG_OUT=$(python3 scripts/writing-log.py --allow-missing 2>&1)
 WLOG_RC=$?
 case $WLOG_RC in
@@ -293,10 +292,10 @@ if [[ $WLOG_RC -eq 0 && -z "${WEBSITE_SHIP_RUNNING:-}" ]] && ! git diff --quiet 
 fi
 
 step "hugo version"
-# The CSP hashes below are regenerated from THIS machine's build, and the live
-# site is built by Cloudflare with the version in .hugo-version (mirrored in its
-# HUGO_VERSION build variable). A different local Hugo can minify inline
-# scripts differently and write hashes production's HTML won't match.
+# The live site is built by Cloudflare with the version in .hugo-version
+# (mirrored in its HUGO_VERSION build variable). A different local Hugo can
+# pass here and fail there, or render differently, so this run would be
+# checking a site that is not the one that ships.
 PINNED_HUGO="$(cat .hugo-version 2>/dev/null)"
 LOCAL_HUGO="$(hugo version 2>/dev/null | awk '{print $2}' | sed -E 's/^v?([0-9]+\.[0-9]+\.[0-9]+).*/\1/')"
 if [[ -n "$PINNED_HUGO" && "$LOCAL_HUGO" == "$PINNED_HUGO" ]]; then
@@ -366,23 +365,6 @@ else
   fail "Something is wrong with the RSS/JSON feeds." \
        "Read the message above — it explains the specific problem and what to do. If it mentions changed reading links, take it seriously: that creates duplicate posts on eberle.blog that have to be deleted by hand." \
        "$FEED_OUT"
-fi
-
-step "CSP hashes"
-# Regenerated, not checked. Drift here is live-breaking (a stale hash means the
-# browser blocks a real inline script in production), but the correct value is
-# fully determined by the build that just ran — so failing only made a human
-# copy-paste a hash that the script already knew. Writing it keeps the push
-# unblocked AND keeps production correct, which checking could only do one of.
-# csp-hashes.sh --write prints every hash it adds or removes with the source
-# that produced it, so a newly introduced inline script still shows up here.
-if CSP_OUT=$(bash scripts/csp-hashes.sh --write --no-build 2>&1); then
-  pass "$CSP_OUT"
-else
-  echo "$CSP_OUT"
-  fail "The security header in static/_headers could not be updated to match this build." \
-       "Read the error above. Until this is resolved, scripts on the live site may be blocked by the browser." \
-       "$CSP_OUT"
 fi
 
 step "published-reference scan"
