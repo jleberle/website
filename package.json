@@ -11,10 +11,10 @@
     "test:axe": "node scripts/checks/axe-check.mjs public"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.13.0",
-    "html-validate": "^11.16.1",
-    "playwright": "^1.63.0",
-    "stylelint": "^17.15.0",
+    "@axe-core/playwright": "^4.14.0",
+    "html-validate": "^11.18.0",
+    "playwright": "^1.64.1",
+    "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0"
   }
 }
