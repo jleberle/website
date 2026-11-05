@@ -29,6 +29,13 @@ delay, not accuracy.
 
 Set `NOTES_VAULT` if the vault is not at `~/Notes` on that machine.
 
+Set `WRITING_LOG_MACHINE` on every machine to a fixed short name (`mac`,
+`ahsoka`, …). It names that machine's observation file. Without it the name
+falls back to the hostname, which on some networks is a DHCP lease name like
+`dhcp-10-227-34-198`. That forks a new file each time the lease changes and
+publishes a private address. The counts stay correct, because the merge takes
+the larger value, but each fork leaves a file behind permanently.
+
 ## The two sources, and why they work differently
 
 | Source | Mechanism | History |

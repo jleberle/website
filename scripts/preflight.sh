@@ -40,7 +40,6 @@
 # the refreshed files ride along with the push:
 #   - data/writing-log.json   (writing-log.py)
 #   - static/_headers CSP     (csp-hashes.sh --write; prints every hash it moves)
-#   - public/_headers digests (digest-fields.sh)
 #
 # ADVISORY — real, but a follow-up commit fixes them with no trace:
 #   taxonomy facets, tag vocabulary, series naming, graph connections,
@@ -220,10 +219,8 @@ step "Obsidian templates"
 # Obsidian for the repo copy to stay meaningful. Divergence is also fully
 # reversible — the templates are inputs to drafting, not to the published site,
 # so nothing about a push is made wrong by them being out of step.
-set +e
 TPL_OUT=$(scripts/sync-templates.sh --check 2>&1)
 TPL_RC=$?
-set -e
 case $TPL_RC in
   0|3) pass "$TPL_OUT" ;;
   *)
@@ -268,14 +265,17 @@ step "writing log"
 #
 # Exit 3 means a git source repo isn't on this machine. That's a skip, not a
 # failure; the committed JSON stands.
-set +e
+#
+# Any other failure is ADVISORY, not blocking: a stale writing log is fixed
+# completely by the next commit, which is the line every other advisory sits
+# on. Its most common cause is environmental (PyYAML missing after a python3
+# minor-version upgrade), which should never be able to stop a post shipping.
 WLOG_OUT=$(python3 scripts/writing-log.py --allow-missing 2>&1)
 WLOG_RC=$?
-set -e
 case $WLOG_RC in
   0) pass "$WLOG_OUT" ;;
   3) pass "$WLOG_OUT" ;;
-  *) echo "$WLOG_OUT"; fail "The writing log (data/writing-log.json) could not be rebuilt from git history." \
+  *) echo "$WLOG_OUT"; warn "The writing log (data/writing-log.json) could not be rebuilt from git history." \
        "Read the error above — this is a bug in scripts/writing-log.py or a damaged git checkout, not something you did wrong in a post." \
        "$WLOG_OUT" ;;
 esac
@@ -290,6 +290,20 @@ if [[ $WLOG_RC -eq 0 && -z "${WEBSITE_SHIP_RUNNING:-}" ]] && ! git diff --quiet 
   printf '   \033[1mFix:\033[0m %s\n' "Run scripts/ship.sh to publish (it folds this in automatically), or commit data/writing-log.json yourself now so it doesn't sit uncommitted until your next pull."
   printf '   \033[2mNot blocking, and not a CI signal -- CI never runs through ship.sh, so this is expected there and means nothing.\033[0m\n'
   ADVISORIES=$((ADVISORIES + 1))
+fi
+
+step "hugo version"
+# The CSP hashes below are regenerated from THIS machine's build, and the live
+# site is built by Cloudflare with the version in .hugo-version (mirrored in its
+# HUGO_VERSION build variable). A different local Hugo can minify inline
+# scripts differently and write hashes production's HTML won't match.
+PINNED_HUGO="$(cat .hugo-version 2>/dev/null)"
+LOCAL_HUGO="$(hugo version 2>/dev/null | awk '{print $2}' | sed -E 's/^v?([0-9]+\.[0-9]+\.[0-9]+).*/\1/')"
+if [[ -n "$PINNED_HUGO" && "$LOCAL_HUGO" == "$PINNED_HUGO" ]]; then
+  pass "local Hugo $LOCAL_HUGO matches .hugo-version"
+else
+  warn "Local Hugo ${LOCAL_HUGO:-not found} differs from the deploy's pinned ${PINNED_HUGO:-unknown version}." \
+       "Install Hugo $PINNED_HUGO, or upgrade the pin: see docs/maintenance.md (update .hugo-version and Cloudflare's HUGO_VERSION together)."
 fi
 
 step "hugo build"
@@ -369,16 +383,6 @@ else
   fail "The security header in static/_headers could not be updated to match this build." \
        "Read the error above. Until this is resolved, scripts on the live site may be blocked by the browser." \
        "$CSP_OUT"
-fi
-
-step "Content-Digest headers"
-if DIGEST_OUT=$(bash scripts/digest-fields.sh --no-build 2>&1); then
-  pass "$DIGEST_OUT"
-else
-  echo "$DIGEST_OUT"
-  fail "Could not write the Content-Digest headers for the feeds." \
-       "Read the error above — this is a problem in scripts/digest-fields.sh, not in your writing." \
-       "$DIGEST_OUT"
 fi
 
 step "published-reference scan"

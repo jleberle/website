@@ -38,7 +38,12 @@ repo directly — this is dashboard-managed config, not anything in this repo.
 
 - every push to `main` triggers a build and deploy; other branches build to
   preview URLs
-- build command: `hugo --minify && scripts/digest-fields.sh --no-build`
+- build command: `hugo --minify`. It used to append RFC 9530
+  `Content-Digest` headers for the feeds (`scripts/digest-fields.sh`). That was
+  removed in 2026-11 because Cloudflare compresses responses after the header
+  is set, so the digest matched only uncompressed responses and was wrong for
+  nearly every real client. Don't re-add it without disabling compression for
+  those paths.
 - deploy command: `npx wrangler deploy` (`npx wrangler versions upload` for
   previews)
 - the Hugo version is pinned via a `HUGO_VERSION` build variable in
@@ -81,7 +86,6 @@ it beats failing and making a human retype it. `ship.sh` commits with
 
 - `data/writing-log.json` — `writing-log.py`
 - `static/_headers` CSP hashes — `csp-hashes.sh --write`
-- `public/_headers` Content-Digest — `digest-fields.sh`
 
 CSP drift is live-breaking (a stale hash means the browser blocks a real inline
 script in production), so it can't be an advisory — but it also can't justify

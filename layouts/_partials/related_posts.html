@@ -71,7 +71,8 @@
            dissertation — looking identical to everything else. Emitting
            it only for non-books makes those stand out and lets the title
            start the line. */ -}}
-    {{- $type := .Params.type | default "book" -}}
+    {{- /* .Type is the front-matter `type`, or the section name when unset. */ -}}
+    {{- $type := cond (eq .Type .Section) "book" .Type -}}
     <li>
       {{- if ne $type "book" }}<span class="related-post-type">{{ $type | humanize }}</span>{{ end }}
       <span><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Params.author }}, {{ . }}{{ end }}</span>

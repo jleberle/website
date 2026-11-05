@@ -74,7 +74,7 @@ jobs:
     timeout-minutes: 30
     # Read-only: this job only builds and checks, it never pushes. Push
     # side-effects (webmentions, link archiving) live in post-deploy below,
-    # which is the only job holding a write token.
+    # the only job that uses the PUSH_TOKEN PAT.
     permissions:
       contents: read
 
@@ -200,9 +200,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     # The only job in this workflow that pushes (outbound webmention state,
-    # archived link rewrites) — isolated here so verify above stays read-only.
+    # archived link rewrites). Those pushes authenticate with the PUSH_TOKEN
+    # PAT, never GITHUB_TOKEN (see below), so GITHUB_TOKEN stays read-only.
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - name: Check out repository
@@ -238,10 +239,10 @@ jobs:
           hugo version
 
       - name: Build site
-        # Matches Cloudflare's build command exactly (hugo --minify &&
-        # digest-fields.sh --no-build) so notify-websub.py's byte-for-byte
-        # comparison against the live site is meaningful.
-        run: hugo --minify && scripts/digest-fields.sh --no-build
+        # Matches Cloudflare's build command exactly (hugo --minify) so
+        # notify-websub.py's byte-for-byte comparison against the live site
+        # is meaningful.
+        run: hugo --minify
 
       - name: Notify feed services after deployment
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -269,7 +270,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
+          PUSH_TOKEN: ${{ secrets.PUSH_TOKEN }}
         run: |
           set -euo pipefail
           if [[ -z "$(git status --porcelain -- data/webmentions-sent.json)" ]]; then
@@ -280,8 +281,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/webmentions-sent.json
           git commit -m "Record outbound webmention attempts"
-          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
-          git push
+          # Token goes on the command line, never into .git/config, so no
+          # later step (or container mounting $PWD) can read it off disk.
+          git push "https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}" "HEAD:${{ github.ref }}"
 
       - name: Add lychee wrapper
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -314,7 +316,7 @@ jobs:
         if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
+          PUSH_TOKEN: ${{ secrets.PUSH_TOKEN }}
         run: |
           set -euo pipefail
           if [[ -z "$(git status --porcelain -- content/)" ]]; then
@@ -325,8 +327,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add content/
           git commit -m "Rewrite dead citation links to Wayback Machine snapshots"
-          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
-          git push
+          # Token goes on the command line, never into .git/config, so no
+          # later step (or container mounting $PWD) can read it off disk.
+          git push "https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}" "HEAD:${{ github.ref }}"
 
       - name: Upload failure artifacts
         if: failure()

@@ -32,7 +32,8 @@
     {{- /* Type shown only when it is not a book — see the same reasoning in
            related_posts.html. Nearly every cited work is a book, so the
            label earns its place only on the exceptions. */ -}}
-    {{- $type := .Params.type | default "book" -}}
+    {{- /* .Type is the front-matter `type`, or the section name when unset. */ -}}
+    {{- $type := cond (eq .Type .Section) "book" .Type -}}
     <li>
       {{- if ne $type "book" }}<span class="related-post-type">{{ $type | humanize }}</span>{{ end }}
       <span><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Params.author }}, {{ . }}{{ end }}</span>

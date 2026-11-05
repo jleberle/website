@@ -75,7 +75,7 @@
     {{- end }}
   </header>
   {{- $summary := partial "page_summary.html" . }}
-  {{- $usesAutoSummary := not (or .Params.summary .Description) }}
+  {{- $usesAutoSummary := not (or .RawSummary .Description) }}
   {{- if and (ne (.Param "hideSummary") true) $summary }}
   <div class="entry-content p-summary">
     <p>{{ $summary | plainify | htmlUnescape }}{{ if and $usesAutoSummary .Truncated }}...{{ end }}</p>

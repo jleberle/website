@@ -11,7 +11,9 @@ copyright: "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/
 # Build behavior
 # ------------------------------------------------------------
 enableRobotsTXT: true
-cleanDestinationDir: true
+build:
+  cleanDestinationDir:
+    enable: true
 enableGitInfo: true
 
 buildDrafts: false
